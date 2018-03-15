@@ -1,0 +1,561 @@
+% !TeX spellcheck = en_US
+
+%
+% FH Technikum Wien
+% !TEX encoding = UTF-8 Unicode
+%
+% Erstellung von Master- und Bachelorarbeiten an der FH Technikum Wien mit Hilfe von LaTeX und der Klasse TWBOOK
+%
+% Um ein eigenes Dokument zu erstellen, müssen Sie folgendes ergänzen:
+% 1) Mit \documentclass[..] einstellen: Master- oder Bachelorarbeit, Studiengang und Sprache
+% 2) Mit \newcommand{\FHTWCitationType}.. Zitierstandard festlegen (wird in der Regel vom Studiengang vorgegeben - bitte erfragen)
+% 3) Deckblatt, Kurzfassung, etc. ausfüllen
+% 4) und die Arbeit schreiben (die verwendeten Literaturquellen in Literatur.bib eintragen)
+%
+% Getestet mit TeXstudio mit Zeichenkodierung ISO-8859-1 (=ansinew/latin1) und MikTex unter Windows
+% Zu beachten ist, dass die Kodierung der Datei mit der Kodierung des paketes inputenc zusammen passt!
+% Die Kodierung der Datei twbook.cls MUSS ANSI betragen!
+% Bei der Verwendung von UTF8 muss dnicht nur die Kodierung des Dokuments auf UTF8 gestellt sein, sondern auch die des BibTex-Files!
+%
+% Bugreports und Feedback bitte per E-Mail an latex@technikum-wien.at
+%
+% Versionen
+% *) V0.7: 9.1.2015, RO: Modeline angepasst und verschoben
+% *) V0.6: 10.10.2014, RO: Weitere Anpassung an die UK
+% *) V0.5: 8.8.2014, WK: Literaturquellen überarbeitet und angepasst
+% *) V0.4: 4.8.2014, WK: Initalversion in SVN eingespielt
+%
+\documentclass[MGS,Master,english]{twbook}%\documentclass[Bachelor,BMR,german]{twbook}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+
+%
+% Bitte in der folgenden Zeile den Zitierstandard festlegen
+\newcommand{\FHTWCitationType}{HARVARD} % IEEE oder HARVARD möglich - wenn Sie zwischen IEEE und HARVARD wechseln, bitte die temorären Dateien (aux, bbl, ...) löschen
+%
+\ifthenelse{\equal{\FHTWCitationType}{HARVARD}}{\usepackage{harvard}}{\usepackage{bibgerm}}
+
+% Definition Code-Listings Formatierung:
+\usepackage[final]{listings}
+\lstset{captionpos=b, numberbychapter=false,caption=\lstname,frame=single, numbers=left, stepnumber=1, numbersep=2pt, xleftmargin=15pt, framexleftmargin=15pt, numberstyle=\tiny, tabsize=3, columns=fixed, basicstyle={\fontfamily{pcr}\selectfont\footnotesize}, keywordstyle=\bfseries, commentstyle={\color[gray]{0.33}\itshape}, stringstyle=\color[gray]{0.25}, breaklines, breakatwhitespace, breakautoindent}
+\lstloadlanguages{[ANSI]C, C++, [gnu]make, gnuplot, Matlab}
+
+%Formatieren des Quellcodeverzeichnisses
+\makeatletter
+% Setzen der Bezeichnungen für das Quellcodeverzeichnis/Abkürzungsverzeichnis in Abhängigkeit von der eingestellten Sprache
+\providecommand\listacroname{}
+\@ifclasswith{twbook}{english}
+{%
+    \renewcommand\lstlistingname{Code}
+    \renewcommand\lstlistlistingname{List of Code}
+    \renewcommand\listacroname{List of Abbreviations}
+}{%
+    \renewcommand\lstlistingname{Quellcode}
+    \renewcommand\lstlistlistingname{Quellcodeverzeichnis}
+    \renewcommand\listacroname{Abkürzungsverzeichnis}
+}
+% Wenn die Option listof=entryprefix gewählt wurde, Definition des Entyprefixes für das Quellcodeverzeichnis. Definition des Macros listoflolentryname analog zu listoflofentryname und listoflotentryname der KOMA-Klasse
+\@ifclasswith{scrbook}{listof=entryprefix}
+{%
+    \newcommand\listoflolentryname\lstlistingname{}
+}{%
+}
+\makeatother
+\newcommand{\listofcode}{\phantomsection\lstlistoflistings}
+
+%
+% Einträge für Deckblatt, Kurzfassung, etc.
+%
+\title{Using Procedural Content Generation via Machine Learning as a Game Mechanic}
+\author{Bernhard Rieder, BSc}
+\studentnumber{1610585006}
+%\author{Titel Vorname Name, Titel\and{}Titel Vorname Name, Titel}
+%\studentnumber{XXXXXXXXXXXXXXX\and{}XXXXXXXXXXXXXXX}
+\supervisor{Dipl.-Ing. (FH) Alexander Hofmann}
+%\supervisor[Begutachter]{Titel Vorname Name, Titel}
+%\supervisor[Begutachterin]{Titel Vorname Name, Titel}
+\secondsupervisor{Dr. Jichen Zhu \and{} Dr. Santiago Onta\~{n}\'{o}n}
+%\secondsupervisor[Begutachter]{Titel Vorname Name, Titel}
+%\secondsupervisor[Begutachterinnen]{Titel Vorname Name, Titel}
+\place{Philadelphia}
+\kurzfassung{Blah blah blah, das ist meine Kurzfassung über die Verwendung von Prozeduraler Inhaltsgenerierung mit Machine Learning als eine Spielmechanik, blah blah blah}
+\schlagworte{Prozedurale Inhaltsgenerierung, Machine Learning, Spielemechanik, Künstliche Intelligenz, Spieleentwicklung}
+\outline{
+	Blah blah blah, this is my outline about the use of procedural content generation via machine learning as a game mechanic, blah blah blah\\
+	\\
+	\textit{Procedural Content Generation (PCG) is an essential topic in modern games. Notably, it is a very crucial topic for independent game developers due to a low budget, where PCG can generate much content for less effort. As the importance of PCG for game development increases, researchers explore new avenues for generating high-quality content with or without human involvement. Here is where Machine Learning comes into play and extends the capabilities of PCG. Procedural Content	Generation via Machine Learning (PCGML) systems can be trained on its own and evolve if they do not generate usable output and offer a broad application possibility. One promising way of using PCGML is the use as a game mechanic. Therefore, this research will address and focus on the possibilities and development process of how PCGML can be used as a game mechanic and is going to provide a firrst demonstration of its use.}\\
+	\\
+	Abstracts can vary in length from one paragraph to several pages, but they follow the IMRaD format and
+	typically spend:
+	\begin{itemize}
+		\item 25\% of their space on importance of research (Introduction)
+		\item 25\% of their space on what you did (Methods)
+		\item 35\% of their space on what you found: this is the most important part of the abstract (Results)
+		\item 15\% of their space on the implications of the research (Discussion)
+	\end{itemize}
+}
+\keywords{Procedural Content Generation, Machine Learning, Game Mechanic, Artifial Intelligence, Game Development}
+\acknowledgements{Many thanks to mr Alexander Hofmann who gave me the possibilty to write my master thesis abroad at the Drexel University. Also many thanks to the Drexel University and Dr. Michael Wagner who gave me the opportunity to be a part of their team while i was writing my master thesis there. Lastly, many thanks to Dr. Santiago Ontanon and Dr. Jichen Zhu who supported me, ....}
+
+\begin{document}
+%Festlegungen für den HARVARD-Zitierstandard
+\ifthenelse{\equal{\FHTWCitationType}{HARVARD}}{
+\bibliographystyle{Harvard_FHTW_MR}%Zitierstandard FH Technikum Wien, Studiengang Mechatronik/Robotik, Version 1.2e
+\citationstyle{dcu}%Correct citation-style (Harvardand, ";" between citations, "," between author and year)
+\citationmode{abbr}%use "et al." with first citation
+\iflanguage{ngerman}{
+    %Deutsch Neue Rechtschreibung
+    \newcommand{\citepic}[1]{(Quelle: \protect\cite{#1})}%Zitat: Bild
+    \newcommand{\citefig}[2]{(Quelle: \protect\cite{#1}, S. #2)}%Zitat: Bild aus Dokument
+    \newcommand{\citefigm}[2]{(Quelle: modifiziert "ubernommen aus \protect\cite{#1}, S. #2)}%Zitat: modifiziertes Bild aus Dokument
+    \newcommand{\citep}{\citeasnoun}%In-Line Zitiat entweder mit \citep{} oder \citeasnoun{}
+    \newcommand{\acessedthrough}{Verf{\"u}gbar unter:}%Für URL-Angabe
+    \newcommand{\acessedthroughp}{Verf{\"u}gbar bei:}%Für URL-Angabe (Geschützte Datenbank, Zugriff durch FH)
+    \newcommand{\acessedat}{Zugang am}%Für URL-Datum-Angabe
+    \newcommand{\singlepage}{S.}%Für Seitenangabe (einzelne Seite)
+    \newcommand{\multiplepages}{S.}%Für Seitenangabe (mehrere Seiten)
+    \newcommand{\chapternr}{K.}%Für Kapitelangabe
+    \renewcommand{\harvardand}{\&}%Harvardand in Zitaten
+    \newcommand{\abstractonly}{ausschließlich Abstract}
+    \newcommand{\edition}{. Auflage}%Angabe der Auflage
+}{
+\iflanguage{german}{
+    %Deutsch
+    \newcommand{\citepic}[1]{(Quelle: \protect\cite{#1})}%Zitat: Bild
+    \newcommand{\citefig}[2]{(Quelle: \protect\cite{#1}, S. #2)}%Zitat: Bild aus Dokument
+    \newcommand{\citefigm}[2]{(Quelle: modifiziert "ubernommen aus \protect\cite{#1}, S. #2)}%Zitat: modifiziertes Bild aus Dokument
+    \newcommand{\citep}{\citeasnoun}%In-Line Zitiat entweder mit \citep{} oder \citeasnoun{}
+    \newcommand{\acessedthrough}{Verf{\"u}gbar unter:}%Für URL-Angabe
+    \newcommand{\acessedthroughp}{Verf{\"u}gbar bei:}%Für URL-Angabe (Geschützte Datenbank, Zugriff durch FH)
+    \newcommand{\acessedat}{Zugang am}%Für URL-Datum-Angabe
+    \newcommand{\singlepage}{S.}%Für Seitenangabe (einzelne Seite)
+    \newcommand{\multiplepages}{S.}%Für Seitenangabe (mehrere Seiten)
+    \newcommand{\chapternr}{K.}%Für Kapitelangabe
+    \renewcommand{\harvardand}{\&}%Harvardand in Zitaten
+    \newcommand{\abstractonly}{ausschließlich Abstract}
+    \newcommand{\edition}{. Auflage}%Angabe der Auflage
+}{
+    %Englisch
+    \newcommand{\citepic}[1]{(Source: \protect\cite{#1})}%Zitat: Bild
+    \newcommand{\citefig}[2]{(Source: \protect\cite{#1}, p. #2)}%Zitat: Bild aus Dokument
+    \newcommand{\citefigm}[2]{(Source: taken with modification from \protect\cite{#1}, p. #2)}%Zitat: modifiziertes Bild aus Dokument
+    \newcommand{\citep}{\citeasnoun}%In-Line Zitiat entweder mit \citep{} oder \citeasnoun{}
+    \newcommand{\acessedthrough}{Available at:}%Für URL-Angabe
+    \newcommand{\acessedthroughp}{Available through:}%Für URL-Angabe (Geschützte Datenbank, Zugriff durch FH)
+    \newcommand{\acessedat}{Accessed}%Für URL-Datum-Angabe
+    \newcommand{\singlepage}{p.}%Für Seitenangabe (einzelne Seite)
+    \newcommand{\multiplepages}{pp.}%Für Seitenangabe (mehrere Seiten)
+    \newcommand{\chapternr}{Ch.}%Für Kapitelangabe
+    \renewcommand{\harvardand}{\&}%Harvardand in Zitaten
+    \newcommand{\abstractonly}{Abstract only}
+    \newcommand{\edition}{~edition}%Edition -> note, that you have to write "edition = {2nd},"!
+}}}
+
+\maketitle
+
+%
+% .. und hier beginnt die eigentliche Arbeit. Viel Erfolg beim Verfassen!
+%
+\chapter{Introduction}
+\ac{PCG} is an essential and aspiring topic in modern games and is extensively used for decades \cite{pcg::whatIsPCG}. Therefore, further research on different kinds of \ac{PCG} is necessary to provide new exciting techniques for games development. Notably, it is especially a very crucial topic for small independent game developer studios due to a low budget, where \ac{PCG} can generate much content for less effort and human resources. With this in mind, more and more storage will be available on a \ac{PC} or console in the future according to Moore's Law, and it is getting hard to design a various range of content in a short amount of time. While gamer and players will be getting used to massive amounts of content because of big gaming companies which can establish a broad range of new content without the use of PCG, the small development teams will not keep up as smooth as the market leaders. Here is where \ac{ML} comes into play. \ac{PCG} is getting much more accessible and powerful with the help of ML which combined form the new impressive technique of \ac{PCGML} \cite{pcgml::paper}.\\
+A \ac{PCGML} system opens a lot of new possibilities due to the fact that it uses machine learning. For example, it can be trained on its own and evolve if they do not generate usable output \cite{pcgml::paper}. Furthermore, the system could also be trained by some designers with unique input or by a regular user with their creative input \cite{pcgml::paper}. \ac{PCGML} can be used for so many aspects of a game since it can learn from simple examples and instructions. Most current work on PCGML focuses on creating designed content like unlimited amounts of unique levels \cite{pcgml::paper}. But there are some open problems which needs to be addressed to utilize the whole power of PCGML. For this reason, one of an open problem is the use of \ac{PCGML} as a game mechanic which is a promising approach for evolving the overall player experience in games, which could guide the games industry and development into a new future of content acquisition \cite{pcgml::paper}.
+
+\section{Idea}
+\ac{PCGML} is a relatively new method and technique for creating different kinds of content in modern video games  for \ac{PC}, gaming consoles up to mobile devices. Most current work focuses mainly on replicating designed content to provide the player with infinite and unique variations on gameplay \cite{pcgml::paper}. Another great and innovative possible use of PCGML is its use as the main mechanic of a game, e.g. presenting the \ac{PCGML} system as an adversary or toy for the player to engage with \cite{pcgml::paper}. \\
+The paradigm of using \ac{PCGML} as a game mechanic is a relevant and promising topic which is not addressed by now \cite{pcgml::paper}. Therefore, it needs detailed analysis on how it could be used best in games. For example, design of mechanics could include enticing the player to generate content that is significantly similar to or different from the corpus the system was trained on, or identify content examples that are outliers or typical examples of the system \cite{pcgml::paper}. Or players could also train \ac{PCGML} systems to generate examples that possess certain qualities or fulfill certain objective functions, teaching the player to operate a model by feeding it examples that shape its output in one direction or the other \cite{pcgml::paper}. \\ 
+Treanor et al. \cite{ai::aiBasedGameDesignPattern} illustrated the following various design patterns for developing a game mechanic with \ac{AI} which could be used for an exemplary PCGML system: "\ac{AI} as Role-Model", "Trainee", "Editable", "Guided", "Co-Creator", "Adversary" or "Spectacle". Everyone of them provide a great guiding principle for designing and implementing a PCGML game mechanic.
+
+\subsection{Advantages}
+As already mentioned, PCGML can offer an unlimited amount of content when is comes to designed content generation which is also applicable for game mechanics. There is a good amount of replay value with PCG mechanics in general due to the fact of procedural generation itself but with the help of ML this is going to increase significantly. For example, players could play a game e.g. 10 times and experience different ways of fulfilling objectives every time. In particular, players could also emerge emotional feelings for a PCGML system which is used as a trainee and remains throughout the whole game. Hence, this could create positive and magnificent memories for the players and thus for the game experience and the game itself.
+
+\subsection{Challenges}
+One of the major challenges in creating a PCGML game mechanic is the design of the mechanic which should fulfill some crucial requirements of game design to offer a good player experience. As well, the machine learning part is going to be a challenging part since it might take a lot of tweaking to get a fully working AI algorithm.
+
+\section{Desired Goals}
+It is important to note that the main idea of this master thesis is to create game mechanics which rely on the principles of PCGML rather than creating a generic PCGML game mechanic generator.\\
+With this in mind, it is expected to provide a first insight in the use of \ac{PCGML} as a game mechanic in modern games. The primary goal is to demonstrate the possibilities as well as the development process of game mechanics when it comes to the use of \ac{PCGML} and also how games should work when using \ac{PCGML}.\\
+Additionally, there are some further questions which need to be addressed by this thesis. It should impart some theoretical and practical knowledge of PCG, ML, \ac{PCGML}, and \ac{PCGML} as a game mechanic. Talking about theoretical and practical knowledge which means that it should show how these concepts are going to be implemented from scratch and which dependencies are given and needed for a fully working implementation. \\
+Furthermore, it should provide a good overview and function as a primer for developing proprietary \ac{PCGML} game mechanics in a specific game engine or other environments. Especially, a focus on implementations in commonly used game engines is desired since most of the independent game developers are using game engines instead of creating their own engine because that is often a long process of development. \\
+A substantial goal for this work is a fully working game with \ac{PCGML} as the core game mechanic which acts as a perfect example of what is possible with this kind of functionality. It is considered to playtest the game by different kinds of people where every feedback and idea will be evaluated to increase the usability of the \ac{PCGML} game mechanics. Also, since video games in general are performance-heavy applications, it should cover a performance report as a point of reference for future implementations and uses. As an additional point, it should include an outlook of the opportunities of \ac{PCGML} game mechanics in future games and work, which should also function as motivation for future work in this field of research.\\
+Generally speaking, it should be an overall guideline for bringing \ac{PCGML} game mechanics into a game.
+
+\section{Proceedings}
+\subsection{Approach}
+As said before, one goal of this thesis shall be the support of small and independent game developers with an introduction into PCGML game mechanics in a game engine like Unreal Engine or Unity. For doing so, it is going to address all important topics which are dependent on building PCGML game mechanics and their use in game engines. It is attempted to start with the central fields of interest like game mechanics, PCG and ML to create awareness for this topics in the a beginning. Afterwards, all the beforehand discussed topics shall be combined into PCGML and furthermore into PCGML game mechanics. In particular, theoretical usage is not only the most important subject which is the reason for providing at least some conceptual implementations on PCG, ML and PCGML. The implementation of a PCGML game mechanic with subsequent playtests as an evaluation of the concepts is also a necessary matter which should complete the introduction.
+
+\subsection{Agenda}
+The agenda will be split into two parts. The first one is a scientific-informal part about getting to know more about the foundation of \ac{PCGML} and its use as a game mechanic. Since \ac{PCGML} is a relatively new theme in game development, it focuses on topics regarding core knowledge of \ac{PCG} and \ac{ML} separately and game mechanics to act as a base for further research on \ac{PCGML} as a game mechanic. Following topics shall be a part of the informal research:
+\begin{itemize}
+	\item Game mechanics and their use in games.
+	\item Necessary and important theory of PCG and ML which is dependent for PCGML with a constant focus on game mechanics, like types of PCG and some of the most used learning and training models of ML.
+	\item The conceptual use of PCG and ML in a game engine as well as best practices, other approaches and possible issues when using PCG and ML in games and a game engine.
+	\item Overview of possible game mechanics with \ac{PCGML}.
+\end{itemize}
+The second part of the agenda deals with the central scientific problem of this master thesis. It addresses every aspect of \ac{PCGML} and discusses how to use \ac{PCGML} as a game mechanic in modern games with a focus on the maximum possible benefit for game developers. This part shall contain the following fields of research: 
+\begin{itemize}
+	\item Theory of \ac{PCGML} and its methods in general.
+	\item Research on different \ac{PCGML} implementations and practical usage possibilities in a game engine.
+	\item Comparison of \ac{PCGML} methods regarding their use in \ac{PCGML} as a game mechanic.
+%	\item Comparison of \ac{PCGML} learning models.
+%	\item Evaluation of \ac{PCGML} hardware and software requirements.
+	\item Conceptual implementation of possible \ac{PCGML} game mechanics in a game engine and subsequent evaluation as well as a detailed comparison.
+	\item Development of a game with one of the best-evaluated \ac{PCGML} game mechanic as the central game mechanic of the game.
+	\item Proof of concept with playtest sessions and evaluation of its feedback.
+	\item Research summary with meaning of \ac{PCGML} as a game mechanic for the future of games. 
+\end{itemize}
+
+\subsection{Methodological Considerations}
+Just as important as the agenda are some methodological questions which need to be raised and answered at both research and implementation time, like:
+\begin{itemize}
+	\item Which \ac{PCGML} techniques are best for a game? Or which learning and training models for \ac{PCGML} have the greatest advantage?
+	\item Which programming languages fit best for the use with \ac{PCGML} in conjunction with a game engine and which game engine should be used? 
+	\item Is it better to use an online or offline version of \ac{PCGML}? Related to this field is the question of requirements on hardware and software regarding \ac{PCGML} as well if multithreading needs to be minded.
+	\item Which game mechanics could be implemented in \ac{PCGML} and suits a game?
+	\item What evaluation criteria shall be used for the playtesting session?
+\end{itemize} 
+
+
+\section{Thesis Overview}
+Finish and write this section afterwards the thesis is finished!
+
+\section{Target Group}
+This thesis is dedicated to advanced game developers who are interested in using PCGML game mechanics in their game. The theoretical part assumes a basic knowledge of game design and mechanics, PCG and ML since it will not be explained everything in detail. In particular, specific topics of PCG and ML which contribute to the use of PCGML as a game mechanic will be discussed and handled in more detail.\\
+The practical part concentrates primarily on programming in different programming languages like C++ which makes it necessary for the reader to be familiar with programming. Special algorithms used thorough the chapters will be covered in detail whereas basic algorithm knowledge is assumed. Furthermore, it does not require special game development back-end skills since it addresses the use of the technique in game engines.
+
+%
+% ------------------------------- NEW CHAPTER ------------------------------- %
+%
+\clearpage
+\chapter{Game Mechanics}
+Starting this chapter with a quick insight on the \ac{MDA} framework which was introduced by \cite{mechanic::MDA}, helps to understand the foundation and the correlation of game mechanics in video games. In general, the MDA framework describes the division of gaming experience emergence into three dependent parts, starting with "Rules" followed by "System" and concluded with "Fun" \cite{mechanic::MDA}. These fundamental parts can be represented by the designs of "Mechanics", "Dynamics" and "Aesthetics" in a game  \cite{mechanic::MDA}. Therefore, a large amount of gaming experience is made out of mechanics and a game will not be fun at all if their mechanics are not properly thought through even if it has amazing graphics \cite{gameDesign::gameMechanicsAdvancedGameDesign}. Consequently, game mechanics are acting as one of the most important roles in game design which is the reason to create awareness for this topic in the beginning of the thesis.
+
+\section{Definition}
+As already indicated, a game mechanic is a main concept with many underlying sub-concepts like dynamics, aesthetics, rules, systems, processes, procedures or data which all characterize the heart of a game besides story and technology \cite{gameDesign::gameMechanicsAdvancedGameDesign} \cite{gameDesign::bookOfLenses}. It also creates gameplay and the experience of playing a game. But besides, there is no concrete definition of what a game mechanic is. Nonetheless, there are some key concepts mentioned by different game designers which contribute to an interpretation of what a game mechanic can or shall be or do:
+\begin{itemize}
+	\item Defines how a game is played, their objectives can be achieved or how to lose a game. Thus, mechanics are precisely designed, detailed, specified and implemented to fulfill playability. \cite{gameDesign::gameMechanicsAdvancedGameDesign} \cite{gameDesign::bookOfLenses}
+	\item Often used to indicate the most influential and affecting aspect of a game which is also mostly referred as core mechanic. \cite{gameDesign::gameMechanicsAdvancedGameDesign}
+	\item Enables interaction and control of game objects and elements. \cite{gameDesign::gameMechanicsAdvancedGameDesign}
+	\item Mostly hidden from the player, media-independent and easy to learn. For example, rules are more considered as printed and players are aware of them because they can see or read them whereby mechanics like an enemy damage model with its damage points are hidden. \cite{gameDesign::gameMechanicsAdvancedGameDesign}
+	\item A game mechanic can also be seen as a meeting point for a designers question and their provided tools for answering that question by a player. \cite{mechanic::gamasutra::MikeStout}
+\end{itemize}
+
+\section{Types of Mechanics}
+It is obvious that one tries to divide possible mechanics into concrete types since of their various possibilities and shared base ideas. For this purpose, \cite{gameDesign::gameMechanicsAdvancedGameDesign} summarized different types of game mechanics which are mainly used in games nowadays. They first categorized them into the following five types which are listed below with some related mechanics:
+\begin{itemize}
+	\item \textbf{Physics}: Motion and forces like gravity, shooting, fighting, jumping, moving, driving or any other kind of position change. \cite{gameDesign::gameMechanicsAdvancedGameDesign}
+	\item \textbf{Internal Economy}: In general, all game elements which involve transaction like collecting, consuming, harvesting, buying, building, upgrading, risking or customizing of resources like currency, ammunition, portions, power ups or other kind of items. Also the use of energy, health, lives, power, points, popularity or experience and management actions for team, resources or inventory. \cite{gameDesign::gameMechanicsAdvancedGameDesign}
+	\item \textbf{Progression Mechanisms}: Usually the elements or mechanisms which are controlling the players progress in the game world. For example, quests, missions, competitions, tournaments, races, challenges, levers, switches, locks, keys or special items which allow a player to defeat an AI. \cite{gameDesign::gameMechanicsAdvancedGameDesign}
+	\item \textbf{Tactical Maneuvering}: Is mainly used in strategy games but also in roleplay or simulation games and often deals with the placement of elements on a map like in chess. Mechanics are for instance internal tactics where a player gains offensive or defensive advantage, also team tactics and management of resources and buildings. \cite{gameDesign::gameMechanicsAdvancedGameDesign}
+	\item \textbf{Social Interaction}: Refer to rules that govern play-acting of a player or strategic actions of forming allies to defeat bosses or other allies like in roleplay games. Further mechanics would be e.g. reward of giving gifts, inviting new friends to join the game, competition between players or in particular mechanics in a co-op game where at least two players are forced to work together to achieve an objective. \cite{gameDesign::gameMechanicsAdvancedGameDesign}
+\end{itemize}
+In addition, all prior mentioned mechanics can be subdivided into discrete and continuous mechanics in terms of their internal values \cite{gameDesign::gameMechanicsAdvancedGameDesign}. For example, internal economy is mostly discrete since it is mostly represented by a simple integer value because e.g. a player cannot pick up half of a portion — either the portion is picked up completely or not \cite{gameDesign::gameMechanicsAdvancedGameDesign}. In contrast, continuous mechanics make use of high precision values for accuracy and is continuously calculated throughout the game like the movement of a character \cite{gameDesign::gameMechanicsAdvancedGameDesign}. \\
+Furthermore, every type can also be used to categorize game genres in which they are used the most. The distinction can be seen in table \ref{GameMechanicsToGenre}.
+\begin{table}[!htbp]
+	\centering
+	\resizebox{\textwidth}{!}
+	{%
+		\begin{tabular}{l||c|c|c|c|c|}
+			\cline{2-6}
+			& \multicolumn{5}{c|}{\textbf{Game Mechanics}}        \\ \hline 
+			\multicolumn{1}{|l||}{\textbf{Game Genres}}  & Physics & Economy & Progression & Tactical & Social \\ \hline \hline
+			\multicolumn{1}{|l||}{Action}                & x       & x       & x           &          &        \\ \hline
+			\multicolumn{1}{|l||}{Strategy}              & x       & x       & x           & x        & x      \\ \hline
+			\multicolumn{1}{|l||}{Roleplay}              & x       & x       & x           & x        & x      \\ \hline
+			\multicolumn{1}{|l||}{Sports}                & x       & x       & x           & x        &        \\ \hline
+			\multicolumn{1}{|l||}{Vehicle Simulation}    & x       & x       & x           &          &        \\ \hline
+			\multicolumn{1}{|l||}{Management Simulation} &         & x       & x           & x        & x      \\ \hline
+			\multicolumn{1}{|l||}{Adventure}             &         & x       & x           &          &        \\ \hline
+			\multicolumn{1}{|l||}{Puzzle}                & x       &         & x           &          &        \\ \hline
+			\multicolumn{1}{|l||}{Social Games}          &         & x       & x           &          & x      \\ \hline
+		\end{tabular}%
+	}
+	\caption{Game Genres and their related Game Mechanics \protect\cite{gameDesign::gameMechanicsAdvancedGameDesign}}
+	\label{GameMechanicsToGenre}
+\end{table}\\
+But since the overview of \cite{gameDesign::gameMechanicsAdvancedGameDesign} is no universal taxonomy for game mechanics, there is another great approach to categorize them as described by \cite{gameDesign::bookOfLenses}. Following rather similar types to \cite{gameDesign::gameMechanicsAdvancedGameDesign}'s approach are used which also correlate to some parts described in the MDA framework:
+\begin{itemize}
+	\item \textbf{Space}: Every game takes places in some kind of game spaces. Spaces can be continuous or discrete, consists of dimensions and can have bounded areas that may or may not be connected. The mechanics of Tic-Tac-Toe are a good example for this kind of mechanics which are taking place in a discrete space. \cite{gameDesign::bookOfLenses}
+	\item \textbf{Time}: Contains mechanics which are using time, clocks, races or controlled time. A popular example for this kind of mechanics is the game Superhot which tweaks the time to create a unique game experience. \cite{gameDesign::bookOfLenses}
+	\item \textbf{Objects, Attributes, States and Actions}: If these terms are compared to the structural elements of a sentence then the game objects represent the nouns, attributes and states are their adjectives and actions are the verbs of a game mechanic. This paradigm represents most of the mechanics which are used for interaction with game elements. \cite{gameDesign::bookOfLenses}
+	\item \textbf{Rules}: Combines all spaces, times, objects, actions and their consequences, constraints and the goals to form the behavior of the game. \cite{gameDesign::bookOfLenses}
+	\item \textbf{Skill}: Shifts the focus to the players and focus on their physical, mental and social skills. That means it includes mechanics like dexterity, coordination, memory, observation, puzzle solving, reading or fooling an opponent or coordinating with teammates .  \cite{gameDesign::bookOfLenses}
+\end{itemize}
+
+%\section{Mechanics in Popular Games}
+%"mechanics of monopoly -> prices of all the properties, text of all the chance and community chest cards - in other words, everything that affects the operation of the game."
+%\subsection{Tetris}
+%...
+
+\section{Considerations with \acl{PCG} and \acl{ML}}
+This chapter shall state some crucial considerations for the next chapters since \ac{PCG} and \ac{ML} game mechanics are not visible used in big game titles and therefore need some special attention on their implementation in a game. One of the good things is that there are dozens of possibilities for mechanics which should not create a big problem in coming up with new and novel ideas for new mechanics. With certainty, the focus of implementing such mechanics will lie on the introduction to the player and their ability for interactions due to the fact that PCG and ML mechanics could confuse some players. Therefore, the implemented mechanics should kept as easy as possible if user interaction is needed instead of creating complex but novel and unusual mechanics. A good starting point is to design the mechanics as soon as the main gameplay concept is set and adhere to the design stages of concept, elaboration and tuning during development \cite{gameDesign::gameMechanicsAdvancedGameDesign}.\\
+It is necessary to list some possible design flaws which need to be avoided since game mechanics shall amaze people instead of frustrate them during playing a game. In addition, a lot of detailed planning is made to come up with new extraordinary mechanics where plans about their proper introduction are missing \cite{mechanic::gamasutra::MaxPears}. For this reason, it is relevant to address some common mistakes and their possible improvements:
+\begin{itemize}
+	\item Do not introduce all mechanics of a game as fast as possible because players need time to learn and get used to mechanics. For this reason, just introduce one mechanic at a time! \cite{mechanic::gamasutra::MaxPears}
+	\item Do not introduce mechanics when the player has no time to explore them. They need time in their own pace to explore the mechanics otherwise they will not enjoy their new ability. \cite{mechanic::gamasutra::MaxPears}
+	\item Use and create feedback loops for game mechanics otherwise players will not know what to do with them. For example, if someone uses a portion and there is no obvious visualization for the use of it then the player does not know for what to use it. \cite{gameDesign::gameMechanicsAdvancedGameDesign}\\
+	Sometimes feedback is one of the most important elements which can be seen in the concept of the basic grammar model introduced by \cite{mechanic::BasicGrammarModel}. This model can be applied to most of popular games. It loops the concepts of a mental model, intent, input, actual model and rules, state change and feedback \cite{mechanic::BasicGrammarModel}. Where the mental model of a player assumes how a game works and what their intentions for the input and the actual input does, what then really happens with their input in terms of applying core mechanics, concluded with a feedback for their inputs \cite{mechanic::BasicGrammarModel}. If no feedback would be given then the player could never update their mental model and cannot progress through a game. Feedback can be given in a simple binary or even complex way \cite{mechanic::BasicGrammarModel}.
+	\item Besides feedback loops, do not forget to provide the player with directions for parts of your mechanic which are or could not be obvious \cite{mechanic::gamasutra::MaxPears}. Further tutorials should be easily accessible if they are needed because there is nothing more frustrating to a player than being confused \cite{mechanic::gamasutra::DanielDoan}.
+	\item For core mechanics does apply: provide clear rules on how to be successful, create a natural interaction but do not forget to challenge the player and provide possibility for natural progression of their skills, properly guide the player towards successfully completing their in-game objectives with directions and feedback, allow the player to move naturally from objective to objective without the necessity of using the core mechanic and provide options besides the core mechanic. \cite{mechanic::gamasutra::DanielDoan}
+	\item In general, the skill of a player will grow over throughout the game which means that the difficulty curve shall match the player's skill throughout a game. \cite{mechanic::gamasutra::DanielDoan}
+\end{itemize} 
+
+
+%
+% ------------------------------- NEW CHAPTER ------------------------------- %
+%
+\clearpage
+\chapter{\acl{PCG}}
+
+\section{Theoretical Introduction}
+Theory of PCG in general.
+
+\subsection{Types}
+\cite{pcg::book}
+methaphors for PCG in pcg book intro\\
+- as a tool\\
+- ...
+
+\subsection{Desirable Properties}
+\cite{pcg::book} (page 6 of chapter 1)\\
+- speed\\
+- reliability\\
+- controllability\\
+- expressivity and diversity\\
+- creativity and believability
+
+
+\subsection{Taxonomy}
+\cite{pcg::book} (page 7 of chapter 1)\\
+- online vs offline\\
+- necessary vs optional\\
+- degree and dimensions of control\\
+- generic vs adaptive\\
+- stochastic vs deterministic\\
+- constructive vs generate-and-test\\
+- automatic generation vs mixed authorship
+
+\subsection{Pitfalls and Development Considerations}
+
+\section{Usage in Games}
+- mention speed tree as a tool
+
+\subsection{Popular Examples}
+%For example, the open world game No Man's Sky fits over 18 quintillion planets onto a 6\ac{GB} file with the help of \ac{PCG}. \url{https://iq.intel.com/no-mans-sky-and-the-technology-that-created-18-quintillion-planets/} \url{https://www.digitaltrends.com/gaming/no-mans-sky-install-size/}
+\subsection{Possibilities}
+
+\section{In a Game Engine}
+How to use PCG and ML in a game engine? What are some of the best practices and approaches for using PCG and ML in a game?
+
+\subsection{Conceptual Implementation}
+Basic sample PCG and ML implementations in a game engine.
+
+\subsection{Possible Issues}
+Issues of PCG and ML in games and game engines.
+
+\section{Game Mechanics}
+\subsection{Industry Examples}
+spelunki
+rogue legacy
+galactic arms race
+\subsection{Possible Mechanics}
+\subsection{Summary}
+
+%
+% ------------------------------- NEW CHAPTER ------------------------------- %
+%
+\clearpage
+\chapter{\acl{ML}}
+
+\section{Theoretical Introduction}
+Theory of PCG and ML in general.
+
+\subsection{Regression}
+\subsection{Classification}
+\subsection{Clustering}
+\subsection{Reinforcement Learning}
+
+\section{Learning Models}
+Which training models are used in ML? --> the 5 tribes of ML
+\subsection{Linear}
+\subsection{K-Nearest Neighbor}
+\subsection{Decision Tree}
+\subsection{\acl{SVM}}
+\subsection{Neural Networks}
+\subsubsection{\acl{ANN}}
+\subsubsection{\acl{CNN}}
+
+\section{Use Cases}
+\subsection{Data Science}
+stick to game related stuff, like alpha go
+\subsection{Games}
+show and demonstrate current and existing work
+\subsubsection{Examples}
+\subsubsection{Possibilities}
+
+\section{In a Game Engine}
+How to use PCG and ML in a game engine? What are some of the best practices and approaches for using PCG and ML in a game?
+
+\subsection{Conceptual Implementation}
+Basic sample PCG and ML implementations in a game engine.
+
+\subsection{Possible Issues}
+Issues of PCG and ML in games and game engines.
+
+
+\section{Game Mechanics}
+\subsection{Industry Examples}
+\subsection{Possible Mechanics}
+\subsection{Summary}
+
+
+%
+% ------------------------------- NEW CHAPTER ------------------------------- %
+%
+\clearpage
+\chapter{\acl{PCGML}}
+\section{What is it About?}
+Theory of PCGML and its methods in general.
+Evaluation of PCGML hardware and software requirements
+\section{Current Use in Games}
+\section{Possibilities}
+\section{Difference to Usual \acl{PCG}}
+\section{Example Implementations}
+Theory of PCGML and its methods in general.
+\section{Learning Models}
+Comparison of PCGML learning models
+\subsection{Markov Chains}
+\subsection{\acl{ANN}}
+\subsection{Bayes}
+look for a paper of "Guzdial"
+\section{In a Game Engine}
+research on different PCGML implementations and practical usage possibilities in a game engine
+\subsection{Conceptual Prototype}
+\subsection{Possible Issues}
+%
+% ------------------------------- NEW CHAPTER ------------------------------- %
+%
+\clearpage
+\chapter{\acl{PCGML} Game Mechanics}
+Overview of possible game mechanics with PCGML.
+\section{First Considerations}
+
+\section{Possibilities}
+Concepts of possible PCGML game mechanics.
+
+\subsection{Role-Model}
+A \ac{PCGML} system replicates content which is generated by players of various levels of skill or generates content suitable for players of certain skill levels. New players are trained by replicating the content or by playing the generated content in the form of generative tutorial. \cite{pcgml::paper}
+
+\subsection{Trainee}
+The player trains a \ac{PCGML} system to generate a piece of necessary content (e.g., part of a puzzle or level geometry). \cite{pcgml::paper}
+
+\subsection{Editable}
+Rather than training the AI to generate the missing puzzle piece via examples, the player changes the internal model’s values until acceptable content is generated. \cite{pcgml::paper}
+
+\subsection{Guided}
+The player corrects the \ac{PCG} system’s output to fulfil increasingly difficult requirements. The \ac{AI}, in turn, learns from the player’s corrections, following the player’s guidance. \cite{pcgml::paper}
+
+\subsection{Co-Creator}
+The player and a \ac{PCGML} system take turns in creating content, moving towards some external requirements. The \ac{PCGML} system learns from the player’s examples. \cite{pcgml::paper} 
+
+\subsection{Adversary}
+The player produces content that the \ac{PCGML} system must replicate by generation to survive or vice versa in a “call and response” battle. \cite{pcgml::paper}
+
+\subsection{Spectacle}
+The \ac{PCGML} system is trained to replicate patterns that are sensorically impressive or cognitively interesting. \cite{pcgml::paper}
+
+\section{Conceptual Prototypes (with evaluation)}
+A test implementation of PCGML game mechanics in a game engine.
+
+\subsection{Comparison of Different Mechanics}
+Comparison of implemented PCGML game mechanics prototypes.
+
+\section{Summary}
+what is the best game mechanic? why? etc
+%
+% ------------------------------- NEW CHAPTER ------------------------------- %
+%
+\clearpage
+\chapter{Game Prototype}
+Development of a game with one of the best-evaluated PCGML game mechanic as the central game mechanic of the game.
+\section{Considerations}
+
+\subsection{Which Game Engine?}
+There are 2 main engines which are commonly used thorough the industry due to their fact of free to use.
+
+\section{Game Design}
+\textbf{Designing Awesome AI for Games - Summary (GDC Talk)}
+\begin{enumerate}
+	\item Support the core experience
+	\item Watch people play and get in their heads
+	\item Identify broad behaviours
+	\item Start simple
+	\item Figure out what the brain gives you for free
+	\item Try going simpler before you go complex
+\end{enumerate}
+
+\section{Implementation}
+\subsection{Technical Approach}
+Classes, Diagrams, why use what - eg. why use neural network over other and stuff like that!
+\subsection{Online or Offline?}
+\section{Performance Measurements}
+\subsection{Improvement Iterations}
+\section{Playtest}
+\subsection{Preparations}
+\subsection{Evaluation}
+Evaluation of playtesters feedback.
+\section{Result}
+show the fucking game and the mechanics!
+
+%
+% ------------------------------- NEW CHAPTER ------------------------------- %
+%
+\clearpage
+\chapter{Conclusion}
+The meaning of the use of PCGML as a game mechanic for the future of games and gaming. 
+\section{Summary}
+\section{Research Result}
+\section{Future Work}
+%
+% Hier beginnen die Verzeichnisse.
+%
+\clearpage
+\ifthenelse{\equal{\FHTWCitationType}{HARVARD}}{}{\bibliographystyle{gerabbrv}}
+\bibliography{Literatur}
+\clearpage
+
+% Das Abbildungsverzeichnis
+\listoffigures
+\clearpage
+
+% Das Tabellenverzeichnis
+\listoftables
+\clearpage
+
+% Das Quellcodeverzeichnis
+\listofcode
+\clearpage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{\listacroname}
+\chapter*{\listacroname}
+\begin{acronym}[XXXXX]
+	\acro{AI}{Artificial Intelligence}
+	\acro{ANN}{Artificial Neural Network}
+	\acro{CNN}{Convolutional Neural Network}
+	\acro{MDA}{Mechanics-Dynamics-Aesthetics}
+	\acro{ML}{Machine Learning}
+	\acro{PC}{Personal Computer}
+    \acro{PCG}{Procedural Content Generation}
+    \acro{PCGML}{Procedural Content Generation via Machine Learning}
+    %\acro{RPG}{Roleplay Game}
+    \acro{SVM}{Support Vector Machine}
+\end{acronym}
+
+%
+% Hier beginnt der Anhang.
+%
+\clearpage
+\appendix
+%\chapter{Appendix A}
+\end{document}
