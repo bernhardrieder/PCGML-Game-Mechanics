@@ -159,7 +159,7 @@
 % .. und hier beginnt die eigentliche Arbeit. Viel Erfolg beim Verfassen!
 %
 \chapter{Introduction}
-\ac{PCG} is an essential and aspiring topic in modern games and is extensively used for decades \cite{pcg::whatIsPCG}. Therefore, further research on different kinds of \ac{PCG} is necessary to provide new exciting techniques for games development. Notably, it is especially a very crucial topic for small independent game developer studios due to a low budget, where \ac{PCG} can generate much content for less effort and human resources. With this in mind, more and more storage will be available on a \ac{PC} or console in the future according to Moore's Law, and it is getting hard to design a various range of content in a short amount of time. While gamer and players will be getting used to massive amounts of content because of big gaming companies which can establish a broad range of new content without the use of PCG, the small development teams will not keep up as smooth as the market leaders. Here is where \ac{ML} comes into play. \ac{PCG} is getting much more accessible and powerful with the help of ML which combined form the new impressive technique of \ac{PCGML} \cite{pcgml::paper}.\\
+\ac{PCG} is an essential and aspiring topic in modern games and is extensively used for decades \cite{pcg::whatIsPCG}. Therefore, further research on different kinds of \ac{PCG} is necessary to provide new exciting techniques for games development. Notably, it is especially a very crucial topic for small independent game developer studios due to a low budget, where \ac{PCG} can generate much content for less effort and human resources \cite{pcg::shortHistoryOfDynamicAndPCG}. With this in mind, more and more storage will be available on a \ac{PC} or console in the future according to Moore's Law, and it is getting hard to design a various range of content in a short amount of time. While gamer and players will be getting used to massive amounts of content because of big gaming companies which can establish a broad range of new content without the use of PCG, the small development teams will not keep up as smooth as the market leaders. Here is where \ac{ML} comes into play. \ac{PCG} is getting much more accessible and powerful with the help of ML which combined form the new impressive technique of \ac{PCGML} \cite{pcgml::paper}.\\
 A \ac{PCGML} system opens a lot of new possibilities due to the fact that it uses machine learning. For example, it can be trained on its own and evolve if they do not generate usable output \cite{pcgml::paper}. Furthermore, the system could also be trained by some designers with unique input or by a regular user with their creative input \cite{pcgml::paper}. \ac{PCGML} can be used for so many aspects of a game since it can learn from simple examples and instructions. Most current work on PCGML focuses on creating designed content like unlimited amounts of unique levels \cite{pcgml::paper}. But there are some open problems which needs to be addressed to utilize the whole power of PCGML. For this reason, one of an open problem is the use of \ac{PCGML} as a game mechanic which is a promising approach for evolving the overall player experience in games, which could guide the games industry and development into a new future of content acquisition \cite{pcgml::paper}.
 
 \section{Idea}
@@ -309,8 +309,11 @@ It is necessary to list some possible design flaws which need to be avoided sinc
 \chapter{\acl{PCG}}
 
 \section{Theoretical Introduction}
-Theory of PCG in general.
-
+\cite{pcg::PCGinGameIndustry} Game content construction and generation are laborious and expensive. Procedural content generation (PCG) aims at generating game content automatically using algorithms, reducing the cost of game design and development.\\
+Procedural content generation refers to the creation of game content automatically (or semi-automatically) through algorithmic means.\\
+The results from the application of PCG algorithms can be all kinds of elements affecting the gameplay: terrain, maps, layers, stories, dialogues, quests, characters, rules, dynamics, or weapons.\\
+\\
+It would be futile to hope to come up with a definition of procedural content generation in games that everybody agrees on. PCG has been attempted by too many people with too many different perspectives for this to happen. A graphics researcher, a game designer in the industry and an academic working on artifcial intelligence techniques would be unlikely to agree even on what "content" is, and much less which generation techniques to consider interesting. We argue that PCG is a concept with fuzzy and unclear boundaries. Besides, exact definitions of concepts are commononly in mathematics. \cite{pcg::whatIsPCG}
 \subsection{Types}
 \cite{pcg::book}
 methaphors for PCG in pcg book intro\\
@@ -319,7 +322,10 @@ methaphors for PCG in pcg book intro\\
 
 \subsection{Desirable Properties}
 \cite{pcg::book} (page 6 of chapter 1)\\
-- speed\\
+- speed (algorithm speed)\\
+	% GDC Vault - Making Things Up_ The Power and Peril of PCG
+\indent{}- online: speed it paramount, human-in-the-loop? (instant feedback/fitness function)\\
+\indent{}- offline: flexible in algorithm choice, automated curation\\
 - reliability\\
 - controllability\\
 - expressivity and diversity\\
@@ -327,6 +333,36 @@ methaphors for PCG in pcg book intro\\
 
 
 \subsection{Taxonomy}
+
+\subsubsection{Taxonomy: Classes}
+\cite{pcg::PCGinGameIndustry} -> Hendrikx, M., Meijer, S., Van Der Velden, J., Iosup, A. (2013). Procedural content generation for games: A survey. ACM Trans. Multimedia Comput. Commun. Appl. 9 1:1–1:22\\
+\begin{table}[!htbp]
+	\centering
+	\resizebox{\textwidth}{!}
+	{%
+		\begin{tabular}{|c|c|}
+			\hline 
+			\textbf{Class} & \textbf{Description} \\ 
+			\hline 
+			Game Bits & elementary units of the game content that do not affect the
+			player’s gameplay when considered independently. Included in this category:
+			textures, sounds, vegetation, structures, behaviors, fire, water, stone, or clouds \\ 
+			\hline 
+			Game Space & represents the environment in which to play. It consists of different
+			units Game Bits. Included in this category: indoor maps, outdoor maps, water
+			bodies such as seas, lakes, or rivers. \\ 
+			\hline 
+			Game System & for example, ecosystems, road networks, urban planning. \\ 
+			\hline 
+			Game Scenarios & in which events occur, e.g., puzzle, storyboard, the history,
+			the concept of levels. \\ 
+			\hline 
+			Game Design & including rules and objectives. \\ 
+			\hline 
+		\end{tabular} 
+	}
+\end{table}
+\subsubsection{Revised Taxonomy}
 \cite{pcg::book} (page 7 of chapter 1)\\
 - online vs offline\\
 - necessary vs optional\\
@@ -336,14 +372,56 @@ methaphors for PCG in pcg book intro\\
 - constructive vs generate-and-test\\
 - automatic generation vs mixed authorship
 
+\subsection{methods}
+% GDC Vault - Making Things Up_ The Power and Peril of PCG
+\begin{tabular}{|c||c|c|}
+	\hline 
+	\textbf{Method} & \textbf{Power} & \textbf{Peril} \\ 
+	\hline \hline 
+	\textbf{Constructive} & simple to author, customization & repetitiveness in content, ad hoc \\ 
+	\hline 
+	\textbf{Constraint-based} & design guarantees, delarative & translating to contraints, debugging \\ 
+	\hline 
+	\textbf{Optimiziation-based} & generality, emergence & fitness function, speed \\ 
+	\hline 
+	\textbf{Grammars} & emergence, easy to author & prone to over- and under-generation \\ 
+	\hline 
+\end{tabular} 
+
 \subsection{Pitfalls and Development Considerations}
+\subsubsection{Design Considerations}
+% GDC Vault - Making Things Up_ The Power and Peril of PCG
+Building Blocks: authored chunks, templates, components, subcomponents\\
+Game Stage: Online, Offline\\
+Player Interaction: none, parameterized, indirect, direct\\
+Design Control: indirect, compositional, experiental
+
+\subsubsection{Pitfalls}
+\cite{pcg::shortHistoryOfDynamicAndPCG}
+However, how can game designers prevent that this abundance overwhelms the players? How can the potentially endless variety of PCG be controlled and adjusted to the rest of the game world and the player requirements? -> AI Director in Left 4 Dead: according to the calculated stress level of the player, enemy waves were adapted either to challenge the player, or to give him or her time to relax. This context-aware adaptation can prevent that the potential richness of PCG overwhelms the players.\\
+-> sensors are required to evaluate the status of the user
 
 \section{Usage in Games}
-- mention speed tree as a tool
+- table on page 9 in \cite{pcg::shortHistoryOfDynamicAndPCG}\\
 
 \subsection{Popular Examples}
-%For example, the open world game No Man's Sky fits over 18 quintillion planets onto a 6\ac{GB} file with the help of \ac{PCG}. \url{https://iq.intel.com/no-mans-sky-and-the-technology-that-created-18-quintillion-planets/} \url{https://www.digitaltrends.com/gaming/no-mans-sky-install-size/}
+\url{https://iq.intel.com/no-mans-sky-and-the-technology-that-created-18-quintillion-planets/}\\
+\url{https://www.digitaltrends.com/gaming/no-mans-sky-install-size/}\\
+For example, the open world game No Man's Sky fits over 18 quintillion planets onto a 6 \ac{GB} file with the help of \ac{PCG}.
+
 \subsection{Possibilities}
+\url{https://www.gamasutra.com/view/news/181853/5_tips_for_using_procedurallygenerated_content_in_your_game.php}
+"Playing the same game over and over again, yet receiving what can be a satisfyingly different experience each time"\\
+
+creative facets of games \cite{pcg::computationalGameCreativity}:
+\begin{itemize}
+	\item Visuals: most commercial example is SpeedTree which creates 3D models of trees or FaceGen which generates faces, also textures
+	\item Audio
+	\item Narrative
+	\item  Ludus: The term Ludus, established by Caillois (1961) and elaborated	by Frasca (1999), refers to an “activity organized under a	system of rules that defines a victory or a defeat, a gain or a loss.”- more or less game design
+	\item Level Architecture
+	\item Gameplay
+\end{itemize}
 
 \section{In a Game Engine}
 How to use PCG and ML in a game engine? What are some of the best practices and approaches for using PCG and ML in a game?
@@ -356,10 +434,23 @@ Issues of PCG and ML in games and game engines.
 
 \section{Game Mechanics}
 \subsection{Industry Examples}
-spelunki
-rogue legacy
-galactic arms race
-\subsection{Possible Mechanics}
+\subsubsection{Spelunki}
+\subsubsection{Roque Legacy}
+\subsubsection{Galactic Arms Race}
+Hastings, E. J., Guha, R.K., and Stanley, K.O.. 2009. “Automatic Content Generation in the Galactic Arms Race Video Game.” IEEE Transactions on Computational Intelligence and AI in Games 1 (4): 245–63.
+\subsection{Possible Core Mechanics}
+Quest generation (in "A Prototype Quest Generator Based on a Structural Analysis of Quests from 4 MMORPGs")\\
+
+\textbf{Creating New Mechanics and Genres} \cite{pcg::futureOfPcgInGames} \\
+Some of the most delightful moments in games come where the game delivers surprising content that follows the theme of what the player has seen previously, such that the player must learn how it works and build new game strategies. For example, new level elements such as platforms where the player controls their movement in New Super Mario Bros (Nintendo EAD 2006). While there has been research in procedurally generating level progressions (Butler et al. 2013), this work uses pre-defined progressions and game elements. How can we create systems that can generate their own progressions? This requires a kind of player modeling that operates at a greater level of detail than numerical scores for enjoyment and frustration, combined with a representation for the mechanics of the game and how game components use them. \cite{pcg::futureOfPcgInGames}\\
+\\
+\textbf{Multiplayer and Multi-Instance PCG} \cite{pcg::futureOfPcgInGames}\\
+What does it mean for multiple players to really engage with generated content, and for a generator to be designed with multiple players in mind? A multiplayer game with multi-instance PCG could have everyone seeing different content while inhabiting the same space, with support for mechanics that allow players to influence each other’s environments. For example, imagine a collaborative multiplayer platforming game where each player’s actions causes new content to be created in another’s, and players must find ways to communicate about how to achieve some common goal. \cite{pcg::futureOfPcgInGames} \\
+\\
+\textbf{adaptive or player-driven PCG} \cite{pcg::whatIsPCG}\\
+Adaptive PCG could have various motivations, such as adjusting the difficulty level of the newly generated content to suit the estimated playing skill of the player, or to generate more content similar to content the player seems to have liked in the past. The timescale at which adaptation occurs could conceivably vary immensely: between games, between levels or even on a second-to-second level \cite{pcg::whatIsPCG}
+
+
 \subsection{Summary}
 
 %
@@ -541,9 +632,11 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
 \addcontentsline{toc}{chapter}{\listacroname}
 \chapter*{\listacroname}
 \begin{acronym}[XXXXX]
+	\acro{3D}{3 Dimensional}
 	\acro{AI}{Artificial Intelligence}
 	\acro{ANN}{Artificial Neural Network}
 	\acro{CNN}{Convolutional Neural Network}
+	\acro{GB}{Gigabyte}
 	\acro{MDA}{Mechanics-Dynamics-Aesthetics}
 	\acro{ML}{Machine Learning}
 	\acro{PC}{Personal Computer}
