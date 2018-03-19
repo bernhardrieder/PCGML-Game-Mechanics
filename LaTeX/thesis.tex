@@ -230,7 +230,7 @@ The practical part concentrates primarily on programming in different programmin
 %
 \clearpage
 \chapter{Game Mechanics}
-Starting this chapter with a quick insight on the \ac{MDA} framework which was introduced by \cite{mechanic::MDA}, helps to understand the foundation and the correlation of game mechanics in video games. In general, the MDA framework describes the division of gaming experience emergence into three dependent parts, starting with "Rules" followed by "System" and concluded with "Fun" \cite{mechanic::MDA}. These fundamental parts can be represented by the designs of "Mechanics", "Dynamics" and "Aesthetics" in a game  \cite{mechanic::MDA}. Therefore, a large amount of gaming experience is made out of mechanics and a game will not be fun at all if their mechanics are not properly thought through even if it has amazing graphics \cite{gameDesign::gameMechanicsAdvancedGameDesign}. Consequently, game mechanics are acting as one of the most important roles in game design which is the reason to create awareness for this topic in the beginning of the thesis.  \todo{read \protect\cite{mechanic::fromMdaToDde} and \url{http://gamestudies.org/0802/articles/sicart}}
+Starting this chapter with a quick insight on the \ac{MDA} framework which was introduced by \cite{mechanic::MDA}, helps to understand the foundation and the correlation of game mechanics in video games. In general, the MDA framework describes the division of gaming experience emergence into three dependent parts, starting with "Rules" followed by "System" and concluded with "Fun" \cite{mechanic::MDA}. These fundamental parts can be represented by the designs of "Mechanics", "Dynamics" and "Aesthetics" in a game  \cite{mechanic::MDA}. Therefore, a large amount of gaming experience is made out of mechanics and a game will not be fun at all if their mechanics are not properly thought through even if it has amazing graphics \cite{gameDesign::gameMechanicsAdvancedGameDesign}. Consequently, game mechanics are acting as one of the most important roles in game design which is the reason to create awareness for this topic in the beginning of the thesis.  \todo[inline]{read \protect\cite{mechanic::fromMdaToDde} and \url{http://gamestudies.org/0802/articles/sicart}}
 
 \section{Definition}
 As already indicated, a game mechanic is a main concept with many underlying sub-concepts like dynamics, aesthetics, rules, systems, processes, procedures or data which all characterize the heart of a game besides story and technology \cite{gameDesign::gameMechanicsAdvancedGameDesign} \cite{gameDesign::bookOfLenses}. It also creates gameplay and the experience of playing a game. But besides, there is no concrete definition of what a game mechanic is. Nonetheless, there are some key concepts mentioned by different game designers which contribute to an interpretation of what a game mechanic can or shall be or do:
@@ -310,6 +310,9 @@ It is necessary to list some possible design flaws which need to be avoided sinc
 \clearpage
 \chapter{\acl{PCG}}
 
+The definition we will use is that PCG is the algorithmic creation of game content with limited or indirect user input [32]. In other words, PCG refers to computer software that can create game content on its own, or together with one or many human players or designers. \cite{pcg::whatIsPCG}
+Like: a software tool that creates dungeons, weapons, ..; game engine middleware that rapidly populates a game world with vegatetion
+
 \section{Theoretical Introduction}
 \cite{pcg::PCGinGameIndustry} Game content construction and generation are laborious and expensive. Procedural content generation (PCG) aims at generating game content automatically using algorithms, reducing the cost of game design and development.\\
 Procedural content generation refers to the creation of game content automatically (or semi-automatically) through algorithmic means.\\
@@ -347,27 +350,29 @@ There are three major ways that PCG has traditionally been used in digital game 
 \end{itemize}
 
 \subsection{Types}
-\cite{pcg::book}
+a pcg system is a generic term for any piece of software that does pcg and there are many different possible uses \cite{pcg::book}
 methaphors for PCG in pcg book intro\\
-- as a tool\\
-- ...
+\begin{itemize}
+	\item as a tool: instruments that give designers enhanced capabilities, in the way that a programmer’s development	environment; aim to improve a designer’s workflow. A common example is a PCG-enhanced level editor.
+	\item materials:  Others define new kinds of materials, allowing a designer to work in a new medium, the way stone, clay, and laser installations are different materials for an artist. create new generative materials that a game designer manipulates and sculpts to produce content. A popular commercial example is SpeedTree.
+	\item designer itself: carrying out fully autonomous design of parts or even entire games, rather than assisting game designers. less interaction with the human designer, and	instead has ambitions of designing content all on its own. In the limit case, a PCG designer turns into a fully autonomous game generator that creates new games, usually in a specific genre.
+	\item domain experts: carrying with them extensive knowledge of game design that can be used to critique or improve designs. Many systems can be viewed through more	than one of these lenses, though few will exhibit all of them equally. a slightly different kind of system, full of knowledge about games or players, and able to apply it to critique and modify content. Often it will apply that expertise by being part of a system that also serves as a tool or a designer. A domain expert may have purely formal knowledge of games, such as what makes a particular set of rules elegant [6]. Or it may have extensive knowledge of human players, being able to predict what people will do in a game, and what they will find challenging, fun, or boring.
+\end{itemize}
 
 \subsection{Desirable Properties}
-\cite{pcg::book} (page 6 of chapter 1)\\
-- speed (algorithm speed)\\
-	% GDC Vault - Making Things Up_ The Power and Peril of PCG
-\indent{}- online: speed it paramount, human-in-the-loop? (instant feedback/fitness function)\\
-\indent{}- offline: flexible in algorithm choice, automated curation\\
-- reliability\\
-- controllability\\
-- expressivity and diversity\\
-- creativity and believability
-
+there are many different desirable or required properties for a content generation problem. Common desirable properties of PCG are \cite{pcg::book}:
+\begin{itemize}
+	\item \textbf{speed (algorithm speed)}: Requirements for speed vary wildly, from a maximum generation time of 	milliseconds to months, depending on (amongst other things) whether the content generation is done during gameplay or during development of the game.
+	\item \textbf{reliability}: Some generators shoot from the hip, whereas others are capable of 	guaranteeing that the content they generate satisfies some given quality criteria. 	This is more important for some types of content than others, for example a dungeon with no exit or entrance is a catastrophic failure, whereas a flower that	looks a bit weird just looks a bit weird without this necessarily breaking the game.
+	\item \textbf{controllability}: There is frequently a need for content generators to be controllable 	in some sense, so that a human user or an algorithm (such as a playeradaptive 	mechanism) can specify some aspects of the content to be generated. There are many possible dimensions of control, e.g. one might ask for a smooth oblong rock, a car that can take sharp bends and has multiple colours, a level that induces a sense of mystery and rewards perfectionists, or a small ruleset where chance plays no part.
+	\item \textbf{expressivity and diversity}: There is often a need to generate a diverse set of content, to avoid the content looking like it’s all minor variations on a tired theme. At an extreme of non-expressivity, consider a level “generator” that always outputs the same level but randomly changes the colour of a single stone in the middle of the level; at the other extreme, consider a “level” generator that assembles components completely randomly, yielding senseless and unplayable levels. Measuring expressivity is a non-trivial topic in its own right, and designing level generators that generate diverse content without compromising on quality is even less trivial.
+	\item \textbf{creativity and believability}: In most cases, we would like our content not to look like it has been designed by a procedural content generator. There is a number of ways in which generated content can look generated as opposed to humancreated.
+\end{itemize}
 
 \subsection{Taxonomy}
-
+With the variety of content generation problems and methods that are now available, it helps to have a structure that can highlight the differences and similarities between approaches. \cite{pcg::book}
 \subsubsection{Taxonomy: Classes}
-\cite{pcg::PCGinGameIndustry} -> Hendrikx, M., Meijer, S., Van Der Velden, J., Iosup, A. (2013). Procedural content generation for games: A survey. ACM Trans. Multimedia Comput. Commun. Appl. 9 1:1–1:22\\
+\cite{pcg::survey}
 \begin{table}[!htbp]
 	\centering
 	\resizebox{\textwidth}{!}
@@ -395,15 +400,20 @@ methaphors for PCG in pcg book intro\\
 	}
 \end{table}
 \subsubsection{Revised Taxonomy}
-\cite{pcg::book} (page 7 of chapter 1)\\
-- online vs offline\\
-- necessary vs optional\\
-- degree and dimensions of control\\
-- generic vs adaptive\\
-- stochastic vs deterministic\\
-- constructive vs generate-and-test\\
-- automatic generation vs mixed authorship
-
+\cite{pcg::book} 
+\begin{itemize}
+	\item \textbf{online vs offline}: PCG techniques can be used to generate content online, as the player is playing the	game, allowing the generation of endless variations, making the game infinitely replayable and opening the possibility of generating player-adapted content, or offline during the development of the game or before the start of a game session.
+	\begin{itemize}
+		\item online: speed it paramount, human-in-the-loop? (instant feedback/fitness function)
+		\item offline: flexible in algorithm choice, automated curation
+	\end{itemize}
+	\item \textbf{necessary vs optional}: PCG can be used to generate necessary game content that is required for the completion of a level, or it can be used to generate auxiliary content that can be discarded or  exchanged for other content. The main distinctive feature between necessary and optional content is that necessary content should always be correct while this condition does not hold for optional content.
+	\item \textbf{degree and dimensions of control}: The generation of content by PCG can be controlled in different ways. The use of a random seed is one way to gain control over the generation space; another way is to use a set of parameters that control the content generation along a number of dimensions.
+	\item \textbf{generic vs adaptive}: Generic content generation refers to the paradigm of PCG where content is generated without taking player behaviour into account, as opposed to adaptive, personalised or player-centred content generation where player interaction with the game is analysed and content is created based on a player’s previous behaviour.
+	\item \textbf{stochastic vs deterministic}: Deterministic PCG allows the regeneration of the same content given the same starting point and method parameters as opposed to stochastic PCG where recreating the same content is usually not possible.
+	\item \textbf{constructive vs generate-and-test}: In constructive PCG, the content is generated in one pass, as commonly done in roguelike games. Generate-and-test PCG techniques, on the other hand, alternate generating and testing in a loop, repeating until a satisfactory solution is generated.
+	\item \textbf{automatic generation vs mixed authorship}: Until recently, PCG has allowed limited input from game designers, who usually tweak the algorithm parameters to control and guide content generation while the main purpose of PCG remains the generation of infinite variations of playable content. However, a new interesting paradigm, has emerged that focuses on incorporating designer and/or player input through the design process. In this mixed-initiative paradigm, a human designer or player cooperates with the algorithm to generate the desired content.
+\end{itemize}
 \subsection{methods}
 % GDC Vault - Making Things Up_ The Power and Peril of PCG
 \begin{tabular}{|c||c|c|}
@@ -449,6 +459,8 @@ creative facets of games \cite{pcg::computationalGameCreativity}:
 	\item Gameplay
 \end{itemize}
 
+A key term here is “content”. In our definition, content is most of what is contained in a game: levels, maps, game rules, textures, stories, items, quests, music, weapons, vehicles, characters, etc. \cite{pcg::book}
+
 \section{In a Game Engine}
 How to use PCG and ML in a game engine? What are some of the best practices and approaches for using PCG and ML in a game?
 
@@ -476,6 +488,15 @@ Keeping the PCG visible to the player. It is crucial for players to understand t
 However, how can game designers prevent that this abundance overwhelms the players? How can the potentially endless variety of PCG be controlled and adjusted to the rest of the game world and the player requirements? -> AI Director in Left 4 Dead: according to the calculated stress level of the player, enemy waves were adapted either to challenge the player, or to give him or her time to relax. This context-aware adaptation can prevent that the potential richness of PCG overwhelms the players.\\
 -> sensors are required to evaluate the status of the user
 
+\subsubsection{Advices}
+\cite{pcg::book} 
+\begin{itemize}
+	\item Keep your algorithms simple and choose your content carefully 
+	\item Think about framing, structure and pacing. I think the most successful PCG applications understand how the procedural content	is framed and given context by authored content, or sometimes by human curation.
+	\item Don’t simulate more detail than you need to get your point across— the elements involved in the PCG should be game elements, atmospheric elements, etc.—if you don’t need the molecules bumping around, invisible to the	player, try to stay away from chewing up computer resources and programming time putting that in.
+\end{itemize}
+
+
 \section{Game Mechanics}
 Using PCG as a mechanic requires the player to have control over the kind of content that appears in the game.\cite{pcg::endlessWeb}
 \subsection{Industry Examples}
@@ -489,7 +510,7 @@ Using PCG as a mechanic requires the player to have control over the kind of con
 \todo[inline]{Jason Rohrer’s latest release, Inside a Star-Filled Sky [13] is a good example of a game whose mechanics are PCG-based. ("PCG-Based Game Design - Enabling New Play Experiences through Procedural Content Generation")}
 \todo[inline]{Players navigate a space in which they can zoom into or out of recursively nested levels, each one generated from a seed passed from an object in a higher or lower level. Play events that take place on one level of play affect levels above and below themselves. \protect\cite{pcg::endlessWeb}}
 
-\subsubsection{Endless Web (DONE)}
+\subsubsection{Endless Web}
 Is an entirely PCG-based game and thus uses PCG as its core mechanic. It is about fighting the nightmares in human dreams and rescue the trapped one and thus releasing dreamers from their fears. Goal of the game is to rescue six dreamers by exploring the world and make decisions on exploring new areas in the world which affects the parameters of the rescue progress and also the generation of new world parts. For example, if a player kills an enemy then depending on the configuration it strengthens or weakens an associated challenge and furthermore changes the world. \cite{pcg::endlessWeb}
 \todo[inline]{Endless Web is fundamentally a game about manipulating a generative space, and the core mechanic involves the player deliberately choosing to influence the generator in different directions through interacting with the glowing tuning portals. This core mechanic is intertwined with the generator; each tuning portal the player interacts with directly changes parameters to the generator. \protect\cite{pcg::endlessWeb}}
 
