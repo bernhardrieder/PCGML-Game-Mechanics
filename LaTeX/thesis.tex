@@ -29,7 +29,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
-\usepackage[draft]{todonotes}
+%\usepackage[disable]{todonotes} % notes not showed
+\usepackage[draft]{todonotes} % notes showed
 
 %
 % Bitte in der folgenden Zeile den Zitierstandard festlegen
@@ -229,7 +230,7 @@ The practical part concentrates primarily on programming in different programmin
 %
 \clearpage
 \chapter{Game Mechanics}
-Starting this chapter with a quick insight on the \ac{MDA} framework which was introduced by \cite{mechanic::MDA}, helps to understand the foundation and the correlation of game mechanics in video games. In general, the MDA framework describes the division of gaming experience emergence into three dependent parts, starting with "Rules" followed by "System" and concluded with "Fun" \cite{mechanic::MDA}. These fundamental parts can be represented by the designs of "Mechanics", "Dynamics" and "Aesthetics" in a game  \cite{mechanic::MDA}. Therefore, a large amount of gaming experience is made out of mechanics and a game will not be fun at all if their mechanics are not properly thought through even if it has amazing graphics \cite{gameDesign::gameMechanicsAdvancedGameDesign}. Consequently, game mechanics are acting as one of the most important roles in game design which is the reason to create awareness for this topic in the beginning of the thesis.
+Starting this chapter with a quick insight on the \ac{MDA} framework which was introduced by \cite{mechanic::MDA}, helps to understand the foundation and the correlation of game mechanics in video games. In general, the MDA framework describes the division of gaming experience emergence into three dependent parts, starting with "Rules" followed by "System" and concluded with "Fun" \cite{mechanic::MDA}. These fundamental parts can be represented by the designs of "Mechanics", "Dynamics" and "Aesthetics" in a game  \cite{mechanic::MDA}. Therefore, a large amount of gaming experience is made out of mechanics and a game will not be fun at all if their mechanics are not properly thought through even if it has amazing graphics \cite{gameDesign::gameMechanicsAdvancedGameDesign}. Consequently, game mechanics are acting as one of the most important roles in game design which is the reason to create awareness for this topic in the beginning of the thesis.  \todo{read \protect\cite{mechanic::fromMdaToDde} and \url{http://gamestudies.org/0802/articles/sicart}}
 
 \section{Definition}
 As already indicated, a game mechanic is a main concept with many underlying sub-concepts like dynamics, aesthetics, rules, systems, processes, procedures or data which all characterize the heart of a game besides story and technology \cite{gameDesign::gameMechanicsAdvancedGameDesign} \cite{gameDesign::bookOfLenses}. It also creates gameplay and the experience of playing a game. But besides, there is no concrete definition of what a game mechanic is. Nonetheless, there are some key concepts mentioned by different game designers which contribute to an interpretation of what a game mechanic can or shall be or do:
@@ -299,6 +300,7 @@ It is necessary to list some possible design flaws which need to be avoided sinc
 	\item Besides feedback loops, do not forget to provide the player with directions for parts of your mechanic which are or could not be obvious \cite{mechanic::gamasutra::MaxPears}. Further tutorials should be easily accessible if they are needed because there is nothing more frustrating to a player than being confused \cite{mechanic::gamasutra::DanielDoan}.
 	\item For core mechanics does apply: provide clear rules on how to be successful, create a natural interaction but do not forget to challenge the player and provide possibility for natural progression of their skills, properly guide the player towards successfully completing their in-game objectives with directions and feedback, allow the player to move naturally from objective to objective without the necessity of using the core mechanic and provide options besides the core mechanic. \cite{mechanic::gamasutra::DanielDoan}
 	\item In general, the skill of a player will grow over throughout the game which means that the difficulty curve shall match the player's skill throughout a game. \cite{mechanic::gamasutra::DanielDoan}
+	\item Like described by \cite{mechanic::generateAndAdaptingMechanics} where their goal was to generate and adapt game mechanics, it is necessary that mechanics fulfill the requirements of playability in order to create acceptable experience. For example, a requirement could be that it is necessary that a player can reach the end of a level or win a fight without dying. Overall, it should ensure that a game is playable to a specific given goal with that mechanic.
 \end{itemize} 
 
 
@@ -313,7 +315,37 @@ It is necessary to list some possible design flaws which need to be avoided sinc
 Procedural content generation refers to the creation of game content automatically (or semi-automatically) through algorithmic means.\\
 The results from the application of PCG algorithms can be all kinds of elements affecting the gameplay: terrain, maps, layers, stories, dialogues, quests, characters, rules, dynamics, or weapons.\\
 \\
-It would be futile to hope to come up with a definition of procedural content generation in games that everybody agrees on. PCG has been attempted by too many people with too many different perspectives for this to happen. A graphics researcher, a game designer in the industry and an academic working on artifcial intelligence techniques would be unlikely to agree even on what "content" is, and much less which generation techniques to consider interesting. We argue that PCG is a concept with fuzzy and unclear boundaries. Besides, exact definitions of concepts are commononly in mathematics. \cite{pcg::whatIsPCG}
+It would be futile to hope to come up with a definition of procedural content generation in games that everybody agrees on. PCG has been attempted by too many people with too many different perspectives for this to happen. A graphics researcher, a game designer in the industry and an academic working on artifcial intelligence techniques would be unlikely to agree even on what "content" is, and much less which generation techniques to consider interesting. We argue that PCG is a concept with fuzzy and unclear boundaries. Besides, exact definitions of concepts are commononly in mathematics. \cite{pcg::whatIsPCG}\\
+\\
+PCG has been used in games for many reasons, including addressing technical limitations, improving replayability, and providing infinite worlds for the player to explore. \cite{pcg::endlessWeb}\\
+There are three major ways that PCG has traditionally been used in digital game design: to improve replayability, to resolve technical limitations, and to provide players with an environment to explore that is so vast it could not be created by human designers.\cite{pcg::endlessWeb}
+
+\subsection{Why is PCG used?}
+\subsubsection{Utilization}
+\begin{itemize}
+	\item \textbf{Time-saving}: With PCG, you can produce huge amounts of content far faster than a manual process. \cite{pcg::inGameDesign}
+	\item \textbf{Expandable}: Generators are usually designed in a modular fashion. Every time you add a new feature, it gets integrated across the generator’s output. \cite{pcg::inGameDesign}
+	\item \textbf{Replayability}: One generator can produce many instances of similarbut varied content. \cite{pcg::inGameDesign}
+	\item \textbf{Reusable code}: Generators can get reused between applications. A desert landscape generator from one game can have a few variables tweaked to produce icy mountains in another. \cite{pcg::inGameDesign}
+	\item \textbf{Rules enforcement}: Generators can be built with rules enforced, ensuring connectivity between elements or certain standards maintained across all output. \cite{pcg::inGameDesign}
+	\item \textbf{Modeling reality}: Often, simulationist techniques are used in procedural generators, reproducing the wearing of terrain or a naturalistic spread of life. \cite{pcg::inGameDesign}
+	\item \textbf{Scales and detail hard to do by hand}: Whole galaxies, fractal details, truly endless content. Games like Elite: Dangerous and No Man’s Sky are nearly impossible to make by hand. PCG stretches the realm of possibility to scales beyond the conception of our limited little minds. \cite{pcg::inGameDesign}
+	\item \textbf{Overcome technical limitations}: harddrives etc, especially if used on wearable devices \cite{pcg::inGameDesign}
+\end{itemize}
+
+\subsubsection{Uniqueness}
+\begin{itemize}
+	\item \textbf{Individual experiences}: PCG opens up the potential to give every user a unique experience. A gameplay challenge that only they will ever truly experience, and only in that instance. \cite{pcg::inGameDesign}
+	\item \textbf{New gameplay/interaction modes}: Replayable games are just the beginning of how PCG opens up new gameplay types. PCG involves rules, and they can be gameplay rules, as well as simple generative rules— something the player can interact and play with. This opens up a gigantic field of new gameplay opportunities. \cite{pcg::inGameDesign}
+	\item \textbf{Player input}: This gives the player a new form of gameplay through manipulation of PCG techniques. The player must internalize the behavior of the cellular automata to control the swarm and overcome the challenges in the game. \cite{pcg::inGameDesign}
+	\item \textbf{Unpredictable}: Even the designer does not know what to expect from the generators he or she creates. it can also be thrilling. \cite{pcg::inGameDesign}
+	\item \textbf{Living system}: Procedural techniques can produce living, reactive effects. Fire, floods, lava, weather systems, populations, civilizations, diseases, cultures, life at every level. \cite{pcg::inGameDesign}
+	\item \textbf{Inhuman creativity}: The outputs of PCG can be bizarre. They can produce things no human might ever think of, from unusual level designs to unreal animations. \cite{pcg::inGameDesign}
+	\item \textbf{Reflections and refractions of humanity}: Procedural content is almost always based on human designed content, even if from small base blocks. What they produce is a reflection or refraction of our own	creativity. \cite{pcg::inGameDesign}
+	\item \textbf{Inspiration of infinity}: Infinity is a hard concept for us to grasp, but	playing with generators of infinite content lets us try to straddle it,	or get delightfully lost in it. \cite{pcg::inGameDesign}
+	\item \textbf{Fun}: Ultimately, playing with procedural generators is really quite fun. To click a button and have a new creation brought into being. To change a number and click the button again, and the old creation is replaced by something quite different. To toy, to fiddle, to poke and prod and experiment, to see what interesting and novel things come out the other end. \cite{pcg::inGameDesign}
+\end{itemize}
+
 \subsection{Types}
 \cite{pcg::book}
 methaphors for PCG in pcg book intro\\
@@ -388,18 +420,7 @@ methaphors for PCG in pcg book intro\\
 	\hline 
 \end{tabular} 
 
-\subsection{Pitfalls and Development Considerations}
-\subsubsection{Design Considerations}
-% GDC Vault - Making Things Up_ The Power and Peril of PCG
-Building Blocks: authored chunks, templates, components, subcomponents\\
-Game Stage: Online, Offline\\
-Player Interaction: none, parameterized, indirect, direct\\
-Design Control: indirect, compositional, experiental
 
-\subsubsection{Pitfalls}
-\cite{pcg::shortHistoryOfDynamicAndPCG}
-However, how can game designers prevent that this abundance overwhelms the players? How can the potentially endless variety of PCG be controlled and adjusted to the rest of the game world and the player requirements? -> AI Director in Left 4 Dead: according to the calculated stress level of the player, enemy waves were adapted either to challenge the player, or to give him or her time to relax. This context-aware adaptation can prevent that the potential richness of PCG overwhelms the players.\\
--> sensors are required to evaluate the status of the user
 
 \section{Usage in Games}
 - table on page 9 in \cite{pcg::shortHistoryOfDynamicAndPCG}\\
@@ -409,6 +430,11 @@ However, how can game designers prevent that this abundance overwhelms the playe
 \url{https://www.digitaltrends.com/gaming/no-mans-sky-install-size/}\\
 For example, the open world game No Man's Sky fits over 18 quintillion planets onto a 6 \ac{GB} file with the help of \ac{PCG}.
 
+\subsubsection{Minecraft}
+Minecraft [16] and Terraria [22] are modern examples of using PCG for both replayability and exploration. The player is provided with an inconceivably vast world to explore, and the formation of the world guides the player’s strategies. However, again, the PCG system is not influenced by the player, so no PCG-based dynamics can arise.\cite{pcg::endlessWeb}
+\subsubsection{Spelunki}
+use PCG to enhance replayability. Both the mechanics and aesthetics of these games are largely unrelated to the PCG system. while players are aware that they have a different experience each time they play, the use of PCG does not affect their playing experience
+\subsubsection{Roque Legacy}
 \subsection{Possibilities}
 \url{https://www.gamasutra.com/view/news/181853/5_tips_for_using_procedurallygenerated_content_in_your_game.php}
 "Playing the same game over and over again, yet receiving what can be a satisfyingly different experience each time"\\
@@ -428,19 +454,53 @@ How to use PCG and ML in a game engine? What are some of the best practices and 
 
 \subsection{Conceptual Implementation}
 Basic sample PCG and ML implementations in a game engine.
+Its just an algorithm which is fed with different parameters which generates some content out of these parameters. as described, randomness is a crucial factor\\
+just describe a random simple world generator of minecraft, a simple dungeon generator algorithm or mesh generator like the helix creation - defined rules, algorithm uses this rules, input can bias the output but its almost controlled by the randomness
 
-\subsection{Possible Issues}
-Issues of PCG and ML in games and game engines.
+
+\subsection{Development Considerations}
+\subsubsection{Design Considerations}
+% GDC Vault - Making Things Up_ The Power and Peril of PCG
+Building Blocks: authored chunks, templates, components, subcomponents\\
+Game Stage: Online, Offline\\
+Player Interaction: none, parameterized, indirect, direct\\
+Design Control: indirect, compositional, experiental\\
+\\
+randomness via knowledge representation, altering distributions, indirection, look-up tables\\
+visualize your PCG\\
+\\
+Keeping the PCG visible to the player. It is crucial for players to understand the effect they have on the world, and this can only be done by making the use and consequences of PCG as visible to the player as possible. Without knowing that the world is being generated around them, players lose agency as the choices they make feel meaningless. \cite{pcg::endlessWeb}
+
+\subsubsection{Pitfalls}
+\cite{pcg::shortHistoryOfDynamicAndPCG}
+However, how can game designers prevent that this abundance overwhelms the players? How can the potentially endless variety of PCG be controlled and adjusted to the rest of the game world and the player requirements? -> AI Director in Left 4 Dead: according to the calculated stress level of the player, enemy waves were adapted either to challenge the player, or to give him or her time to relax. This context-aware adaptation can prevent that the potential richness of PCG overwhelms the players.\\
+-> sensors are required to evaluate the status of the user
 
 \section{Game Mechanics}
+Using PCG as a mechanic requires the player to have control over the kind of content that appears in the game.\cite{pcg::endlessWeb}
 \subsection{Industry Examples}
-\subsubsection{Spelunki}
-\subsubsection{Roque Legacy}
+
 \subsubsection{Galactic Arms Race}
-Hastings, E. J., Guha, R.K., and Stanley, K.O.. 2009. “Automatic Content Generation in the Galactic Arms Race Video Game.” IEEE Transactions on Computational Intelligence and AI in Games 1 (4): 245–63.
+\todo[inline]{the players’ battle strategies determine the next round of weapons that will be available to them; the creators of the game have shown that there is a large variety in the kinds of weapons players will customize. Because it is a multiplayer game, players can see the different kinds of guns they could have created if they played with different tactics. \protect\cite{pcg::endlessWeb} \protect\cite{pcg::galacticArmsRace}}
+\todo[inline]{In GAR, players pilot space ships and fight enemies to acquire unique particle system weapons that are evolved by the game. creates new content in real time through an evolutionary 	algorithm based on the content players liked in the past. a variant of artificial neural network (ANNs), genetically encode and control particle system weapons. That way, during the game, weapon behavior becomes increasingly sophisticated while consistently evolving to suit player tastes. In this way, it is the player rather than the designer who ultimately implicitly determines what kind of content will populate the game. In GAR (figure 2), the goal is to pilot a space ship to defeat enemies, gain experience, earn money, and most importantly, to find advantageous new weapons that are automatically generated by cgNEAT \protect\cite{pcg::galacticArmsRace::evolvingContent}}
+\todo[inline]{In GAR (Fig. 4), the goal is to pilot a space ship to defeat enemies, gain experience, earn money, and most importantly, to find advantageous new weapons that are automatically generated by cgNEAT. single-player mode, evolution is directed by the actions of a single player battling NPC aliens in the game, which are controlled by scripted steering behaviors [58] and the boids algorithm [59]. GAR multiplayer evolution is substantially more diverse because the evolutionary population consists of the weapons currently possessed by all players in the game. Players are limited to three weapon slots, each of which holds a single weapon. Destroyed enemies and enemy bases may drop a weapon pickup that contains a novel weapon evolved	by cgNEAT. Players choose in which weapon slot to place the new weapon, but doing so drops the existing weapon in that slot. Thus, players must be selective about which weapons to keep. In this context, an important goal for any game that generates unpredictable content is to indicate what that content will be like before it is taken. To give players an idea of how a	weapon functions before picking it up, weapon pickups emit a miniature particle system preview that behaves exactly as the actual weapon does.\protect\cite{pcg::galacticArmsRace}}
+
+\subsubsection{Inside a Star-Filled Sky}
+\todo[inline]{Jason Rohrer’s latest release, Inside a Star-Filled Sky [13] is a good example of a game whose mechanics are PCG-based. ("PCG-Based Game Design - Enabling New Play Experiences through Procedural Content Generation")}
+\todo[inline]{Players navigate a space in which they can zoom into or out of recursively nested levels, each one generated from a seed passed from an object in a higher or lower level. Play events that take place on one level of play affect levels above and below themselves. \protect\cite{pcg::endlessWeb}}
+
+\subsubsection{Endless Web (DONE)}
+Is an entirely PCG-based game and thus uses PCG as its core mechanic. It is about fighting the nightmares in human dreams and rescue the trapped one and thus releasing dreamers from their fears. Goal of the game is to rescue six dreamers by exploring the world and make decisions on exploring new areas in the world which affects the parameters of the rescue progress and also the generation of new world parts. For example, if a player kills an enemy then depending on the configuration it strengthens or weakens an associated challenge and furthermore changes the world. \cite{pcg::endlessWeb}
+\todo[inline]{Endless Web is fundamentally a game about manipulating a generative space, and the core mechanic involves the player deliberately choosing to influence the generator in different directions through interacting with the glowing tuning portals. This core mechanic is intertwined with the generator; each tuning portal the player interacts with directly changes parameters to the generator. \protect\cite{pcg::endlessWeb}}
+
+
+\subsubsection{Further games}
+Angelina - make whole games (also mechanics)\\
+Black \& White
+
 \subsection{Possible Core Mechanics}
 Quest generation (in "A Prototype Quest Generator Based on a Structural Analysis of Quests from 4 MMORPGs")\\
-
+--> mechanic adaption?
 \textbf{Creating New Mechanics and Genres} \cite{pcg::futureOfPcgInGames} \\
 Some of the most delightful moments in games come where the game delivers surprising content that follows the theme of what the player has seen previously, such that the player must learn how it works and build new game strategies. For example, new level elements such as platforms where the player controls their movement in New Super Mario Bros (Nintendo EAD 2006). While there has been research in procedurally generating level progressions (Butler et al. 2013), this work uses pre-defined progressions and game elements. How can we create systems that can generate their own progressions? This requires a kind of player modeling that operates at a greater level of detail than numerical scores for enjoyment and frustration, combined with a representation for the mechanics of the game and how game components use them. \cite{pcg::futureOfPcgInGames}\\
 \\
@@ -450,7 +510,9 @@ What does it mean for multiple players to really engage with generated content, 
 \textbf{adaptive or player-driven PCG} \cite{pcg::whatIsPCG}\\
 Adaptive PCG could have various motivations, such as adjusting the difficulty level of the newly generated content to suit the estimated playing skill of the player, or to generate more content similar to content the player seems to have liked in the past. The timescale at which adaptation occurs could conceivably vary immensely: between games, between levels or even on a second-to-second level \cite{pcg::whatIsPCG}
 
-
+\subsection{Possible Issues}
+Building a PCG-based game instead involves relinquishing direct control over content and treating content generation as a game mechanic. The design of a PCG-based game introduces a number of new design problems, for both the game and the PCG system itself. The design of a PCG-based game introduces a number of new design problems, for both the game and the PCG system itself. Game design issues, from the moment-to-moment pacing of a level to difficulty curves, can no longer be solved through the direct manipulation of game content. The designer must instead design entire ranges of content that can be meaningfully controlled by both the designer and the player. \cite{pcg::endlessWeb}\\
+A number of design challenges arose while creating Endless Web from the use of PCG as the core mechanic. The primary challenge came in determining how to balance this control over the generator between the player and the designer, so that the player makes meaningful decisions but all of those decisions lead to an engaging, designed experience. Other design problems include teaching the player to explore a generative space, providing well-placed goals to encourage this exploration, and art and audio issues that arose from having no knowledge at design time of how levels would be structured during play.  \cite{pcg::endlessWeb}
 \subsection{Summary}
 
 %
@@ -481,7 +543,7 @@ Which training models are used in ML? --> the 5 tribes of ML
 \subsection{Data Science}
 stick to game related stuff, like alpha go
 \subsection{Games}
-show and demonstrate current and existing work
+\todo[inline]{The most common application of machine learning is to optimize the policy that controls non-player characters (NPCs). For example, the ANN race car controllers Colin McRae Rally 2.0 and Forza Motorsport 2 and the creature brains in Creatures 3 and Black and White 2 are learned. \protect\cite{pcg::galacticArmsRace::evolvingContent}}
 \subsubsection{Examples}
 \subsubsection{Possibilities}
 
@@ -529,10 +591,12 @@ research on different PCGML implementations and practical usage possibilities in
 %
 \clearpage
 \chapter{\acl{PCGML} Game Mechanics}
-Overview of possible game mechanics with PCGML.
+the design process for \cite{pcg::endlessWeb} followed the principles of \cite{ai::gameDesign} with Launchpad as the AI system.
+
 \section{First Considerations}
 
 \section{Possibilities}
+maybe read over \cite{pcg::endlessWeb} again\\
 Concepts of possible PCGML game mechanics.
 
 \subsection{Role-Model}
