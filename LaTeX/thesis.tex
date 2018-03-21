@@ -310,6 +310,7 @@ It is necessary to list some possible design flaws which need to be avoided sinc
 %
 \clearpage
 \chapter{\acl{PCG}}
+This topic is a very big one which has evolved throughout the years and many research is done in \ac{PCG}. For this reason, it is a necessity to introduce the most common parts of PCG to understand the concepts and therefore be able to understand the further use in \ac{PCGML}.\\
 
 The definition we will use is that PCG is the algorithmic creation of game content with limited or indirect user input [32]. In other words, PCG refers to computer software that can create game content on its own, or together with one or many human players or designers. \cite{pcg::whatIsPCG}
 Like: a software tool that creates dungeons, weapons, ..; game engine middleware that rapidly populates a game world with vegatetion
@@ -324,7 +325,7 @@ It would be futile to hope to come up with a definition of procedural content ge
 PCG has been used in games for many reasons, including addressing technical limitations, improving replayability, and providing infinite worlds for the player to explore. \cite{pcg::endlessWeb}\\
 There are three major ways that PCG has traditionally been used in digital game design: to improve replayability, to resolve technical limitations, and to provide players with an environment to explore that is so vast it could not be created by human designers.\cite{pcg::endlessWeb}
 
-\subsection{Why is PCG used?}
+\subsection{Reasons to Use}
 \subsubsection{Utilization}
 \begin{itemize}
 	\item \textbf{Time-saving}: it can produce huge amounts of content far faster than a manual process. \cite{pcg::inGameDesign}
@@ -360,17 +361,9 @@ methaphors for PCG in pcg book intro\\
 	\item domain experts: carrying with them extensive knowledge of game design that can be used to critique or improve designs. Many systems can be viewed through more	than one of these lenses, though few will exhibit all of them equally. a slightly different kind of system, full of knowledge about games or players, and able to apply it to critique and modify content. Often it will apply that expertise by being part of a system that also serves as a tool or a designer. A domain expert may have purely formal knowledge of games, such as what makes a particular set of rules elegant [6]. Or it may have extensive knowledge of human players, being able to predict what people will do in a game, and what they will find challenging, fun, or boring.
 \end{itemize}
 
-\subsection{Desirable Properties}
-there are many different desirable or required properties for a content generation problem. Common desirable properties of PCG are \cite{pcg::book}:
-\begin{itemize}
-	\item \textbf{speed (algorithm speed)}: Requirements for speed vary wildly, from a maximum generation time of 	milliseconds to months, depending on (amongst other things) whether the content generation is done during gameplay or during development of the game.
-	\item \textbf{reliability}: Some generators shoot from the hip, whereas others are capable of 	guaranteeing that the content they generate satisfies some given quality criteria. 	This is more important for some types of content than others, for example a dungeon with no exit or entrance is a catastrophic failure, whereas a flower that	looks a bit weird just looks a bit weird without this necessarily breaking the game.
-	\item \textbf{controllability}: There is frequently a need for content generators to be controllable 	in some sense, so that a human user or an algorithm (such as a playeradaptive 	mechanism) can specify some aspects of the content to be generated. There are many possible dimensions of control, e.g. one might ask for a smooth oblong rock, a car that can take sharp bends and has multiple colours, a level that induces a sense of mystery and rewards perfectionists, or a small ruleset where chance plays no part.
-	\item \textbf{expressivity and diversity}: There is often a need to generate a diverse set of content, to avoid the content looking like it’s all minor variations on a tired theme. At an extreme of non-expressivity, consider a level “generator” that always outputs the same level but randomly changes the colour of a single stone in the middle of the level; at the other extreme, consider a “level” generator that assembles components completely randomly, yielding senseless and unplayable levels. Measuring expressivity is a non-trivial topic in its own right, and designing level generators that generate diverse content without compromising on quality is even less trivial.
-	\item \textbf{creativity and believability}: In most cases, we would like our content not to look like it has been designed by a procedural content generator. There is a number of ways in which generated content can look generated as opposed to humancreated.
-\end{itemize}
 
-\subsection{Taxonomy}
+
+\subsection{Taxonomy}\label{PcgTaxonomy}
 There are many use cases for using procedural generated content for different kind of problems with different methods and approaches. This variety of PCG possibilities made it necessary to find distinctive features and create a taxonomy of PCG to highlight the differences and similarities between approaches \cite{pcg::book}. In fact, there are two different views for a taxonomy which were described by \cite{pcg::survey} and \cite{pcg::book}. The first and initial approach was created by \cite{pcg::survey} whereas the new one derived from \cite{pcg::survey}'s taxonomy was given by \cite{pcg::book}.\\
 As an initial classification, \cite{pcg::survey} extracted the following four classes by analyzing all possibilities of PCG which they could think of:
 \begin{itemize}
@@ -439,13 +432,19 @@ A key term here is “content”. In our definition, content is most of what is 
 \section{In a Game Engine}
 How to use PCG and ML in a game engine? What are some of the best practices and approaches for using PCG and ML in a game?
 
-\subsection{Conceptual Implementation}
-Basic sample PCG and ML implementations in a game engine.
-Its just an algorithm which is fed with different parameters which generates some content out of these parameters. as described, randomness is a crucial factor\\
-just describe a random simple world generator of minecraft, a simple dungeon generator algorithm or mesh generator like the helix creation - defined rules, algorithm uses this rules, input can bias the output but its almost controlled by the randomness
-
-
 \subsection{Development Considerations}
+
+\subsubsection{Desirable Properties}
+It is a good practice to stick to desirable and required properties when designing and developing PCG algorithms for generating content. Since procedural generated content can be developed in many various ways and one can easily lose sight of crucial and influencing factors which could lead to bad player experience. For this reason, \cite{pcg::book} stated some of the most important parts which should be satisfied by PCG algorithms, which are:
+\begin{itemize}
+	\item \textbf{Speed}: In general, this property depends on the online versus offline class which was described in chapter \ref{PcgTaxonomy}. Equally whether a PCG algorithm produces content during gameplay or generated it before the core game starts, it should never exceed an acceptable amount of time which is needed to generate a content otherwise it will affect the player's experience. \cite{pcg::book}
+	\item \textbf{Reliability}: Some generators create content from scratch without even knowing what they should produce whereas others are capable of generating and evaluating their content due to given requirements. For this reason, it is a very crucial property if someone wants to generate dungeons or puzzles because of their necessity of being a solvable problem which makes it either possible or not to progress throughout a game whereas a tree or flower which looks weird does not break a game. \cite{pcg::book}
+	\item \textbf{Controllability}: Is also one of the most crucial properties of PCG since it very useful to be in control in order to specify aspects of the generated content. Especially, this refers to the classes of degree and dimensions of control, generic, adaptive deterministic as well as mixed authorship which were described in chapter \ref{PcgTaxonomy} and is also linked to reliability. For example, a designer or an playeradaptive algorithm should have control over parameters to specify a desired outcome. \cite{pcg::book}
+	\item \textbf{Expressivity and Diversity}: This property speaks mostly for itself due to fact that the human brain can easily detect and recognize pattern in various environments \todo{shall i look for an reference?}. This makes it a necessity to develop algorithms which can generate content with a good amount of epressivity and diversity. \cite{pcg::book}
+	\item \textbf{Creativity and Believability}: Following up the last property it is also necessary that an algorithm produces believable content which can not be distinguished to human designed content. It should not be obvious for the players which content is generated by an algorithm or which one is fully designed by designers. \cite{pcg::book}
+\end{itemize}
+Especially, a main part which ties expressivity, diversity and creativity together is their important use of \ac{RNG}s which can implemented in different ways. There are possibilities like using a standard RNGs or the creating of randomness via knowledge presentation, distribution altering or look-up tables \cite{pcg::book}. For this reason, it is important to give special considerations to the randomness implementation to fulfill the described properties. Some of the most important techniques used with random generations are "Perlin Noise", "Simplex Noise" or "Fractals" \cite{pcg::shortHistoryOfDynamicAndPCG}.
+
 \subsubsection{Design Considerations}
 % GDC Vault - Making Things Up_ The Power and Peril of PCG
 Building Blocks: authored chunks, templates, components, subcomponents\\
@@ -457,7 +456,6 @@ Game Stage: Online, Offline
 Player Interaction: none, parameterized, indirect, direct\\
 Design Control: indirect, compositional, experiental\\
 \\
-randomness via knowledge representation, altering distributions, indirection, look-up tables\\
 visualize your PCG\\
 \\
 Keeping the PCG visible to the player. It is crucial for players to understand the effect they have on the world, and this can only be done by making the use and consequences of PCG as visible to the player as possible. Without knowing that the world is being generated around them, players lose agency as the choices they make feel meaningless. \cite{pcg::endlessWeb}\\
@@ -476,6 +474,12 @@ However, how can game designers prevent that this abundance overwhelms the playe
 	\item Think about framing, structure and pacing. I think the most successful PCG applications understand how the procedural content	is framed and given context by authored content, or sometimes by human curation.
 	\item Don’t simulate more detail than you need to get your point across— the elements involved in the PCG should be game elements, atmospheric elements, etc.—if you don’t need the molecules bumping around, invisible to the	player, try to stay away from chewing up computer resources and programming time putting that in.
 \end{itemize}
+
+\subsection{Conceptual Implementation}
+Basic sample PCG and ML implementations in a game engine.
+Its just an algorithm which is fed with different parameters which generates some content out of these parameters. as described, randomness is a crucial factor\\
+just describe a random simple world generator of minecraft, a simple dungeon generator algorithm or mesh generator like the helix creation - defined rules, algorithm uses this rules, input can bias the output but its almost controlled by the randomness
+
 
 
 \section{Game Mechanics}
