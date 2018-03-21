@@ -327,7 +327,7 @@ There are three major ways that PCG has traditionally been used in digital game 
 \subsection{Why is PCG used?}
 \subsubsection{Utilization}
 \begin{itemize}
-	\item \textbf{Time-saving}: With PCG, you can produce huge amounts of content far faster than a manual process. \cite{pcg::inGameDesign}
+	\item \textbf{Time-saving}: it can produce huge amounts of content far faster than a manual process. \cite{pcg::inGameDesign}
 	\item \textbf{Expandable}: Generators are usually designed in a modular fashion. Every time you add a new feature, it gets integrated across the generator’s output. \cite{pcg::inGameDesign}
 	\item \textbf{Replayability}: One generator can produce many instances of similarbut varied content. \cite{pcg::inGameDesign}
 	\item \textbf{Reusable code}: Generators can get reused between applications. A desert landscape generator from one game can have a few variables tweaked to produce icy mountains in another. \cite{pcg::inGameDesign}
@@ -371,79 +371,54 @@ there are many different desirable or required properties for a content generati
 \end{itemize}
 
 \subsection{Taxonomy}
-With the variety of content generation problems and methods that are now available, it helps to have a structure that can highlight the differences and similarities between approaches. \cite{pcg::book}
-\subsubsection{Taxonomy: Classes}
-\cite{pcg::survey}
+There are many use cases for using PCG in different kinds of problems with different methods and approaches. This variety of PCG possibilities made it necessary to find distinctive features and create a taxonomy of PCG to highlight the differences and similarities between approaches \cite{pcg::book}. In general, there are two different views for a taxonomy which were described by \cite{pcg::survey} and \cite{pcg::book}. The first and initial one was created by \cite{pcg::survey} and a new approach to this taxonomy was given by \cite{pcg::book} which alters and extends the class approach of \cite{pcg::survey}.\\
+As an initial classification, \cite{pcg::survey} extracted the following four classes by analyzing all possibilities of PCG which they could think of:
+\begin{itemize}
+	\item \textbf{Game Bit}: Basic elements of a game that do not affect the players gameplay. For example, procedural generated textures, sounds, vegetation like trees, fire, stone, mountains or clouds. \cite{pcg::survey}
+	\item \textbf{Game Space}: Represents every environment and usually consists of different game bits. One can think of e.g. dungeons maps, whole planets with procedural generated terrain, lakes, rivers and many more. \cite{pcg::survey}
+	\item \textbf{Game System}: Includes all game elements like ecosystems or other relations between game objects like rules or objectives.\cite{pcg::survey}
+	\item \textbf{Game Scenario}: Like occurring events in games which could be e.g. an event in a generated storyboard, the history of a character, a concept of levels or a puzzle. \cite{pcg::survey}
+\end{itemize}
+Whereas \cite{pcg::book} extended their view of possibilites for PCG and came up with the following seven classes:
+\begin{itemize}
+	\item \textbf{Online vs Offline}: PCG techniques can be used to generate content online, as the player is playing the	game, allowing the generation of endless variations, making the game infinitely replayable and opening the possibility of generating player-adapted content, or offline during the development of the game or before the start of a game session.
+	\item \textbf{Necessary vs Optional}: PCG can be used to generate necessary game content that is required for the completion of a level, or it can be used to generate auxiliary content that can be discarded or  exchanged for other content. The main distinctive feature between necessary and optional content is that necessary content should always be correct while this condition does not hold for optional content.
+	\item \textbf{Degree and Dimensions of Control}: The generation of content by PCG can be controlled in different ways. The use of a random seed is one way to gain control over the generation space; another way is to use a set of parameters that control the content generation along a number of dimensions.
+	\item \textbf{Generic vs Adaptive}: Generic content generation refers to the paradigm of PCG where content is generated without taking player behaviour into account, as opposed to adaptive, personalised or player-centred content generation where player interaction with the game is analysed and content is created based on a player’s previous behaviour.
+	\item \textbf{Stochastic vs Deterministic}: Deterministic PCG allows the regeneration of the same content given the same starting point and method parameters as opposed to stochastic PCG where recreating the same content is usually not possible.
+	\item \textbf{Constructive vs Generate-and-Test}: In constructive PCG, the content is generated in one pass, as commonly done in roguelike games. Generate-and-test PCG techniques, on the other hand, alternate generating and testing in a loop, repeating until a satisfactory solution is generated.
+	\item \textbf{Automatic Generation vs Mixed Authorship}: Until recently, PCG has allowed limited input from game designers, who usually tweak the algorithm parameters to control and guide content generation while the main purpose of PCG remains the generation of infinite variations of playable content. However, a new interesting paradigm, has emerged that focuses on incorporating designer and/or player input through the design process. In this mixed-initiative paradigm, a human designer or player cooperates with the algorithm to generate the desired content.
+\end{itemize}
+Both of the approaches are offering a good point of view for procedural generated content which can be useful when designing different game elements with PCG.
+
+\section{Games}
+There are quite a few developer and publisher which have used different PCG techniques in their game during the last decades. A list of some games which made use of PCG in relation to the initial taxonomy of \cite{pcg::survey} can be found in table \ref{gamesWithPcgTable}. Some of these games are described in detail in the following sections to get a better understanding of which specific elements are procedural generated.
 \begin{table}[!htbp]
 	\centering
-	\resizebox{\textwidth}{!}
-	{%
-		\begin{tabular}{|c|c|}
-			\hline 
-			\textbf{Class} & \textbf{Description} \\ 
-			\hline 
-			Game Bits & elementary units of the game content that do not affect the
-			player’s gameplay when considered independently. Included in this category:
-			textures, sounds, vegetation, structures, behaviors, fire, water, stone, or clouds \\ 
-			\hline 
-			Game Space & represents the environment in which to play. It consists of different
-			units Game Bits. Included in this category: indoor maps, outdoor maps, water
-			bodies such as seas, lakes, or rivers. \\ 
-			\hline 
-			Game System & for example, ecosystems, road networks, urban planning. \\ 
-			\hline 
-			Game Scenarios & in which events occur, e.g., puzzle, storyboard, the history,
-			the concept of levels. \\ 
-			\hline 
-			Game Design & including rules and objectives. \\ 
-			\hline 
-		\end{tabular} 
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|l||c|c|c|c|}
+			\hline
+			\textbf{Game} & \textbf{Game Bits}     & \textbf{Game Space}    & \textbf{Game Systems} & \textbf{Game Scenarios} \\ \hline\hline
+			Diablo II      &                        & x                      &                       & x                       \\ \hline
+			Dwarf Fortress &                        & x                      & x                     & x                       \\ \hline
+			Elite          &                        & x                      & x                     & x                       \\ \hline
+			EVE Online     & x                      & x                      &                       & x                       \\ \hline
+			Minecraft      &                        & x                      & x                     &                         \\ \hline
+			Roque          &                        & x                      &                       & x                       \\ \hline
+			Spelunky       & \multicolumn{1}{l|}{x} & \multicolumn{1}{l|}{x} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{}   \\ \hline
+		\end{tabular}%
 	}
+	\caption{Some games which used PCG \protect\cite{pcg::shortHistoryOfDynamicAndPCG}}
+	\label{gamesWithPcgTable}
 \end{table}
-\subsubsection{Revised Taxonomy}
-\cite{pcg::book} 
-\begin{itemize}
-	\item \textbf{online vs offline}: PCG techniques can be used to generate content online, as the player is playing the	game, allowing the generation of endless variations, making the game infinitely replayable and opening the possibility of generating player-adapted content, or offline during the development of the game or before the start of a game session.
-	\begin{itemize}
-		\item online: speed it paramount, human-in-the-loop? (instant feedback/fitness function)
-		\item offline: flexible in algorithm choice, automated curation
-	\end{itemize}
-	\item \textbf{necessary vs optional}: PCG can be used to generate necessary game content that is required for the completion of a level, or it can be used to generate auxiliary content that can be discarded or  exchanged for other content. The main distinctive feature between necessary and optional content is that necessary content should always be correct while this condition does not hold for optional content.
-	\item \textbf{degree and dimensions of control}: The generation of content by PCG can be controlled in different ways. The use of a random seed is one way to gain control over the generation space; another way is to use a set of parameters that control the content generation along a number of dimensions.
-	\item \textbf{generic vs adaptive}: Generic content generation refers to the paradigm of PCG where content is generated without taking player behaviour into account, as opposed to adaptive, personalised or player-centred content generation where player interaction with the game is analysed and content is created based on a player’s previous behaviour.
-	\item \textbf{stochastic vs deterministic}: Deterministic PCG allows the regeneration of the same content given the same starting point and method parameters as opposed to stochastic PCG where recreating the same content is usually not possible.
-	\item \textbf{constructive vs generate-and-test}: In constructive PCG, the content is generated in one pass, as commonly done in roguelike games. Generate-and-test PCG techniques, on the other hand, alternate generating and testing in a loop, repeating until a satisfactory solution is generated.
-	\item \textbf{automatic generation vs mixed authorship}: Until recently, PCG has allowed limited input from game designers, who usually tweak the algorithm parameters to control and guide content generation while the main purpose of PCG remains the generation of infinite variations of playable content. However, a new interesting paradigm, has emerged that focuses on incorporating designer and/or player input through the design process. In this mixed-initiative paradigm, a human designer or player cooperates with the algorithm to generate the desired content.
-\end{itemize}
-\subsection{methods}
-% GDC Vault - Making Things Up_ The Power and Peril of PCG
-\begin{tabular}{|c||c|c|}
-	\hline 
-	\textbf{Method} & \textbf{Power} & \textbf{Peril} \\ 
-	\hline \hline 
-	\textbf{Constructive} & simple to author, customization & repetitiveness in content, ad hoc \\ 
-	\hline 
-	\textbf{Constraint-based} & design guarantees, delarative & translating to contraints, debugging \\ 
-	\hline 
-	\textbf{Optimiziation-based} & generality, emergence & fitness function, speed \\ 
-	\hline 
-	\textbf{Grammars} & emergence, easy to author & prone to over- and under-generation \\ 
-	\hline 
-\end{tabular} 
 
-
-
-\section{Usage in Games}
-- table on page 9 in \cite{pcg::shortHistoryOfDynamicAndPCG}\\
-
-\subsection{Popular Examples}
-\url{https://iq.intel.com/no-mans-sky-and-the-technology-that-created-18-quintillion-planets/}\\
-\url{https://www.digitaltrends.com/gaming/no-mans-sky-install-size/}\\
-For example, the open world game No Man's Sky fits over 18 quintillion planets onto a 6 \ac{GB} file with the help of \ac{PCG}.
+%\url{https://iq.intel.com/no-mans-sky-and-the-technology-that-created-18-quintillion-planets/}\\
+%\url{https://www.digitaltrends.com/gaming/no-mans-sky-install-size/}\\
+%For example, the open world game No Man's Sky fits over 18 quintillion planets onto a 6 \ac{GB} file with the help of \ac{PCG}.
 
 \subsubsection{Minecraft}
 Minecraft [16] and Terraria [22] are modern examples of using PCG for both replayability and exploration. The player is provided with an inconceivably vast world to explore, and the formation of the world guides the player’s strategies. However, again, the PCG system is not influenced by the player, so no PCG-based dynamics can arise.\cite{pcg::endlessWeb}
-\subsubsection{Spelunki}
+\subsubsection{Spelunky}
 use PCG to enhance replayability. Both the mechanics and aesthetics of these games are largely unrelated to the PCG system. while players are aware that they have a different experience each time they play, the use of PCG does not affect their playing experience
 \subsubsection{Roque Legacy}
 \subsection{Possibilities}
@@ -475,14 +450,20 @@ just describe a random simple world generator of minecraft, a simple dungeon gen
 \subsubsection{Design Considerations}
 % GDC Vault - Making Things Up_ The Power and Peril of PCG
 Building Blocks: authored chunks, templates, components, subcomponents\\
-Game Stage: Online, Offline\\
+Game Stage: Online, Offline
+	\begin{itemize}
+	\item online: speed it paramount, human-in-the-loop? (instant feedback/fitness function)
+	\item offline: flexible in algorithm choice, automated curation
+\end{itemize}
 Player Interaction: none, parameterized, indirect, direct\\
 Design Control: indirect, compositional, experiental\\
 \\
 randomness via knowledge representation, altering distributions, indirection, look-up tables\\
 visualize your PCG\\
 \\
-Keeping the PCG visible to the player. It is crucial for players to understand the effect they have on the world, and this can only be done by making the use and consequences of PCG as visible to the player as possible. Without knowing that the world is being generated around them, players lose agency as the choices they make feel meaningless. \cite{pcg::endlessWeb}
+Keeping the PCG visible to the player. It is crucial for players to understand the effect they have on the world, and this can only be done by making the use and consequences of PCG as visible to the player as possible. Without knowing that the world is being generated around them, players lose agency as the choices they make feel meaningless. \cite{pcg::endlessWeb}\\
+\\
+avoid: repetitiveness in content, under- and over-generation
 
 \subsubsection{Pitfalls}
 \cite{pcg::shortHistoryOfDynamicAndPCG}
