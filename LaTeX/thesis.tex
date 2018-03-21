@@ -315,7 +315,7 @@ This topic is a very big one which has evolved throughout the years and many res
 The definition we will use is that PCG is the algorithmic creation of game content with limited or indirect user input [32]. In other words, PCG refers to computer software that can create game content on its own, or together with one or many human players or designers. \cite{pcg::whatIsPCG}
 Like: a software tool that creates dungeons, weapons, ..; game engine middleware that rapidly populates a game world with vegatetion
 
-\section{Theoretical Introduction}
+\section{Introduction}
 \cite{pcg::PCGinGameIndustry} Game content construction and generation are laborious and expensive. Procedural content generation (PCG) aims at generating game content automatically using algorithms, reducing the cost of game design and development.\\
 Procedural content generation refers to the creation of game content automatically (or semi-automatically) through algorithmic means.\\
 The results from the application of PCG algorithms can be all kinds of elements affecting the gameplay: terrain, maps, layers, stories, dialogues, quests, characters, rules, dynamics, or weapons.\\
@@ -383,52 +383,6 @@ Whereas \cite{pcg::book} extended their view of possibilites for PCG and came up
 	\item \textbf{Automatic Generation vs Mixed Authorship}: By means of fully autonomous content generation provided by an algorithm versus generators where designers and players can change the behavior of the design process due to any kind of input and cooperate with the algorithm \cite{pcg::book}. For example, the creature creation in the game Spore where there are automatic generated and user created creatures.
 \end{itemize}
 
-\section{Games}
-There are quite a few developer and publisher which have used different PCG techniques in their game during the last decades. A list of some games which made use of PCG in relation to the initial taxonomy of \cite{pcg::survey} can be found in table \ref{gamesWithPcgTable}. Some of these games are described in detail in the following sections to get a better understanding of which specific elements are procedural generated.
-\begin{table}[!htbp]
-	\centering
-	\resizebox{\textwidth}{!}{%
-		\begin{tabular}{|l||c|c|c|c|}
-			\hline
-			\textbf{Game} & \textbf{Game Bits}     & \textbf{Game Space}    & \textbf{Game Systems} & \textbf{Game Scenarios} \\ \hline\hline
-			Diablo II      &                        & x                      &                       & x                       \\ \hline
-			Dwarf Fortress &                        & x                      & x                     & x                       \\ \hline
-			Elite          &                        & x                      & x                     & x                       \\ \hline
-			EVE Online     & x                      & x                      &                       & x                       \\ \hline
-			Minecraft      &                        & x                      & x                     &                         \\ \hline
-			Roque          &                        & x                      &                       & x                       \\ \hline
-			Spelunky       & \multicolumn{1}{l|}{x} & \multicolumn{1}{l|}{x} & \multicolumn{1}{l|}{} & \multicolumn{1}{l|}{}   \\ \hline
-		\end{tabular}%
-	}
-	\caption{Some games which used PCG \protect\cite{pcg::shortHistoryOfDynamicAndPCG}}
-	\label{gamesWithPcgTable}
-\end{table}
-
-%\url{https://iq.intel.com/no-mans-sky-and-the-technology-that-created-18-quintillion-planets/}\\
-%\url{https://www.digitaltrends.com/gaming/no-mans-sky-install-size/}\\
-%For example, the open world game No Man's Sky fits over 18 quintillion planets onto a 6 \ac{GB} file with the help of \ac{PCG}.
-
-\subsubsection{Minecraft}
-Minecraft [16] and Terraria [22] are modern examples of using PCG for both replayability and exploration. The player is provided with an inconceivably vast world to explore, and the formation of the world guides the player’s strategies. However, again, the PCG system is not influenced by the player, so no PCG-based dynamics can arise.\cite{pcg::endlessWeb}
-\subsubsection{Spelunky}
-use PCG to enhance replayability. Both the mechanics and aesthetics of these games are largely unrelated to the PCG system. while players are aware that they have a different experience each time they play, the use of PCG does not affect their playing experience
-\subsubsection{Roque Legacy}
-\subsection{Possibilities}
-\url{https://www.gamasutra.com/view/news/181853/5_tips_for_using_procedurallygenerated_content_in_your_game.php}
-"Playing the same game over and over again, yet receiving what can be a satisfyingly different experience each time"\\
-
-creative facets of games \cite{pcg::computationalGameCreativity}:
-\begin{itemize}
-	\item Visuals: most commercial example is SpeedTree which creates 3D models of trees or FaceGen which generates faces, also textures
-	\item Audio
-	\item Narrative
-	\item  Ludus: The term Ludus, established by Caillois (1961) and elaborated	by Frasca (1999), refers to an “activity organized under a	system of rules that defines a victory or a defeat, a gain or a loss.”- more or less game design
-	\item Level Architecture
-	\item Gameplay
-\end{itemize}
-
-A key term here is “content”. In our definition, content is most of what is contained in a game: levels, maps, game rules, textures, stories, items, quests, music, weapons, vehicles, characters, etc. \cite{pcg::book}
-
 \section{Development}
 Developing a PCG algorithm can be tough and needs to be well-prepared. On this account, there are given some important design considerations about PCG and also a conceptual implementation of an algorithm in the next 2 chapters.
 
@@ -445,15 +399,29 @@ Especially, a main part which ties expressivity, diversity and creativity togeth
 Another point that can be useful is to visualize the PCG for either debugging or gameplay purposes \cite{pcg::book}. For example, visualization can help to understand the output and distribution of a PCG when used for debugging. Furthermore, if PCG requires interaction with the player then it is useful to show some visual feedback or visualization so that players can understand the consequences of their actions on the system \cite{pcg::endlessWeb}. \\
 Lastly, it is recommended to keep PCG algorithms simple and focus them on specific content generation tasks so that many content generators can be combined afterwards \cite{pcg::book}. Also, players should not be overwhelmed by interactive PCG systems what can be avoided with simple sensors which are taking care of the players experience and shall adapt the system provided that it is an online system \cite{pcg::shortHistoryOfDynamicAndPCG}.  In general, all discussed points in chapter \ref{mechanicsConsiderationsPCGandML} should be taken in mind when implementing interactive PCG systems.
 
+\subsection{Possibilities}
+\url{https://www.gamasutra.com/view/news/181853/5_tips_for_using_procedurallygenerated_content_in_your_game.php}
+"Playing the same game over and over again, yet receiving what can be a satisfyingly different experience each time"\\
+
+creative facets of games \cite{pcg::computationalGameCreativity}:
+\begin{itemize}
+	\item Visuals: most commercial example is SpeedTree which creates 3D models of trees or FaceGen which generates faces, also textures
+	\item Audio
+	\item Narrative
+	\item  Ludus: The term Ludus, established by Caillois (1961) and elaborated	by Frasca (1999), refers to an “activity organized under a	system of rules that defines a victory or a defeat, a gain or a loss.”- more or less game design
+	\item Level Architecture
+	\item Gameplay
+\end{itemize}
+
+A key term here is “content”. In our definition, content is most of what is contained in a game: levels, maps, game rules, textures, stories, items, quests, music, weapons, vehicles, characters, etc. \cite{pcg::book}
+
 \subsection{Conceptual Implementation}
 Its just an algorithm which is fed with different parameters which generates some content out of these parameters. as described, randomness is a crucial factor\\
 just describe a random simple world generator of minecraft, a simple dungeon generator algorithm or mesh generator like the helix creation - defined rules, algorithm uses this rules, input can bias the output but its almost controlled by the randomness
 
-
-
 \section{Game Mechanics}
 Using PCG as a mechanic requires the player to have control over the kind of content that appears in the game.\cite{pcg::endlessWeb}
-\subsection{Industry Examples}
+\subsection{Current Games}
 
 \subsubsection{Galactic Arms Race}
 \todo[inline]{the players’ battle strategies determine the next round of weapons that will be available to them; the creators of the game have shown that there is a large variety in the kinds of weapons players will customize. Because it is a multiplayer game, players can see the different kinds of guns they could have created if they played with different tactics. \protect\cite{pcg::endlessWeb} \protect\cite{pcg::galacticArmsRace}}
@@ -469,9 +437,8 @@ Is an entirely PCG-based game and thus uses PCG as its core mechanic. It is abou
 \todo[inline]{Endless Web is fundamentally a game about manipulating a generative space, and the core mechanic involves the player deliberately choosing to influence the generator in different directions through interacting with the glowing tuning portals. This core mechanic is intertwined with the generator; each tuning portal the player interacts with directly changes parameters to the generator. \protect\cite{pcg::endlessWeb}}
 
 
-\subsubsection{Further games}
-Angelina - make whole games (also mechanics)\\
-Black \& White
+\subsubsection{Further Games}
+Following games are examples which also use PCG and related mechanics as an important part in their game: Black \& White, Diablo, Dwarf Fortress, Elite, Eve Online, Roque, Spelunky or Minecraft.
 
 \subsection{Possible Core Mechanics}
 Quest generation (in "A Prototype Quest Generator Based on a Structural Analysis of Quests from 4 MMORPGs")\\
@@ -522,7 +489,7 @@ stick to game related stuff, like alpha go
 \subsubsection{Examples}
 \subsubsection{Possibilities}
 
-\section{In a Game Engine}
+\section{Development}
 How to use PCG and ML in a game engine? What are some of the best practices and approaches for using PCG and ML in a game?
 
 \subsection{Conceptual Implementation}
@@ -533,7 +500,7 @@ Issues of PCG and ML in games and game engines.
 
 
 \section{Game Mechanics}
-\subsection{Industry Examples}
+\subsection{Current Games}
 \subsection{Possible Mechanics}
 \subsection{Summary}
 
