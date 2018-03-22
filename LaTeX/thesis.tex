@@ -311,7 +311,6 @@ It is necessary to list some possible design flaws which need to be avoided sinc
 \clearpage
 \chapter{\acl{PCG}}
 This topic is a very big one which has evolved throughout the years and many research is done in \ac{PCG}. For this reason, it is a necessity to introduce the most common parts of PCG to understand the concepts and therefore be able to understand the further use in \ac{PCGML}.\\
-
 The definition we will use is that PCG is the algorithmic creation of game content with limited or indirect user input [32]. In other words, PCG refers to computer software that can create game content on its own, or together with one or many human players or designers. \cite{pcg::whatIsPCG}
 Like: a software tool that creates dungeons, weapons, ..; game engine middleware that rapidly populates a game world with vegatetion
 
@@ -326,31 +325,12 @@ PCG has been used in games for many reasons, including addressing technical limi
 There are three major ways that PCG has traditionally been used in digital game design: to improve replayability, to resolve technical limitations, and to provide players with an environment to explore that is so vast it could not be created by human designers.\cite{pcg::endlessWeb}
 
 \subsection{Reasons to Use}
+There are many reason why to use PCG in games or other applications like research. For this reason, \cite{pcg::inGameDesign} came up with two classifications representing the motivation behind using PCG.
 \subsubsection{Utilization}
-\begin{itemize}
-	\item \textbf{Time-saving}: it can produce huge amounts of content far faster than a manual process. \cite{pcg::inGameDesign}
-	\item \textbf{Expandable}: Generators are usually designed in a modular fashion. Every time you add a new feature, it gets integrated across the generator’s output. \cite{pcg::inGameDesign}
-	\item \textbf{Replayability}: One generator can produce many instances of similarbut varied content. \cite{pcg::inGameDesign}
-	\item \textbf{Reusable code}: Generators can get reused between applications. A desert landscape generator from one game can have a few variables tweaked to produce icy mountains in another. \cite{pcg::inGameDesign}
-	\item \textbf{Rules enforcement}: Generators can be built with rules enforced, ensuring connectivity between elements or certain standards maintained across all output. \cite{pcg::inGameDesign}
-	\item \textbf{Modeling reality}: Often, simulationist techniques are used in procedural generators, reproducing the wearing of terrain or a naturalistic spread of life. \cite{pcg::inGameDesign}
-	\item \textbf{Scales and detail hard to do by hand}: Whole galaxies, fractal details, truly endless content. Games like Elite: Dangerous and No Man’s Sky are nearly impossible to make by hand. PCG stretches the realm of possibility to scales beyond the conception of our limited little minds. \cite{pcg::inGameDesign}
-	\item \textbf{Overcome technical limitations}: harddrives etc, especially if used on wearable devices \cite{pcg::inGameDesign}
-\end{itemize}
+The first one is utilization which is one of the main argument why PCG is popular. It can be time-saving because it could produce more content than a human in an hour like a whole galaxy in No Man's Sky \cite{noMansSky} which is in fact created by PCG, it overcomes technical limitations in terms of their use for devices with e.g. limited space like mobile devices, is expandable and has reusable code due to modularity and same field of applications and it increases replayability because it can generate many but different instances of a content \cite{pcg::inGameDesign}.
 
 \subsubsection{Uniqueness}
-\begin{itemize}
-	\item \textbf{Individual experiences}: PCG opens up the potential to give every user a unique experience. A gameplay challenge that only they will ever truly experience, and only in that instance. \cite{pcg::inGameDesign}
-	\item \textbf{New gameplay/interaction modes}: Replayable games are just the beginning of how PCG opens up new gameplay types. PCG involves rules, and they can be gameplay rules, as well as simple generative rules— something the player can interact and play with. This opens up a gigantic field of new gameplay opportunities. \cite{pcg::inGameDesign}
-	\item \textbf{Player input}: This gives the player a new form of gameplay through manipulation of PCG techniques. The player must internalize the behavior of the cellular automata to control the swarm and overcome the challenges in the game. \cite{pcg::inGameDesign}
-	\item \textbf{Unpredictable}: Even the designer does not know what to expect from the generators he or she creates. it can also be thrilling. \cite{pcg::inGameDesign}
-	\item \textbf{Living system}: Procedural techniques can produce living, reactive effects. Fire, floods, lava, weather systems, populations, civilizations, diseases, cultures, life at every level. \cite{pcg::inGameDesign}
-	\item \textbf{Inhuman creativity}: The outputs of PCG can be bizarre. They can produce things no human might ever think of, from unusual level designs to unreal animations. \cite{pcg::inGameDesign}
-	\item \textbf{Reflections and refractions of humanity}: Procedural content is almost always based on human designed content, even if from small base blocks. What they produce is a reflection or refraction of our own	creativity. \cite{pcg::inGameDesign}
-	\item \textbf{Inspiration of infinity}: Infinity is a hard concept for us to grasp, but	playing with generators of infinite content lets us try to straddle it,	or get delightfully lost in it. \cite{pcg::inGameDesign}
-	\item \textbf{Fun}: Ultimately, playing with procedural generators is really quite fun. To click a button and have a new creation brought into being. To change a number and click the button again, and the old creation is replaced by something quite different. To toy, to fiddle, to poke and prod and experiment, to see what interesting and novel things come out the other end. \cite{pcg::inGameDesign}
-\end{itemize}
-
+Second argument why PCG is commonly used is the uniquness of their output. It offers an individual experiences with i.e. different generated content every time, creates new gameplay and interaction modes through replayability or possible player interaction, it is unpredictable which can be a thrilling fact for players but also designers, it can create bizarre content no human might think of and it can be an inspiration of infinity because of its possibility of infinitely creating content \cite{pcg::inGameDesign}.
 \subsection{Types}
 a pcg system is a generic term for any piece of software that does pcg and there are many different possible uses \cite{pcg::book}
 methaphors for PCG in pcg book intro\\
