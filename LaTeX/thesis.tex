@@ -387,7 +387,8 @@ A possible output of this algorithm can look like in figure \ref{cascadesFigure}
 \end{figure}
 
 \section{Game Mechanics}
-Using PCG as a mechanic requires the player to have control over the kind of content that appears in the game.\cite{pcg::endlessWeb}
+Now it comes to the most important part in this chapter of PCG because of its leading part in PCGML as a game mechanic — the use of PCG as a game mechanic! Firstly, games which are using PCG as a game mechanic are presented and examples of possible PCG core mechanics are given afterwards.
+
 \subsection{Current Games}
 Many games are using procedural generated content in their game nowadays but not all of them are using PCG as a game mechanic. Some games which are using PCG as a game mechanic are described in the following sections.
 \subsubsection{Galactic Arms Race}
@@ -406,21 +407,12 @@ Summarized, Endless Web's core mechanic is about manipulating the generative spa
 Games like Black \& White, Diablo, Dwarf Fortress, Elite, Eve Online, Roque, Spelunky or Minecraft are other good examples which made use of PCG and related mechanics as an important part in their game.
 
 \subsection{Possible Core Mechanics}
-Quest generation (in "A Prototype Quest Generator Based on a Structural Analysis of Quests from 4 MMORPGs")\\
---> mechanic adaption?
-\textbf{Creating New Mechanics and Genres} \cite{pcg::futureOfPcgInGames} \\
-Some of the most delightful moments in games come where the game delivers surprising content that follows the theme of what the player has seen previously, such that the player must learn how it works and build new game strategies. For example, new level elements such as platforms where the player controls their movement in New Super Mario Bros (Nintendo EAD 2006). While there has been research in procedurally generating level progressions (Butler et al. 2013), this work uses pre-defined progressions and game elements. How can we create systems that can generate their own progressions? This requires a kind of player modeling that operates at a greater level of detail than numerical scores for enjoyment and frustration, combined with a representation for the mechanics of the game and how game components use them. \cite{pcg::futureOfPcgInGames}\\
-\\
-\textbf{Multiplayer and Multi-Instance PCG} \cite{pcg::futureOfPcgInGames}\\
-What does it mean for multiple players to really engage with generated content, and for a generator to be designed with multiple players in mind? A multiplayer game with multi-instance PCG could have everyone seeing different content while inhabiting the same space, with support for mechanics that allow players to influence each other’s environments. For example, imagine a collaborative multiplayer platforming game where each player’s actions causes new content to be created in another’s, and players must find ways to communicate about how to achieve some common goal. \cite{pcg::futureOfPcgInGames} \\
-\\
-\textbf{adaptive or player-driven PCG} \cite{pcg::whatIsPCG}\\
-Adaptive PCG could have various motivations, such as adjusting the difficulty level of the newly generated content to suit the estimated playing skill of the player, or to generate more content similar to content the player seems to have liked in the past. The timescale at which adaptation occurs could conceivably vary immensely: between games, between levels or even on a second-to-second level \cite{pcg::whatIsPCG}
-
-\subsection{Possible Issues}
-Building a PCG-based game instead involves relinquishing direct control over content and treating content generation as a game mechanic. The design of a PCG-based game introduces a number of new design problems, for both the game and the PCG system itself. The design of a PCG-based game introduces a number of new design problems, for both the game and the PCG system itself. Game design issues, from the moment-to-moment pacing of a level to difficulty curves, can no longer be solved through the direct manipulation of game content. The designer must instead design entire ranges of content that can be meaningfully controlled by both the designer and the player. \cite{pcg::endlessWeb}\\
-A number of design challenges arose while creating Endless Web from the use of PCG as the core mechanic. The primary challenge came in determining how to balance this control over the generator between the player and the designer, so that the player makes meaningful decisions but all of those decisions lead to an engaging, designed experience. Other design problems include teaching the player to explore a generative space, providing well-placed goals to encourage this exploration, and art and audio issues that arose from having no knowledge at design time of how levels would be structured during play.  \cite{pcg::endlessWeb}
-\subsection{Summary}
+There are quite a few possibilities for what PCG can be used as mechanics in games. As seen, some core mechanics aim at weapon creation and progressing through generated space with the help of generated or altered "helper" mechanisms. Apart from that promising ideas are also other noteworthy ideas:
+\begin{itemize}
+	\item One exciting idea about using PCG for multiplayer games as a multi-instance PCG system is given by \cite{pcg::futureOfPcgInGames}. A game could use a central PCG system which is separated into different and unique systems for each player and every content generation affects the PCG systems of other players \cite{pcg::futureOfPcgInGames}. In that case, influencing other players with your own PCG system to work towards a specific goal would be the core mechanic of the game. For example, it could be used in a collaborative multiplayer game where each content generation causes a new content generated in the other's player space, and they must find a way to communicate how to achieve a mutual objective \cite{pcg::futureOfPcgInGames}. 
+	\item There is a lot of research done in the generation of quests as well. \cite{pcg::questGenerator} introduced research on quests which are generated upon analysis of four existing \ac{MMORPG} and their quests. One could create a simulation game where players need to create random quests by doing interaction with the PCG system in order to provide an AI agent with missions which needs to be fulfilled to solve some other problems in the game and thus progress throughout the game.
+	\item Another idea is to adapt existing and successful introduced game mechanics with a PCG-backend. For example, one could create a game like Tetris where the core mechanics of rotating a block generates new blocks. For example, every time the player rotates the block, the next block will be altered with evolutionary algorithms and changes their shapes to increase the difficulty. Moreover, the system could adapt its difficulty to the player's skills regarding the success or failure rate of using the new blocks to maintain an acceptable experience.
+\end{itemize} 
 
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
@@ -611,6 +603,7 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
 	\acro{GB}{Gigabyte}
 	\acro{MDA}{Mechanics-Dynamics-Aesthetics}
 	\acro{ML}{Machine Learning}
+	\acro{MMORPG}{Massively Multiplayer Online Roleplay Game}
 	\acro{PC}{Personal Computer}
     \acro{PCG}{Procedural Content Generation}
     \acro{PCGML}{Procedural Content Generation via Machine Learning}
