@@ -417,22 +417,54 @@ There are quite a few possibilities for what PCG can be used as mechanics in gam
 %
 \clearpage
 \chapter{\acl{ML}}
-What is the difference to AI? Well, ML is a subset of AI which concentrates on using mechanisms to learn from given data.
+What is the difference to AI? Well, ML is a subset of AI which concentrates on using mechanisms to learn from given data. Improvement of its behavior based on experience\\
+"As described by Arthur Samuel, Machine Learning is the "field of study that gives computers the ability to learn without being explicitly programmed."" \cite{ml:3}
 \section{Theoretical Introduction}
-Theory of PCG and ML in general.
+"The type of learning is defined by the problem you want to solve and is intrinsic to the goal of your analysis" \cite{ml:1}
 
-\subsection{Regression}
-\subsection{Classification}
-\subsection{Clustering}
+\subsection{Supervised Learning}
+"you have a target, a value or a class to predict. model will be trained on historical data and use them to forecast future revenues. Hence the model is supervised, it knows what to learn." \cite{ml:1}\\
+"in supervised learning we already know the answers" \cite{ml:2}\\
+\\
+"Supervised learning regroups different techniques which all share the same principles:\\
+-) The training dataset contains inputs data (your predictors) and the value you want to predict (which can be numeric or not).\\
+-) The model will use the training data to learn a link between the input and the outputs. Underlying idea is that the training data can be generalized and that the model can be used on new data with some accuracy." \cite{ml:1}\\
+\\
+"Supervised learning is often used for expert systems in image recognition, speech recognition, forecasting, and in some specific business domain (Targeting, Financial analysis, ..)"\cite{ml:1}\\
+"predicting data, known targets" \cite{ml:2}
+
+\subsubsection{Regression}
+"predicted value is continuous, we are looking at a Regression problem" \cite{ml:1}
+\subsubsection{Classification}
+"On the other hand, if the variable to be predicted is one of various independent categories, called classes, it’s known as Classification. These classes can be qualitative or quantitative discrete values." \cite{ml:1}
+
+\subsection{Unsupervised Learning}
+"You have unlabelled data and looks for patterns, groups in these data. Instead of doing it manually, unsupervised machine learning will automatically discriminate different clients." \cite{ml:1}\\
+"In unsupervised learning we want to find unknown structures or trends." \cite{ml:2}\\
+" Most of the time unsupervised learning algorithms are used to pre-process the data, during the exploratory analysis or to pre-train supervised learning algorithms." \cite{ml:1}\\
+"search for structure in data, unknown targets" \cite{ml:2}
+\subsubsection{Clustering}
+"Clustering algorithm, such as K-means, hierarchical clustering or mixture models. These algorithms try to discriminate and separate the observations in different groups." \cite{ml:1}
+\subsubsection{Dimension Reduction}
+"Dimensionality reduction algorithms (which are mostly unsupervised) such as PCA, ICA or autoencoder. These algorithms find the best representation of the data with fewer dimensions." \cite{ml:1}
+
 \subsection{Reinforcement Learning}
+"You want to attain an objective. For example, you want to find the best strategy to win a game with specified rules. Once these rules are specified, reinforcement learning techniques will play this game many times to find the best strategy." \cite{ml:1}\\
+follows the steps: "Given its and the environment’s states, the agent will choose the action which will maximize its reward or will explore a new possibility. These actions will change the environment’s and the agent states. They will also be interpreted to give a reward to the agent. By performing this loop many times, the agents will improve its behavior." \cite{ml:1}
 
 \section{Learning Models}
 Which training models are used in ML? --> the 5 tribes of ML
+"A Machine Learning model is a set of assumptions about the underlying nature the data to be trained for. The model is used as the basis for determining what a Machine Learning algorithm should learn. A good model, which makes accurate assumptions about the data, is necessary for the machine to give good results" \cite{ml:3}
 \subsection{Linear}
+used for regression \cite{ml:2}
 \subsection{K-Nearest Neighbor}
+used for classification \cite{ml:2}
 \subsection{Decision Tree}
+used for classification \cite{ml:2}
 \subsection{\acl{SVM}}
+used for classification \cite{ml:2}
 \subsection{Neural Networks}
+used for regression \cite{ml:2}
 \subsubsection{\acl{ANN}}
 \subsubsection{\acl{CNN}}
 
@@ -450,9 +482,13 @@ How to use PCG and ML in a game engine? What are some of the best practices and 
 \subsection{Conceptual Implementation}
 Basic sample PCG and ML implementations in a game engine.
 
-\subsection{Possible Issues}
-Issues of PCG and ML in games and game engines.
-
+\subsection{Common Pitfalls}
+\url{https://xyclade.github.io/MachineLearning/#learning-methods}
+\subsubsection{Overfitting}
+"Too much accuracy in the training stage often leads to over-optimisation and then worse results than expected in the test stage." \cite{ml:2}\\
+"Overfitting is the result of focussing a Machine Learning algorithm too closely on the training data, so that it is not generalized enough to correctly process new data. It is an example of a machine "learning the wrong thing" and becoming less capable of correctly interpreting new data." \cite{ml:3}
+\subsubsection{Underfitting}
+\subsubsection{Curse of Dimensionality}
 
 \section{Game Mechanics}
 \subsection{Current Games}
