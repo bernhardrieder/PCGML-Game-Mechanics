@@ -434,21 +434,42 @@ What is the difference to AI? Well, ML is a subset of AI which concentrates on u
 -) The model will use the training data to learn a link between the input and the outputs. Underlying idea is that the training data can be generalized and that the model can be used on new data with some accuracy." \cite{ml:1}\\
 \\
 "Supervised learning is often used for expert systems in image recognition, speech recognition, forecasting, and in some specific business domain (Targeting, Financial analysis, ..)"\cite{ml:1}\\
-"predicting data, known targets" \cite{ml:2}
-
+"predicting data, known targets" \cite{ml:2}\\
+Learning = Maximize Utility -> error function represents how well an approach maps training examples to target (desired) outputs \cite{ai::book}\\
+Supervised learning is the algorithmic process of approximating the underlying function between labeled data and their corresponding attributes or features [49]. A popular example of supervised learning is that of a machine that is asked to distinguish between apples and pears (labeled data) given a set of features or data attributes such as the fruits’ color and size \cite{ai::book}\\
+Formally, supervised learning attempts to derive a function $f : X -> Y$, given a set of N training examples $f{(x1;y1),...,(xN;yN)};$ where X and Y is the input and output space, respectively; xi is the feature (input) vector of the i-th example and yi is its corresponding set of labels. A supervised learning task has two core steps. In the first training step, the training samples are presented and the function f between attributes and labels is derived. In the second testing step f can be used to predict the labels of unknown data given their attributes. To validate the generalizability of f and to avoid overfitting to the data [49], it is common practice that f is evaluated on a new independent (test) dataset using a performance measure such as accuracy, which is the percentage of test samples that are correctly predicted by our trained function. If the accuracy is acceptable, we can use f to predict new data samples. \cite{ai::book}\\
+the training signal is provided as data labels (target outputs)\cite{ai::book}
 \subsubsection{Regression}
-"predicted value is continuous, we are looking at a Regression problem" \cite{ml:1}
+"predicted value is continuous, we are looking at a Regression problem" \cite{ml:1}\\
+if the output data comes as an interval—such as the completion time of a game level or retention time—the supervised learning task is metric regression \cite{ai::book}\\
+regression and classification provide information, respectively, about the intensity and the classes of the phenomenon. \cite{ai::book}\\
+Regression algorithms are appropriate for imitation and prediction tasks of player behavior. popular algorithm examples: linear or polynomial regression, ANN, SVMs \cite{ai::book}
+
 \subsubsection{Classification}
-"On the other hand, if the variable to be predicted is one of various independent categories, called classes, it’s known as Classification. These classes can be qualitative or quantitative discrete values." \cite{ml:1}
+"On the other hand, if the variable to be predicted is one of various independent categories, called classes, it’s known as Classification. These classes can be qualitative or quantitative discrete values." \cite{ml:1}\\
+attempt to predict categorical class labels (discrete or nominal) such as the apples and pears of the previous example or the level in which a player will achieve her maximum score \cite{ai::book}\\
+regression and classification provide information, respectively, about the intensity and the classes of the phenomenon. \cite{ai::book}\\
+Classes can represent playing behavior which needs to be imitated or predicted, such as completion times (e.g., expressed as low, average or high completion time) or user retention in a free-to-play game (e.g., expressed as weak, mild or strong retention). algorithms include e.g. ANN, decision tree, random forests, SVMs, K-nearest neighbor, ensemble learning \cite{ai::book}\\
+Classification is perfectly suited for the task of modeling player experience if discrete annotations of experience are selected from a list of possibilities and provided as target outputs \cite{ai::book}
+
+\subsubsection{Preference Learning}
+predicts ordinal outputs such as ranks and preferences and attempts to derive the underlying global order that characterizes those ordinal labels. Examples of ordinal outputs include the ranked preferences of variant camera viewpoints, or a preference of a particular sound effect over others. The training signal in the preference learning paradigm provides information about the relative relation between instances of the phenomenon we attempt to approximate \cite{ai::book}
 
 \subsection{Unsupervised Learning}
 \cite{ml::book::algorithms} page 9-14\\
 "You have unlabelled data and looks for patterns, groups in these data. Instead of doing it manually, unsupervised machine learning will automatically discriminate different clients." \cite{ml:1}\\
 "In unsupervised learning we want to find unknown structures or trends." \cite{ml:2}\\
 " Most of the time unsupervised learning algorithms are used to pre-process the data, during the exploratory analysis or to pre-train supervised learning algorithms." \cite{ml:1}\\
-"search for structure in data, unknown targets" \cite{ml:2}
+"search for structure in data, unknown targets" \cite{ml:2}\\
+Learning = Maximize Utility -> is often provided internally and within the representation via e.g., competitive learning or self-organization \cite{ai::book}\\
+attempts to discover associations of the input by searching for patterns among all input data attributes and without having access to a target output. it focus on the intrinsic structure of and associations in the data instead of
+attempting to imitate or predict target values \cite{ai::book}
+
 \subsubsection{Clustering}
-"Clustering algorithm, such as K-means, hierarchical clustering or mixture models. These algorithms try to discriminate and separate the observations in different groups." \cite{ml:1}
+"Clustering algorithm, such as K-means, hierarchical clustering or mixture models. These algorithms try to discriminate and separate the observations in different groups." \cite{ml:1}\\
+is the unsupervised learning task of finding unknown groups of a number of data points so that data within a group (or else, cluster) is similar to each other and dissimilar to data from other clusters. Clustering has found applications in detecting groups of data across multiple attributes and in data reduction tasks such as data compression, noise smoothing, outlier detection and dataset partition. Clustering is of key importance for games with applications in player modeling, game playing and content generation.\cite{ai::book}\\
+Relevant data for clustering in games include player behavior, navigation patterns, assets bought, items used, game genres played and so on. Clustering can be used to group players into archetypical playing patterns in an effort to evaluate how people play a particular game and as part of a user-oriented testing process [176]. Further, one of the key questions of user testing in games is whether people play the game as intended. Clustering can be utilized to derive a number of different playing or behavioral styles directly addressing this question. \cite{ai::book}
+
 \subsubsection{Dimension Reduction}
 "Dimensionality reduction algorithms (which are mostly unsupervised) such as PCA, ICA or autoencoder. These algorithms find the best representation of the data with fewer dimensions." \cite{ml:1}
 
@@ -456,11 +477,16 @@ What is the difference to AI? Well, ML is a subset of AI which concentrates on u
 \cite{ml::book::algorithms} page 9-14\\
 "You want to attain an objective. For example, you want to find the best strategy to win a game with specified rules. Once these rules are specified, reinforcement learning techniques will play this game many times to find the best strategy." \cite{ml:1}\\
 follows the steps: "Given its and the environment’s states, the agent will choose the action which will maximize its reward or will explore a new possibility. These actions will change the environment’s and the agent states. They will also be interpreted to give a reward to the agent. By performing this loop many times, the agents will improve its behavior." \cite{ml:1}\\
-\cite{ml::book::statistics} page 352
+\cite{ml::book::statistics} page 352\\
+\\
+Learning = Maximize Utility -> reward, which is a function an agent attempts to maximize by learning to take the right action in a particular state. \cite{ai::book}\\
+inspired by behaviorist psychology and, in particular, the way humans and animals learn to take decisions via (positive or negative) rewards received by their environment. In reinforcement learning, samples of good behavior are usually not available (as in supervised learning); instead, similarly to evolutionary (reinforcement) learning, the training signal of the algorithm is provided by the environment based on how an agent is interacting with it. At a particular point in time t, the agent is on a particular state s and decides to take an action a from all the available actions in its current state. As a response the environment delivers an immediate reward, r. \cite{ai::book}\\
+the training signal is derived as a reward from the environment \cite{ai::book}
 
 \section{Learning Models}
 Which training models are used in ML? --> the 5 tribes of ML\\
-"A Machine Learning model is a set of assumptions about the underlying nature the data to be trained for. The model is used as the basis for determining what a Machine Learning algorithm should learn. A good model, which makes accurate assumptions about the data, is necessary for the machine to give good results" \cite{ml:3}
+"A Machine Learning model is a set of assumptions about the underlying nature the data to be trained for. The model is used as the basis for determining what a Machine Learning algorithm should learn. A good model, which makes accurate assumptions about the data, is necessary for the machine to give good results" \cite{ml:3}\\
+each model has its pros and cons and therefore it is not useful to compare each of them without a specific problem or game mechanic problem which should be solved. furthermore, a short description about it as well as pros and cons of their usages shall be given to introduce them. (NO CITE)
 
 \subsection{Linear}
 used for regression \cite{ml:2}
@@ -473,19 +499,29 @@ used for classification \cite{ml:2}\\
 \subsection{Decision Tree}
 \cite{ml::book::algorithms} page >154\\
 used for classification \cite{ml:2}\\
-\cite{ml::book::statistics} page 119
+\cite{ml::book::statistics} page 119\\
+supervised, can be used for either classification, prediction or preference learning tasks. \cite{ai::book}\\
+In decision tree learning [67], the function f we attempt to derive uses a decision tree representation which maps attributes of data observations to their target values. The former (inputs) are represented as the nodes and the latter (outputs) are represented as the leaves of the tree. The possible values of each node (input) are represented by the various branches of that node. The goal of decision tree learning is to construct a mapping (a tree model) that predicts the value of target outputs based on a number of input attributes.\cite{ai::book}
 
 \subsection{\acl{SVM}}
 \cite{ml::book::algorithms} page >133\\
 used for classification \cite{ml:2}\\
-\cite{ml::book::statistics} page 214 - 240
+\cite{ml::book::statistics} page 214 - 240\\
+supervised; alternative and very popular set of supervised learning algorithms that can be used for either classification, prediction or preference learning tasks. is a binary linear classifier that is trained so as to maximize the margin between the training examples of the separate classes in the data (e.g., apples and pears). SVMs have been used widely for text categorization, speech recognition, image classification, and hand-written character recognition among many other areas.\cite{ai::book}\\
+Similarly to ANNs, SVMs construct a hyperplane that divides the input space and represents the function f that maps between the input and the target outputs. Instead of implicitly attempting to minimize the difference between the model's actual output and the target output following the gradient of the error (as backpropagation does), SVMs construct a hyperplane that maintains the largest distance to the nearest training-data point of any other class. That distance is called a maximum-margin and its corresponding hyperplane divides the points (xi) of class with label (yi) 1 from those with label -1 in a dataset of n samples in total. \cite{ai::book}\\
+They are efficient in finding solutions when dealing with large, yet sparse, datasets as they only depend on support vectors to construct hyperplanes. They also handle well large feature spaces as the learning task complexity does not depend on the dimensionality of the feature space. SVMs feature a simple convex optimization problem which can be guaranteed to converge to a single global solution. Finally, overfitting can be controlled easily through the soft margin classification approach. \cite{ai::book}
 
 \subsection{Neural Networks}
 used for regression \cite{ml:2}\\
 \cite{ml::book::developer} page >131
+
 \subsubsection{\acl{ANN}}
 \cite{ml::book::algorithms} page 289\\
-\cite{ml::book::statistics} page 241 - 267
+\cite{ml::book::statistics} page 241 - 267\\
+supervised, can be used for either classification, prediction or preference learning tasks. but also unsupervised \cite{ai::book}\\
+Artificial Neural Networks (ANNs) are a bio-inspired approach for computational intelligence and machine learning. An ANN is a set of interconnected processing units (named neurons) which was originally designed to model the way a biological brain—containing over $10^{11}$ neurons—processes information, operates, learns and performs in several tasks. Biological neurons have a cell body, a number of dendrites which bring information into the neuron and an axon which transmits electrochemical information outside the neuron. The artificial neuron (see Fig. 2.12) resembles the biological neuron as it has a number of inputs x (corresponding to the neuron dendrites) each with an associated weight parameter w (corresponding to the synaptic strength). It also has a processing unit that combines inputs with their corresponding weights via an inner product (weighted sum) and adds a bias (or threshold) weight b to the weighted sum as follows: $x*w+b$. This value is then fed to an activation function g (cell body) that yields the output of the neuron (corresponding to an axon terminal). ANNs are essentially simple mathematical models defining a function $f : x \rightarrow y$. \cite{ai::book}\\
+core applications: pattern recogintion, robot and agent control, game-playing, decision making, gesture, speech and text recognition, medical and financial applications, affective modeling, and image recognition \cite{ai::book}\\
+pro: compared to other supervised learning approaches is their capacity to approximate any continuous real-valued function given sufficiently large ANN architectures and computational resources. This capacity characterizes ANNs as universal approximators \cite{ai::book}\\
 \subsubsection{\acl{CNN}}
 \cite{ml::book::developer} page >158
 
@@ -493,7 +529,7 @@ used for regression \cite{ml:2}\\
 \subsection{Data Science}
 stick to game related stuff, like alpha go
 \subsection{Games}
-\todo[inline]{The most common application of machine learning is to optimize the policy that controls non-player characters (NPCs). For example, the ANN race car controllers Colin McRae Rally 2.0 and Forza Motorsport 2 and the creature brains in Creatures 3 and Black and White 2 are learned. \protect\cite{pcg::galacticArmsRace::evolvingContent}}\\
+The most common application of machine learning is to optimize the policy that controls non-player characters (NPCs). For example, the ANN race car controllers Colin McRae Rally 2.0 and Forza Motorsport 2 and the creature brains in Creatures 3 and Black and White 2 are learned. \protect\cite{pcg::galacticArmsRace::evolvingContent}\\
 "As a real world example, induction on decision trees was used in Black and White, as the creature learnt to predict the player's reaction. Every time the creature did something, it recorded the player's reaction (slap, reward, etc.), and used this action-player feedback tuple as the input to an induction mechanism to build the decision tree that conditions future action selection. This way the creature ended up doing the kind of actions the player rewarded, and avoided the rest." \url{https://www.gamasutra.com/view/feature/130633/postcard_from_gdc_2005_tutorial__.php}
 \subsubsection{Examples}
 \subsubsection{Possibilities}
@@ -514,7 +550,13 @@ The game and AI designs are each also informed by the domain of the project. The
 we have distilled two major discussion points: the importance of maintaining an appropriate level of transparency of the AI system through the game design, and the challenges of designing for emergent gameplay.\cite{ai::gameDesign}\\
 transparency of the AI-system: However, from a gameplay perspective, it is also important not to overwhelm the player with too much information about the AI system. Finding the appropriate level of transparency for the AI system, or the amount of the AI system that is exposed to the player, is a delicate balancing act.\cite{ai::gameDesign}\\
 emergent gameplay: Emergent gameplay is a fundamental quality of an AI-based game, as the player is supported by an underlying system that can respond intelligently to the player’s actions. For emergence to occur, it is not necessary for the AI system itself to exhibit emergent behavior. For example, consider the following hypothetical game that is supported by an AI-system for pathfinding. The player must direct autonomous agents towards particular goals by manipulating terrain and forcing the agents to take a particular path. The AI system could always find only the optimal path for the lemmings, but its intelligent and rapid response to the player ensures a variety of strategies that the player can employ. \cite{ai::gameDesign}\\
-machine learning can be frighten and if a player has interaction with the system, it should be as easy as possible so the player is not overwhelmed by the system and its possibilites!
+machine learning can be frighten and if a player has interaction with the system, it should be as easy as possible so the player is not overwhelmed by the system and its possibilites! (MY WORDS)\\
+\\
+AI algorithm design: \cite{ai::book}
+\begin{itemize}
+	\item Representation of Game State: Depending on the AI system it is crucial that game states are described in a way so that the system can easily e.g. read and observe it.
+\end{itemize}
+
 \subsection{Conceptual Implementation}
 Basic sample PCG and ML implementations in a game engine.
 
@@ -577,12 +619,14 @@ Role of AI (in relation to player): Spectacle, enacting simulated society
 %
 \clearpage
 \chapter{\acl{PCGML}}
+\cite{ai::book} p 173-175
 \section{What is it About?}
 Theory of PCGML and its methods in general.
 Evaluation of PCGML hardware and software requirements
 \section{Current Use in Games}
 \section{Possibilities}
 \section{Difference to Usual \acl{PCG}}
+The core difference between PCG via machine learning and approaches such as search-based PCG is that the content is created directly (e.g., via sampling) from models which have been trained on game content. \cite{ai::book}
 \section{Example Implementations}
 Theory of PCGML and its methods in general.
 \section{Learning Models}
@@ -612,25 +656,25 @@ maybe read over \cite{pcg::endlessWeb} again\\
 read explanation of design pattern in \cite{ai::aiBasedGameDesignPattern} again!
 
 \subsection{Role-Model}
-A \ac{PCGML} system replicates content which is generated by players of various levels of skill or generates content suitable for players of certain skill levels. New players are trained by replicating the content or by playing the generated content in the form of generative tutorial. \cite{pcgml::paper}
+"A \ac{PCGML} system replicates content which is generated by players of various levels of skill or generates content suitable for players of certain skill levels. New players are trained by replicating the content or by playing the generated content in the form of generative tutorial." \cite{pcgml::paper}
 
 \subsection{Trainee}
-The player trains a \ac{PCGML} system to generate a piece of necessary content (e.g., part of a puzzle or level geometry). \cite{pcgml::paper}
+"The player trains a \ac{PCGML} system to generate a piece of necessary content (e.g., part of a puzzle or level geometry)." \cite{pcgml::paper}
 
 \subsection{Editable}
-Rather than training the AI to generate the missing puzzle piece via examples, the player changes the internal model’s values until acceptable content is generated. \cite{pcgml::paper}
+"Rather than training the AI to generate the missing puzzle piece via examples, the player changes the internal model’s values until acceptable content is generated." \cite{pcgml::paper}
 
 \subsection{Guided}
-The player corrects the \ac{PCG} system’s output to fulfil increasingly difficult requirements. The \ac{AI}, in turn, learns from the player’s corrections, following the player’s guidance. \cite{pcgml::paper}
+"The player corrects the \ac{PCG} system’s output to fulfil increasingly difficult requirements. The \ac{AI}, in turn, learns from the player’s corrections, following the player’s guidance." \cite{pcgml::paper}
 
 \subsection{Co-Creator}
-The player and a \ac{PCGML} system take turns in creating content, moving towards some external requirements. The \ac{PCGML} system learns from the player’s examples. \cite{pcgml::paper} 
+"The player and a \ac{PCGML} system take turns in creating content, moving towards some external requirements. The \ac{PCGML} system learns from the player’s examples." \cite{pcgml::paper} 
 
 \subsection{Adversary}
-The player produces content that the \ac{PCGML} system must replicate by generation to survive or vice versa in a “call and response” battle. \cite{pcgml::paper}
+"The player produces content that the \ac{PCGML} system must replicate by generation to survive or vice versa in a “call and response” battle." \cite{pcgml::paper}
 
 \subsection{Spectacle}
-The \ac{PCGML} system is trained to replicate patterns that are sensorically impressive or cognitively interesting. \cite{pcgml::paper}
+"The \ac{PCGML} system is trained to replicate patterns that are sensorically impressive or cognitively interesting." \cite{pcgml::paper}
 
 \section{Conceptual Prototypes (with evaluation)}
 A test implementation of PCGML game mechanics in a game engine.
@@ -673,7 +717,7 @@ Classes, Diagrams, why use what - eg. why use neural network over other and stuf
 \subsection{Evaluation}
 Evaluation of playtesters feedback.
 \section{Result}
-show the fucking game and the mechanics!
+show the game and the mechanics!
 
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
