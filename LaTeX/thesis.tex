@@ -31,6 +31,7 @@
 \usepackage{graphicx}
 %\usepackage[disable]{todonotes} % notes not showed
 \usepackage[draft]{todonotes} % notes showed
+\usepackage{verbatim} %multiline comment
 
 %
 % Bitte in der folgenden Zeile den Zitierstandard festlegen
@@ -436,23 +437,12 @@ Addresses problems where classification transition of independent values into sp
 Like regression algorithms, classification algorithms could be used for imitation and prediction of a player's behavior, such as prediction of completion time \cite{ai::book}. But in this case, the possible output are specific values or classes like slow, average or fast instead of continuous values \cite{ai::book}. Some popular used algorithm for classification are, e.g. \ac{ANN}, decision tree, random forests, \ac{SVM}, K-nearest neighbor or ensemble learning \cite{ai::book}.
 
 \subsection{Unsupervised Learning}
-\cite{ml::book::algorithms} page 9-14\\
-is data driven \cite{ml::book::developer}\\
-"You have unlabelled data and looks for patterns, groups in these data. Instead of doing it manually, unsupervised machine learning will automatically discriminate different clients." \cite{ml:1}\\
-"In unsupervised learning we want to find unknown structures or trends." \cite{ml:2}\\
-" Most of the time unsupervised learning algorithms are used to pre-process the data, during the exploratory analysis or to pre-train supervised learning algorithms." \cite{ml:1}\\
-"search for structure in data, unknown targets" \cite{ml:2}\\
-Learning = Maximize Utility -> is often provided internally and within the representation via e.g., competitive learning or self-organization \cite{ai::book}\\
-attempts to discover associations of the input by searching for patterns among all input data attributes and without having access to a target output. it focus on the intrinsic structure of and associations in the data instead of
-attempting to imitate or predict target values \cite{ai::book}
+In contrast to supervised learning, unsupervised learning is based upon a data driven approach where the algorithm has no information about the meaning or value of any sample and needs to infer it automatically \cite{ml::book::developer}. Hence, an unsupervised learning algorithm gets so called unlabeled data without having a specific relationship to the target output and finds unknown structures and pattern in that set \cite{ai::book}. Going back to the apples and pears example, an algorithm would try to detect that there are 2 different types or classes in the dataset instead of predicting if its an apple or a pear.\\
+Unsupervised learning is often used for object segmentation, similarity and pattern detection, automatic labeling, to pre-train supervised algorithms or pre-process data such as data compression, noise smoothing or outlier detection  \cite{ml::book::algorithms} \cite{ai::book}.
 
 \subsubsection{Clustering}
-"Clustering algorithm, such as K-means, hierarchical clustering or mixture models. These algorithms try to discriminate and separate the observations in different groups." \cite{ml:1}\\
-is the unsupervised learning task of finding unknown groups of a number of data points so that data within a group (or else, cluster) is similar to each other and dissimilar to data from other clusters. Clustering has found applications in detecting groups of data across multiple attributes and in data reduction tasks such as data compression, noise smoothing, outlier detection and dataset partition. Clustering is of key importance for games with applications in player modeling, game playing and content generation.\cite{ai::book}\\
-Relevant data for clustering in games include player behavior, navigation patterns, assets bought, items used, game genres played and so on. Clustering can be used to group players into archetypical playing patterns in an effort to evaluate how people play a particular game and as part of a user-oriented testing process [176]. Further, one of the key questions of user testing in games is whether people play the game as intended. Clustering can be utilized to derive a number of different playing or behavioral styles directly addressing this question. \cite{ai::book}
-
-\subsubsection{Dimension Reduction}
-"Dimensionality reduction algorithms (which are mostly unsupervised) such as PCA, ICA or autoencoder. These algorithms find the best representation of the data with fewer dimensions." \cite{ml:1}
+For example, solves the previous described apples and pears problem by clustering apples and pears out of a given training set with features of both fruits. Based upon the learned knowledge of the training set, it is able to differentiate new and unknown samples into either apples, pears or a completely new class \cite{ai::book}. In detail, clustering algorithms are looking for similarities between given features and values and by doing this, they are inferring a relationship between them and thus separate specific classes \cite{ml::book::developer}.\\
+Popular used algorithms for clustering are, e.g. K-Means, neural networks or hidden markov models. \cite{ml::book::developer}
 
 \subsection{Reinforcement Learning}
 \cite{ml::book::algorithms} page 9-14\\
@@ -463,8 +453,11 @@ follows the steps: "Given its and the environment’s states, the agent will cho
 \\
 Learning = Maximize Utility -> reward, which is a function an agent attempts to maximize by learning to take the right action in a particular state. \cite{ai::book}\\
 inspired by behaviorist psychology and, in particular, the way humans and animals learn to take decisions via (positive or negative) rewards received by their environment. In reinforcement learning, samples of good behavior are usually not available (as in supervised learning); instead, similarly to evolutionary (reinforcement) learning, the training signal of the algorithm is provided by the environment based on how an agent is interacting with it. At a particular point in time t, the agent is on a particular state s and decides to take an action a from all the available actions in its current state. As a response the environment delivers an immediate reward, r. \cite{ai::book}\\
-the training signal is derived as a reward from the environment \cite{ai::book}
+the training signal is derived as a reward from the environment \cite{ai::book}\\
 
+This type of learning doesn't have a labeled sample set and has a different number of participating elements, which include an agent, an environment, and learning an optimum policy or set of steps, maximizing a goaloriented approach by using rewards or penalties (the result of each attempt).\cite{ml::book::developer}
+
+\begin{comment} it doesn't make any sense to describe all learning models for machine learning if they won't be used at all?!
 \section{Learning Models}
 Which training models are used in ML? --> the 5 tribes of ML\\
 "A Machine Learning model is a set of assumptions about the underlying nature the data to be trained for. The model is used as the basis for determining what a Machine Learning algorithm should learn. A good model, which makes accurate assumptions about the data, is necessary for the machine to give good results" \cite{ml:3}\\
@@ -506,6 +499,7 @@ core applications: pattern recogintion, robot and agent control, game-playing, d
 pro: compared to other supervised learning approaches is their capacity to approximate any continuous real-valued function given sufficiently large ANN architectures and computational resources. This capacity characterizes ANNs as universal approximators \cite{ai::book}\\
 \subsubsection{\acl{CNN}}
 \cite{ml::book::developer} page >158
+\end{comment}
 
 \section{Use Cases}
 \subsection{Data Science}
@@ -539,9 +533,8 @@ AI algorithm design: \cite{ai::book}
 	\item Representation of Game State: Depending on the AI system it is crucial that game states are described in a way so that the system can easily e.g. read and observe it.
 \end{itemize}
 
-supervised learning: Learning = Maximize Utility -> error function represents how well an approach maps training examples to target (desired) outputs \cite{ai::book}
-\subsection{Conceptual Implementation}
-Basic sample PCG and ML implementations in a game engine.
+supervised learning: Learning = Maximize Utility -> error function represents how well an approach maps training examples to target (desired) outputs \cite{ai::book}\\
+unsupervised learning: Learning = Maximize Utility -> is often provided internally and within the representation via e.g., competitive learning or self-organization \cite{ai::book}
 
 \subsection{Common Pitfalls}
 \url{https://xyclade.github.io/MachineLearning/#learning-methods}
@@ -550,6 +543,14 @@ Basic sample PCG and ML implementations in a game engine.
 "Overfitting is the result of focussing a Machine Learning algorithm too closely on the training data, so that it is not generalized enough to correctly process new data. It is an example of a machine "learning the wrong thing" and becoming less capable of correctly interpreting new data." \cite{ml:3}
 \subsubsection{Underfitting}
 \subsubsection{Curse of Dimensionality}
+
+
+\subsection{Game Engine Plugins}
+Basic sample PCG and ML implementations in a game engine.
+\subsubsection{Unity}
+\url{https://github.com/Unity-Technologies/ml-agents}
+\subsubsection{Unreal Engine 4}
+\url{https://github.com/getnamo/tensorflow-ue4}
 
 \section{Game Mechanics}
 \subsection{Current Games}
