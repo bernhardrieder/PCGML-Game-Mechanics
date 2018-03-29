@@ -444,18 +444,10 @@ Unsupervised learning is often used for object segmentation, similarity and patt
 For example, solves the previous described apples and pears problem by clustering apples and pears out of a given training set with features of both fruits. Based upon the learned knowledge of the training set, it is able to differentiate new and unknown samples into either apples, pears or a completely new class \cite{ai::book}. In detail, clustering algorithms are looking for similarities between given features and values and by doing this, they are inferring a relationship between them and thus separate specific classes \cite{ml::book::developer}.\\
 Popular used algorithms for clustering are, e.g. K-Means, neural networks or hidden markov models. \cite{ml::book::developer}
 
-\subsection{Reinforcement Learning}
-\cite{ml::book::algorithms} page 9-14\\
-is environment/agent driven \cite{ml::book::developer}\\
-"You want to attain an objective. For example, you want to find the best strategy to win a game with specified rules. Once these rules are specified, reinforcement learning techniques will play this game many times to find the best strategy." \cite{ml:1}\\
-follows the steps: "Given its and the environment’s states, the agent will choose the action which will maximize its reward or will explore a new possibility. These actions will change the environment’s and the agent states. They will also be interpreted to give a reward to the agent. By performing this loop many times, the agents will improve its behavior." \cite{ml:1}\\
-\cite{ml::book::statistics} page 352\\
-\\
-Learning = Maximize Utility -> reward, which is a function an agent attempts to maximize by learning to take the right action in a particular state. \cite{ai::book}\\
-inspired by behaviorist psychology and, in particular, the way humans and animals learn to take decisions via (positive or negative) rewards received by their environment. In reinforcement learning, samples of good behavior are usually not available (as in supervised learning); instead, similarly to evolutionary (reinforcement) learning, the training signal of the algorithm is provided by the environment based on how an agent is interacting with it. At a particular point in time t, the agent is on a particular state s and decides to take an action a from all the available actions in its current state. As a response the environment delivers an immediate reward, r. \cite{ai::book}\\
-the training signal is derived as a reward from the environment \cite{ai::book}\\
-
-This type of learning doesn't have a labeled sample set and has a different number of participating elements, which include an agent, an environment, and learning an optimum policy or set of steps, maximizing a goaloriented approach by using rewards or penalties (the result of each attempt).\cite{ml::book::developer}
+\subsection{\acl{RL}}
+In short, \ac{RL} is an goal-oriented approach which uses so called agents who are used to get feedback or specific states of an environment which is further used to learn and improve new decisions based on taken decisions \cite{ml::book::developer}. Inspired by the way humans and animals learn to take decisions, it aims at rewarding the algorithm for good behavior and thus leads it towards the best knowledge and output \cite{ai::book}. \\
+In detail, there is a bit of supervision used in form of feedback for an action executed by an agent which is usually referred as the reward for an action \cite{ml::book::statistics}. Tricky part is, that RL consists of sequential decisions and every chosen action, which can be chosen out of a set of actions, by an agent is changing the environment which usually makes it difficult to train a model \cite{ml::book::statistics}. Hence, an agent executes different decisions in a loop and is looking for the highest total reward for its sequence of actions since it will always want to increase his total reward. \cite{ai::book} With this strategy, an RL algorithm is getting better and better over time in solving a specific problem until it found the best solution.\\
+During the last years, RL algorithms have been used to learn an AI how to play classical games, find the best strategy to win a game, learn an AI how to walk and many other applications \cite{ml::book::algorithms}. Algorithms include neural networks, deep neural networks, Q-Learning or markov decision process. \cite{ml::book::statistics}
 
 \begin{comment} it doesn't make any sense to describe all learning models for machine learning if they won't be used at all?!
 \section{Learning Models}
@@ -534,7 +526,8 @@ AI algorithm design: \cite{ai::book}
 \end{itemize}
 
 supervised learning: Learning = Maximize Utility -> error function represents how well an approach maps training examples to target (desired) outputs \cite{ai::book}\\
-unsupervised learning: Learning = Maximize Utility -> is often provided internally and within the representation via e.g., competitive learning or self-organization \cite{ai::book}
+unsupervised learning: Learning = Maximize Utility -> is often provided internally and within the representation via e.g., competitive learning or self-organization \cite{ai::book}\\
+reinforcement learning: Learning = Maximize Utility -> reward, which is a function an agent attempts to maximize by learning to take the right action in a particular state. \cite{ai::book}\\
 
 \subsection{Common Pitfalls}
 \url{https://xyclade.github.io/MachineLearning/#learning-methods}
@@ -750,6 +743,7 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
     \acro{PCG}{Procedural Content Generation}
     \acro{PCGML}{Procedural Content Generation via Machine Learning}
     %\acro{RPG}{Roleplay Game}
+    \acro{RL}{Reinforcement Learning}
     \acro{RNG}{Random Number Generator}
     \acro{SVM}{Support Vector Machine}
 \end{acronym}
