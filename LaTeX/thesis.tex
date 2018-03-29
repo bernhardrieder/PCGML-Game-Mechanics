@@ -446,7 +446,7 @@ Popular used algorithms for clustering are, e.g. K-Means, neural networks or hid
 
 \subsection{\acl{RL}}
 In short, \ac{RL} is an goal-oriented approach which uses so called agents who are used to get feedback or specific states of an environment which is further used to learn and improve new decisions based on taken decisions \cite{ml::book::developer}. Inspired by the way humans and animals learn to take decisions, it aims at rewarding the algorithm for good behavior and thus leads it towards the best knowledge and output \cite{ai::book}. \\
-In detail, there is a bit of supervision used in form of feedback for an action executed by an agent which is usually referred as the reward for an action \cite{ml::book::statistics}. Tricky part is, that RL consists of sequential decisions and every chosen action, which can be chosen out of a set of actions, by an agent is changing the environment which usually makes it difficult to train a model \cite{ml::book::statistics}. Hence, an agent executes different decisions in a loop and is looking for the highest total reward for its sequence of actions since it will always want to increase his total reward. \cite{ai::book} With this strategy, an RL algorithm is getting better and better over time in solving a specific problem until it found the best solution.\\
+In general, there is a bit of supervision used in form of feedback for an action executed by an agent which is usually referred as the reward for an action \cite{ml::book::statistics}. Tricky part is, that RL consists of sequential decisions and every chosen action, which can be chosen out of a set of actions, by an agent is changing the environment which usually makes it difficult to train a model \cite{ml::book::statistics}. Hence, an agent executes different decisions in a loop and is looking for the highest total reward for its sequence of actions since it will always want to increase his total reward. \cite{ai::book} With this strategy, an RL algorithm is getting better and better over time in solving a specific problem until it found the best solution.\\
 During the last years, RL algorithms have been used to learn an AI how to play classical games, find the best strategy to win a game, learn an AI how to walk and many other applications \cite{ml::book::algorithms}. Algorithms include neural networks, deep neural networks, Q-Learning or markov decision process. \cite{ml::book::statistics}
 
 \begin{comment} it doesn't make any sense to describe all learning models for machine learning if they won't be used at all?!
@@ -524,7 +524,7 @@ reinforcement learning: Learning = Maximize Utility -> reward, which is a functi
 Following pitfalls are commonly occurring problems when implementing and training machine learning models for a specific problem.
 
 \subsubsection{Under- and Overfitting}
-ML models are used to approximate unknown output based on given training data \cite{ml::book::algorithms}. When talking about fitting, then it is referred to fit a model to a given training set which is used to train the model. This set can consist of many independent variables and different entries which are applied to a model.
+ML models are used to approximate unknown output based on given training data \cite{ml::book::algorithms}. When talking about fitting, then it is referred to fit a model to a given training set and its features which is used to train the model. This set can consist of many independent variables and different entries which can create some issues:
 \begin{itemize}
 	\item \textbf{Underfitting}: Happens when you train your model with too less information or independent variables so that your model is not able to capture the dynamics between the values \cite{ml::book::algorithms}.
 	\item \textbf{Overfitting}: Is exactly the opposite of underfitting. When a model is over fitted then it is fed with too much information and variables so that it is not able to generalize the dynamic relationship of variables during the training \cite{ml::book::algorithms}.
@@ -535,11 +535,13 @@ So keep in mind to provide a good amount of information for the training of a ma
 This problem often occurs when the training set is smaller than the amount of feature variables, or also called the dimensions of a set, which are used to train a model \cite{ml::book::algorithms}. In this case, if the number of features increases then the performance of the model gets dramatically reduced \cite{ml::book::algorithms}. Possible ways to prevent and solve this problem are, e.g. a decrease of dimensions or providing more training data \cite{ml::book::algorithms}.
 
 \subsection{Game Engine Plugins}
-Basic sample PCG and ML implementations in a game engine.
+Certainly, all the different machine learning models or the one which are used for the implementation part in this thesis could be implemented on my own behalf. But there are other people out there who have already implemented and improved their implementations which are a good starting point when implementing a PCGML game mechanic. As discussed in the beginning of the thesis, it is going to focus on an implementation in common used game engines which is the reason why to envisage the two most used free to use game engines nowadays.
+
 \subsubsection{Unity}
-\url{https://github.com/Unity-Technologies/ml-agents}
+Unity made an incredible effort in its research and use of machine learning in their engine in the last year \cite{unity::ml}. They recently released a beta version of an open-source ML agents plugin that enables games to train an AI with \ac{RL}, imitation learning, neuroevolution or other ML methods \cite{unity::mlGithub}. The plugin is based upon Google's open-source ML framework TensorFlow \cite{api::tensorFlow} and can be programmed via a simple-to-use Python \ac{API} \cite{unity::mlGithub}. They are also providing important instructions and documentary for the usage of their plugin which is a promising, positive and major advantage when implementing the PCGML game mechanic.
+
 \subsubsection{Unreal Engine 4}
-\url{https://github.com/getnamo/tensorflow-ue4}
+At the time of writing this section, there is no officially announced ongoing plugin or feature development for ML in \ac{UE4}. But there are others who were concerned about the missing feature of ML in UE4. For this reason, \cite{ue4::tensorFlowPlugin} created an open-source TensorFlow plugin for UE4 which implements a Python API accessible interface. Certainly, there are also some other plugins available via UE4's marketplace such as a Q-Learning plugin but there do not look that promising as \cite{ue4::tensorFlowPlugin}'s TensorFlow plugin. Also, documentation and guidance is given how to use the plugin which makes it a considerable option in contrast to Unity's ML agent plugin.
 
 \section{Game Mechanics}
 \subsection{Current Games}
@@ -732,6 +734,7 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
 	\acro{3D}{3-Dimensional}
 	\acro{AI}{Artificial Intelligence}
 	\acro{ANN}{Artificial Neural Network}
+	\acro{API}{Application Programming Interface}
 	\acro{CNN}{Convolutional Neural Network}
 	\acro{GB}{Gigabyte}
 	\acro{MDA}{Mechanics-Dynamics-Aesthetics}
@@ -745,6 +748,7 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
     \acro{RL}{Reinforcement Learning}
     \acro{RNG}{Random Number Generator}
     \acro{SVM}{Support Vector Machine}
+    \acro{UE4}{Unreal Engine 4}
 \end{acronym}
 
 %
