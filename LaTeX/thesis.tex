@@ -493,15 +493,6 @@ pro: compared to other supervised learning approaches is their capacity to appro
 \cite{ml::book::developer} page >158
 \end{comment}
 
-\section{Use Cases}
-\subsection{Data Science}
-stick to game related stuff, like alpha go
-\subsection{Games}
-The most common application of machine learning is to optimize the policy that controls non-player characters (NPCs). For example, the ANN race car controllers Colin McRae Rally 2.0 and Forza Motorsport 2 and the creature brains in Creatures 3 and Black and White 2 are learned. \protect\cite{pcg::galacticArmsRace::evolvingContent}\\
-"As a real world example, induction on decision trees was used in Black and White, as the creature learnt to predict the player's reaction. Every time the creature did something, it recorded the player's reaction (slap, reward, etc.), and used this action-player feedback tuple as the input to an induction mechanism to build the decision tree that conditions future action selection. This way the creature ended up doing the kind of actions the player rewarded, and avoided the rest." \url{https://www.gamasutra.com/view/feature/130633/postcard_from_gdc_2005_tutorial__.php}
-\subsubsection{Examples}
-\subsubsection{Possibilities}
-
 \section{Development}
 How to use PCG and ML in a game engine? What are some of the best practices and approaches for using PCG and ML in a game?
 
@@ -530,13 +521,18 @@ unsupervised learning: Learning = Maximize Utility -> is often provided internal
 reinforcement learning: Learning = Maximize Utility -> reward, which is a function an agent attempts to maximize by learning to take the right action in a particular state. \cite{ai::book}\\
 
 \subsection{Common Pitfalls}
-\url{https://xyclade.github.io/MachineLearning/#learning-methods}
-\subsubsection{Overfitting}
-"Too much accuracy in the training stage often leads to over-optimisation and then worse results than expected in the test stage." \cite{ml:2}\\
-"Overfitting is the result of focussing a Machine Learning algorithm too closely on the training data, so that it is not generalized enough to correctly process new data. It is an example of a machine "learning the wrong thing" and becoming less capable of correctly interpreting new data." \cite{ml:3}
-\subsubsection{Underfitting}
-\subsubsection{Curse of Dimensionality}
+Following pitfalls are commonly occurring problems when implementing and training machine learning models for a specific problem.
 
+\subsubsection{Under- and Overfitting}
+ML models are used to approximate unknown output based on given training data \cite{ml::book::algorithms}. When talking about fitting, then it is referred to fit a model to a given training set which is used to train the model. This set can consist of many independent variables and different entries which are applied to a model.
+\begin{itemize}
+	\item \textbf{Underfitting}: Happens when you train your model with too less information or independent variables so that your model is not able to capture the dynamics between the values \cite{ml::book::algorithms}.
+	\item \textbf{Overfitting}: Is exactly the opposite of underfitting. When a model is over fitted then it is fed with too much information and variables so that it is not able to generalize the dynamic relationship of variables during the training \cite{ml::book::algorithms}.
+\end{itemize}
+So keep in mind to provide a good amount of information for the training of a machine learning model to achieve a good fitted model. A method to check and prevent your model from being over or under fitted is the technique of validation such as cross-validation which helps to detect those problems \cite{ml::book::algorithms}.
+
+\subsubsection{Curse of Dimensionality}
+This problem often occurs when the training set is smaller than the amount of feature variables, or also called the dimensions of a set, which are used to train a model \cite{ml::book::algorithms}. In this case, if the number of features increases then the performance of the model gets dramatically reduced \cite{ml::book::algorithms}. Possible ways to prevent and solve this problem are, e.g. a decrease of dimensions or providing more training data \cite{ml::book::algorithms}.
 
 \subsection{Game Engine Plugins}
 Basic sample PCG and ML implementations in a game engine.
@@ -547,7 +543,10 @@ Basic sample PCG and ML implementations in a game engine.
 
 \section{Game Mechanics}
 \subsection{Current Games}
-there are a some AI-based games with AI-based game mechanics (Pataphysic Institute, Prom Week, Mismanor, Endless Web, MKULTRA, A Rogue Dream) \cite{ai::aiBasedGameDesignPattern}
+there are a some AI-based games with AI-based game mechanics (Pataphysic Institute, Prom Week, Mismanor, Endless Web, MKULTRA, A Rogue Dream) \cite{ai::aiBasedGameDesignPattern}\\
+\\
+The most common application of machine learning is to optimize the policy that controls non-player characters (NPCs). For example, the ANN race car controllers Colin McRae Rally 2.0 and Forza Motorsport 2 and the creature brains in Creatures 3 and Black and White 2 are learned. \protect\cite{pcg::galacticArmsRace::evolvingContent}\\
+"As a real world example, induction on decision trees was used in Black and White, as the creature learnt to predict the player's reaction. Every time the creature did something, it recorded the player's reaction (slap, reward, etc.), and used this action-player feedback tuple as the input to an induction mechanism to build the decision tree that conditions future action selection. This way the creature ended up doing the kind of actions the player rewarded, and avoided the rest." \url{https://www.gamasutra.com/view/feature/130633/postcard_from_gdc_2005_tutorial__.php}
 \subsection{Possible Mechanics}
 \cite{ai::aiBasedGameDesignPattern} introduced nine design patterns which illustrates ways to develop game mechanics based on AI techniques and furthermore to create AI-based games. (should probably read every part again when writing this chapter)
 
