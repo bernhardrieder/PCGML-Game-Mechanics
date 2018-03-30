@@ -230,7 +230,7 @@ The practical part concentrates primarily on programming in different programmin
 % ------------------------------- NEW CHAPTER ------------------------------- %
 %
 \clearpage
-\chapter{Game Mechanics}
+\chapter{Game Mechanics} \label{gameMechanicsChapter}
 Starting this chapter with a quick insight on the \ac{MDA} framework which was introduced by \cite{mechanic::MDA}, helps to understand the foundation and the correlation of game mechanics in video games. In general, the MDA framework describes the division of gaming experience emergence into three dependent parts, starting with "Rules" followed by "System" and concluded with "Fun" \cite{mechanic::MDA}. These fundamental parts can be represented by the designs of "Mechanics", "Dynamics" and "Aesthetics" in a game  \cite{mechanic::MDA}. Therefore, a large amount of gaming experience is made out of mechanics and a game will not be fun at all if their mechanics are not properly thought through even if it has amazing graphics \cite{gameDesign::gameMechanicsAdvancedGameDesign}. Consequently, game mechanics are acting as one of the most important roles in game design which is the reason to create awareness for this topic in the beginning of the thesis.  
 % one could mention the DDE framwork besides MDA \cite{mechanic::fromMdaToDde}
 
@@ -494,31 +494,20 @@ pro: compared to other supervised learning approaches is their capacity to appro
 \end{comment}
 
 \section{Development}
-How to use PCG and ML in a game engine? What are some of the best practices and approaches for using PCG and ML in a game?
+Developing an easy to use AI needs to be a well-structured and planned project. Especially, when using ML as a focus of interaction it is even more important to be well-prepared. For this reason, there will be given some design considerations about developing user-friendly AI systems in games, as well as common pitfalls to keep in mind and also possibilities of how to use ML algorithms in two common used game engines.
 
 \subsection{Design Considerations}
-"AI must be robust enough to support player experimentation and exploration, and games must be designed to take full advantage of it." \cite{ai::gameDesign}\\
-"Systems that are completely predictable to the player feel mechanical and “dead”" \cite{ai::gameDesign}\\
-"we cannot merely write a new AI system and expect that this alone will create a new experience." \cite{ai::gameDesign}\\
-When discussing AI-based game design, it is useful to use the Mechanics, Dynamics, and Aesthetics (MDA) framework \cite{ai::gameDesign}\\
-An AI-based game is one that has an AI system closely integrated into its core mechanics and aesthetics, and also into the setting and story. \cite{ai::gameDesign}\\
-At the core of the AI-based game design process is this iterative loop involving the AI design and game design informing each other in an iterative manner. \cite{ai::gameDesign}\\
-Without a rough design of the AI system, it is impossible to flesh out the mechanics of the game; without a rough design of the game system, it is impossible to know what should be modeled in the AI system. \cite{ai::gameDesign}\\
-The game and AI designs are each also informed by the domain of the project. There are typically at least three types of domains used during AI-based game design: AI architectures, game design conventions, and knowledge domains. \cite{ai::gameDesign}\\
-\\
-we have distilled two major discussion points: the importance of maintaining an appropriate level of transparency of the AI system through the game design, and the challenges of designing for emergent gameplay.\cite{ai::gameDesign}\\
-transparency of the AI-system: However, from a gameplay perspective, it is also important not to overwhelm the player with too much information about the AI system. Finding the appropriate level of transparency for the AI system, or the amount of the AI system that is exposed to the player, is a delicate balancing act.\cite{ai::gameDesign}\\
-emergent gameplay: Emergent gameplay is a fundamental quality of an AI-based game, as the player is supported by an underlying system that can respond intelligently to the player’s actions. For emergence to occur, it is not necessary for the AI system itself to exhibit emergent behavior. For example, consider the following hypothetical game that is supported by an AI-system for pathfinding. The player must direct autonomous agents towards particular goals by manipulating terrain and forcing the agents to take a particular path. The AI system could always find only the optimal path for the lemmings, but its intelligent and rapid response to the player ensures a variety of strategies that the player can employ. \cite{ai::gameDesign}\\
-machine learning can be frighten and if a player has interaction with the system, it should be as easy as possible so the player is not overwhelmed by the system and its possibilites! (MY WORDS)\\
-\\
-AI algorithm design: \cite{ai::book}
+Someone can not just develop a new novel AI system and expect to create a whole new experience, it needs to have a thoughtful plan how to achieve new experience \cite{ai::gameDesign}. Firstly, it is useful to think about the MDA framework, which was described in chapter \ref{gameMechanicsChapter}, because an AI-based game is often closely integrated into its game mechanics and therefore it is necessary to make no mistakes in the first place to fulfill playability and emerging experience \cite{ai::gameDesign}. \\
+Here are some important considerations for AI-based games described by \cite{ai::gameDesign} which are also worth noting for implementing a ML based AI system: 
 \begin{itemize}
-	\item Representation of Game State: Depending on the AI system it is crucial that game states are described in a way so that the system can easily e.g. read and observe it.
+	\item First, develop a rough design of your game system and then model the AI system upon that game system or vice versa \cite{ai::gameDesign}. In particular for AI-based games, the AI system should support the designed core experience of the game \cite{ai::gameDesign}.
+	\item An AI should provide possible exploration and allow a player to experiment with it which means it should be robust enough and not lead to game crashes or misbehavior \cite{ai::gameDesign}. 
+	\item Try to create unpredictable systems otherwise it will feel too mechanical and unnatural \cite{ai::gameDesign}.
+	\item The environment of an AI-based game should be observable for an AI system which means it should be able to access states of different game entities at any time \cite{ai::gameDesign}. Consequently, game states should be described in a way so that an AI system can easily access and read it \cite{ai::book}.
+	\item A system should be as easy and transparent as possible for a player so that a player will not be overwhelmed by the system and its possibilities \cite{ai::gameDesign}. Especially, because an interactive ML system as an AI system in the game could be a confusing thing for a player if it, e.g. exposes too much information \cite{ai::gameDesign}. This is of particular importance when using \ac{RL} as the backbone AI agent algorithm.
+	\item Provide ways for an emergent gameplay with the help of the AI system with, e.g. possible strategies which can be applied to the system \cite{ai::gameDesign}. 
 \end{itemize}
-
-supervised learning: Learning = Maximize Utility -> error function represents how well an approach maps training examples to target (desired) outputs \cite{ai::book}\\
-unsupervised learning: Learning = Maximize Utility -> is often provided internally and within the representation via e.g., competitive learning or self-organization \cite{ai::book}\\
-reinforcement learning: Learning = Maximize Utility -> reward, which is a function an agent attempts to maximize by learning to take the right action in a particular state. \cite{ai::book}\\
+Lastly, the discussed issues and considerations in chapter \ref{mechanicsConsiderationsPCGandML} also apply for the implementation of an ML based AI agent.
 
 \subsection{Common Pitfalls}
 Following pitfalls are commonly occurring problems when implementing and training machine learning models for a specific problem.
