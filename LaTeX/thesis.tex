@@ -32,7 +32,8 @@
 %\usepackage[disable]{todonotes} % notes not showed
 \usepackage[draft]{todonotes} % notes showed
 \usepackage{verbatim} %multiline comment
-
+\usepackage{longtable}
+\usepackage{lscape}
 %
 % Bitte in der folgenden Zeile den Zitierstandard festlegen
 \newcommand{\FHTWCitationType}{HARVARD} % IEEE oder HARVARD möglich - wenn Sie zwischen IEEE und HARVARD wechseln, bitte die temorären Dateien (aux, bbl, ...) löschen
@@ -545,47 +546,37 @@ The player is in control and owns a creature who can be trained to do things for
 Is a game where players need to hatch animals and try to teach them how to behave and survive in their world \cite{ml::mostInfluentalAiGames}. As well as Black and White, Creatures also used neural networks to teach and learn animals how to behave based on a player's input \cite{ml::mostInfluentalAiGames}.
 
 \subsection{Possible Mechanics}
-\cite{ai::aiBasedGameDesignPattern} introduced nine design patterns which illustrates ways to develop game mechanics based on AI techniques and furthermore to create AI-based games. (should probably read every part again when writing this chapter)
+\cite{ai::aiBasedGameDesignPattern} introduced nine design patterns, summarized in table \ref{AI-basedMechanicsDesignPattern} which illustrates ways to develop game mechanics based on AI techniques and furthermore to create AI-based games. Based on this design pattern there will be given some examples of possible mechanics or core mechanics with ML.
+\begin{table}[!htbp]
+	\centering
+	\resizebox{\textwidth}{!}
+	{%
+		\begin{tabular}{|p{2.1cm}||p{8cm}|p{4cm}|p{4cm}|}
+			\hline
+			\multicolumn{1}{|c||}{\textbf{Pattern Name}} & \multicolumn{1}{c|}{\textbf{Description}} & \multicolumn{1}{c|}{\textbf{Role of Player}} & \multicolumn{1}{c|}{\textbf{Role of AI}} \\ \hline\hline
+			\textbf{Visualized} & Visualization of AI system states and so that gameplay revolves around state manipulation & Obversation and manipulation of an AI system & Shows states and gives information \\ \hline
+			\textbf{Role-Model} & Player needs to imitate AI agents & AI system imitation & Shows actions and behavior, e.g. as a puzzle \\ \hline
+			\textbf{Trainee} & AI system needs to be trained to perform gameplay tasks & Teacher for AI system & Learning of desired behavior \\ \hline
+			\textbf{Editable} & Player need to change elements of an AI agent which are related to gameplay & Obversation and manipulation of the AI & Handle changes and show new behavior \\ \hline
+			\textbf{Guided} & Player partly assists or guides an AI agent who is threatend  by a problem & Guideance and management of the AI & Act on her own but mostly does what the player wants \\ \hline
+			\textbf{Co-Creator} & Player and AI work together as equal partners. & Necessity of learning how to play the game with AI assistance & Acts as co-creator and assistance for the player \\ \hline
+			\textbf{Adversary} & Player need to defeat an AI system & Adapt to an AI and defeat it & Tries to defeat the player \\ \hline
+			\textbf{Villain} & Player need to defeat an AI system whereas AI system does not want to defeat the player & Adapt to an AI and try to defeat it & Acts as villain and mob the player \\ \hline
+			\textbf{Spectacle} & AI which implements a complex system and the player needs to observer, interact or overcome it & Observation, interaction or manipulation of the system & Spectacle and simulate the system \\ \hline
+		\end{tabular}%
+	}
+	\caption{AI-based mechanics design pattern \protect\cite{ai::aiBasedGameDesignPattern}}
+	\label{AI-basedMechanicsDesignPattern}
+\end{table}
 
-\subsubsection{AI as Visualized}
-Pattern: Provide a visual representation of the underlying AI state, making gameplay revolve around explicit manipulation of the AI state.\\
-What player(s) do: Observe AI state\\
-Role of AI (in relation to player): Gives (strategic) information, showing states
 \subsubsection{AI as Role-Model}
-Pattern: Provide one or more AI agents for the player to behave similarly to.\\
-What player(s) do: Imitate AI\\
-Role of AI (in relation to player): Show agent actionas and behaviors, agents as puzzles
-\subsubsection{AI as Trainee}
-Pattern: Have player actions train an AI agent to perform tasks central to gameplay. \\
-What player(s) do: Teach AI\\
-Role of AI (in relation to player): Child/student\\
-Explanation: Machine learning techniques revolve around learning new behaviors using examples. By using player actions as a source of examples an AI agent can learn to perform tasks, with this indirect control (or automation) becoming central to player activity in a game. Note that many paradigms for training exist. Supervised learning requires players to explicitly provide feedback by labeling examples as indicative of a behavior. Unsupervised learning abstracts from examples without explicit guidance. Reinforcement learning uses feedback about the value of actions, rather than labels describing what an action was. Each of these paradigms provides opportunities for different kinds of player action in a game to indirectly control game outcomes.
-\subsubsection{AI as Editable}
-Pattern: Have the player directly change elements of an AI agent that is central to gameplay.\\
-What player(s) do: Edit AI\\
-Role of AI (in relation to player): Artifact/agent that player can author/manipulate
-Game: Galactic Arms Race
-\subsubsection{AI as Guided}
-Pattern: The player assists a simple or brittle AI agent that is threatened with self-destruction.\\
-What player(s) do: Guide/manage the AI\\
-Role of AI (in relation to player): Partly independent inhabitants, with players as their Gods
-\subsubsection{AI as Co-Creator}
-Pattern: Involve the player in a creative task where an AI agent directly contributes to the task as an equal partner.\\
-What player(s) do: Make artifacts assisted by AI\\
-Role of AI (in relation to player): Co-creator, making artifacts
-\subsubsection{AI as Adversary}
-Pattern: Require players to overcome an (embodied or not) AI opponent in a contest.\\
-What player(s) do: Play game against the opponent\\
-Role of AI (in relation to player): Opponent (symmetric)
-\subsubsection{AI as Villain}
-Pattern: Require players to complete a task or overcome an AI opponent where the AI is aiming to create an experience (e.g., tension or excitement) rather than defeat the player.\\
-What player(s) do: Combat the Villain(s)\\
-Role of AI (in relation to player): Villain in game; mob, boss mob, NPC (asymmetric)
-\subsubsection{AI as Spectacle}
-Pattern: Have an AI or group of AI agents implement a complex system, such as a social hierarchy, that the player may observe or interfere with.\\
-What player(s) do: Observe\\
-Role of AI (in relation to player): Spectacle, enacting simulated society
+For example, a game in which a player needs to follow an AI to solve quests or missions. Based on the players progress in each quest and imitation level, the AI adjusts its solution of solving the current or a new problem and provides the player with either an easier or harder solution and reward. Hence, player experience is adapting due to player behavior learning and predicting an appropriate difficulty level. For instance, a quest could be following a or remembering the path of the AI to a treasure whereas built-in traps are crossing the way. Hypothetically, if the player can not remember and succeed the path after three times, then the AI shows a new and easier path to a less rewarding treasure.
 
+\subsubsection{AI as Trainee}
+Is one of the most promising design pattern since it revolves around teaching an AI different things whereby it fits perfectly for using ML methods. As introduced before, the games Black and White and Creatures are using exactly this kind of pattern for implementing their creature behavior. A game could use a mechanic like the same and introduce new mechanics on how to interact and use the AI agent by teaching it how to behave in specific situations. A simple idea would be a teaching game in which the player needs to educate fighters in order to defeat enemies. Or a tower defense game in which the player uses defense entities in order to teach an ML agent first target preferences.
+	
+\subsubsection{AI as Co-Creator}
+An interesting base idea of a co-creator AI game would be a split-screen game in which the player plays on one side and the AI agent on the other side. The gameplay would be symmetrical and everything a player does will be tried to imitate by the AI. In doing so, the player needs to do things in order to complete challenges whereas done actions affect the AI agents space and vice versa. For example, a challenge could be pushing a button which only exists in the space of the AI but opens, e.g.  a door in the players space. Therefore, the player would need to behave in a specific manner to lead the AI towards the button.
 
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
