@@ -188,7 +188,7 @@ Generally speaking, it should be an overall guideline for bringing \ac{PCGML} ga
 \subsection{Approach}
 As said before, one goal of this thesis shall be the support of small and independent game developers with an introduction into PCGML game mechanics in a game engine like Unreal Engine or Unity. For doing so, it is going to address all important topics which are dependent on building PCGML game mechanics and their use in game engines. It is attempted to start with the central fields of interest like game mechanics, PCG and ML to create awareness for this topics in the a beginning. Afterwards, all the beforehand discussed topics shall be combined into PCGML and furthermore into PCGML game mechanics. In particular, theoretical usage is not only the most important subject which is the reason for providing at least some conceptual implementations on PCG, ML and PCGML. The implementation of a PCGML game mechanic with subsequent playtests as an evaluation of the concepts is also a necessary matter which should complete the introduction.
 
-\subsection{Agenda}
+\subsection{Planned Agenda}
 The agenda will be split into two parts. The first one is a scientific-informal part about getting to know more about the foundation of \ac{PCGML} and its use as a game mechanic. Since \ac{PCGML} is a relatively new theme in game development, it focuses on topics regarding core knowledge of \ac{PCG} and \ac{ML} separately and game mechanics to act as a base for further research on \ac{PCGML} as a game mechanic. Following topics shall be a part of the informal research:
 \begin{itemize}
 	\item Game mechanics and their use in games.
@@ -583,29 +583,56 @@ An interesting base idea of a co-creator AI game would be a split-screen game in
 %
 \clearpage
 \chapter{\acl{PCGML}}
-\cite{ai::book} p 173-175
-\section{What is it About?}
-Theory of PCGML and its methods in general.
-Evaluation of PCGML hardware and software requirements
-\section{Current Use in Games}
-\section{Possibilities}
-\section{Difference to Usual \acl{PCG}}
+An emerging direction in PCG research is to train generators on existing content, to be able to produce more content of the same type and style. \cite{ai::book}\\
+While these kinds of generative methods based on machine learning work well for some types of content—most notably music and images—many types of game content pose additional challenges. In particular, a key difference between game content generation and procedural generation in many other domains is that most game content has strict structural constraints to ensure playability. These constraints differ from the structural constraints of text or music because of the need to play games in order to experience them. \cite{ai::book}\\
+Thus, the domain of game content generation poses different challenges from that of other generative domains. \cite{ai::book}\\
+This is one of the reasons why machine learning-based approaches have so far only attained limited success in PCG for games. The other main reason is that for many types of game content, there simply isn’t enough existing content to train on. This is, however, an active research direction where much progress might be achieved in the next few years.\\
+\\
+Current Use in Games: there is a reference in the ai book! since its so new and reasearch has to be done, it isn't used by now\\
+\\
+Procedural Content Generation via Machine Learning (PCGML), defined as the generation of game content using machine learning models trained on existing content. As the importance of PCG for game development increases, researchers explore new avenues for generating high-quality content with or without human involvement; \cite{pcgml::paper}\\
+The content models could be of many different kinds and trained using very different training algorithms, including neural networks, probabilistic models, decision trees, and others. The generation could be partial or complete, autonomous, interactive, or guided. The content could be almost anything in a game, such as levels, maps, items, weapons, quests, characters, rules, etc. \cite{pcgml::paper}
+
+\section{Difference to \acl{PCG}}
+PCG difference: What these methods have in common is that the algorithms, parameters, constraints, and objectives that create the content are in general hand-crafted by designers or researchers. While it is common to examine existing game content for inspiration, machine learning methods have far less commonly been used to extract data from existing game content in order to create more content. \cite{pcgml::paper}\\
+The basic idea is to train a model on instances sampled from some distribution, and then use this model to produce new samples. The difference to search-based [2] and solver-based [3], [11] PCG is that while the latter approaches might use machine-learned models for evaluation, the content generation happens through search in content space; in PCGML, the content is generated directly from the model. The difference to experience-driven PCG [12] is that the learned models are models of game content, not models of player experience, behavior or preference.\cite{pcgml::paper}\\
 The core difference between PCG via machine learning and approaches such as search-based PCG is that the content is created directly (e.g., via sampling) from models which have been trained on game content. \cite{ai::book}
-\section{Example Implementations}
-Theory of PCGML and its methods in general.
-\section{Learning Models}
-Comparison of PCGML learning models
-\subsection{Markov Chains}
-\subsection{\acl{ANN}}
+
+\section{Use Cases}
+PCGML is suited for repair, critique, and content analysis because of its focus on modeling existing content.\cite{pcgml::paper}\\
+Procedural Content Generation via Machine Learning shares many uses with other forms of PCG: in particular, autonomous generation, cocreation/ mixed initiative design, and data compression. However, because it has been trained on existing content, it can extend into new use areas, such as repair and critique/analysis of new content. \cite{pcgml::paper}\\
+\cite{pcgml::paper} mainly describes the use of PCGML for generating levels
+
+\begin{itemize}
+	\item \textbf{Autonomous Generation}: The most straightforward application of PCGML is autonomous PCG: the generation of complete game artifacts without human input at the time of generation. Autonomous generation is particularly useful when online content generation is needed, such as in rogue-like games. PCGML is well-suited for autonomous generation because the input to the system can be examples of representative content specified in the content domain. \\
+	With PCGML, a designer can create a set of representative artifacts in the target domain as a model for the generator, and then the algorithm can generate new content in this style. PCGML avoids the complicated step of experts having to codify their design knowledge and intentions. \cite{pcgml::paper}
+	\item \textbf{Co-creative and Mixed-initiative Design}: A more compelling use case for PCGML is AIassisted design, where a human designer and an algorithm work together to create content. \\
+	Again, because the designer can train the machinelearning algorithm by providing examples in the target domain, the designer is “speaking the same language” the algorithm requires for input and output. This has the potential to reduce frustration, user error, user training time, and lower the barrier to entry because a programming language is not required to specify generation or acceptance criteria.\\
+	PCGML algorithms are provided with example data, and thus are suited to auto-complete game  content that is partially specified by the designer.\cite{pcgml::paper}
+	\item \textbf{Repair}: With a library of existing representative content, PCGML algorithms can identify areas that are not	playable (e.g., if an unplayable level or impossible rule set has been specified) and offer suggestions for how to fix them.\cite{pcgml::paper}
+	\item \textbf{Recognition, Critique, and Analysis}: A use case for PCGML that sets it apart from other PCG approaches is its capacity for recognition, analysis, and critique of game content. Given the basic idea of PCGML is to train some kind of model on sets of existing game content, these models could be applied to analyzing other game content, whether created by an algorithm, players, or designers.\\
+	For example, by supervised training on sets of game content artifacts and player response data, machine learning models can be trained to classify game content into various types, such as broken or whole, underworld or overworld, etc. They can be trained to predict quantities such as difficulty, completion time, or emotional tenor [23], [24]. They also have the potential to identify uniqueness, for example by noting how frequently a particular pattern appears in the training set, or judging how typical a complete content artifact is with regard to an existing set.\\
+	Such models could be used to automatically evaluate game content\cite{pcgml::paper}
+	\item \textbf{Data Compression}: The compression of game data into fewer dimensions through machine learning could allow more efficient game content storage. By exploiting the regularities of a large number of content instances, we can store the distinctive features of each more cheaply. \cite{pcgml::paper}
+\end{itemize}
+
+\section{Development}
+Possible Issues: basically the same as for proceudural content generation and machine learning
+
+\subsection{Training Methods}
+Multiple PCGML methods are covered, including neural networks, long short-term memory (LSTM) networks, autoencoders, and deep convolutional networks; Markov models, n-grams, and multi-dimensional Markov chains; clustering; and matrix factorization. \cite{pcgml::paper}
+
+\subsubsection{Markov Chains}
+Markov chains are a class of techniques that learn conditional probabilities of the next state in a sequence based on the current state. This state can incorporate multiple previous states via the construction of n-grams. An n-gram model (or n-gram for short) is simply an n-dimensional array, where the probability of each state is determined by the n states that precede it. \cite{pcgml::paper}
+
+\subsubsection{\acl{ANN}}
 \cite{ml::book::algorithms} page 289
-\subsection{Bayes}
+
+\subsubsection{Bayes}
 \cite{ml::book::algorithms} naive bayes: page >120\\
 \cite{ml::book::statistics} naive bayes: page 203 - 219\\
-look for a paper of "Guzdial"
-\section{In a Game Engine}
-research on different PCGML implementations and practical usage possibilities in a game engine
-\subsection{Conceptual Prototype}
-\subsection{Possible Issues}
+
+
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
 %
@@ -640,7 +667,8 @@ read explanation of design pattern in \cite{ai::aiBasedGameDesignPattern} again!
 \subsection{Spectacle}
 "The \ac{PCGML} system is trained to replicate patterns that are sensorically impressive or cognitively interesting." \cite{pcgml::paper}
 
-\section{Conceptual Prototypes (with evaluation)}
+\section{Evaluation of Concepts}
+Conceptual Prototypes (with evaluation)\\
 A test implementation of PCGML game mechanics in a game engine.
 
 \subsection{Comparison of Different Mechanics}
@@ -656,8 +684,12 @@ what is the best game mechanic? why? etc
 Development of a game with one of the best-evaluated PCGML game mechanic as the central game mechanic of the game.
 \section{Considerations}
 
+Evaluation of PCGML hardware and software requirements
 \subsection{Which Game Engine?}
 There are 2 main engines which are commonly used thorough the industry due to their fact of free to use.
+
+\subsection{Which Learning Model?}
+state different models which could be used and differ them
 
 \section{Game Design}
 \textbf{Designing Awesome AI for Games - Summary (GDC Talk)}
