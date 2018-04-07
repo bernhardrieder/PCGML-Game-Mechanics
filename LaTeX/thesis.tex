@@ -407,7 +407,7 @@ Games like Black \& White, Diablo, Dwarf Fortress, Elite, Eve Online, Roque, Spe
 There are a few possibilities and use cases for PCG as mechanics in games. As seen, some core mechanics aim at weapon creation and progressing through generated space with the help of generated or altered "helper" mechanisms. Apart from that promising ideas are also other noteworthy ideas:
 \begin{itemize}
 	\item One exciting idea is about using PCG for multiplayer games as a multi-instance PCG system given by \cite{pcg::futureOfPcgInGames}. A game could use a central PCG system consisting of different and unique systems for each player, and every content generation would affect the PCG systems of other players \cite{pcg::futureOfPcgInGames}.  In that case, the core mechanic of the game would include influencing other players with each others PCG system to work towards a specific goal. For example, a use case would be a collaborative multiplayer game where each content generation causes a new content generated in the other’s player space, and they must find a way to communicate how to achieve a mutual objective \cite{pcg::futureOfPcgInGames}. 
-	\item There is a lot of research done in the generation of quests as well. The research of \cite{pcg::questGenerator}introduced generated quests based on analysis of four existing \ac{MMORPG} and their quests. One could create a simulation game where players need to create random quests by doing interaction with the PCG system in order to provide an AI agent with missions which needs to be fulfilled to solve some other problems in the game and thus progress throughout the game.
+	\item There is a lot of research done in the generation of quests as well. The research of \cite{pcg::questGenerator} introduced generated quests based on analysis of four existing \ac{MMORPG} and their quests. One could create a simulation game where players need to create random quests by doing interaction with the PCG system in order to provide an AI agent with missions which needs to be fulfilled to solve some other problems in the game and thus progress throughout the game.
 	\item Another idea is to adapt existing and successful introduced game mechanics with a PCG-backend. For example, one could create a game like Tetris where the core mechanics of rotating a block generates new blocks. For example, every time the player rotates the block, the next block will be altered with evolutionary algorithms and changes their shapes to increase the difficulty. Moreover, the system could adapt its difficulty to the player's skills regarding the success or failure rate of using the new blocks to maintain an acceptable experience.
 \end{itemize} 
 
@@ -551,15 +551,15 @@ That is a game where players need to hatch animals and try to teach them how to 
 		\begin{tabular}{|p{2.1cm}||p{8cm}|p{4cm}|p{4cm}|}
 			\hline
 			\multicolumn{1}{|c||}{\textbf{Pattern Name}} & \multicolumn{1}{c|}{\textbf{Description}} & \multicolumn{1}{c|}{\textbf{Role of Player}} & \multicolumn{1}{c|}{\textbf{Role of AI}} \\ \hline\hline
-			\textbf{Visualized} & Visualization of AI system states and so that gameplay revolves around state manipulation & Obversation and manipulation of an AI system & Shows states and gives information \\ \hline
-			\textbf{Role-Model} & Player needs to imitate AI agents & AI system imitation & Shows actions and behavior, e.g. as a puzzle \\ \hline
-			\textbf{Trainee} & AI system needs to be trained to perform gameplay tasks & Teacher for AI system & Learning of desired behavior \\ \hline
-			\textbf{Editable} & Player need to change elements of an AI agent which are related to gameplay & Obversation and manipulation of the AI & Handle changes and show new behavior \\ \hline
-			\textbf{Guided} & Player partly assists or guides an AI agent who is threatend  by a problem & Guideance and management of the AI & Act on her own but mostly does what the player wants \\ \hline
-			\textbf{Co-Creator} & Player and AI work together as equal partners. & Necessity of learning how to play the game with AI assistance & Acts as co-creator and assistance for the player \\ \hline
-			\textbf{Adversary} & Player need to defeat an AI system & Adapt to an AI and defeat it & Tries to defeat the player \\ \hline
-			\textbf{Villain} & Player need to defeat an AI system whereas AI system does not want to defeat the player & Adapt to an AI and try to defeat it & Acts as villain and mob the player \\ \hline
-			\textbf{Spectacle} & AI which implements a complex system and the player needs to observer, interact or overcome it & Observation, interaction or manipulation of the system & Spectacle and simulate the system \\ \hline
+			\textbf{Visualized} & Visualization of AI system states and so that gameplay revolves around state manipulation & Observation and manipulation of an AI system & Shows states and gives information \\ \hline
+			\textbf{Role-Model} & Player needs to imitate AI agents & AI system imitation & Shows actions and behavior, e.g., as a puzzle \\ \hline
+			\textbf{Trainee} & AI system needs to be trained to perform gameplay tasks & Teacher for AI system & Learns desired behavior \\ \hline
+			\textbf{Editable} & Player needs to change elements of an AI agent which are related to gameplay & Observation and manipulation of the AI & Handles changes and shows a new behavior \\ \hline
+			\textbf{Guided} & Player partly assists or guides an AI agent who is threatened  by a problem & Guidance and management of the AI & Acts on its own but mostly does what the player wants \\ \hline
+			\textbf{Co-Creator} & Player and AI work together as equal partners & Learns how to play the game with AI assistance & Acts as co-creator and assistance for the player \\ \hline
+			\textbf{Adversary} & Player needs to defeat an AI system & Adapts to an AI and defeats it & Tries to defeat the player \\ \hline
+			\textbf{Villain} & Player needs to defeat an AI system whereas AI system does not want to defeat the player & Adapts to an AI and try to defeat it & Acts as villain and mob the player \\ \hline
+			\textbf{Spectacle} & AI which implements a complex system and the player needs to observe, interact or overcome it & Observation, interaction or manipulation of the system & Spectacles and simulates the system \\ \hline
 		\end{tabular}%
 	}
 	\caption{AI-based game mechanics design pattern \protect\cite{ai::aiBasedGameDesignPattern}}
