@@ -551,7 +551,7 @@ That is a game where players need to hatch animals and try to teach them how to 
 		\begin{tabular}{|p{2.1cm}||p{8cm}|p{4cm}|p{4cm}|}
 			\hline
 			\multicolumn{1}{|c||}{\textbf{Pattern Name}} & \multicolumn{1}{c|}{\textbf{Description}} & \multicolumn{1}{c|}{\textbf{Role of Player}} & \multicolumn{1}{c|}{\textbf{Role of AI}} \\ \hline\hline
-			\textbf{Visualized} & Visualization of AI system states and so that gameplay revolves around state manipulation & Observation and manipulation of an AI system & Shows states and gives information \\ \hline
+			\textbf{Visualized} & Visualization of AI system states so that gameplay revolves around state manipulation & Observation and manipulation of an AI system & Shows states and gives information \\ \hline
 			\textbf{Role-Model} & Player needs to imitate AI agents & AI system imitation & Shows actions and behavior, e.g., as a puzzle \\ \hline
 			\textbf{Trainee} & AI system needs to be trained to perform gameplay tasks & Teacher for AI system & Learns desired behavior \\ \hline
 			\textbf{Editable} & Player needs to change elements of an AI agent which are related to gameplay & Observation and manipulation of the AI & Handles changes and shows a new behavior \\ \hline
@@ -599,7 +599,7 @@ The focus of PCGML is to generate new content based on training with existing co
 \end{itemize}
 
 \section{Development}
-There are no specific development considerations to make when someone uses the combination of PCG and ML. Instead, every design consideration, possible issue, pitfall and best practices described and discussed in chapters \ref{pcgDevelopment} and \ref{mlDevelopment} will apply when implementing PCGML algorithms.\\
+{\color{blue}There are no specific development considerations to make when someone uses the combination of PCG and ML. Instead, every design consideration, possible issue, pitfall and best practices described and discussed in chapters \ref{pcgDevelopment} and \ref{mlDevelopment} will apply when implementing PCGML algorithms.\\
 Nevertheless, it is worth mentioning that commonly used training models for research purposes, e.g., by \cite{pcgml::paper}, were:
 \begin{itemize}
 	\item Neural networks like \ac{ANN}, \ac{CNN} or \ac{LSTM} networks
@@ -609,7 +609,13 @@ Nevertheless, it is worth mentioning that commonly used training models for rese
 	\item Clustering
 	\item Matrix factorization
 \end{itemize} 
+}
 
+
+\subsection{Data Representation}
+{\color{blue} Needs to be addressed! Pick one of the representation used in the PCGML paper and describe it in a summary.}
+
+\begin{comment}
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
 %
@@ -618,10 +624,37 @@ Nevertheless, it is worth mentioning that commonly used training models for rese
 the design process for \cite{pcg::endlessWeb} followed the principles of \cite{ai::gameDesign} with Launchpad as the AI system.
 
 \section{First Considerations}
+\end{comment}
 
 \section{Concepts of Possible Mechanics}
-maybe read over \cite{pcg::endlessWeb} again\\
-read explanation of design pattern in \cite{ai::aiBasedGameDesignPattern} again!
+\subsection{Rules and Behavior} \label{mechId1}
+For example, a PCGML system generating rules for a strategy game. This genre offers a good foundation for generating its internal rules and behavior. In particular, a strategy game mostly exists out of different sequences of actions which lead the game in a specific direction. All of those available actions have a different effect in the game whereas the effects can be changed with other appropriate effects causing different changes during the game. For example, the design of the strategy game can consist of more possibilities than it will be used in the game itself. Speaking of more game elements or available spare entities which can be used or not in the game. This kind of game element selection often applies in card board game where players need to choose the available cards in advance and as a matter of these changes, it changes the flow of the game. For instance, if a game provides the players with 25 elements and just 10 element are used in a game, then it provides, regarding the mathematical theorem of combinatorics, 3268760 possible ways to play a game. Furthermore, parts or elements of the game can be introduced in specific time slots which forces players to use the available options to move forward in the game and toward specific win conditions which can also be part of the generation. Moreover, specific conditions can be introduced in the game which need to considered in the generation. \\
+In this case, the PCGML system would be trained on working configurations of the game, learns the different dependencies between each other and would be able to generate new and working configurations. 
+
+%$ \dfrac{N!}{n!(N-n)!} = \dfrac{25!}{10!15!} = 3.268.760 $
+
+\subsection{Changing Weapons} \label{mechId2}
+Game mechanics are often related with some kind of interactable object like weapons, guns, rifles or shotguns in \ac{FPS} games where other mechanics also evolve as a result. With this in mind, another idea of using PCGML as a game mechanic is its use as any kind of weapon generator. In specific, an FPS game with generated weapons where providing different weapons at the training time results in different matches. A virtually created weapon can have different properties, such as weight, blowback power, firing rate, bullet types and many more which can be used to procedurally generate new weapons. Furthermore, as weapons need bullets and projectiles, they can also be generated by a PCGML system. Those mostly consist of a kind of impact damage, trajectory, speed and other properties. As it takes a lot of time to tweak the proper parameters for a fun to use weapon, PCGML can make use of its ML pillar to generate suitable weapons for a game. \\
+For example, a game could be an FPS game with generated weapons from a pretrained PCGML system whereby the model will be fed with the new generated weapons during runtime and furthermore specializes in a specific direction. After a bunch of time, the system only generates a specific weapon and that is where the game or session would end.
+
+\subsection{Changing Powers} \label{mechId4}
+The main mechanic in a lot of RPG games is fighting with a sword, weapon or applying magic spells to the enemy. Moreover, their weapons often possess a magic power as advantage or disadvantage. These powers and spells can also be generated by an PCGML system. It could affect the duration, spell category, continuing effect on the enemy or player, energy cost and other similar and often used properties.
+
+\subsection{Solver Weapon} \label{mechId5}
+This idea is based on the co-creator pattern described in chapter \ref{AI-basedMechanicsDesignPattern}. It is about a generation weapon which helps the player to progress in the game towards a specific goal, such as solving puzzles with missing pieces in it. Special highlight of the game is, that the player needs to draw the missing pieces on a plane connected with the weapon which then hopefully generates the required piece. The detection of the drawing is done via ML and will be forwarded in chunks to the PCGML system. Drawings could consist of fat circles indicating corner and lines representing edges. For example, an introductory gameplay could be to find or generate the missing key for a door whereas the shape of the lock is shown to the player.\\
+This idea would work as follows: 
+\begin{enumerate}
+	\item The ML part is trained on different input with different drawing of puzzle elements or geometric shapes depending on the style. The system is then able to detect important points on the drawing and suggests what the drawing would be.
+	\item The PCGML system detects the drawings with any kind of object detection algorithm. As the system has obtained the chunks of the detection algorithm, it uses each chunk data to generate a fragment of a geometry and finally combines all of them into a specific shape.
+\end{enumerate}
+Furthermore, this can be extended with the trainee and guided pattern where the player would provide the system with feedback if the PCGML system outputs the wrong geometry. In this case, it would learn the specific drawing conventions of a player and adjust itself to the player.
+
+\subsection{Defeat of the Adversary} \label{mechId6}
+The PCGML system tries to defeat the player and one or more players try to defeat the enemy. This is based on the adversary design pattern described in chapter \ref{AI-basedMechanicsDesignPattern} where the role of the AI is to defeat the player. In this case, the system is trained on simple player behavior, such as walking paths in a specific environment and uses this knowledge to overcome the player. Moreover, it would be also able to find new behavior pattern during the fight. Summarized, the output of the system are new behaviors or sequences for the AI on how to defeat a player. Furthermore, the PCGML system can categorize used behavior regarding their success or failure and learn from these outcomes to increase its accuracy. \\
+An example scenario would be that an AI has the intention of applying a critical hit to the player. In doing so, the PCGML system generates, e.g., a possible path to fulfill the desire of hitting the player based on, e.g., both the players and AI positions and the pretrained knowledge.
+
+\subsection{Caught in a Thunderstorm} \label{mechId7}
+For example, a game in which a player controls a thundercloud and has the objective to destroy cities or enemies with the power of lightning. In this scenario, a PCGML system would generate pattern for the diffusion of lightning and impact points based on different weather conditions, cloud height, enemy or building position, physical materials and similar properties. Could be used as a kind of a thunderstorm simulation game which is based on a trained PCGML model.
 
 \subsection{Role-Model}
 "A \ac{PCGML} system replicates content which is generated by players of various levels of skill or generates content suitable for players of certain skill levels. New players are trained by replicating the content or by playing the generated content in the form of generative tutorial." \cite{pcgml::paper}
@@ -644,9 +677,21 @@ read explanation of design pattern in \cite{ai::aiBasedGameDesignPattern} again!
 \subsection{Spectacle}
 "The \ac{PCGML} system is trained to replicate patterns that are sensorically impressive or cognitively interesting." \cite{pcgml::paper}
 
+
+\subsection{Other Possibilities} 
+Another possible field of application for a PCGML system can be the generation of cars or vehicles as they also consist of many properties and parameters. \label{mechId3}
+
 \section{Evaluation of Concepts}
 Conceptual Prototypes (with evaluation)\\
-A test implementation of PCGML game mechanics in a game engine.
+A test implementation of PCGML game mechanics in a game engine.\\
+\\
+idea chapter \ref{mechId1}:\\
+This is for the comparison! -> the sequence of actions, effects and game changes can be shown as a tree and easy to use. \\
+The game elements can require other elements to properly work and vice versa which can be a tough finetuning process for a standard PCG algorithm\\
+The PCGML system can generate based on trained sequences similiar ones which can work out for a cool game flow\\
+\\
+idea chapter \ref{mechId7}:\\
+ML could be trained on L system (plants, etc) which is trained on the described properties. the ml output a kind of sequence according to the prior trained sequences.
 
 \subsection{Comparison of Different Mechanics}
 Comparison of implemented PCGML game mechanics prototypes.
@@ -731,6 +776,7 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
 	\acro{ANN}{Artificial Neural Network}
 	\acro{API}{Application Programming Interface}
 	\acro{CNN}{Convolutional Neural Network}
+	\acro{FPS}{First Person Shooter}
 	\acro{GB}{Gigabyte}
 	\acro{HMM}{Hidden Markov Model}
 	\acro{MDA}{Mechanics-Dynamics-Aesthetics}
