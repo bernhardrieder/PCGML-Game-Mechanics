@@ -802,57 +802,57 @@ The main issue in the implementation of the PCGML system will be the training da
 \subsection{\nameref{idea::exploringCoWorker}}
 \textbf{Pros:}
 \begin{itemize}
-	\item
+	\item PCGML implementation focuses only on the exploring task.
+	\item Terrain generation can be based on the game corpus and does not apply to special rules. Thus, training of the ML model with sample terrains should be easy.
 \end{itemize}
 \textbf{Cons:}
 \begin{itemize}
 	\item PCG generation and especially interactive modification of terrain can be complex.
+	\item Terrain needs to be interactable with the player's mechanics to build and mine.
 \end{itemize}
 
 \subsection{\nameref{idea::observeAndLearn}}
 \textbf{Pros:}
 \begin{itemize}
-	\item
+	\item Terrain generation can be based on the game corpus and does not apply to special rules. Thus, training of the ML model with sample terrains should be easy.
+	\item There is a margin for errors since it is the system conception to work faulty and the player's task to interact with the system to reach the goal. 
 \end{itemize}
 \textbf{Cons:}
 \begin{itemize}
 	\item PCG generation and especially interactive modification of terrain can be complex.
+	\item Necessity of "incorrect operation" for challenging terrain generation needs to be secured.
 \end{itemize}
 
 \subsection{\nameref{idea::expressYourself}}
-\textbf{Pros:}
-\begin{itemize}
-	\item
-\end{itemize}
-\textbf{Cons:}
-\begin{itemize}
-	\item
-\end{itemize}
+As described in the first idea about rules and behaviors, the same type of considerations apply for this idea about generating whole storylines with interaction.
 
 \subsection{\nameref{idea::bigBossHelper}}
-The same pro and cons described for the mechanic "\nameref{idea::defeatTheEnemy}" applies for this concept.
+The same pro and cons described for the mechanic "\nameref{idea::defeatTheEnemy}" applies for this concept since their PCGMl systems are operating in the same manner.
 
 \subsection{\nameref{idea::figureItOut}}
 \textbf{Pros:}
 \begin{itemize}
-	\item should be easy to learn
-	\item model training easy of its specialized in a simple type
-	\item PCG easy to implement, concentrates just on a specific element
+	\item Creation of puzzles do not need to consider the PCGML system because the system revolves around the puzzle.
+	\item Training of the ML models should be easy since they are based on a puzzle. Thus, the PCG should be easy to implement.
+	\item Each PCGML system focuses on their own piece of the puzzle element.
 \end{itemize}
 \textbf{Cons:}
 \begin{itemize}
-	\item model might trained for each puzzle individually
+	\item It needs training for each ML model and puzzle.
+	\item Each puzzle element needs own design and own PCGML system.
+	\item The connection between PCGML systems will be complex, therefore it needs a good design of the system's connection.
 \end{itemize}
 
 \subsection{\nameref{idea::novelCars}}
 \textbf{Pros:}
 \begin{itemize}
-	\item offers a great possibility for new vehicles and gameplay which revolves around those bevhicles
+	\item Generated vehicles can decide the kind of game where it is used, therefore it does not matter what is output as long it secures playability.
+	\item Vehicles are not limited to cars, therefore it can be any kind of driveable vehicles.
 \end{itemize}
 \textbf{Cons:}
 \begin{itemize}
-	\item need design of a bunch of cars proper to a specific genre of a game
-	\item design involves long tweaking process until perfectly designed vehicles can be used to train the model
+	\item The training set needs the designs of a lot of vehicles, so the system can learn the complex dependencies of a vehicle.
+	\item The design of vehicles often involves a long process of balancing.
 \end{itemize}
 
 
