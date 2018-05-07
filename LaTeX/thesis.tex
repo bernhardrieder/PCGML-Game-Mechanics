@@ -583,8 +583,8 @@ An exciting base idea of a co-creator AI game would be a split-screen game in wh
 \clearpage
 \chapter{\acl{PCGML}}
 A purpose for research in AI-based PCG methods like PCGML was to invent algorithms which are able to create and generate content of the same type and style based on existing content with or without human involvement \cite{ai::book} \cite{pcgml::paper}. In general, \cite{pcgml::paper} defined PCGML as ''the generation of game content using machine learning models trained on existing content''. \\
-On this account, different research was and is going on to generate music, sound effects, images, textures, worlds or levels \cite{ai::book}. Research showed that ML-based PCG methods are working well for music and images types but are facing some issues when it comes to world or level generation because of its necessity of playability to create an experience \cite{ai::book}. Thus, the generation of gameplay connected game content pointed out some challenges which further research is going to address and try to solve \cite{ai::book}. It is for this reason why PCGML approaches were not used in games yet. Another reason is that there is often not enough game content available to train a PCGML model on for a specific content generation problem \cite{ai::book}. \\
-The next chapters introduce the difference to usual PCG, use cases of PCGML and some developmental features used in other research. Overall, this chapter is not going into many details since all essential cornerstones of PCGML where discussed and introduced in the previous chapters.
+On this account, different research was and is going on to generate music, sound effects, images, textures, worlds or levels \cite{ai::book}. Research showed that ML-backed PCG methods are working well for music and images types but are facing some issues when it comes to world or level generation because of its necessity of playability to create an adequate experience \cite{ai::book}. Thus, the generation of gameplay connected game content pointed out some challenges which further research is going to address and try to solve \cite{ai::book}. It is for this reason why PCGML approaches were not used in games yet. Another reason is that there is often not enough game content available to train a PCGML model on for a specific content generation problem \cite{ai::book}. \\
+The next chapters introduce the difference to usual PCG, use cases of PCGML, some developmental features used in other research and explains how PCG and ML work together to generate new content. Overall, this chapter is not going into many details since all essential cornerstones of PCGML where discussed and introduced in the previous chapters.
 
 \section{Difference to \acl{PCG}}
 What usual PCG and PCGML have in common are their hand-made algorithms, parameters, and constraints made by developers \cite{pcgml::paper}. Typically, designers would use existing game data and content to get inspired by and create generators which can generate new material on top of that inspiration whereas PCGML itself can get inspired by existing data to develop new content and thus assist the designer \cite{pcgml::paper}. So, the basic idea is to train the PCGML model on various game content and produce new content \cite{pcgml::paper}. \\
@@ -601,35 +601,31 @@ The focus of PCGML is to generate new content based on training with existing co
 \end{itemize}
 
 \section{Development}
-{\color{blue}There are no specific development considerations to make when someone uses the combination of PCG and ML. Instead, every design consideration, possible issue, pitfall and best practices described and discussed in chapters \ref{pcgDevelopment} and \ref{mlDevelopment} will apply when implementing PCGML algorithms.\\
-Nevertheless, it is worth mentioning that commonly used training models for research purposes, e.g., by \cite{pcgml::paper}, were:
+There are some special development considerations to take when someone wants to make use of PCG via ML for game elements. In general, every design consideration, possible issue, pitfall and best practices described and discussed in chapters \ref{pcgDevelopment} and \ref{mlDevelopment} will apply when implementing PCGML algorithms. Furthermore, the data representation for the data used as the training set during the ML model's training needs to be examined first - this is described in the next chapter. Moreover, the research of \cite{pcgml::paper} showed that every specific dataset has different possible training methods for the ML model to obtain good and practical generation results. The primarily used training models for their research purposes of using PCGML for level generation were:
 \begin{itemize}
 	\item Neural networks like \ac{ANN}, \ac{CNN} or \ac{LSTM} networks
-	\item Markov models such as n-grams or multi-dimensional Markov chains
+	\item Markov models such as N-grams or multi-dimensional Markov chains
 	\item Bayes models
 	\item Autoencoders
 	\item Clustering
 	\item Matrix factorization
 \end{itemize} 
-}
-
 
 \subsection{Data Representation}
-{\color{blue} Needs to be addressed! Pick one of the representation used in the PCGML paper and describe it in a summary.}
+One of the essential parts in implementing a PCGML system is the data representation of the data used as the training set for the ML model's training method. One can easily see a clear difference between the prediction of game elements and standard prediction problems such as the prediction of, e.g., an employee's monthly salary. The latter problem's training set is mostly represented in a simple datastructure with some dependent values and a value which it needs to predict whereas this is not possible for a game element. In their survey about using PCGML systems for level generation, \cite{pcgml::paper} approached this problem with different techniques and tried different training models with each data representation. In general, they used the following three different techniques which were further specialized for the given game and level to generate:
+\begin{enumerate}
+	\item \textbf{Sequences}: 
+	\item \textbf{Grids}:
+	\item \textbf{Graphs}:
+\end{enumerate}
+As mentioned before, every game element determines its data representation for which reason there is no general rule for the data representation. Nevertheless, the used data representations used in \cite{pcgml::paper} offer a good starting point when developing the data representation for the game mechanic.
 
-\begin{comment}
-%
-% ------------------------------- NEW CHAPTER ------------------------------- %
-%
+\section{The Generation Process}
+how does it work? thats the real question!
+
 \clearpage
-\chapter{\acl{PCGML} Game Mechanics}
-the design process for \cite{pcg::endlessWeb} followed the principles of \cite{ai::gameDesign} with Launchpad as the AI system.
-
-\section{First Considerations}
-\end{comment}
-
-\section{Concepts of Possible Game Mechanics}
-The initial ideas on how to use PCGML as a game mechanic were created by \cite{pcgml::paper}. They came up with seven different ideas based on the AI-based game design pattern described in chapter \ref{AI-basedMechanicsDesignPattern}:
+\chapter{Possible Game Mechanics}
+The initial ideas on how to use PCGML as a game mechanic were created by \cite{pcgml::paper}. They came up with the following seven different ideas based on the AI-based game design pattern described in chapter \ref{AI-basedMechanicsDesignPattern}:
 \begin{itemize}
 	\item \textbf{Role-Model}: "A \ac{PCGML} system replicates content which is generated by players of various levels of skill or generates content suitable for players of certain skill levels. New players are trained by replicating the content or by playing the generated content in the form of generative tutorial." \cite{pcgml::paper}
 	\item \textbf{Trainee}: "The player trains a \ac{PCGML} system to generate a piece of necessary content (e.g., part of a puzzle or level geometry)." \cite{pcgml::paper}
@@ -641,6 +637,7 @@ The initial ideas on how to use PCGML as a game mechanic were created by \cite{p
 \end{itemize}
 These ideas were used to come up with more ideas on how to use PCGML as a game mechanic in modern video games.
 
+\section{Concepts}
 \subsection{Rules and Behavior} \label{idea::rulesAndBehavior}
 A possible idea is a PCGML system which generates rules for a strategy game. A generic and modular strategy game offers the perfect foundation for generating its internal rules and behavior based on its internal elements. In particular, a strategy game mostly exists out of different sequences of actions emerging from new elements in the game which furthermore lead the game in a specific direction. All of those available actions have a different effect in the game whereas the effects can be changed with other appropriate effects causing different changes during the game. More particular, the design of a strategy game can introduce more game elements than used in the game itself. This kind of game element preselection often arises in cardboard games where players need to choose the available cards in advance which affects the flow of the game. For example, if a game provides the players with 25 different elements and just ten elements are used in the game, then it provides, regarding the mathematical theorem of combinatorics, 3268760 possible ways to play a game. This formula only applies if the introduction of each element happens after a specific time with no reuse of elements. Moreover, specific conditions for, e.g., the specific timeslot of an element's revelation can also be a part of the generation process which emerges a more dynamic game.\\
 In this case, working configurations of the game provide the training set of the PCGML system with which it learns the different dependencies between elements and effects to each other. 
@@ -871,14 +868,6 @@ what is the best game mechanic? why? etc
 \clearpage
 \chapter{Game Prototype}
 Development of a game with one of the best-evaluated PCGML game mechanic as the central game mechanic of the game.
-\section{Considerations}
-
-Evaluation of PCGML hardware and software requirements
-\subsection{Which Game Engine?}
-There are 2 main engines which are commonly used thorough the industry due to their fact of free to use.
-
-\subsection{Which Learning Model?}
-state different models which could be used and differ them
 
 \section{Game Design}
 \begin{itemize}
@@ -898,6 +887,16 @@ state different models which could be used and differ them
 	\item Figure out what the brain gives you for free
 	\item Try going simpler before you go complex
 \end{enumerate}
+
+\section{Considerations}
+Evaluation of PCGML hardware and software requirements
+\subsection{Game Engine}
+There are 2 main engines which are commonly used thorough the industry due to their fact of free to use.
+
+\subsection{Data Representation}
+\subsection{Learning Model}
+state different models which could be used and differ them
+
 
 \section{Implementation}
 \subsection{Technical Approach}
