@@ -614,9 +614,9 @@ There are some special development considerations to take when someone wants to 
 \subsection{Data Representation}
 One of the essential parts in implementing a PCGML system is the data representation of the data used as the training set for the ML model's training method. One can easily see a clear difference between the prediction of game elements and standard prediction problems such as the prediction of, e.g., an employee's monthly salary. The latter problem's training set is mostly represented in a simple datastructure with some dependent values and a value which it needs to predict whereas this is not possible for a game element. In their survey focused on using PCGML systems mainly for level generation, \cite{pcgml::paper} approached this problem with different techniques and tried different training models with each data representation. In general, they used the following three different techniques which were further specialized for the given game and level to generate:
 \begin{enumerate}
-	\item \textbf{Sequences}: 
-	\item \textbf{Grids}:
-	\item \textbf{Graphs}:
+	\item \textbf{Sequences}: Represents a format for content which shows a natural order in its structure \cite{pcgml::paper}. For example, the Super Mario Bros. levels consist of this natural format because the player can only traverse from left-to-right and it can be represented in a sequence \cite{pcgml::paper}. Moreover, sequences apply also for textual elements \cite{pcgml::paper}.
+	\item \textbf{Grids}: This type of representation apply for game content which can be thought of as a two-dimensional grid \cite{pcgml::paper}. For example, a top down view of a labyrinth is representable as a grid.
+	\item \textbf{Graphs}: Are a general data representation for game content with the drawback of lack of well-defined structural properties \cite{pcgml::paper}. 
 \end{enumerate}
 As mentioned before, every game element determines its data representation for which reason there is no general rule for the data representation. Nevertheless, the used data representations used in \cite{pcgml::paper} offer a good starting point when developing the data representation for the game mechanic.
 
