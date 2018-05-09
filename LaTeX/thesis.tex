@@ -614,7 +614,7 @@ There are some unique development considerations to take when someone wants to m
 \subsection{Data Representation}
 One of the essential parts in implementing a PCGML system is the data representation of the data used as the training set in the ML model's training method. One can easily see a clear difference between the prediction of game elements and standard prediction problems such as the prediction of, e.g., an employee's monthly salary. The latter problem’s training set consists mostly of a simple data structure with some dependent values and a value which it needs to predict whereas this is not possible for a game element. In their survey focused on using PCGML systems mainly for a level generation, \cite{pcgml::paper} approached this problem with different techniques and tried different training models with different data representations. In general, they used the following three different data representations:
 \begin{enumerate}
-	\item \textbf{Sequences}: Represents a format for content which shows a natural order in its structure \cite{pcgml::paper}. For example, the Super Mario Bros. levels consist of this native format because the player can only traverse from left-to-right and it can be represented in a sequence \cite{pcgml::paper}. Moreover, sequences apply also to textual elements \cite{pcgml::paper}.
+	\item \textbf{Sequences}: Represents a format for content which shows a natural order in its structure \cite{pcgml::paper}. For example, the Super Mario Bros. levels consist of this native format because the player can only traverse from left-to-right and it can be represented in a sequence \cite{pcgml::paper}. 
 	\item \textbf{Grids}: This type of representation applies to game content which can be thought of as a two-dimensional grid \cite{pcgml::paper}. For example, a top-down view of a labyrinth is representable as a grid.
 	\item \textbf{Graphs}: Are a general data representation of game content with the drawback of lack of distinct structural properties \cite{pcgml::paper}. 
 \end{enumerate}
@@ -693,7 +693,7 @@ A possible application in a multiplayer game could be a mechanic in which each p
 Another possible field of application for a PCGML system can be the generation of cars or vehicles as they also consist of many properties and parameters. The process of finetuning of these properties is usually a long process which is a perfect field of application for an ML trained PCG system.
 
 \section{Development Evaluation of Concepts}
-The main issue in the implementation of the PCGML system will be the training data for the ML model rather than the PCG output itself. Proper training for the ML model requires the right amount of training data to function as intended. The size of the right dataset can differ from application to application based on the given values as dependencies for an output. Following chapters evaluate each game mechanic based on their pros and cons for possible implementation. In particular, each idea has the advantage of PCGML that it can generate similar elements as used during training time, the possibility of changing the training set and thus the output and also no need of finetuning to generate a broad range of elements in contrast to standard PCG algorithms. For this reason, as it is the implication of using PCGML, these described advantages are not mentioned in the evaluation. Also, the provision of playability is a necessary thing which contributes equally to each game mechanic.
+The main issue in the implementation of the PCGML system will be the training data for the ML model rather than the PCG output itself. Proper training for the ML model requires the right amount of training data to function as intended. The size of the right dataset can differ from application to application based on the given values as dependencies for an output. Following chapters evaluate each game mechanic based on their pros and cons for possible implementation. In particular, each idea has the advantage of PCGML that it can generate similar elements as used during training time, the possibility of changing the training set and thus the output and also no need of finetuning to generate a broad range of elements in contrast to standard PCG algorithms. For this reason, as it is the implication of using PCGML, these described advantages are not mentioned in the evaluation. Also, the provision of playability is a necessary criterion which contributes equally to each game mechanic.
 
 \subsection{\nameref{idea::rulesAndBehavior}}
 \textbf{Pros:}
@@ -853,14 +853,11 @@ The same pro and cons described for the mechanic "\nameref{idea::defeatTheEnemy}
 \end{itemize}
 
 \section{Summary}
-
-Of course, the generation of any kind of item, quests, missions or challenges is also possible with PCGML. Or the implementation of any kind of progression mechanics can be done via PCGML. One just needs to figure out the important properties of the generating element to train the ML system properly.
-
-A summary of each PCGML game mechanic training data and output can be found in appendix \ref{gameMechanicIdeaSummary}
+The ideas how someone can make use of PCGML as a game mechanic show that there are many possibilities which differ in the complexity of implementation. Appendix \ref{gameMechanicIdeaSummary} provides a summary of each PCGML game mechanic training data and output.\\
+Many of the ideas are about generating items used as a game mechanic, but PCGML also offers the possibility to generate any item such as quests, missions or challenges. Furthermore, the implementation of any progression mechanics is also applicable via PCGML. It just needs the right idea and a training set with an appropriate data representation to properly train the ML system.
 
 \subsection{Game Mechanic for the Prototype}
-what is the best game mechanic? why? etc
-
+As already mentioned, all the introduced ideas differ in their development complexity. Most of the ideas require a sophisticated game design where the PCGML game mechanic can work and create an adequate experience for the players. For instance, ideas like "\nameref{idea::trainToProgress}" or "\nameref{idea::figureItOut}" offer an interesting approach for creating unique player experience but require a very sophisticated game design and much balancing for polishing. For this reason, the easiest and most applicable ideas for showing the potential of PCGML as a game mechanic in this thesis offer "\nameref{idea::changingWeapons}" and "\nameref{idea::changingPowers}." Availability of open source FPS projects leads the decision for the prototype game mechanic to the idea of "\nameref{idea::changingWeapons}." Therefore, the rest of this thesis deals with the implementation of a PCGML game mechanic prototype which revolves around PCGML generated weapons.
 
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
