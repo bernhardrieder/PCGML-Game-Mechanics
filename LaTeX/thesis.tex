@@ -35,6 +35,9 @@
 \usepackage{longtable}
 \usepackage{lscape}
 \usepackage{nameref}
+\usepackage{booktabs}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
 
 %
 % Bitte in der folgenden Zeile den Zitierstandard festlegen
@@ -972,40 +975,31 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
 \clearpage
 \appendix
 \chapter{Appendix A} \label{gameMechanicIdeaSummary}
-\begin{tabular}{|c||c|c|}
-	\hline 
-	& \multicolumn{2}{c|}{PCGML System} \\ 
-	\hline 
-	Game Mechanic & Output & Training \\ 
-	\hline \hline 
-	\nameref{idea::rulesAndBehavior} & Configuration of a game with all its game elements. & Working configuration of a game. \\ 
-	\hline 
-	\nameref{idea::changingWeapons} & New and novel weapons & Existing balanced and unbalanced weapons. \\ 
-	\hline 
-	\nameref{idea::changingPowers} & New and novel powers. & Existing useful powers like magic spells. \\ 
-	\hline 
-	\nameref{idea::novelCars} & New and novel vehicles.  & Existing balanced and useful vehicles for a specific environment. \\ 
-	\hline 
-	\nameref{idea::solverWeapon} & E.g., elements of a puzzle. & Object detection and example drawings. \\ 
-	\hline 
-	\nameref{idea::defeatTheEnemy} & New and successful attack patterns. & Possible AI behavior such as attacks or movement given a specific environment based on \\ 
-	\hline 
-	\nameref{idea::caughtInAThunderstorm} & Lightning diffusion pattern. & Example diffusion pattern based on real weather data. \\ 
-	\hline 
-	\nameref{idea::trainToProgress} & E.g., elements of a puzzle such as a key for a lock. & No need for training due to training with player. \\ 
-	\hline 
-	\nameref{idea::buildingWithAssistance} & Incomplete elements which allow modification. & Samples of incomplete elements for the game. \\ 
-	\hline 
-	\nameref{idea::exploringCoWorker} & Terrain generation or manipulation. & Example terrains based on player progress. \\ 
-	\hline 
-	\nameref{idea::observeAndLearn} & Terrain generation or manipulation. & Example terrains. \\ 
-	\hline 
-	\nameref{idea::expressYourself} & Storyline with events and choices connected to it. & Configuration and story for possible games. \\ 
-	\hline 
-	\nameref{idea::bigBossHelper} & Terrain generation and modification. & Example terrains with obstacles based on a player behavior in a specific environment. \\ 
-	\hline 
-	\nameref{idea::figureItOut} & E.g., elements of a puzzle. & Example puzzle elements to progress in a game. \\ 
-	\hline 
-\end{tabular} 
-
+\begin{landscape}
+	\begin{table}[tp]
+		\centering
+		\resizebox{\textheight}{!}
+		{%
+			\begin{tabular}{c|c|c|}
+				\cline{2-3}
+				\textbf{}                                                                     & \multicolumn{2}{|c|}{\textbf{PCGML System}}                                                                                                   \\ \hline
+				\multicolumn{1}{|c||}{\textbf{Game Mechanic}}                                  & \textbf{Output}                                      & \textbf{Training}                                                                     \\ \hline\hline
+				\multicolumn{1}{|c||}{\nameref{idea::rulesAndBehavior}}       & Configuration of a game with all its game elements.  & Working configuration of a game.                                                      \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::changingWeapons}}        & New and novel weapons.                               & Existing balanced and unbalanced weapons.                                             \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::changingPowers}}         & New and novel powers.                                & Existing useful powers like magic spells.                                             \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::novelCars}}              & New and novel vehicles.                              & Existing balanced and useful vehicles for a specific environment.                     \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::solverWeapon}}           & E.g., elements of a puzzle.                          & Object detection and example drawings.                                                \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::defeatTheEnemy}}         & New and successful attack patterns.                  & Possible AI behavior such as attacks or movement for a specific environment.          \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::caughtInAThunderstorm}}  & Lightning diffusion pattern.                         & Example diffusion pattern based on real weather data.                                 \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::trainToProgress}}        & E.g., elements of a puzzle such as a key for a lock. & No need for training due to training with player.                                     \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::buildingWithAssistance}} & Incomplete elements which allow modification.        & Samples of incomplete elements for the game.                                          \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::exploringCoWorker}}      & Terrain generation or manipulation.                  & Example terrains based on player progress.                                            \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::observeAndLearn}}        & Terrain generation or manipulation.                  & Example terrains.                                                                     \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::expressYourself}}        & Storyline with events and choices connected to it.   & Configuration and story for possible games.                                           \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::bigBossHelper}}          & Terrain generation and modification.                 & Example terrains with obstacles based on a player behavior in a specific environment. \\ \hline
+				\multicolumn{1}{|c||}{\nameref{idea::figureItOut}}            & E.g., elements of a puzzle.                          & Example puzzle elements to progress in a game.                                        \\ \hline
+			\end{tabular}%
+		}
+	\end{table}
+\end{landscape}
 \end{document}
