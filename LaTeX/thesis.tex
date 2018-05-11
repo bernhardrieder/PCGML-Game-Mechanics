@@ -38,6 +38,8 @@
 \usepackage{booktabs}
 \usepackage[normalem]{ulem}
 \useunder{\uline}{\ul}{}
+\usepackage{fixltx2e}
+\usepackage{hhline}
 
 %
 % Bitte in der folgenden Zeile den Zitierstandard festlegen
@@ -625,22 +627,49 @@ As mentioned before, every game element determines its data representation for w
 
 \section{Development Example}
 There is no right or wrong proceeding in the generation process for PCGML. PCGML is a very new paradigm in the content generation community and its research results drive the right or wrong approaches. With this in mind, the PCGML generation process can take shape in any form and someone should do what fits best for the problem.\\
-A development example of a generation process for continuous variables in a sequence data structure is given in this section. An example for a data's structure provides figure \ref{fig::PCGML::devExample::sequenceBase}. As it is a sequence data, all values are connected to each other. In the figure, the S node represents a start value and all other nodes represent data row values.
+A development example of a generation process for continuous variables in a sequence data structure is given in this section. An example for a data's structure provides figure \ref{fig::PCGML::devExample::sequenceBase}. As it is a sequence data, all values are connected to each other. In the figure, the S node represents a start value and all other nodes represent data row values. 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.5\linewidth]{PICs/PCGML_development_example_sequence_base}
-	\caption{Basic Sequence Data Representation for a PCGML system }\label{fig::PCGML::devExample::sequenceBase}
+	\caption{Basic sequence data representation for a PCGML system. }\label{fig::PCGML::devExample::sequenceBase}
 \end{figure}
 To get results for the generation, each value pair has its trained ML model to predict the next values. Figure \ref{fig::PCGML::devExample::sequenceWithModels} shows the models for the values with a dashed rectangle. 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.5\linewidth]{PICs/PCGML_development_example_sequence_with_models}
-	\caption{Basic Sequence Data Representation for a PCGML system with shown ML Models}\label{fig::PCGML::devExample::sequenceWithModels}
+	\caption{Basic sequence data representation for a PCGML system with shown ML models.}\label{fig::PCGML::devExample::sequenceWithModels}
 \end{figure}
 It is worth nothing that values do not need just one predecessor, they can also have more than one predecessor which would change the dashed rectangles, ML models and their involved variables shown in figure \ref{fig::PCGML::devExample::sequenceWithModels}. 
 
 \subsection{Data}
-First of all, it is necessary to come up with efficient and enough data for the system's training. Depending on the variables does it need more ore less data for the model. For example, a data structure with around ten variables would probably need at least 100 data rows to properly train the ML model.
+First of all, it is necessary to come up with efficient and sufficient data for the system's training. Depending on the variables, it does need more ore less data for the model. For example, a data structure with around ten variables would probably need at least 100 data rows to properly train the ML model. Table \ref{table::PCGML::devExample::data} shows a simple example data table which could be used for the systems training. The table's data can contain any discrete or continuous values which could originate from any decoded non-numerical data.
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c||c|c|c|c|}
+		\hline
+		\textbf{S} & \textbf{V\textsubscript{1}} & \textbf{V\textsubscript{2}} & \textbf{...} & \textbf{V\textsubscript{n}} \\ \hline\hline
+		6           & 2.1         & A           & ...          & 100         \\ \hline
+		3           & 5           & B           & ...          & 64          \\ \hline
+		...         & ...         & ...         & ...          & ...         \\ \hline
+	\end{tabular}
+	\caption{PCGML example data table.}
+	\label{table::PCGML::devExample::data}
+\end{table}\\
+Furthermore, a standard procedure in ML is the technique of data pre-processing so that data values are consistent in each other. For example, if the data set provides categorical data like the values for \textbf{V\textsubscript{2}}, as shown in table \ref{table::PCGML::devExample::data}, then this data needs to be encoded, so it does not differ from the other data values. This is a standard procedure in the data pre-processing for training an ML model and can be done with so called "One Hot Encoding". Table \ref{table::PCGML::devExample::oneHotEncoder} shows an example of what an One Hot Encoder does with categorical data like provided by \textbf{V\textsubscript{2}}.
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\cline{1-1} \cline{3-5}
+		\textbf{V\textsubscript{2}} &  & \textbf{V\textsubscript{2}\textsuperscript{1}} & \textbf{V\textsubscript{2}\textsuperscript{2}} & \textbf{V\textsubscript{2}\textsuperscript{3}} \\ \hhline{=~===}
+		A           & $\longrightarrow$         & 1           & 0           & 0           \\ \cline{1-1} \cline{3-5} 
+		B           & $\longrightarrow$         & 0           & 1           & 0           \\ \cline{1-1} \cline{3-5} 
+		C           & $\longrightarrow$         & 0           & 0           & 1           \\ \cline{1-1} \cline{3-5} 
+	\end{tabular}
+	\caption{One Hot Encoder example.}
+	\label{table::PCGML::devExample::oneHotEncoder}
+\end{table}
+The new values generated by the One Hot Encoder replace the old categorizes values and the data set is ready to go.
+
 \subsection{Training}
 \subsection{Generation}
 
