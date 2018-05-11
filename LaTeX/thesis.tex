@@ -603,7 +603,7 @@ The focus of PCGML is to generate new content based on training with existing co
 	\item \textbf{Repair}: In particular, reparation of a designed or generated content can be a useful tool. For example, during generation or learning time, the algorithm could check for, e.g., playability of a level and repair it immediately or suggest a fix \cite{pcgml::paper}.
 \end{itemize}
 
-\section{Development}
+\section{Development Considerations}
 There are some unique development considerations to take when someone wants to make use of PCG via ML for game elements. In general, every design consideration, possible issue, pitfall and best practices described and discussed in chapters \ref{pcgDevelopment} and \ref{mlDevelopment} will apply when implementing PCGML algorithms. Furthermore, an initial examination of the data representation for the data used as the training set during the ML model’s training is necessary. On this account, the research of \cite{pcgml::paper} showed that every specific dataset has different but also shared possible training methods for the ML model to obtain excellent and practical generation results. The primarily used training models for their research purposes of using PCGML for, e.g., level generation were:
 \begin{itemize}
 	\item Neural networks like \ac{ANN}, \ac{CNN} or \ac{LSTM} networks
@@ -623,8 +623,26 @@ One of the essential parts in implementing a PCGML system is the data representa
 \end{enumerate}
 As mentioned before, every game element determines its data representation for which reason there is no general rule for the data representation. Nevertheless, the used data representations used in \cite{pcgml::paper} offer a good starting point when developing the data representation for the game mechanic.
 
-\section{The Generation Process}
-how does it work? thats the real question!
+\section{Development Example}
+There is no right or wrong proceeding in the generation process for PCGML. PCGML is a very new paradigm in the content generation community and its research results drive the right or wrong approaches. With this in mind, the PCGML generation process can take shape in any form and someone should do what fits best for the problem.\\
+A development example of a generation process for continuous variables in a sequence data structure is given in this section. An example for a data's structure provides figure \ref{fig::PCGML::devExample::sequenceBase}. As it is a sequence data, all values are connected to each other. In the figure, the S node represents a start value and all other nodes represent data row values.
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.5\linewidth]{PICs/PCGML_development_example_sequence_base}
+	\caption{Basic Sequence Data Representation for a PCGML system }\label{fig::PCGML::devExample::sequenceBase}
+\end{figure}
+To get results for the generation, each value pair has its trained ML model to predict the next values. Figure \ref{fig::PCGML::devExample::sequenceWithModels} shows the models for the values with a dashed rectangle. 
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.5\linewidth]{PICs/PCGML_development_example_sequence_with_models}
+	\caption{Basic Sequence Data Representation for a PCGML system with shown ML Models}\label{fig::PCGML::devExample::sequenceWithModels}
+\end{figure}
+It is worth nothing that values do not need just one predecessor, they can also have more than one predecessor which would change the dashed rectangles, ML models and their involved variables shown in figure \ref{fig::PCGML::devExample::sequenceWithModels}. 
+
+\subsection{Data}
+First of all, it is necessary to come up with efficient and enough data for the system's training. Depending on the variables does it need more ore less data for the model. For example, a data structure with around ten variables would probably need at least 100 data rows to properly train the ML model.
+\subsection{Training}
+\subsection{Generation}
 
 \clearpage
 \chapter{Possible Game Mechanics}
@@ -893,14 +911,23 @@ Evaluation of PCGML hardware and software requirements
 \subsection{Game Engine}
 There are 2 main engines which are commonly used thorough the industry due to their fact of free to use.
 
+Unity ML Agents:
+Environment -> Training the Brain -> Use the trained Brain in the game -> apparently just offline application possible
+
 \subsection{Data Representation}
+
 \subsection{Learning Model}
 state different models which could be used and differ them
 
+trying different models if your model sucks! -> use WEKA as a rescue http://www.cs.waikato.ac.nz/ml/weka
+
+learning with logs! -> training set
 
 \section{Implementation}
 \subsection{Technical Approach}
 Classes, Diagrams, why use what - eg. why use neural network over other and stuff like that!
+
+
 \subsection{Online or Offline?}
 \section{Performance Measurements}
 \subsection{Improvement Iterations}
