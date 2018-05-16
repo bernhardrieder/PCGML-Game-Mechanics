@@ -931,6 +931,12 @@ As already mentioned, all the introduced ideas differ in their development compl
 %
 \clearpage
 \chapter{Game Prototype} \label{chapter::gamePrototype}
+mention again the suitable game mechanic which is implemented in the game porottype and mention the focus of this chapter on this mechanic - but that the proccess can also be used and is applicable for other PCGML mechanics.
+
+mention data aquisition for the model and also a necessary game design for the prototype
+
+
+blah blah blah, what does this chapter address? talk about the content of this chapter
 
 \section{Game Idea}
 \begin{itemize}
@@ -940,8 +946,22 @@ As already mentioned, all the introduced ideas differ in their development compl
 	\item natural interaction
 	\item clear rules, playability	
 \end{itemize}
+Multiplayer FPS game in which players are in control of a PCGML generater which produces weapons -> mention mechanic design again!\\
+Players can either use the weapons as long as ammunition is available or drop it and generate a new one. All generated weapons shall be feed into the existing model to specialize the system's model in a specific direction. As soon as the model is specialized in a weapon and only generates on specific weapon, the game starts its last few minutes in which the player can generate the last few kills.\\
+\\
+Game objective: get as many kills as possible, round-based like CSGO, capture the flag.. the usual FPS game modes\\
+\\
+(also implement basic AI? game should work with peer to peer connection, so that no server is needed)
 
 \section{Data Aquisition}
+-> Available data on the web and existing games\\
+it shows that games mostly use real world data for the game. observation of weapon data in Unreal Tournamend and UE4 sample projects show the following used parameters:
+==== insert table ====
+This parameters can be used for the system and based on this data, other real data of weapons can be searched and found to get a dataset to train the model\\
+\\
+-> Where to find data? What is usually found?\\
+could use weapon stats from CSGO\\
+provide an example of a found data row and entry which is usable for the system
 
 \section{Development Considerations}
 
@@ -987,8 +1007,9 @@ The UE4 TensorFlow plugin currently only supports the Windows OS. To get started
 As already mentioned before, the only fundamental difference between the installations is their result in different computation times. Notably, this is getting an important role when the game uses online training and requires suitable computation times for the model's training. For this reason and to avoid initial delays, it is advisable to use a pre-trained model and apply changes to a copy of the model during runtime so that players are not concerned about the computation time.
 
 \subsection{Data Representation}
+the provided data shows that its either sequence or graph data. as described in chapter 5.3.1, they have different advantages and disadvantages but they probably fit both. Compares to the PCGML generation example, it fits better with sequences but the best way to find out is to try both data structures within each method.
 
-\subsection{Learning Model}
+\subsection{Learning Method}
 state different models which could be used and differ them
 
 trying different models if your model sucks! -> use WEKA as a rescue http://www.cs.waikato.ac.nz/ml/weka
@@ -997,7 +1018,10 @@ learning with logs! -> training set
 
 santi said: either NN or Gaussian Mixture Model
 
+As seen throughout the previous chapters, there is no distinctive right or wrong method to train a model. PCGML is relatively new and someone can just guess which one is usable. Best approach would be to use different methods and compare them. For simplicity, onle the method of NN is approached for this given problem. If there is enough time left then other methods can also be tested
+
 \subsection{Minimum Implementation}
+Just generation of weapon parameters and use them to generate wepons. Visuals of weapons are not part of the focus -> is a stretch goal of the implementation
 
 \section{Implementation}
 its not a regression problem. data is provided which is used to generate new but similar data -> its a continuous predicition of connected values and not just 1 prediction value! -> $\vec{x}$ \sout{$(\rightarrow y)$} \\
