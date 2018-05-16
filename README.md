@@ -3,6 +3,6 @@ This repository is all about my master thesis addressing the open problem of "Us
 Summerville et al. initially introduced the concept of using PCGML for, e.g., level generation and also other application. One leading open issue stated in the paper about PCGML is the use of PCGMl as a game mechanic which is addressed by this thesis.
 
 # Breakdown
-There will be two main projects in this repository:
+There are two main projects in this repository:
 - The master thesis, written in LaTeX
 - A prototype game which uses Procedural Content Generation via Machine Learning (PCGML) as a game mechanic
