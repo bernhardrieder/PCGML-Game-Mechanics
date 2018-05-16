@@ -963,20 +963,34 @@ As described in chapter \ref{chapter::mlPluginsGameEngines}, both Unity and UE4 
 Unity's plugin is actively in development, is mainly focused on development of ML-agents or so-called NPCs and supports multiple environments and \ac{OS} \cite{unity::mlGithub}. They are focusing the development on learning methods like RL, imitation learning and curriculum learning but also enable application for other methods \cite{unity::mlGithub}. Moreover, their GitHub page offers an extensive introduction into ML and their plugin, some example projects on how to use the ML plugin and is a great starting point to dive in. \\
 With this said, in the beginning and before any functionality of the plugin is usable, it needs an installation of an Python and TensorFlow environment on the PC. This is a different procedure and can sometimes be a tricky thing dependent on the \ac{OS} and preferences for TensorFlow.\\
 Once all prerequisites are installed, nothing stands between the developer and a working ML environment. The first thing to do is a setup of a training environment to train a new model and to make use of it. This learning environment is a usual Unity Scene and consists of an academy, brain and the ML-agents itself, created and programmable in C\#:
-\begin{enumerate}
+\begin{itemize}
 	\item \textbf{Academy}: Is mainly used to communicate with the brain, agents and Python API \cite{unity::mlGithub}. Involved in environment observations and the decision making process \cite{unity::mlGithub}. 
 	\item \textbf{Brain}: Encapsulates the logic for decision making process for the agent \cite{unity::mlGithub}. For example, for a RL based brain, holds the policy for the agent and the given rewards for received observations \cite{unity::mlGithub}.
 	\item \textbf{Agent}: Is just a Unity GameObject which generates observations and processes provided actions by the brain \cite{unity::mlGithub}.
-\end{enumerate}  
+\end{itemize}  
 As soon as the training environment is set up, the real training can begin with a build of the training environment. This is done via the external Python environment in which the logic of the ML algorithm is implemented via the TensorFlow framework. The Python environment then can start the training environment build and communicates with Unity's academy with the help of sent \ac{JSON} data over an open socket connection. After the training is completed it is possible to save the trained model to use it in the  game. The trained model is saved in a .byte dataformat which can then be used instead of the previous created brain.
 
 \subsubsection{Unreal Engine}
+Other than Unity's plugin, the open source and community member developed plugin does not focus on any specific ML algorithm and offers only an API to develop ML projects with TensorFlow. The plugin is under development by just one developer but constantly updated and works with one of the newest versions of TensorFlow. To get started with the plugin, \cite{ue4::tensorFlowPlugin} provides release builds for different engine versions and hardware, documentation about the installation process and the API, and an example project in which the plugin is used to predict hand-written numbers.\\
+The installation process of the plugin is pretty easy. One just downloads a release build from the GitHub page and copies the plugin folders into a \ac{UE4} project. The plugin itself is dependent on two other plugins which are plugins for a Python environment and open socket connections, directly integrated in UE4. As soon as the project is started, the installation process to obtain all necessary dependencies for a working ML Python environment is triggered by the Python plugin. The ML environment is now fully working and usable for development and no external installation is necessary. \\
+Setting up an ML environment in UE4 is rather simple and is done in two steps:
+\begin{enumerate}
+	\item \textbf{TensorflowComponent}: Add a so-called TensorflowComponent to an UE4 Actor which is able to communicate and execute a so-called TFPluginAPI Python script. The component itself is a Python scripted UE4 ActorComponent and can only be attached to an UE4 Actor. You might provide some functionality within the component for inputting or outputting data to or from the Python API. The communication uses JSON data which is sent via an open socket connection to the Python plugin.
+	\item \textbf{TFPluginAPI}: Create a Python script which derives from the TFPluginAPI which is a base class script for handling all TensorflowComponent calls. This script can override functions of the TFPluginAPI for setup, input via JSON data, training start and end, and provides functionality to send custom events. ML code goes in the training functions and will be called either by the TensorflowComponent or if deactivated, by a user.
+\end{enumerate}
+Other than Unity's procedure, this plugin does not need to be trained in a separated process. The training can happen directly during the game or separately in advance to use an external trained model. Another possibility is to train the model during the game and save it for a use in another game session. Every functionality provided by a usual Python API and the TensorFlow framework can be used to develop an ML application within UE4. Furthermore, save and loading functionality of trained models make use of TensorFlow's specific dataformat.
 
 \subsubsection{Conclusion}
 Unity's ML plugin is very focused on implementing ML-agents and offers a lot of code which is more or less useless for the implementation of the PCGML game mechanic. All of their code revolves around implementing an agent with an ML brain and it would need an overall inspection of their code to set up an own environment where the implementation of the PCGML game mechanic can be realized. Furthermore, there are making use of an open socket connection to communicate with the Python API via \ac{JSON} data which basically means that every user would need to set up an own ML environment on their PCs. This means, that it limits the feasible application of a PCGML system to an offline system where the brain is trained separately and the pre-trained model is included inside the build.
 
-\subsection{Necessary Hardware}
-GPU needs to be applicable with NVidia's CUDA library if GPU version of TensorFlow is used. Especially, this is important when the game uses online training and should be finished in a feasable time.
+UE: 
+-) is no specialized in any kind of machine learning algorithm
+-) no complex base code - simple and easy
+-) not much documentation which is not important because most of the code will be written in python with the tensorflow framework rather than other frameworks -> focus on their docs
+
+
+\subsection{Hardware Requirements}
+GPU needs to be applicable with NVIDIA's CUDA toolkit \cite{nvidia::cudaToolkit} if GPU version of TensorFlow is used. Especially, this is important when the game uses online training and should be finished in a feasable time.
 
 
 \subsection{Data Representation}
