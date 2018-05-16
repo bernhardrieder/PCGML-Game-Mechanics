@@ -528,7 +528,7 @@ Therefore, a right amount of information for the training of a machine learning 
 \subsubsection{Curse of Dimensionality}
 This problem often occurs when the training set is smaller than the number of feature variables, or also called the dimensions of a set, which are used to train a model \cite{ml::book::algorithms}. In this case, if the number of features increases then the performance of the model gets dramatically reduced \cite{ml::book::algorithms}. Possible ways to prevent and solve this problem are, e.g., a decrease of dimensions or providing more training data \cite{ml::book::algorithms}.
 
-\subsection{Game Engine Plugins}
+\subsection{Game Engine Plugins} \label{chapter::mlPluginsGameEngines}
 Indeed, all the different machine learning models or the one which applies to the game prototype of this thesis could be self-implemented. However, there are other people out there who have already implemented and improved their implementations which are a good starting point when implementing a PCGML game mechanic. As discussed at the beginning of the thesis, it is going to focus on an implementation in commonly used game engines which is the reason why to envisage the two most used free to use game engines nowadays.
 
 \subsubsection{Unity}
@@ -751,7 +751,7 @@ A PCGML system which is trained to generate and modify terrains with a particula
 An application as a game mechanic in a point and click game could be a PCGML system, trained to generate new storylines, events, choices and outcomes of chosen choices. The system is trained on designed stories and learns the dependencies to create new and novel storylines which individual possible choices and outcomes. Like in the idea described in \ref{idea::rulesAndBehavior}, the designer can provide more game elements than used in the game which provides the system which a variety of possibilities on how to compose the game. The spectacle pattern is the base of this idea of a PCGML generated story.
 
 \subsection{Big Boss Helper} \label{idea::bigBossHelper}
-Based on the villain pattern in which the AI mobs a player rather than tries to defeat them, is this idea. This kind of design pattern fits almost perfectly in, e.g., an RPG game big boss fight with more than one NPC to defeat. For example, there are two NPC’s to defeat to win the fight and obtain unique items - one applies mainly damage, and the other one protects the other one. This helper NPC is represented by the PCGML system which is trained on player behavior such as attack preferences or movement behavior in a specific level or environment to generate or alter the terrain or level to keep the player off the main enemy in the fight.
+Based on the villain pattern in which the AI mobs a player rather than tries to defeat them, is this idea. This kind of design pattern fits almost perfectly in, e.g., an RPG game big boss fight with more than one \ac{NPC} to defeat. For example, there are two NPC’s to defeat to win the fight and obtain unique items - one applies mainly damage, and the other one protects the other one. This helper NPC is represented by the PCGML system which is trained on player behavior such as attack preferences or movement behavior in a specific level or environment to generate or alter the terrain or level to keep the player off the main enemy in the fight.
 
 \subsection{Figure it Out} \label{idea::figureItOut}
 A possible application in a multiplayer game could be a mechanic in which each player possesses a PCGML system for generation purposes. However, the challenge in the game is that each generation of the system changes the other’s systems output, and they need to work together towards a specific goal. For instance, a puzzle game where players need to figure out the connection between their system. The PCGML system would be trained with a specific game corpus and enables interaction based on the editable pattern. The player changes parameters and also changes the other while they need to generate an object combined with each of the system's output. Parameter adjustment can either be done directly or indirectly with any moving stones around in a room and find the right position. Furthermore, this idea is also applicable in a single player puzzle game without the need of another player.
@@ -931,7 +931,6 @@ As already mentioned, all the introduced ideas differ in their development compl
 %
 \clearpage
 \chapter{Game Prototype} \label{chapter::gamePrototype}
-Development of a game with one of the best-evaluated PCGML game mechanic as the central game mechanic of the game.
 
 \section{Game Design}
 \begin{itemize}
@@ -952,13 +951,33 @@ Development of a game with one of the best-evaluated PCGML game mechanic as the 
 	\item Try going simpler before you go complex
 \end{enumerate}
 
+\section{Data Aquisition}
+
 \section{Considerations}
 Evaluation of PCGML hardware and software requirements
 \subsection{Game Engine}
-There are 2 main engines which are commonly used thorough the industry due to their fact of free to use.
+The decision of the most applicable game engine is not only about how easily the implementation for an FPS game is but also about their support for ML. The decision envisages the two most used free to use game engine nowadays but could also envisage others. Another reason to further examine this two particular engines is the writer's expertise for them.\\
+As described in chapter \ref{chapter::mlPluginsGameEngines}, both Unity and UE4 have available ML plugins for their engine. The development of Unity's ML plugin is boosted by Unity's developer them self whereas UE4's ML plugin is a community member created open source plugin. Nevertheless, both are using the same concepts of including ML functionality into the engine. In specific, they are using a Python interface to make use of the open source machine learning framework TensorFlow. With this in mind, the next chapters concentrate on the workflow in each engine to find the most applicable engine for implementing the PCGML game mechanic.
 
-Unity ML Agents:
-Environment -> Training the Brain -> Use the trained Brain in the game -> apparently just offline application possible
+\subsubsection{Unity}
+Unity's plugin is actively in development, is mainly focused on development of ML-agents or so-called NPCs and supports multiple environments and \ac{OS} \cite{unity::mlGithub}. They are focusing the development on learning methods like RL, imitation learning and curriculum learning but also enable application for other methods \cite{unity::mlGithub}. Moreover, their GitHub page offers an extensive introduction into ML and their plugin, some example projects on how to use the ML plugin and is a great starting point to dive in. \\
+With this said, in the beginning and before any functionality of the plugin is usable, it needs an installation of an Python and TensorFlow environment on the PC. This is a different procedure and can sometimes be a tricky thing dependent on the \ac{OS} and preferences for TensorFlow.\\
+Once all prerequisites are installed, nothing stands between the developer and a working ML environment. The first thing to do is a setup of a training environment to train a new model and to make use of it. This learning environment is a usual Unity Scene and consists of an academy, brain and the ML-agents itself, created and programmable in C\#:
+\begin{enumerate}
+	\item \textbf{Academy}: Is mainly used to communicate with the brain, agents and Python API \cite{unity::mlGithub}. Involved in environment observations and the decision making process \cite{unity::mlGithub}. 
+	\item \textbf{Brain}: Encapsulates the logic for decision making process for the agent \cite{unity::mlGithub}. For example, for a RL based brain, holds the policy for the agent and the given rewards for received observations \cite{unity::mlGithub}.
+	\item \textbf{Agent}: Is just a Unity GameObject which generates observations and processes provided actions by the brain \cite{unity::mlGithub}.
+\end{enumerate}  
+As soon as the training environment is set up, the real training can begin with a build of the training environment. This is done via the external Python environment in which the logic of the ML algorithm is implemented via the TensorFlow framework. The Python environment then can start the training environment build and communicates with Unity's academy with the help of sent \ac{JSON} data over an open socket connection. After the training is completed it is possible to save the trained model to use it in the  game. The trained model is saved in a .byte dataformat which can then be used instead of the previous created brain.
+
+\subsubsection{Unreal Engine}
+
+\subsubsection{Conclusion}
+Unity's ML plugin is very focused on implementing ML-agents and offers a lot of code which is more or less useless for the implementation of the PCGML game mechanic. All of their code revolves around implementing an agent with an ML brain and it would need an overall inspection of their code to set up an own environment where the implementation of the PCGML game mechanic can be realized. Furthermore, there are making use of an open socket connection to communicate with the Python API via \ac{JSON} data which basically means that every user would need to set up an own ML environment on their PCs. This means, that it limits the feasible application of a PCGML system to an offline system where the brain is trained separately and the pre-trained model is included inside the build.
+
+\subsection{Necessary Hardware}
+GPU needs to be applicable with NVidia's CUDA library if GPU version of TensorFlow is used. Especially, this is important when the game uses online training and should be finished in a feasable time.
+
 
 \subsection{Data Representation}
 
@@ -1036,12 +1055,15 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
 	\acro{FPS}{First Person Shooter}
 	\acro{GB}{Gigabyte}
 	\acro{HMM}{Hidden Markov Model}
+	\acro{JSON}{JavaScript Object Notation}
 	\acro{MDA}{Mechanics-Dynamics-Aesthetics}
 	\acro{LSTM}{Long Short-Term Memory}
 	\acro{ML}{Machine Learning}
 	\acro{MMORPG}{Massively Multiplayer Online Roleplay Game}
 	\acro{NLP}{Natural Language Processing}
 	\acro{NN}{Neural Network}
+	\acro{NPC}{Non-playable Character}
+	\acro{OS}{Operating Systems}
 	\acro{PC}{Personal Computer}
     \acro{PCG}{Procedural Content Generation}
     \acro{PCGML}{Procedural Content Generation via Machine Learning}
