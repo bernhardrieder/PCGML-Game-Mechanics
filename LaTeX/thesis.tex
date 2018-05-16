@@ -932,7 +932,7 @@ As already mentioned, all the introduced ideas differ in their development compl
 \clearpage
 \chapter{Game Prototype} \label{chapter::gamePrototype}
 
-\section{Game Design}
+\section{Game Idea}
 \begin{itemize}
 	\item easy to learn
 	\item use a feedback loop
@@ -943,8 +943,7 @@ As already mentioned, all the introduced ideas differ in their development compl
 
 \section{Data Aquisition}
 
-\section{Considerations}
-Evaluation of PCGML hardware and software requirements
+\section{Development Considerations}
 
 \subsection{Game Engine}
 The decision of the most applicable game engine is not only about how quickly the implementation for an FPS game could be done but also about their support for ML. The decision envisages the two most used free to use game engine nowadays but could also envisage others. Another reason to further examine this two particular engines is the writer's expertise for them.\\
@@ -998,6 +997,8 @@ learning with logs! -> training set
 
 santi said: either NN or Gaussian Mixture Model
 
+\subsection{Minimum Implementation}
+
 \section{Implementation}
 its not a regression problem. data is provided which is used to generate new but similar data -> its a continuous predicition of connected values and not just 1 prediction value! -> $\vec{x}$ \sout{$(\rightarrow y)$} \\
 x = values\\
@@ -1005,6 +1006,7 @@ y = prediction result\\
 \\
 D -> M -> \boxed{M} -> d\\
 Data -> Model -> generated Model -> Density estimation
+\subsection{Weapon Generation Process Design}
 
 \subsection{Technical Approach}
 Classes, Diagrams, why use what - eg. why use neural network over other and stuff like that!
