@@ -86,7 +86,7 @@
 \supervisor{Dipl.-Ing. (FH) Alexander Hofmann}
 %\supervisor[Begutachter]{Titel Vorname Name, Titel}
 %\supervisor[Begutachterin]{Titel Vorname Name, Titel}
-\secondsupervisor{Dr. Jichen Zhu \and{} Dr. Santiago Onta\~{n}\'{o}n}
+\secondsupervisor{Dr. Santiago Onta\~{n}\'{o}n}
 %\secondsupervisor[Begutachter]{Titel Vorname Name, Titel}
 %\secondsupervisor[Begutachterinnen]{Titel Vorname Name, Titel}
 \place{Philadelphia}
@@ -108,7 +108,7 @@
 	}
 }
 \keywords{{\color{blue}Procedural Content Generation, Machine Learning, Game Mechanic, Artifial Intelligence, Game Development}}
-\acknowledgements{{\color{blue}Many thanks to mr Alexander Hofmann who gave me the possibilty to write my master thesis abroad at the Drexel University. Also many thanks to the Drexel University and Dr. Michael Wagner who gave me the opportunity to be a part of their team while i was writing my master thesis there. Lastly, many thanks to Dr. Santiago Ontanon and Dr. Jichen Zhu who supported me, ....}}
+\acknowledgements{{\color{blue}Many thanks to mr Alexander Hofmann who gave me the possibilty to write my master thesis abroad at the Drexel University. Also many thanks to the Drexel University and Dr. Michael Wagner who gave me the opportunity to be a part of their team while i was writing my master thesis there. Lastly, many thanks to Dr. Santiago Ontanon in supporting me, ....}}
 
 \begin{document}
 %Festlegungen für den HARVARD-Zitierstandard
@@ -941,16 +941,6 @@ As already mentioned, all the introduced ideas differ in their development compl
 	\item clear rules, playability	
 \end{itemize}
 
-\textbf{Designing Awesome AI for Games - Summary (GDC Talk)}
-\begin{enumerate}
-	\item Support the core experience
-	\item Watch people play and get in their heads
-	\item Identify broad behaviours
-	\item Start simple
-	\item Figure out what the brain gives you for free
-	\item Try going simpler before you go complex
-\end{enumerate}
-
 \section{Data Aquisition}
 
 \section{Considerations}
@@ -992,8 +982,8 @@ UE4 itself does not require particular hardware to run. They support many differ
 \subsubsection{TensorFlow Plugin}
 The UE4 TensorFlow plugin currently only supports the Windows OS. To get started with the plugin, it needs the installation of TensorFlow on the executing system. TensorFlow supports 64-bit and x86 desktops or laptops with Windows 7 or later \cite{api::tensorFlow}. There are two installation options for enabling different types of TensorFlow on the PC:
 \begin{itemize}
-	\item \textbf{CPU}: TensorFlow with CPU support is the standard alternative which works for most of the standard PCs in use nowadays. The only significant drawback of using the CPU variant of TensorFlow are longer training1 computation times.
-	\item \textbf{GPU}: The GPU alternative of TensorFlow offers faster computation of ML algorithms and significantly reduces training time. The only requirement for using the GPU variant is that the user needs to use a GPU which is eligible for NVIDIA's CUDA toolkit \cite{nvidia::cudaToolkit} to run the GPU variant of TensorFlow. Nevertheless, modern PCs with an integrated NVIDIA graphic card are usually eligible to support the CUDA toolkit. 
+	\item \textbf{\ac{CPU}}: TensorFlow with CPU support is the standard alternative which works for most of the standard PCs in use nowadays. The only significant drawback of using the CPU variant of TensorFlow are longer training1 computation times.
+	\item \textbf{\ac{GPU}}: The GPU alternative of TensorFlow offers faster computation of ML algorithms and significantly reduces training time. The only requirement for using the GPU variant is that the user needs to use a GPU which is eligible for NVIDIA's CUDA toolkit \cite{nvidia::cudaToolkit} to run the GPU variant of TensorFlow. Nevertheless, modern PCs with an integrated NVIDIA graphic card are usually eligible to support the CUDA toolkit. 
 \end{itemize}
 As already mentioned before, the only fundamental difference between the installations is their result in different computation times. Notably, this is getting an important role when the game uses online training and requires suitable computation times for the model's training. For this reason and to avoid initial delays, it is advisable to use a pre-trained model and apply changes to a copy of the model during runtime so that players are not concerned about the computation time.
 
@@ -1070,8 +1060,10 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
 	\acro{ANN}{Artificial Neural Network}
 	\acro{API}{Application Programming Interface}
 	\acro{CNN}{Convolutional Neural Network}
+	\acro{CPU}{Central Processing Unit}
 	\acro{FPS}{First Person Shooter}
 	\acro{GB}{Gigabyte}
+	\acro{GPU}{Graphics Processing Unit}
 	\acro{HMM}{Hidden Markov Model}
 	\acro{JSON}{JavaScript Object Notation}
 	\acro{MDA}{Mechanics-Dynamics-Aesthetics}
