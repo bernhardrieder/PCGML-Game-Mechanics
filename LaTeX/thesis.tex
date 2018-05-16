@@ -924,19 +924,15 @@ The ideas how someone can make use of PCGML as a game mechanic show that there a
 Many of the ideas are about generating items used as a game mechanic, but PCGML also offers the possibility to generate any item such as quests, missions or challenges. Furthermore, the implementation of any progression mechanics is also applicable via PCGML. It just needs the right idea and a training set with an appropriate data representation to properly train the ML system.
 
 \subsection{Game Mechanic for the Prototype}
-As already mentioned, all the introduced ideas differ in their development complexity. Most of the ideas require a sophisticated game design where the PCGML game mechanic can work and create an adequate experience for the players. For instance, ideas like "\nameref{idea::trainToProgress}" or "\nameref{idea::figureItOut}" offer an interesting approach for creating unique player experience but require a very sophisticated game design and much balancing for polishing. For this reason, the easiest and most applicable ideas for showing the potential of PCGML as a game mechanic in this thesis offer "\nameref{idea::changingWeapons}" and "\nameref{idea::changingPowers}." Availability of open source FPS projects leads the decision for the prototype game mechanic to the idea of "\nameref{idea::changingWeapons}." Therefore, the rest of this thesis deals with the implementation of a PCGML game mechanic prototype which revolves around PCGML generated weapons.
+As already mentioned, all the introduced ideas differ in their development complexity. Most of the ideas require a sophisticated game design where the PCGML game mechanic can work and create an adequate experience for the players. For instance, ideas like "\nameref{idea::trainToProgress}" or "\nameref{idea::figureItOut}" offer an interesting approach for creating unique player experience but require a very sophisticated game design and much balancing for polishing. For this reason, the easiest and most applicable ideas for showing the potential of PCGML as a game mechanic in this thesis offer "\nameref{idea::changingWeapons}" and "\nameref{idea::changingPowers}." Availability of open source FPS projects and real weapon data leads the decision for the prototype game mechanic to the idea of "\nameref{idea::changingWeapons}." Therefore, the rest of this thesis deals with the implementation of a PCGML game mechanic prototype which revolves around PCGML generated weapons.
 
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
 %
 \clearpage
 \chapter{Game Prototype} \label{chapter::gamePrototype}
-mention again the suitable game mechanic which is implemented in the game porottype and mention the focus of this chapter on this mechanic - but that the proccess can also be used and is applicable for other PCGML mechanics.
-
-mention data aquisition for the model and also a necessary game design for the prototype
-
-
-blah blah blah, what does this chapter address? talk about the content of this chapter
+This chapter is dedicated to the development of a game prototype which uses the PCGML game mechanic chosen in the last chapter. Every section in this chapter is in a direct relation with this PCGML game mechanic which does not mean that the process is not applicable for other PCGML game mechanics. Most of the described process is transferable and follows a basic principle suitable for every other kind of PCGML game mechanic. \\
+The next sections contain every conceivable necessary topic to implement the PCGML game mechanic "\nameref{idea::changingWeapons}" in a game prototype. From the initial game idea to the most useful game engine to the training model and the working prototype.
 
 \section{Game Idea}
 \begin{itemize}
@@ -953,7 +949,7 @@ Game objective: get as many kills as possible, round-based like CSGO, capture th
 \\
 (also implement basic AI? game should work with peer to peer connection, so that no server is needed)
 
-\section{Data Aquisition}
+\section{Data Acquisition}
 -> Available data on the web and existing games\\
 it shows that games mostly use real world data for the game. observation of weapon data in Unreal Tournamend and UE4 sample projects show the following used parameters:
 ==== insert table ====
