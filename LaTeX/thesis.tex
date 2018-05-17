@@ -932,26 +932,37 @@ As already mentioned, all the introduced ideas differ in their development compl
 \clearpage
 \chapter{Game Prototype} \label{chapter::gamePrototype}
 This chapter is dedicated to the development of a game prototype which uses the PCGML game mechanic chosen in the last chapter. Every section in this chapter is in a direct relation with this PCGML game mechanic which does not mean that the process is not applicable for other PCGML game mechanics. Most of the described process is transferable and follows a basic principle suitable for every other kind of PCGML game mechanic. \\
-The next sections contain every conceivable necessary topic to implement the PCGML game mechanic "\nameref{idea::changingWeapons}" in a game prototype. From the initial game idea to the most useful game engine to the training model and the working prototype.
+The next sections contain every conceivable necessary topic to implement the PCGML game mechanic "\nameref{idea::changingWeapons}" in a game prototype. From an initial game idea to the most useful game engine to the training model and the working prototype. Note that the game idea just functions as an idea of which a prototype with an PCGML game mechanic emerges rather than being a fully sophisticated game. This chapter functions as a proof-of-concept and shows how a PCGML game mechanic can be implemented and used in a game.
 
-\section{Game Idea}
-\begin{itemize}
-	\item easy to learn
-	\item use a feedback loop
-	\item tutorial!
-	\item natural interaction
-	\item clear rules, playability	
-\end{itemize}
-Multiplayer FPS game in which players are in control of a PCGML generater which produces weapons -> mention mechanic design again!\\
-Players can either use the weapons as long as ammunition is available or drop it and generate a new one. All generated weapons shall be feed into the existing model to specialize the system's model in a specific direction. As soon as the model is specialized in a weapon and only generates on specific weapon, the game starts its last few minutes in which the player can generate the last few kills.\\
-\\
-Game objective: get as many kills as possible, round-based like CSGO, capture the flag.. the usual FPS game modes\\
-\\
-(also implement basic AI? game should work with peer to peer connection, so that no server is needed)
+\section{Test Scenario}
+A two player \ac{PvP} arena-like game scenario in which each player is in control of a PCGML system. The system produces weapons such as pistols, machine guns and other kind of guns to interact. The system can be based on a specific dataset of weapons which lead the kind of game and its flow. The game forces players consistently to make use of their weapons to win the game.
+
+\subsection{Environment and Objective}
+The environment is a simple mountain-forest-like low poly environment. Players start in the same map but different locations and need to find each other to start the battle of the players which represents the the last fight of the scenario. Figure \ref{prototype::exampleMap} shows an example of the map with each player at a different spawn location and the arena in the middle.
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.8\linewidth]{PICs/Prototype/map_example}
+	\caption{Example of the prototype scenario map.}\label{prototype::exampleMap}
+\end{figure}
+The players main objective is to defeat the other player in a battle against each other at the end of the scenario. The winner of the battle wins the game. 
+
+\subsubsection{Training Session}
+But first of all, they need to fight against NPC enemies on their way to the arena to specialize and get used to their weapons. But even though this is a training session, the players have a specific amount of lives and need to take care of them. If they lose all of their lives during this session then the other player wins the game and it ends.
+
+\subsubsection{Battle of the Players}
+The battle is initiated as soon as the players are in a certain range to each other. This means, that they do not particularly need to meet in the arena itself. They can also meet each other in and during the training session. As soon as they initiated the battle, the training session ends and all of their lives are restored for the final battle. Each player can now move everywhere in the map and needs to defeat the other player with his weapons to win the game. Ammunition, health and armor packages are randomly, but in player range, spawned during the battle, so that players need to walk around in the map to make it more dynamically.
+
+\subsection{Weapon and Ammunition}
+Players are able to hold two generated weapons at a time but just can use on at a time. Generated weapons come with a specific ammunition pack at generation time with the possibility to refill ammunition during the game. Players can either use a weapon as long as ammunition is available or dismantle them at any time to generate a new weapon.\\
+Every generated weapon is feed into the existing PCGML model to specialize the system's model in a specific direction. Because every player is in possession of an own PCGML system, the system's are trained differently. For that reason, every system emerges in a different direction and different weapons for each player. 
+
+\subsection{Player and Enemies}
+The player is a simple first person character with specific amount of health, armor and lives with no customization options. Synchronization of the values of these mentioned properties with the properties of the generated weapons is necessary.\\
+A simple AI controls all enemies to act as a training enemy for the battle. Enemies come in three different types with ascending power and health. The spawn in fixed locations throughout the training path. Enemies do not possess a complex desire, they just want to eliminate the player in a straight forward way. Killed enemies will drop ammunition, health and armor which players can gather to refill their ammunition, health and armor.
 
 \section{Data Acquisition}
 -> Available data on the web and existing games\\
-it shows that games mostly use real world data for the game. observation of weapon data in Unreal Tournamend and UE4 sample projects show the following used parameters:
+it shows that games mostly use real world data for the game. observation of weapon data in Unreal Tournament and UE4 sample projects show the following used parameters:
 ==== insert table ====
 This parameters can be used for the system and based on this data, other real data of weapons can be searched and found to get a dataset to train the model\\
 \\
@@ -1016,8 +1027,7 @@ santi said: either NN or Gaussian Mixture Model
 
 As seen throughout the previous chapters, there is no distinctive right or wrong method to train a model. PCGML is relatively new and someone can just guess which one is usable. Best approach would be to use different methods and compare them. For simplicity, onle the method of NN is approached for this given problem. If there is enough time left then other methods can also be tested
 
-\subsection{Minimum Implementation}
-Just generation of weapon parameters and use them to generate wepons. Visuals of weapons are not part of the focus -> is a stretch goal of the implementation
+
 
 \section{Implementation}
 its not a regression problem. data is provided which is used to generate new but similar data -> its a continuous predicition of connected values and not just 1 prediction value! -> $\vec{x}$ \sout{$(\rightarrow y)$} \\
@@ -1025,7 +1035,11 @@ x = values\\
 y = prediction result\\
 \\
 D -> M -> \boxed{M} -> d\\
-Data -> Model -> generated Model -> Density estimation
+Data -> Model -> generated Model -> Density estimation\\
+\\
+\textbf{previous considerations}\\
+mind all previous described considerations into the implementation!!
+
 \subsection{Weapon Generation Process Design}
 
 \subsection{Technical Approach}
@@ -1034,6 +1048,15 @@ Classes, Diagrams, why use what - eg. why use neural network over other and stuf
 Santi said: just use 1 Hidden Layer if you have a dataset with small amount of data
 Santi said: around 3 neurons (hidden layer? idk)
 \subsection{Online or Offline?}
+\subsection{Game}
+read over game mechanics chapter again to focus on the dev considerations
+\begin{itemize}
+	\item tutorial!
+	\item uses a feedback loop -> player shoots AI or player and they should die or similar
+	\item easy to learn -> FPS games in general are pretty straight forward
+	\item natural interaction
+	\item playability	
+\end{itemize}
 \section{Performance Measurements}
 \subsection{Improvement Iterations}
 \section{Playtest}
@@ -1099,6 +1122,7 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
 	\acro{PC}{Personal Computer}
     \acro{PCG}{Procedural Content Generation}
     \acro{PCGML}{Procedural Content Generation via Machine Learning}
+    \acro{PvP}{Player versus Player}
     \acro{RPG}{Roleplay Games}
     \acro{RL}{Reinforcement Learning}
     \acro{RNG}{Random Number Generator}
