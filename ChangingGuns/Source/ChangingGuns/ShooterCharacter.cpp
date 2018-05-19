@@ -23,6 +23,15 @@ AShooterCharacter::AShooterCharacter()
 
 }
 
+FVector AShooterCharacter::GetPawnViewLocation() const
+{
+	if(CameraComp)
+	{
+		return CameraComp->GetComponentLocation();
+	}
+	return Super::GetPawnViewLocation();
+}
+
 // Called when the game starts or when spawned
 void AShooterCharacter::BeginPlay()
 {
