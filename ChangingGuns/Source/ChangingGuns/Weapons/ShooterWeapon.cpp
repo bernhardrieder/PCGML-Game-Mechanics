@@ -30,6 +30,7 @@ AShooterWeapon::AShooterWeapon()
 	TracerTargetName = "BeamEnd";
 	BaseDamage = 20.f;
 	RateOfFire = 600; //bullets per minute
+	BulletSpread = 2.0f;
 }
 
 void AShooterWeapon::BeginPlay()
@@ -61,8 +62,13 @@ void AShooterWeapon::Fire()
 		FRotator eyeRotator;
 		owner->GetActorEyesViewPoint(eyeLocation, eyeRotator);
 
-		FVector shootDirection = eyeRotator.Vector();
-		FVector traceEnd = eyeLocation + shootDirection * 10000;
+		FVector shotDirection = eyeRotator.Vector();
+
+		// bullet spread
+		float halfRad = FMath::DegreesToRadians(BulletSpread);
+		shotDirection = FMath::VRandCone(shotDirection, halfRad, halfRad);
+
+		FVector traceEnd = eyeLocation + shotDirection * 10000;
 
 		FCollisionQueryParams queryParams;
 		queryParams.AddIgnoredActor(owner);
@@ -85,7 +91,7 @@ void AShooterWeapon::Fire()
 			{
 				actualDamage *= 4.f;
 			}
-			UGameplayStatics::ApplyPointDamage(hitActor, actualDamage, shootDirection, hitResult, owner->GetInstigatorController(), this, DamageType);
+			UGameplayStatics::ApplyPointDamage(hitActor, actualDamage, shotDirection, hitResult, owner->GetInstigatorController(), this, DamageType);
 
 			UParticleSystem* selectedEffect = nullptr;
 			switch(surfaceType)

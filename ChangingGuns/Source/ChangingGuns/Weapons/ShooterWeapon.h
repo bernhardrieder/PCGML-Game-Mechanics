@@ -51,16 +51,19 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float RateOfFire;
 
+	// bullet spread in degrees */
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon", meta = (ClampMin = 0.0f))
+	float BulletSpread;
 
 public:	
 	// Sets default values for this actor's properties
 	AShooterWeapon();
-	virtual void BeginPlay() override;
 
 	virtual void StartFire();
 	virtual void StopFire();
 
 protected:
+	virtual void BeginPlay() override;
 	virtual void PlayFireEffects(const FVector& FireImpactPoint);
 	virtual void Fire();
 
