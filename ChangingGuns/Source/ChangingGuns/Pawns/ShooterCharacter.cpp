@@ -86,11 +86,19 @@ void AShooterCharacter::EndZoom()
 	bWantsToZoom = false;
 }
 
-void AShooterCharacter::Fire()
+void AShooterCharacter::StartFire()
 {
 	if(CurrentWeapon)
 	{
-		CurrentWeapon->Fire();
+		CurrentWeapon->StartFire();
+	}
+}
+
+void AShooterCharacter::StopFire()
+{
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->StopFire();
 	}
 }
 
@@ -122,6 +130,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Zoom", IE_Pressed, this, &AShooterCharacter::BeginZoom);
 	PlayerInputComponent->BindAction("Zoom", IE_Released, this, &AShooterCharacter::EndZoom);
 
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AShooterCharacter::Fire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AShooterCharacter::StartFire);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AShooterCharacter::StopFire);
 }
 

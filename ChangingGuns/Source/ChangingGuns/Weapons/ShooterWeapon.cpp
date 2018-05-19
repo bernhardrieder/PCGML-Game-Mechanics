@@ -10,6 +10,7 @@
 #include "Camera/CameraShake.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "ChangingGuns.h"
+#include "TimerManager.h"
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVARDebugWeaponDrawing (
@@ -28,7 +29,27 @@ AShooterWeapon::AShooterWeapon()
 	MuzzleSocketName = "MuzzleSocket";
 	TracerTargetName = "BeamEnd";
 	BaseDamage = 20.f;
+	RateOfFire = 600; //bullets per minute
 }
+
+void AShooterWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+
+	timeBetweenShots = 60 / RateOfFire;
+}
+
+void AShooterWeapon::StartFire()
+{
+	float firstDelay = FMath::Max(lastFireTime + timeBetweenShots - GetWorld()->TimeSeconds, 0.f);
+	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &AShooterWeapon::Fire, timeBetweenShots, true, firstDelay);
+}
+
+void AShooterWeapon::StopFire()
+{
+	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
+}
+
 
 void AShooterWeapon::Fire()
 {
@@ -92,6 +113,8 @@ void AShooterWeapon::Fire()
 		}
 
 		PlayFireEffects(tracerEndPoint);
+
+		lastFireTime = GetWorld()->TimeSeconds;
 	}
 
 }
