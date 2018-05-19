@@ -1,10 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2018 - Bernhard Rieder - All Rights Reserved.
 
 #include "ShooterCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
-#include "ShooterWeapon.h"
+#include "Weapons/ShooterWeapon.h"
 #include "Engine/World.h"
 #include "Components/SkeletalMeshComponent.h"
 

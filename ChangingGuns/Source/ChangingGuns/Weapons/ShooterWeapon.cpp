@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2018 - Bernhard Rieder - All Rights Reserved.
 
 #include "ShooterWeapon.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -50,7 +50,7 @@ void AShooterWeapon::Fire()
 
 		FVector tracerEndPoint = traceEnd;
 		FHitResult hitResult;
-		if(GetWorld()->LineTraceSingleByChannel(hitResult, eyeLocation, traceEnd, ECC_Visibility, queryParams))
+		if(GetWorld()->LineTraceSingleByChannel(hitResult, eyeLocation, traceEnd, COLLISION_WEAPON, queryParams))
 		{
 			//is blocking hit! -> process damage
 			AActor* hitActor = hitResult.GetActor();
