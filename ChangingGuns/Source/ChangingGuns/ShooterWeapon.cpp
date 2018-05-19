@@ -8,6 +8,8 @@
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Camera/CameraShake.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
+#include "ChangingGuns.h"
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVARDebugWeaponDrawing (
@@ -44,6 +46,7 @@ void AShooterWeapon::Fire()
 		queryParams.AddIgnoredActor(owner);
 		queryParams.AddIgnoredActor(this);
 		queryParams.bTraceComplex = true; //gives us the exact result because traces every triangle instead of a simple collider
+		queryParams.bReturnPhysicalMaterial = true;
 
 		FVector tracerEndPoint = traceEnd;
 		FHitResult hitResult;
@@ -53,10 +56,25 @@ void AShooterWeapon::Fire()
 			AActor* hitActor = hitResult.GetActor();
 			UGameplayStatics::ApplyPointDamage(hitActor, 20.f, shootDirection, hitResult, owner->GetInstigatorController(), this, DamageType);
 
-			if (ImpactEffect)
+
+			UParticleSystem* selectedEffect = nullptr;
+			EPhysicalSurface surfaceType = UPhysicalMaterial::DetermineSurfaceType(hitResult.PhysMaterial.Get());
+			switch(surfaceType)
 			{
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, hitResult.ImpactPoint, hitResult.ImpactNormal.Rotation());
+				case SURFACE_FLESHDEFAULT:
+				case SURFACE_FLESHVULNERABLE:
+					selectedEffect = FleshImpactEffect;
+					break;
+				default:
+					selectedEffect = DefaultImpactEffect;
+					break;
 			}
+
+			if (selectedEffect)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), selectedEffect, hitResult.ImpactPoint, hitResult.ImpactNormal.Rotation());
+			}
+
 			tracerEndPoint = hitResult.ImpactPoint;
 		}
 
