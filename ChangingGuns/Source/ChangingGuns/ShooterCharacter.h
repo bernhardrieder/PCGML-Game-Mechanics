@@ -9,6 +9,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class AShooterWeapon;
 
 UCLASS()
 class CHANGINGGUNS_API AShooterCharacter : public ACharacter
@@ -28,8 +29,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Player", meta = (ClampMin = 0.1, ClampMax = 100.0))
 	float ZoomInterpSpeed;
 
-	bool bWantsToZoom;
-	float DefaultFOV;
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	TSubclassOf<AShooterWeapon> StarterWeaponClass;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
+	FName WeaponAttachSocketName;
 
 public:
 	// Sets default values for this character's properties
@@ -47,6 +51,7 @@ protected:
 	void EndCrouch();
 	void BeginZoom();
 	void EndZoom();
+	void Fire();
 
 public:	
 	// Called every frame
@@ -55,5 +60,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	
+protected:
+	bool bWantsToZoom;
+	float DefaultFOV;
+	AShooterWeapon* CurrentWeapon;
+
 };

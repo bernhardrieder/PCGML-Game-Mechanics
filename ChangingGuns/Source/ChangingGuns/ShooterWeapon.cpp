@@ -8,24 +8,22 @@
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
 
+static int32 DebugWeaponDrawing = 0;
+FAutoConsoleVariableRef CVARDebugWeaponDrawing (
+	TEXT("Game.DebugWeapons"),
+	DebugWeaponDrawing,
+	TEXT("Draw Debug Lines for Weapons"),
+	ECVF_Cheat
+);
+
 // Sets default values
 AShooterWeapon::AShooterWeapon()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
 	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
 	RootComponent = MeshComp;
 
 	MuzzleSocketName = "MuzzleSocket";
 	TracerTargetName = "BeamEnd";
-}
-
-// Called when the game starts or when spawned
-void AShooterWeapon::BeginPlay()
-{
-	Super::BeginPlay();
-	
 }
 
 void AShooterWeapon::Fire()
@@ -46,6 +44,7 @@ void AShooterWeapon::Fire()
 		queryParams.AddIgnoredActor(this);
 		queryParams.bTraceComplex = true; //gives us the exact result because traces every triangle instead of a simple collider
 
+		FVector tracerEndPoint = traceEnd;
 		FHitResult hitResult;
 		if(GetWorld()->LineTraceSingleByChannel(hitResult, eyeLocation, traceEnd, ECC_Visibility, queryParams))
 		{
@@ -57,30 +56,30 @@ void AShooterWeapon::Fire()
 			{
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, hitResult.ImpactPoint, hitResult.ImpactNormal.Rotation());
 			}
-
+			tracerEndPoint = hitResult.ImpactPoint;
 		}
-		DrawDebugLine(GetWorld(), eyeLocation, traceEnd, FColor::White, false, 1.f, 0, 1.f);
 
-		if(MuzzleEffect)
+		if(DebugWeaponDrawing > 0)
 		{
-			UGameplayStatics::SpawnEmitterAttached(MuzzleEffect, MeshComp, MuzzleSocketName);
+			DrawDebugLine(GetWorld(), eyeLocation, traceEnd, FColor::White, false, 1.f, 0, 1.f);
 		}
 
-		if(TracerEffect)
-		{
-			FVector muzzleLocation = MeshComp->GetSocketLocation(MuzzleSocketName);
-			UParticleSystemComponent* particleSystem = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), TracerEffect, muzzleLocation);
-			FVector tracerEndPoint = hitResult.IsValidBlockingHit() ? hitResult.ImpactPoint : traceEnd;
-			particleSystem->SetVectorParameter(TracerTargetName, tracerEndPoint);
-		}
+		PlayFireEffects(tracerEndPoint);
 	}
 
 }
 
-// Called every frame
-void AShooterWeapon::Tick(float DeltaTime)
+void AShooterWeapon::PlayFireEffects(const FVector& FireImpactPoint)
 {
-	Super::Tick(DeltaTime);
+	if (MuzzleEffect)
+	{
+		UGameplayStatics::SpawnEmitterAttached(MuzzleEffect, MeshComp, MuzzleSocketName);
+	}
 
+	if (TracerEffect)
+	{
+		FVector muzzleLocation = MeshComp->GetSocketLocation(MuzzleSocketName);
+		UParticleSystemComponent* particleSystem = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), TracerEffect, muzzleLocation);
+		particleSystem->SetVectorParameter(TracerTargetName, FireImpactPoint);
+	}
 }
-
