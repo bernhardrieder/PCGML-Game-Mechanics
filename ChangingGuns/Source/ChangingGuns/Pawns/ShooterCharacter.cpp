@@ -7,6 +7,8 @@
 #include "Weapons/ShooterWeapon.h"
 #include "Engine/World.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "ChangingGuns.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -18,6 +20,8 @@ AShooterCharacter::AShooterCharacter()
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->bUsePawnControlRotation = true;
 	SpringArmComp->SetupAttachment(RootComponent);
+
+	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
 
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 
