@@ -44,6 +44,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<UCameraShake> FireCamShake;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	float BaseDamage;
 public:	
 	// Sets default values for this actor's properties
 	AShooterWeapon();
