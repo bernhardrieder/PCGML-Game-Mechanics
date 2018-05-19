@@ -21,6 +21,16 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	float ZoomedFOV;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player", meta = (ClampMin = 0.1, ClampMax = 100.0))
+	float ZoomInterpSpeed;
+
+	bool bWantsToZoom;
+	float DefaultFOV;
+
 public:
 	// Sets default values for this character's properties
 	AShooterCharacter();
@@ -35,6 +45,8 @@ protected:
 	void MoveRight(float Value);
 	void BeginCrouch();
 	void EndCrouch();
+	void BeginZoom();
+	void EndZoom();
 
 public:	
 	// Called every frame
