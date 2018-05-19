@@ -6,11 +6,21 @@
 #include "GameFramework/Character.h"
 #include "ShooterCharacter.generated.h"
 
+
+class UCameraComponent;
+class USpringArmComponent;
+
 UCLASS()
 class CHANGINGGUNS_API AShooterCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UCameraComponent* CameraComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USpringArmComponent* SpringArmComp;
 public:
 	// Sets default values for this character's properties
 	AShooterCharacter();
@@ -21,6 +31,8 @@ protected:
 
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void BeginCrouch();
+	void EndCrouch();
 
 public:	
 	// Called every frame
@@ -29,6 +41,5 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	
 	
 };
