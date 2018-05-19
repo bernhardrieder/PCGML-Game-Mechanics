@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Camera/CameraShake.h"
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVARDebugWeaponDrawing (
@@ -81,5 +82,13 @@ void AShooterWeapon::PlayFireEffects(const FVector& FireImpactPoint)
 		FVector muzzleLocation = MeshComp->GetSocketLocation(MuzzleSocketName);
 		UParticleSystemComponent* particleSystem = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), TracerEffect, muzzleLocation);
 		particleSystem->SetVectorParameter(TracerTargetName, FireImpactPoint);
+	}
+
+	if(APawn* owner = Cast<APawn>(GetOwner()))
+	{
+		if(APlayerController* pc = Cast<APlayerController>(owner->GetController()))
+		{
+			pc->ClientPlayCameraShake(FireCamShake);
+		}
 	}
 }

@@ -9,6 +9,7 @@
 class USkeletalMeshComponent;
 class UDamageType;
 class UParticleSystem;
+class UCameraShake;
 
 UCLASS()
 class CHANGINGGUNS_API AShooterWeapon : public AActor
@@ -36,6 +37,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	UParticleSystem* TracerEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<UCameraShake> FireCamShake;
 
 public:	
 	// Sets default values for this actor's properties
