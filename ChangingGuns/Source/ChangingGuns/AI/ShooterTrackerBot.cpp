@@ -9,6 +9,16 @@
 #include "Components/HealthComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Engine/World.h"
+#include "Particles/ParticleSystem.h"
+#include "DrawDebugHelpers.h"
+
+static int32 DebugTrackerBotDrawing = 0;
+FAutoConsoleVariableRef CVARDebugTackerBotDrawing(
+	TEXT("Game.DebugTrackerBot"),
+	DebugTrackerBotDrawing,
+	TEXT("Draw Debug for Tracker Bot"),
+	ECVF_Cheat
+);
 
 // Sets default values
 AShooterTrackerBot::AShooterTrackerBot()
@@ -26,6 +36,8 @@ AShooterTrackerBot::AShooterTrackerBot()
 	MovementForce = 1000.f;
 	bUseVelocityChange = false;
 	RequiredDistanceToTarget = 100.f;
+	ExplosionDamage = 40.f;
+	DamageRadius = 200.f;
 }
 
 // Called when the game starts or when spawned
@@ -65,6 +77,30 @@ void AShooterTrackerBot::onHealthChanged(const UHealthComponent* HealthComponent
 	{
 		materialInstance->SetScalarParameterValue("LastTimeDamageTaken", GetWorld()->TimeSeconds);
 	}
+	if (Health <= 0.f)
+	{
+		selfDestruct();
+	}
+}
+
+void AShooterTrackerBot::selfDestruct()
+{
+	if(bExploded)
+	{
+		return;
+	}
+
+	bExploded = true;
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
+
+	TArray<AActor*> ignoreDamageActors{ this };
+	UGameplayStatics::ApplyRadialDamage(GetWorld(), ExplosionDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
+
+	if (DebugTrackerBotDrawing > 0)
+	{
+		DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 12, FColor::Red, false, 2.f, 0, 2.f);
+	}
+	Destroy();
 }
 
 // Called every frame
@@ -85,5 +121,15 @@ void AShooterTrackerBot::Tick(float DeltaTime)
 		forceDirection *= MovementForce;
 
 		MeshComp->AddForce(forceDirection, NAME_None, bUseVelocityChange);
+
+		if (DebugTrackerBotDrawing > 0)
+		{
+			DrawDebugDirectionalArrow(GetWorld(), GetActorLocation(), GetActorLocation() + forceDirection, 32, FColor::Green, false, 0.f, 0, 1.f);
+		}
+	}
+
+	if (DebugTrackerBotDrawing > 0)
+	{
+		DrawDebugSphere(GetWorld(), nextPathPoint, 20, 12, FColor::Green, false, 0.f, 1.f);
 	}
 }

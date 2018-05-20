@@ -20,6 +20,9 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
 	UHealthComponent* HealthComp;
 
+	UPROPERTY(EditDefaultsOnly, Category = "FX")
+	UParticleSystem* ExplosionEffect;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Tracker Bot")
 	float MovementForce;
 
@@ -28,6 +31,19 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tracker Bot")
 	float RequiredDistanceToTarget;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
+	float ExplosionDamage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
+	TSubclassOf<UDamageType> DamageType;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
+	float DamageRadius;
+
+	UPROPERTY()
+	bool bExploded = false;
+
 public:
 	// Sets default values for this pawn's properties
 	AShooterTrackerBot();
@@ -40,6 +56,8 @@ protected:
 
 	UFUNCTION()
 	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* healthDamageType, AController* InstigatedBy, AActor* DamageCauser);
+
+	void selfDestruct();
 
 public:	
 	// Called every frame

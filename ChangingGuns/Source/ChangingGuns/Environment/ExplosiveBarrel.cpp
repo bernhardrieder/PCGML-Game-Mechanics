@@ -27,13 +27,13 @@ AExplosiveBarrel::AExplosiveBarrel()
 
 	RadialForceComp = CreateDefaultSubobject<URadialForceComponent>(TEXT("RadialForceComp"));
 	RadialForceComp->SetupAttachment(RootComponent);
-	RadialForceComp->Radius = 250;
 	RadialForceComp->bImpulseVelChange = true;
 	RadialForceComp->bAutoActivate = false;
 	RadialForceComp->bIgnoreOwningActor = true;
 
 	ExplosionImpulse = 400;
 	BaseDamage = 150;
+	DamageRadius = 250.f;
 
 	SetReplicates(true);
 	SetReplicateMovement(true);
@@ -43,6 +43,7 @@ void AExplosiveBarrel::BeginPlay()
 {
 	Super::BeginPlay();
 	HealthComp->OnHealthChangedEvent.AddDynamic(this, &AExplosiveBarrel::onHealthChanged);
+	RadialForceComp->Radius = DamageRadius;
 }
 
 void AExplosiveBarrel::onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* healthDamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -63,7 +64,7 @@ void AExplosiveBarrel::onHealthChanged(const UHealthComponent* HealthComponent, 
 		RadialForceComp->FireImpulse();
 
 		TArray<AActor*> ignoreDamageActors{ this };
-		UGameplayStatics::ApplyRadialDamage(GetWorld(), BaseDamage, GetActorLocation(), RadialForceComp->Radius, DamageType, ignoreDamageActors);
+		UGameplayStatics::ApplyRadialDamage(GetWorld(), BaseDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
 	}
 }
 
