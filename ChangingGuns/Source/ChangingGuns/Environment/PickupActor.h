@@ -18,12 +18,16 @@ class CHANGINGGUNS_API APickupActor : public AActor
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USphereComponent* SphereComp;
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UDecalComponent* DecalComp;
+
 	UPROPERTY(EditInstanceOnly, Category = "Pickup Actor")
 	TSubclassOf<APowerUpActor> PowerUpClass;
-	UPROPERTY(EditDefaultsOnly, Category = "Pickup Actor")
+
+	UPROPERTY(EditInstanceOnly, Category = "Pickup Actor")
 	float CoolDownDuration;
+
 public:	
 	APickupActor();
 

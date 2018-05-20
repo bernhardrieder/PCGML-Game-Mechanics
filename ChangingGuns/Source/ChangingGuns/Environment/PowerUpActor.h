@@ -19,16 +19,21 @@ protected:
 	//total times the power up effect ticks and applies any effect
 	UPROPERTY(EditDefaultsOnly, Category = "Power Ups")
 	int32 TotalNumOfTicks;
-	
+
+	UPROPERTY(ReplicatedUsing=OnRep_PowerUpActive)
+	bool bIsPowerUpActive;
 public:	
 	// Sets default values for this actor's properties
 	APowerUpActor();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
 	void onTickPowerUp();
+
+	UFUNCTION()
+	void OnRep_PowerUpActive();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Power Ups")
+	void OnPowerUpStateChanged(bool bNewIsActive);
 
 public:
 	void ActivatePowerUp();
