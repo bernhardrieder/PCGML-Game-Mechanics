@@ -9,6 +9,7 @@
 class UHealthComponent;
 class USphereComponent;
 class USoundCue;
+class UAudioComponent;
 
 UCLASS()
 class CHANGINGGUNS_API AShooterTrackerBot : public APawn
@@ -19,14 +20,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* MeshComp;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	UHealthComponent* HealthComp;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	USphereComponent* SphereComp;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "FX")
 	UParticleSystem* ExplosionEffect;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UAudioComponent* MovementAudioComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tracker Bot")
 	float MovementForce;

@@ -15,6 +15,8 @@
 #include "Pawns/ShooterCharacter.h"
 #include "TimerManager.h"
 #include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 static int32 DebugTrackerBotDrawing = 0;
 FAutoConsoleVariableRef CVARDebugTackerBotDrawing(
@@ -43,6 +45,9 @@ AShooterTrackerBot::AShooterTrackerBot()
 	SphereComp->SetCollisionResponseToAllChannels(ECR_Ignore);
 	SphereComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	SphereComp->SetupAttachment(RootComponent);
+
+	MovementAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("MovementAudioComp"));
+	MovementAudioComponent->SetupAttachment(RootComponent);
 
 	MovementForce = 1000.f;
 	bUseVelocityChange = false;
@@ -152,6 +157,11 @@ void AShooterTrackerBot::Tick(float DeltaTime)
 	{
 		DrawDebugSphere(GetWorld(), nextPathPoint, 20, 12, FColor::Green, false, 0.f, 1.f);
 	}
+
+	// movement sound
+	float velocity = GetVelocity().Size();
+	float volumeMultiplier = UKismetMathLibrary::MapRangeClamped(velocity, 10, 1000, 0.1, 2);
+	MovementAudioComponent->SetVolumeMultiplier(volumeMultiplier);
 }
 
 void AShooterTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
