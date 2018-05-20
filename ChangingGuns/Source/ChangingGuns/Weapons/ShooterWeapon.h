@@ -67,6 +67,9 @@ protected:
 	virtual void PlayFireEffects(const FVector& FireImpactPoint);
 	virtual void Fire();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+	virtual void ServerFire();
+
 protected:
 	FTimerHandle TimerHandle_TimeBetweenShots;
 	float lastFireTime;

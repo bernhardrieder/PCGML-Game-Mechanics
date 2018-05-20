@@ -31,6 +31,8 @@ AShooterWeapon::AShooterWeapon()
 	BaseDamage = 20.f;
 	RateOfFire = 600; //bullets per minute
 	BulletSpread = 2.0f;
+
+	SetReplicates(true);
 }
 
 void AShooterWeapon::BeginPlay()
@@ -55,6 +57,11 @@ void AShooterWeapon::StopFire()
 void AShooterWeapon::Fire()
 {
 	//trace the world, from pawn eyes to crosshair location
+
+	if(Role < ROLE_Authority)
+	{
+		ServerFire();
+	}
 
 	if(AActor* owner = GetOwner())
 	{
@@ -123,6 +130,16 @@ void AShooterWeapon::Fire()
 		lastFireTime = GetWorld()->TimeSeconds;
 	}
 
+}
+
+void AShooterWeapon::ServerFire_Implementation()
+{
+	Fire();
+}
+
+bool AShooterWeapon::ServerFire_Validate()
+{
+	return true;
 }
 
 void AShooterWeapon::PlayFireEffects(const FVector& FireImpactPoint)

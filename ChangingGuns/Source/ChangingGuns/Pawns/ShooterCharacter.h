@@ -44,6 +44,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Player")
 	bool bDied;
 
+	UPROPERTY(Replicated)
+	AShooterWeapon* CurrentWeapon;
+
 public:
 	// Sets default values for this character's properties
 	AShooterCharacter();
@@ -76,5 +79,4 @@ public:
 protected:
 	bool bWantsToZoom;
 	float DefaultFOV;
-	AShooterWeapon* CurrentWeapon;
 };
