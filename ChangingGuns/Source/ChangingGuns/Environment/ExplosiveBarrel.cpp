@@ -8,6 +8,13 @@
 #include "Engine/World.h"
 #include "UnrealNetwork.h"
 
+void AExplosiveBarrel::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AExplosiveBarrel, bExploded);
+}
+
 // Sets default values
 AExplosiveBarrel::AExplosiveBarrel()
 {
@@ -27,6 +34,9 @@ AExplosiveBarrel::AExplosiveBarrel()
 
 	ExplosionImpulse = 400;
 	BaseDamage = 150;
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
 }
 
 void AExplosiveBarrel::BeginPlay()
@@ -45,17 +55,20 @@ void AExplosiveBarrel::onHealthChanged(const UHealthComponent* HealthComponent, 
 	if(Health <= 0.f)
 	{
 		bExploded = true;
+		OnRep_Exploded(); //because this only happens on the server
 
 		FVector boostIntensity = FVector::UpVector * ExplosionImpulse;
 		MeshComp->AddImpulse(boostIntensity, NAME_None, true);
-
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
-		MeshComp->SetMaterial(0, ExplodeMaterial);
 
 		RadialForceComp->FireImpulse();
 
 		TArray<AActor*> ignoreDamageActors{ this };
 		UGameplayStatics::ApplyRadialDamage(GetWorld(), BaseDamage, GetActorLocation(), RadialForceComp->Radius, DamageType, ignoreDamageActors);
-
 	}
+}
+
+void AExplosiveBarrel::OnRep_Exploded()
+{
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
+	MeshComp->SetMaterial(0, ExplodeMaterial);
 }

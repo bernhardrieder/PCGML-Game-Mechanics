@@ -42,6 +42,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Explosive Barrel")
 	TSubclassOf<UDamageType> DamageType;
 
+	UPROPERTY(ReplicatedUsing = OnRep_Exploded)
+	bool bExploded;
+
 public:	
 	AExplosiveBarrel();
 
@@ -51,7 +54,6 @@ protected:
 	UFUNCTION()
 	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* healthDamageType, AController* InstigatedBy, AActor* DamageCauser);
 
-protected:
-	bool bExploded;
-	
+	UFUNCTION()
+	void OnRep_Exploded();
 };
