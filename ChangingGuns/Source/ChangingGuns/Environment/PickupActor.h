@@ -20,7 +20,7 @@ protected:
 	USphereComponent* SphereComp;
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UDecalComponent* DecalComp;
-	UPROPERTY(EditDefaultsOnly, Category = "Pickup Actor")
+	UPROPERTY(EditInstanceOnly, Category = "Pickup Actor")
 	TSubclassOf<APowerUpActor> PowerUpClass;
 	UPROPERTY(EditDefaultsOnly, Category = "Pickup Actor")
 	float CoolDownDuration;
