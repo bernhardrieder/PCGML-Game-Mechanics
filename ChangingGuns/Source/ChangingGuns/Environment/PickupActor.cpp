@@ -66,7 +66,7 @@ void APickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	if(HasAuthority() && spawnedPowerUp)
 	{
-		spawnedPowerUp->ActivatePowerUp();
+		spawnedPowerUp->ActivatePowerUp(OtherActor);
 		spawnedPowerUp = nullptr;
 
 		GetWorldTimerManager().SetTimer(timerHandle_RespawnTimer, this, &APickupActor::respawnPowerUp, CoolDownDuration);

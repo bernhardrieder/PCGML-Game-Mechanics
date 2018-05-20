@@ -42,9 +42,9 @@ void APowerUpActor::OnRep_PowerUpActive()
 	OnPowerUpStateChanged(bIsPowerUpActive);
 }
 
-void APowerUpActor::ActivatePowerUp()
+void APowerUpActor::ActivatePowerUp(AActor* ActivatedFor)
 {
-	OnActivated();
+	OnActivated(ActivatedFor);
 
 	bIsPowerUpActive = true;
 	OnRep_PowerUpActive(); //server does not call this function automatically
