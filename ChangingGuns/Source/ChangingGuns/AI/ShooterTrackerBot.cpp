@@ -14,6 +14,7 @@
 #include "Components/SphereComponent.h"
 #include "Pawns/ShooterCharacter.h"
 #include "TimerManager.h"
+#include "Sound/SoundCue.h"
 
 static int32 DebugTrackerBotDrawing = 0;
 FAutoConsoleVariableRef CVARDebugTackerBotDrawing(
@@ -48,6 +49,7 @@ AShooterTrackerBot::AShooterTrackerBot()
 	RequiredDistanceToTarget = 100.f;
 	ExplosionDamage = 40.f;
 	DamageRadius = 200.f;
+	SelfDamageInterval = 0.25f;
 }
 
 // Called when the game starts or when spawned
@@ -110,6 +112,9 @@ void AShooterTrackerBot::selfDestruct()
 	{
 		DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 12, FColor::Red, false, 2.f, 0, 2.f);
 	}
+
+	UGameplayStatics::PlaySoundAtLocation(this, ExplosionSound, GetActorLocation());
+
 	Destroy();
 }
 
@@ -158,9 +163,11 @@ void AShooterTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
 		if (AShooterCharacter* shooterChar = Cast<AShooterCharacter>(OtherActor))
 		{
 			//Start self destruction sequence
-			GetWorldTimerManager().SetTimer(timerHandle_SelfDamage, this, &AShooterTrackerBot::damageSelf, 0.5, true, 0.0f);
+			GetWorldTimerManager().SetTimer(timerHandle_SelfDamage, this, &AShooterTrackerBot::damageSelf, SelfDamageInterval, true, 0.0f);
 
 			bStartedSelfDestruction = true;
+
+			UGameplayStatics::SpawnSoundAttached(SelfDestructSound, RootComponent);
 		}
 	}
 }

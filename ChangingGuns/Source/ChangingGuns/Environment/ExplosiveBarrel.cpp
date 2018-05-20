@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "UnrealNetwork.h"
+#include "Sound/SoundCue.h"
 
 void AExplosiveBarrel::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -56,7 +57,7 @@ void AExplosiveBarrel::onHealthChanged(const UHealthComponent* HealthComponent, 
 	if(Health <= 0.f)
 	{
 		bExploded = true;
-		OnRep_Exploded(); //because this only happens on the server
+		OnRep_Exploded(); //trigger this also on the server! 
 
 		FVector boostIntensity = FVector::UpVector * ExplosionImpulse;
 		MeshComp->AddImpulse(boostIntensity, NAME_None, true);
@@ -72,4 +73,5 @@ void AExplosiveBarrel::OnRep_Exploded()
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
 	MeshComp->SetMaterial(0, ExplodeMaterial);
+	UGameplayStatics::PlaySoundAtLocation(this, ExplosionSound, GetActorLocation());
 }

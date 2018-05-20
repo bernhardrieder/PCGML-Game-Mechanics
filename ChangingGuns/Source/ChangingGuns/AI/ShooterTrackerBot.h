@@ -8,6 +8,7 @@
 
 class UHealthComponent;
 class USphereComponent;
+class USoundCue;
 
 UCLASS()
 class CHANGINGGUNS_API AShooterTrackerBot : public APawn
@@ -45,8 +46,17 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
 	float DamageRadius;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
+	float SelfDamageInterval;
+	
 	UPROPERTY()
 	bool bExploded = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SFX")
+	USoundCue* SelfDestructSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SFX")
+	USoundCue* ExplosionSound;
 
 public:
 	// Sets default values for this pawn's properties

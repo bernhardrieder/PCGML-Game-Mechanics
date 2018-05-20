@@ -11,6 +11,7 @@ class URadialForceComponent;
 class UParticleSystem;
 class UMaterialInterface;
 class UDamageType;
+class USoundCue;
 
 UCLASS()
 class CHANGINGGUNS_API AExplosiveBarrel : public AActor
@@ -47,6 +48,9 @@ protected:
 
 	UPROPERTY(ReplicatedUsing = OnRep_Exploded)
 	bool bExploded;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SFX")
+	USoundCue* ExplosionSound;
 
 public:	
 	AExplosiveBarrel();
