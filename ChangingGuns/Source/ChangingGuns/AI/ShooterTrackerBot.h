@@ -46,6 +46,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
-
 	FVector nextPathPoint;
+	UMaterialInstanceDynamic* materialInstance = nullptr;
 };

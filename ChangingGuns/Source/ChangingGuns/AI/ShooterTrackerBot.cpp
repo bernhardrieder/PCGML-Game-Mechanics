@@ -7,6 +7,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "Components/HealthComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Engine/World.h"
 
 // Sets default values
 AShooterTrackerBot::AShooterTrackerBot()
@@ -55,7 +57,14 @@ FVector AShooterTrackerBot::GetNextPathPoint()
 
 void AShooterTrackerBot::onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* healthDamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	
+	if(!materialInstance)
+	{
+		materialInstance = MeshComp->CreateAndSetMaterialInstanceDynamicFromMaterial(0, MeshComp->GetMaterial(0));
+	}
+	if(materialInstance)
+	{
+		materialInstance->SetScalarParameterValue("LastTimeDamageTaken", GetWorld()->TimeSeconds);
+	}
 }
 
 // Called every frame
