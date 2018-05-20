@@ -62,9 +62,12 @@ void AShooterTrackerBot::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// find initial move to
-	nextPathPoint = GetNextPathPoint();
-
+	if(HasAuthority())
+	{
+		// find initial move to
+		nextPathPoint = GetNextPathPoint();
+	}
+	
 	HealthComp->OnHealthChangedEvent.AddDynamic(this, &AShooterTrackerBot::onHealthChanged);
 }
 
@@ -74,7 +77,7 @@ FVector AShooterTrackerBot::GetNextPathPoint()
 	ACharacter* playerPawn = UGameplayStatics::GetPlayerCharacter(this, 0);
 
 	UNavigationPath* navPath = UNavigationSystem::FindPathToActorSynchronously(this, GetActorLocation(), playerPawn);
-	if(navPath->PathPoints.Num() > 1)
+	if(navPath && navPath->PathPoints.Num() > 1)
 	{
 		//return next point in the path
 		return navPath->PathPoints[1];
@@ -109,18 +112,24 @@ void AShooterTrackerBot::selfDestruct()
 
 	bExploded = true;
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
-
-	TArray<AActor*> ignoreDamageActors{ this };
-	UGameplayStatics::ApplyRadialDamage(GetWorld(), ExplosionDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
-
-	if (DebugTrackerBotDrawing > 0)
-	{
-		DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 12, FColor::Red, false, 2.f, 0, 2.f);
-	}
-
 	UGameplayStatics::PlaySoundAtLocation(this, ExplosionSound, GetActorLocation());
 
-	Destroy();
+	MeshComp->SetVisibility(false, true);
+	MeshComp->SetSimulatePhysics(false);
+	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	if(HasAuthority())
+	{
+		TArray<AActor*> ignoreDamageActors{ this };
+		UGameplayStatics::ApplyRadialDamage(GetWorld(), ExplosionDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
+
+		if (DebugTrackerBotDrawing > 0)
+		{
+			DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 12, FColor::Red, false, 2.f, 0, 2.f);
+		}
+
+		SetLifeSpan(2.0f);
+	}
 }
 
 void AShooterTrackerBot::damageSelf()
@@ -133,29 +142,32 @@ void AShooterTrackerBot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	float distanceToTarget = (GetActorLocation() - nextPathPoint).Size();
-	if(distanceToTarget <= RequiredDistanceToTarget)
+	if(HasAuthority() && !bExploded)
 	{
-		nextPathPoint = GetNextPathPoint();
-	}
-	else
-	{
-		//keep moving towards target
-		FVector forceDirection = nextPathPoint - GetActorLocation();
-		forceDirection.Normalize();
-		forceDirection *= MovementForce;
+		float distanceToTarget = (GetActorLocation() - nextPathPoint).Size();
+		if (distanceToTarget <= RequiredDistanceToTarget)
+		{
+			nextPathPoint = GetNextPathPoint();
+		}
+		else
+		{
+			//keep moving towards target
+			FVector forceDirection = nextPathPoint - GetActorLocation();
+			forceDirection.Normalize();
+			forceDirection *= MovementForce;
 
-		MeshComp->AddForce(forceDirection, NAME_None, bUseVelocityChange);
+			MeshComp->AddForce(forceDirection, NAME_None, bUseVelocityChange);
+
+			if (DebugTrackerBotDrawing > 0)
+			{
+				DrawDebugDirectionalArrow(GetWorld(), GetActorLocation(), GetActorLocation() + forceDirection, 32, FColor::Green, false, 0.f, 0, 1.f);
+			}
+		}
 
 		if (DebugTrackerBotDrawing > 0)
 		{
-			DrawDebugDirectionalArrow(GetWorld(), GetActorLocation(), GetActorLocation() + forceDirection, 32, FColor::Green, false, 0.f, 0, 1.f);
+			DrawDebugSphere(GetWorld(), nextPathPoint, 20, 12, FColor::Green, false, 0.f, 1.f);
 		}
-	}
-
-	if (DebugTrackerBotDrawing > 0)
-	{
-		DrawDebugSphere(GetWorld(), nextPathPoint, 20, 12, FColor::Green, false, 0.f, 1.f);
 	}
 
 	// movement sound
@@ -168,12 +180,15 @@ void AShooterTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	if(!bStartedSelfDestruction)
+	if(!bStartedSelfDestruction && !bExploded)
 	{
 		if (AShooterCharacter* shooterChar = Cast<AShooterCharacter>(OtherActor))
 		{
-			//Start self destruction sequence
-			GetWorldTimerManager().SetTimer(timerHandle_SelfDamage, this, &AShooterTrackerBot::damageSelf, SelfDamageInterval, true, 0.0f);
+			if(HasAuthority())
+			{
+				//Start self destruction sequence
+				GetWorldTimerManager().SetTimer(timerHandle_SelfDamage, this, &AShooterTrackerBot::damageSelf, SelfDamageInterval, true, 0.0f);
+			}
 
 			bStartedSelfDestruction = true;
 
