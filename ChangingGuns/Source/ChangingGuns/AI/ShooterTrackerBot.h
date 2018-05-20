@@ -62,6 +62,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SFX")
 	USoundCue* ExplosionSound;
 
+	//power level increases with same bots nearby
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
+	int32 MaxPowerLevel;
+
 public:
 	// Sets default values for this pawn's properties
 	AShooterTrackerBot();
@@ -77,6 +81,7 @@ protected:
 
 	void selfDestruct();
 	void damageSelf();
+	void onCheckNearbyBots();
 
 public:	
 	// Called every frame
@@ -89,4 +94,7 @@ protected:
 	UMaterialInstanceDynamic* materialInstance = nullptr;
 	FTimerHandle timerHandle_SelfDamage;
 	bool bStartedSelfDestruction = false;
+
+	//current power level of the bot based on nearby located bots -> this boosts the explosion damage
+	int32 currentPowerLevel = 0;
 };

@@ -18,7 +18,7 @@
 #include "Components/AudioComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
-static int32 DebugTrackerBotDrawing = 0;
+static int32 DebugTrackerBotDrawing = 1;
 FAutoConsoleVariableRef CVARDebugTackerBotDrawing(
 	TEXT("Game.DebugTrackerBot"),
 	DebugTrackerBotDrawing,
@@ -35,7 +35,8 @@ AShooterTrackerBot::AShooterTrackerBot()
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComp->SetCanEverAffectNavigation(false);
 	MeshComp->SetSimulatePhysics(true);
-	RootComponent = MeshComp;
+	MeshComp->SetCollisionObjectType(ECC_PhysicsBody);
+	RootComponent = MeshComp;	
 
 	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
 
@@ -55,6 +56,7 @@ AShooterTrackerBot::AShooterTrackerBot()
 	ExplosionDamage = 40.f;
 	DamageRadius = 200.f;
 	SelfDamageInterval = 0.25f;
+	MaxPowerLevel = 4;
 }
 
 // Called when the game starts or when spawned
@@ -66,8 +68,16 @@ void AShooterTrackerBot::BeginPlay()
 	{
 		// find initial move to
 		nextPathPoint = GetNextPathPoint();
+
+		FTimerHandle timerHandle_CheckPowerLevel;
+		GetWorldTimerManager().SetTimer(timerHandle_CheckPowerLevel, this, &AShooterTrackerBot::onCheckNearbyBots, 1.f, true);
 	}
-	
+
+	if (!materialInstance)
+	{
+		materialInstance = MeshComp->CreateAndSetMaterialInstanceDynamicFromMaterial(0, MeshComp->GetMaterial(0));
+	}
+
 	HealthComp->OnHealthChangedEvent.AddDynamic(this, &AShooterTrackerBot::onHealthChanged);
 }
 
@@ -89,10 +99,6 @@ FVector AShooterTrackerBot::GetNextPathPoint()
 
 void AShooterTrackerBot::onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* healthDamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	if(!materialInstance)
-	{
-		materialInstance = MeshComp->CreateAndSetMaterialInstanceDynamicFromMaterial(0, MeshComp->GetMaterial(0));
-	}
 	if(materialInstance)
 	{
 		materialInstance->SetScalarParameterValue("LastTimeDamageTaken", GetWorld()->TimeSeconds);
@@ -121,7 +127,10 @@ void AShooterTrackerBot::selfDestruct()
 	if(HasAuthority())
 	{
 		TArray<AActor*> ignoreDamageActors{ this };
-		UGameplayStatics::ApplyRadialDamage(GetWorld(), ExplosionDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
+
+		const float actualDamage = ExplosionDamage + (ExplosionDamage * currentPowerLevel);
+
+		UGameplayStatics::ApplyRadialDamage(GetWorld(), actualDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
 
 		if (DebugTrackerBotDrawing > 0)
 		{
@@ -135,6 +144,49 @@ void AShooterTrackerBot::selfDestruct()
 void AShooterTrackerBot::damageSelf()
 {
 	UGameplayStatics::ApplyDamage(this, 20, GetInstigatorController(), this, nullptr);
+}
+
+void AShooterTrackerBot::onCheckNearbyBots()
+{
+	const float checkRadius = 600;
+
+	if (DebugTrackerBotDrawing > 0)
+	{
+		DrawDebugSphere(GetWorld(), GetActorLocation(), checkRadius, 12, FColor::White, false, 1.f);
+	}
+
+	int32 numOfNearbyBots = 0;
+
+	FCollisionShape collShape;
+	collShape.SetSphere(checkRadius);
+
+	FCollisionObjectQueryParams queryParams;
+	queryParams.AddObjectTypesToQuery(ECC_PhysicsBody);
+	queryParams.AddObjectTypesToQuery(ECC_Pawn);
+
+	TArray<FOverlapResult> overlaps;
+	GetWorld()->OverlapMultiByObjectType(overlaps, GetActorLocation(), FQuat::Identity, queryParams, collShape);
+	for(const FOverlapResult& overlap : overlaps)
+	{
+		AShooterTrackerBot* bot = Cast<AShooterTrackerBot>(overlap.GetActor());
+		if(bot && bot != this)
+		{
+			++numOfNearbyBots;
+		}
+	}
+
+	currentPowerLevel = FMath::Clamp(numOfNearbyBots, 0, MaxPowerLevel);
+
+	if (materialInstance)
+	{
+		float alpha = currentPowerLevel / (float)MaxPowerLevel;
+		materialInstance->SetScalarParameterValue("PowerLevelAlpha", alpha);
+	}
+
+	if (DebugTrackerBotDrawing > 0)
+	{
+		DrawDebugString(GetWorld(), GetActorLocation(), FString::FromInt(currentPowerLevel), this, FColor::White, 1.f, true);
+	}
 }
 
 // Called every frame
