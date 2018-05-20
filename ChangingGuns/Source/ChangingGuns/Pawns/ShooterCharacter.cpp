@@ -17,6 +17,7 @@ void AShooterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AShooterCharacter, CurrentWeapon);
+	DOREPLIFETIME(AShooterCharacter, bDied);
 }
 
 // Sets default values
@@ -61,7 +62,8 @@ void AShooterCharacter::BeginPlay()
 	DefaultFOV = CameraComp->FieldOfView;
 	HealthComp->OnHealthChangedEvent.AddDynamic(this, &AShooterCharacter::onHealthChanged);
 
-	if(Role == ROLE_Authority)
+	//spawn weapons only on server and replicate CurrentWeapon to other characters
+	if(HasAuthority())
 	{
 		FActorSpawnParameters spawnParams;
 		spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;

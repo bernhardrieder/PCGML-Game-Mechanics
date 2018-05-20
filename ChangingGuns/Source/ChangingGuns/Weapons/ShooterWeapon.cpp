@@ -68,11 +68,13 @@ void AShooterWeapon::Fire()
 {
 	//trace the world, from pawn eyes to crosshair location
 
+	//if this weapon is on an client, then trigger fire also on server
 	if(Role < ROLE_Authority)
 	{
 		ServerFire();
 	}
 
+	//but fire anyway because you are a client
 	if(AActor* owner = GetOwner())
 	{
 		FVector eyeLocation;
@@ -124,6 +126,7 @@ void AShooterWeapon::Fire()
 
 		PlayFireEffects(tracerEndPoint);
 
+		//if you are a character on or hosting the server then replicate your weapon effects to other players too
 		if(HasAuthority())
 		{
 			HitScanTrace.TraceEnd = tracerEndPoint;

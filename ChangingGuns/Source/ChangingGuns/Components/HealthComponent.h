@@ -17,7 +17,7 @@ class CHANGINGGUNS_API UHealthComponent : public UActorComponent
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(BlueprintReadOnly, Category = "Health Component")
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Health Component")
 	float Health;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health Component")

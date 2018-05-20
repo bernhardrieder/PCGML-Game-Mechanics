@@ -2,19 +2,33 @@
 
 #include "HealthComponent.h"
 #include "GameFramework/Actor.h"
+#include "UnrealNetwork.h"
+
+void UHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UHealthComponent, Health);
+}
 
 UHealthComponent::UHealthComponent()
 {
 	DefaultHealth = 100;
+
+	SetIsReplicated(true);
 }
 
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if(AActor* owner = GetOwner())
+	//only hook if we are server
+	if(GetOwnerRole() == ROLE_Authority)
 	{
-		owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::handleTakeAnyDamage);
+		if (AActor* owner = GetOwner())
+		{
+			owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::handleTakeAnyDamage);
+		}
 	}
 	Health = DefaultHealth;
 }
