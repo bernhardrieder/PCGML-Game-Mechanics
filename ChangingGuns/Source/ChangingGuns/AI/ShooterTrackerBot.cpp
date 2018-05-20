@@ -11,6 +11,9 @@
 #include "Engine/World.h"
 #include "Particles/ParticleSystem.h"
 #include "DrawDebugHelpers.h"
+#include "Components/SphereComponent.h"
+#include "Pawns/ShooterCharacter.h"
+#include "TimerManager.h"
 
 static int32 DebugTrackerBotDrawing = 0;
 FAutoConsoleVariableRef CVARDebugTackerBotDrawing(
@@ -32,6 +35,13 @@ AShooterTrackerBot::AShooterTrackerBot()
 	RootComponent = MeshComp;
 
 	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
+
+	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	SphereComp->SetSphereRadius(200);
+	SphereComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	SphereComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+	SphereComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	SphereComp->SetupAttachment(RootComponent);
 
 	MovementForce = 1000.f;
 	bUseVelocityChange = false;
@@ -103,6 +113,11 @@ void AShooterTrackerBot::selfDestruct()
 	Destroy();
 }
 
+void AShooterTrackerBot::damageSelf()
+{
+	UGameplayStatics::ApplyDamage(this, 20, GetInstigatorController(), this, nullptr);
+}
+
 // Called every frame
 void AShooterTrackerBot::Tick(float DeltaTime)
 {
@@ -131,5 +146,21 @@ void AShooterTrackerBot::Tick(float DeltaTime)
 	if (DebugTrackerBotDrawing > 0)
 	{
 		DrawDebugSphere(GetWorld(), nextPathPoint, 20, 12, FColor::Green, false, 0.f, 1.f);
+	}
+}
+
+void AShooterTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorBeginOverlap(OtherActor);
+
+	if(!bStartedSelfDestruction)
+	{
+		if (AShooterCharacter* shooterChar = Cast<AShooterCharacter>(OtherActor))
+		{
+			//Start self destruction sequence
+			GetWorldTimerManager().SetTimer(timerHandle_SelfDamage, this, &AShooterTrackerBot::damageSelf, 0.5, true, 0.0f);
+
+			bStartedSelfDestruction = true;
+		}
 	}
 }
