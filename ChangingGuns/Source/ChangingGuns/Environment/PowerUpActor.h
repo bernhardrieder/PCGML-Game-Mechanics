@@ -12,11 +12,11 @@ class CHANGINGGUNS_API APowerUpActor : public AActor
 	GENERATED_BODY()
 
 protected:
-	//time between power up ticks
+	//time in seconds between power up ticks
 	UPROPERTY(EditDefaultsOnly, Category = "Power Ups")
 	float PowerUpInterval;
 
-	//total times we apply the power up effect
+	//total times the power up effect ticks and applies any effect
 	UPROPERTY(EditDefaultsOnly, Category = "Power Ups")
 	int32 TotalNumOfTicks;
 	

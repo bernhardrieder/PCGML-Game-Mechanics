@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class UDecalComponent;
+class APowerUpActor;
 
 UCLASS()
 class CHANGINGGUNS_API APickupActor : public AActor
@@ -19,19 +20,22 @@ protected:
 	USphereComponent* SphereComp;
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UDecalComponent* DecalComp;
+	UPROPERTY(EditDefaultsOnly, Category = "Pickup Actor")
+	TSubclassOf<APowerUpActor> PowerUpClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Pickup Actor")
+	float CoolDownDuration;
 public:	
-	// Sets default values for this actor's properties
 	APickupActor();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void respawnPowerUp();
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
-	
+protected:
+	APowerUpActor* spawnedPowerUp;
+	FTimerHandle timerHandle_RespawnTimer;
 };
