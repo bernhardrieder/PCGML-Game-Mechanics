@@ -10,6 +10,9 @@
 class UCameraComponent;
 class USpringArmComponent;
 class AShooterWeapon;
+class UHealthComponent;
+class UDamageType;
+class AController;
 
 UCLASS()
 class CHANGINGGUNS_API AShooterCharacter : public ACharacter
@@ -35,6 +38,12 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
 	FName WeaponAttachSocketName;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
+	UHealthComponent* HealthComp;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Player")
+	bool bDied;
+
 public:
 	// Sets default values for this character's properties
 	AShooterCharacter();
@@ -54,6 +63,9 @@ protected:
 	void StartFire();
 	void StopFire();
 
+	UFUNCTION()
+	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -65,5 +77,4 @@ protected:
 	bool bWantsToZoom;
 	float DefaultFOV;
 	AShooterWeapon* CurrentWeapon;
-
 };
