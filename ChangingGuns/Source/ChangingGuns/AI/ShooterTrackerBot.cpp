@@ -18,7 +18,7 @@
 #include "Components/AudioComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
-static int32 DebugTrackerBotDrawing = 1;
+static int32 DebugTrackerBotDrawing = 0;
 FAutoConsoleVariableRef CVARDebugTackerBotDrawing(
 	TEXT("Game.DebugTrackerBot"),
 	DebugTrackerBotDrawing,
