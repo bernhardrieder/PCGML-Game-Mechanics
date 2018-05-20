@@ -42,7 +42,10 @@ void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, c
 
 	Health = FMath::Clamp(Health - Damage, 0.f, DefaultHealth);
 
-	UE_LOG(LogTemp, Log, TEXT("Health Changed: %s"), *FString::SanitizeFloat(Health));
+	if(GetOwner())
+	{
+		UE_LOG(LogTemp, Log, TEXT("%s Health Changed: %s"), *GetOwner()->GetName(), *FString::SanitizeFloat(Health));
+	}
 
 	OnHealthChangedEvent.Broadcast(this, Health, Damage, DamageType, InstigatedBy, DamageCauser);
 }

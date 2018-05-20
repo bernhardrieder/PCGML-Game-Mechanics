@@ -6,6 +6,7 @@
 #include "AI/Navigation/NavigationPath.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
+#include "Components/HealthComponent.h"
 
 // Sets default values
 AShooterTrackerBot::AShooterTrackerBot()
@@ -17,6 +18,8 @@ AShooterTrackerBot::AShooterTrackerBot()
 	MeshComp->SetCanEverAffectNavigation(false);
 	MeshComp->SetSimulatePhysics(true);
 	RootComponent = MeshComp;
+
+	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
 
 	MovementForce = 1000.f;
 	bUseVelocityChange = false;
@@ -30,6 +33,8 @@ void AShooterTrackerBot::BeginPlay()
 
 	// find initial move to
 	nextPathPoint = GetNextPathPoint();
+
+	HealthComp->OnHealthChangedEvent.AddDynamic(this, &AShooterTrackerBot::onHealthChanged);
 }
 
 FVector AShooterTrackerBot::GetNextPathPoint()
@@ -46,6 +51,11 @@ FVector AShooterTrackerBot::GetNextPathPoint()
 
 	//Failed to find path
 	return GetActorLocation();
+}
+
+void AShooterTrackerBot::onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* healthDamageType, AController* InstigatedBy, AActor* DamageCauser)
+{
+	
 }
 
 // Called every frame
