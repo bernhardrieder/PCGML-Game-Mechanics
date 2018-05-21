@@ -21,6 +21,7 @@ protected:
 public:
 	AChangingGunsGameMode();
 	virtual void StartPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 
 protected:
 	//hook for BP to spawn a single bot
@@ -38,8 +39,12 @@ protected:
 	//set timer for next wave start
 	void prepareForNextWave();
 
+	void checkWaveState();
+
 protected:
 	FTimerHandle timerHandle_BotSpawner;
 	int32 NumOfBotsToSpawn;
 	int32 WaveCount;
+	FTimerHandle timerHandle_NextWaveStart;
+
 };
