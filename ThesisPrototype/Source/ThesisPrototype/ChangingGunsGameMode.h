@@ -41,6 +41,10 @@ protected:
 
 	void checkWaveState();
 
+	void checkAnyPlayerAlive();
+
+	void gameOver();
+
 protected:
 	FTimerHandle timerHandle_BotSpawner;
 	int32 NumOfBotsToSpawn;

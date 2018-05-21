@@ -24,6 +24,7 @@ void AChangingGunsGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	checkWaveState();
+	checkAnyPlayerAlive();
 }
 
 void AChangingGunsGameMode::spawnBotTimerElapsed()
@@ -83,4 +84,32 @@ void AChangingGunsGameMode::checkWaveState()
 	{
 		prepareForNextWave();
 	}
+}
+
+void AChangingGunsGameMode::checkAnyPlayerAlive()
+{
+	for(FConstPlayerControllerIterator it = GetWorld()->GetPlayerControllerIterator(); it; ++it)
+	{
+		APlayerController* pc = it->Get();
+		if(pc && pc->GetPawn())
+		{
+			APawn* pawn = pc->GetPawn();
+			UHealthComponent* healthComp = Cast<UHealthComponent>(pawn->GetComponentByClass(UHealthComponent::StaticClass()));
+			if(ensure(healthComp) && healthComp->GetHealth() > 0.f)
+			{
+				return;
+			}
+		}
+	}
+
+	//TODO: change this to check if just 1 player is alive
+	//no player alive
+	gameOver();
+}
+
+void AChangingGunsGameMode::gameOver()
+{
+	endWave();
+
+	UE_LOG(LogTemp, Log, TEXT("Game over! All players are dead!"));
 }
