@@ -5,4 +5,4 @@ rmdir /s /q "Saved"
 
 :: Delete VS temporary
 rmdir /s /q ".vs"
-del /q "ChangingGuns.sln"
+del /q "ThesisPrototype.sln"

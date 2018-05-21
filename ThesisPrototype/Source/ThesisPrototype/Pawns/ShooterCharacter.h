@@ -15,7 +15,7 @@ class UDamageType;
 class AController;
 
 UCLASS()
-class CHANGINGGUNS_API AShooterCharacter : public ACharacter
+class THESISPROTOTYPE_API AShooterCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -69,7 +69,7 @@ protected:
 	UFUNCTION()
 	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

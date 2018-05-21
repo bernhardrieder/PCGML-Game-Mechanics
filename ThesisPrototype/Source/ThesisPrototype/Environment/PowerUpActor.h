@@ -7,7 +7,7 @@
 #include "PowerUpActor.generated.h"
 
 UCLASS()
-class CHANGINGGUNS_API APowerUpActor : public AActor
+class THESISPROTOTYPE_API APowerUpActor : public AActor
 {
 	GENERATED_BODY()
 
@@ -22,7 +22,7 @@ protected:
 
 	UPROPERTY(ReplicatedUsing=OnRep_PowerUpActive)
 	bool bIsPowerUpActive;
-public:	
+public:
 	// Sets default values for this actor's properties
 	APowerUpActor();
 

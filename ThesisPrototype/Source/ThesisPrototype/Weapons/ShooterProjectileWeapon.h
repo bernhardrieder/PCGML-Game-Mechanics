@@ -7,10 +7,10 @@
 #include "ShooterProjectileWeapon.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
-class CHANGINGGUNS_API AShooterProjectileWeapon : public AShooterWeapon
+class THESISPROTOTYPE_API AShooterProjectileWeapon : public AShooterWeapon
 {
 	GENERATED_BODY()
 
@@ -21,6 +21,6 @@ protected:
 public:
 
 	void Fire() override;
-	
-	
+
+
 };

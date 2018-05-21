@@ -12,7 +12,7 @@ class UDamageType;
 class AController;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class CHANGINGGUNS_API UHealthComponent : public UActorComponent
+class THESISPROTOTYPE_API UHealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
@@ -23,7 +23,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health Component")
 	float DefaultHealth;
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UHealthComponent();
 

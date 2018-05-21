@@ -14,7 +14,7 @@ class UDamageType;
 class USoundCue;
 
 UCLASS()
-class CHANGINGGUNS_API AExplosiveBarrel : public AActor
+class THESISPROTOTYPE_API AExplosiveBarrel : public AActor
 {
 	GENERATED_BODY()
 
@@ -52,7 +52,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SFX")
 	USoundCue* ExplosionSound;
 
-public:	
+public:
 	AExplosiveBarrel();
 
 protected:

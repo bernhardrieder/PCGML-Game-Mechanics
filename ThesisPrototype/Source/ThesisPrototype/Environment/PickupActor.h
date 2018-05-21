@@ -11,7 +11,7 @@ class UDecalComponent;
 class APowerUpActor;
 
 UCLASS()
-class CHANGINGGUNS_API APickupActor : public AActor
+class THESISPROTOTYPE_API APickupActor : public AActor
 {
 	GENERATED_BODY()
 
@@ -28,14 +28,14 @@ protected:
 	UPROPERTY(EditInstanceOnly, Category = "Pickup Actor")
 	float CoolDownDuration;
 
-public:	
+public:
 	APickupActor();
 
 protected:
 	virtual void BeginPlay() override;
 	void respawnPowerUp();
 
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 

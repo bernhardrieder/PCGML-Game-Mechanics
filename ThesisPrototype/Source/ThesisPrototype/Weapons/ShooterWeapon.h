@@ -25,7 +25,7 @@ public:
 };
 
 UCLASS()
-class CHANGINGGUNS_API AShooterWeapon : public AActor
+class THESISPROTOTYPE_API AShooterWeapon : public AActor
 {
 	GENERATED_BODY()
 
@@ -71,7 +71,7 @@ protected:
 	UPROPERTY(ReplicatedUsing=OnRep_HitScanTrace)
 	FHitScanTrace HitScanTrace;
 
-public:	
+public:
 	// Sets default values for this actor's properties
 	AShooterWeapon();
 

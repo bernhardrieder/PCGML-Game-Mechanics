@@ -12,7 +12,7 @@ class USoundCue;
 class UAudioComponent;
 
 UCLASS()
-class CHANGINGGUNS_API AShooterTrackerBot : public APawn
+class THESISPROTOTYPE_API AShooterTrackerBot : public APawn
 {
 	GENERATED_BODY()
 
@@ -25,7 +25,7 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	USphereComponent* SphereComp;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category = "FX")
 	UParticleSystem* ExplosionEffect;
 
@@ -52,7 +52,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
 	float SelfDamageInterval;
-	
+
 	UPROPERTY()
 	bool bExploded = false;
 
@@ -83,7 +83,7 @@ protected:
 	void damageSelf();
 	void onCheckNearbyBots();
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

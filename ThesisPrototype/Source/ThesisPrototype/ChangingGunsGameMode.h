@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "ChangingGunsGameModeBase.generated.h"
+#include "ChangingGunsGameMode.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
-class CHANGINGGUNS_API AChangingGunsGameModeBase : public AGameModeBase
+class THESISPROTOTYPE_API AChangingGunsGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
-	
-	
+
+
+
 	
 };
