@@ -46,4 +46,7 @@ protected:
 public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnHealthChangedEvent OnHealthChangedEvent;
+
+protected:
+	bool bIsDead = false;
 };

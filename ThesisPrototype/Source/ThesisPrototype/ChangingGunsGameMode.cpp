@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "Components/HealthComponent.h"
 #include "ChangingGunsGameState.h"
+#include "ChangingGunsPlayerState.h"
 
 AChangingGunsGameMode::AChangingGunsGameMode() : Super()
 {
@@ -12,6 +13,7 @@ AChangingGunsGameMode::AChangingGunsGameMode() : Super()
 	PrimaryActorTick.TickInterval = 1.f;
 
 	GameStateClass = AChangingGunsGameState::StaticClass();
+	PlayerStateClass = AChangingGunsPlayerState::StaticClass();
 
 	TimeBetweenWaves = 2.f;
 }

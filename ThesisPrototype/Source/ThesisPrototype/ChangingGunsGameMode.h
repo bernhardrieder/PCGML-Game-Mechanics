@@ -7,6 +7,9 @@
 #include "ChangingGunsGameMode.generated.h"
 
 enum class EWaveState : uint8;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorKilledEvent, AActor*, VictimActor, AActor*, KillerActor, AController*, KillerController);
+
 /**
  *
  */
@@ -47,6 +50,10 @@ protected:
 	void gameOver();
 
 	void setWaveState(EWaveState newState);
+
+public:
+	UPROPERTY(BlueprintAssignable, Category = "Game Mode")
+	FOnActorKilledEvent OnActorKilledEvent;
 
 protected:
 	FTimerHandle timerHandle_BotSpawner;

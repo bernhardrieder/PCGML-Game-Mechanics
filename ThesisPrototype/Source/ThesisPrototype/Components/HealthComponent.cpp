@@ -3,6 +3,8 @@
 #include "HealthComponent.h"
 #include "GameFramework/Actor.h"
 #include "UnrealNetwork.h"
+#include "ChangingGunsGameMode.h"
+#include "Engine/World.h"
 
 static int32 DebugHealthComponents = 1;
 FAutoConsoleVariableRef CVARDebuHealthComponents(
@@ -67,12 +69,13 @@ void UHealthComponent::OnRep_Health(float oldHealth)
 
 void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	if(Damage <= 0.0f)
+	if(Damage <= 0.0f || bIsDead)
 	{
 		return;
 	}
 
 	Health = FMath::Clamp(Health - Damage, 0.f, DefaultHealth);
+	bIsDead = Health <= 0.f;
 
 	if(DebugHealthComponents > 0 && GetOwner())
 	{
@@ -80,4 +83,12 @@ void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, c
 	}
 
 	OnHealthChangedEvent.Broadcast(this, Health, Damage, DamageType, InstigatedBy, DamageCauser);
+
+	if(bIsDead)
+	{
+		if (AChangingGunsGameMode* gm = Cast<AChangingGunsGameMode>(GetOwner()->GetWorld()->GetAuthGameMode()))
+		{
+			gm->OnActorKilledEvent.Broadcast(GetOwner(), DamageCauser, InstigatedBy);
+		}
+	}
 }
