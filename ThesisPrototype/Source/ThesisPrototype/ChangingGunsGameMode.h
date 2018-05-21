@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "ChangingGunsGameMode.generated.h"
 
+enum class EWaveState : uint8;
 /**
  *
  */
@@ -44,6 +45,8 @@ protected:
 	void checkAnyPlayerAlive();
 
 	void gameOver();
+
+	void setWaveState(EWaveState newState);
 
 protected:
 	FTimerHandle timerHandle_BotSpawner;

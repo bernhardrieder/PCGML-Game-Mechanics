@@ -4,11 +4,14 @@
 #include "TimerManager.h"
 #include "Engine/World.h"
 #include "Components/HealthComponent.h"
+#include "ChangingGunsGameState.h"
 
 AChangingGunsGameMode::AChangingGunsGameMode() : Super()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickInterval = 1.f;
+
+	GameStateClass = AChangingGunsGameState::StaticClass();
 
 	TimeBetweenWaves = 2.f;
 }
@@ -43,16 +46,22 @@ void AChangingGunsGameMode::startWave()
 	++WaveCount;
 	NumOfBotsToSpawn = 2 * WaveCount;
 	GetWorldTimerManager().SetTimer(timerHandle_BotSpawner, this, &AChangingGunsGameMode::spawnBotTimerElapsed, 1.f, true, 0.f);
+
+	setWaveState(EWaveState::WaveInProgress);
 }
 
 void AChangingGunsGameMode::endWave()
 {
 	GetWorldTimerManager().ClearTimer(timerHandle_BotSpawner);
+
+	setWaveState(EWaveState::WaitingToComplete);
 }
 
 void AChangingGunsGameMode::prepareForNextWave()
 {
 	GetWorldTimerManager().SetTimer(timerHandle_NextWaveStart, this, &AChangingGunsGameMode::startWave, TimeBetweenWaves, false);
+
+	setWaveState(EWaveState::WaitingToStart);
 }
 
 void AChangingGunsGameMode::checkWaveState()
@@ -82,6 +91,7 @@ void AChangingGunsGameMode::checkWaveState()
 
 	if(!bIsAnyBotAlive)
 	{
+		setWaveState(EWaveState::WaveComplete);
 		prepareForNextWave();
 	}
 }
@@ -111,5 +121,14 @@ void AChangingGunsGameMode::gameOver()
 {
 	endWave();
 
+	setWaveState(EWaveState::GameOver);
 	UE_LOG(LogTemp, Log, TEXT("Game over! All players are dead!"));
+}
+
+void AChangingGunsGameMode::setWaveState(EWaveState newState)
+{
+	if(AChangingGunsGameState* gameState = GetGameState<AChangingGunsGameState>())
+	{
+		gameState->SetWaveState(newState);
+	}
 }
