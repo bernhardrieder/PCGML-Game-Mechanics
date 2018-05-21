@@ -51,6 +51,8 @@ protected:
 
 	void setWaveState(EWaveState newState);
 
+	void restartDeadPlayers();
+
 public:
 	UPROPERTY(BlueprintAssignable, Category = "Game Mode")
 	FOnActorKilledEvent OnActorKilledEvent;

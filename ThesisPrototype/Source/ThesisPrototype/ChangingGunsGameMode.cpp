@@ -64,6 +64,8 @@ void AChangingGunsGameMode::prepareForNextWave()
 	GetWorldTimerManager().SetTimer(timerHandle_NextWaveStart, this, &AChangingGunsGameMode::startWave, TimeBetweenWaves, false);
 
 	setWaveState(EWaveState::WaitingToStart);
+
+	restartDeadPlayers();
 }
 
 void AChangingGunsGameMode::checkWaveState()
@@ -132,5 +134,17 @@ void AChangingGunsGameMode::setWaveState(EWaveState newState)
 	if(AChangingGunsGameState* gameState = GetGameState<AChangingGunsGameState>())
 	{
 		gameState->SetWaveState(newState);
+	}
+}
+
+void AChangingGunsGameMode::restartDeadPlayers()
+{
+	for (FConstPlayerControllerIterator it = GetWorld()->GetPlayerControllerIterator(); it; ++it)
+	{
+		APlayerController* pc = it->Get();
+		if (pc && !pc->GetPawn())
+		{
+			RestartPlayer(pc);
+		}
 	}
 }
