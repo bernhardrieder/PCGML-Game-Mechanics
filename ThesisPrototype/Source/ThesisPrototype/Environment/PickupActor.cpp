@@ -64,8 +64,13 @@ void APickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	if(HasAuthority() && spawnedPowerUp)
+	if(HasAuthority() && spawnedPowerUp && OtherActor)
 	{
+		APawn* pawn = Cast<APawn>(OtherActor);
+		if(!pawn || !pawn->IsPlayerControlled())
+		{
+			return;
+		}
 		spawnedPowerUp->ActivatePowerUp(OtherActor);
 		spawnedPowerUp = nullptr;
 
