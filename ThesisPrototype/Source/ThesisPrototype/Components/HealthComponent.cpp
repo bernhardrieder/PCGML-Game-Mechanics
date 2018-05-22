@@ -25,6 +25,7 @@ void UHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 UHealthComponent::UHealthComponent()
 {
 	DefaultHealth = 100;
+	TeamNumber = 255;
 
 	SetIsReplicated(true);
 }
@@ -74,6 +75,11 @@ void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, c
 		return;
 	}
 
+	if(DamagedActor != DamageCauser && IsFriendly(DamagedActor, DamageCauser))
+	{
+		return;
+	}
+
 	Health = FMath::Clamp(Health - Damage, 0.f, DefaultHealth);
 	bIsDead = Health <= 0.f;
 
@@ -91,4 +97,22 @@ void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, c
 			gm->OnActorKilledEvent.Broadcast(GetOwner(), DamageCauser, InstigatedBy);
 		}
 	}
+}
+
+bool UHealthComponent::IsFriendly(AActor* actorA, AActor* actorB)
+{
+	if (!actorA || !actorB)
+	{
+		return true;
+	}
+
+	UHealthComponent* healthCompA = Cast<UHealthComponent>(actorA->GetComponentByClass(StaticClass()));
+	UHealthComponent* healthCompB = Cast<UHealthComponent>(actorB->GetComponentByClass(StaticClass()));
+
+	if(!healthCompA || !healthCompB)
+	{
+		return true;
+	}
+
+	return healthCompA->TeamNumber == healthCompB->TeamNumber;
 }

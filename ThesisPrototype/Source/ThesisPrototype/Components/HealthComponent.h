@@ -17,6 +17,10 @@ class THESISPROTOTYPE_API UHealthComponent : public UActorComponent
 	GENERATED_BODY()
 
 protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Health Component")
+	uint8 TeamNumber;
+
+protected:
 	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = "Health Component")
 	float Health;
 
@@ -44,8 +48,11 @@ protected:
 	void handleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "Events")
+	UPROPERTY(BlueprintAssignable, Category = "Health Component")
 	FOnHealthChangedEvent OnHealthChangedEvent;
+
+	UFUNCTION(BlueprintPure, Category = "Health Component")
+	static bool IsFriendly(AActor* actorA, AActor* actorB);
 
 protected:
 	bool bIsDead = false;
