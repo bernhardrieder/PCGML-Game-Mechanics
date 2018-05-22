@@ -130,11 +130,13 @@ void AShooterCharacter::onHealthChanged(const UHealthComponent* HealthComponent,
 	{
 		bDied = true;
 
+		StopFire();
 		GetMovementComponent()->StopMovementImmediately();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 		DetachFromControllerPendingDestroy();
 		SetLifeSpan(10.f);
+		CurrentWeapon->SetLifeSpan(10.f);
 	}
 }
 
