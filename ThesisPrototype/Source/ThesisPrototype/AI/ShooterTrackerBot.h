@@ -82,6 +82,7 @@ protected:
 	void selfDestruct();
 	void damageSelf();
 	void onCheckNearbyBots();
+	void refreshPath();
 
 public:
 	// Called every frame
@@ -93,6 +94,7 @@ protected:
 	FVector nextPathPoint;
 	UMaterialInstanceDynamic* materialInstance = nullptr;
 	FTimerHandle timerHandle_SelfDamage;
+	FTimerHandle timerHandle_RefreshPath;
 	bool bStartedSelfDestruction = false;
 
 	//current power level of the bot based on nearby located bots -> this boosts the explosion damage

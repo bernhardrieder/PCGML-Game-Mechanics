@@ -53,8 +53,8 @@ AShooterTrackerBot::AShooterTrackerBot()
 	MovementForce = 1000.f;
 	bUseVelocityChange = false;
 	RequiredDistanceToTarget = 100.f;
-	ExplosionDamage = 40.f;
-	DamageRadius = 200.f;
+	ExplosionDamage = 60.f;
+	DamageRadius = 350.f;
 	SelfDamageInterval = 0.25f;
 	MaxPowerLevel = 4;
 }
@@ -84,13 +84,40 @@ void AShooterTrackerBot::BeginPlay()
 FVector AShooterTrackerBot::GetNextPathPoint()
 {
 	//hack to get player location
-	ACharacter* playerPawn = UGameplayStatics::GetPlayerCharacter(this, 0);
+	AActor* bestTarget = nullptr;
+	float nearestTargetDistance = FLT_MAX;
 
-	UNavigationPath* navPath = UNavigationSystem::FindPathToActorSynchronously(this, GetActorLocation(), playerPawn);
-	if(navPath && navPath->PathPoints.Num() > 1)
+	for (FConstPawnIterator it = GetWorld()->GetPawnIterator(); it; ++it)
 	{
-		//return next point in the path
-		return navPath->PathPoints[1];
+		APawn* testPawn = it->Get();
+		if (!testPawn || UHealthComponent::IsFriendly(this, testPawn))
+		{
+			continue;
+		}
+		UHealthComponent* healthComp = Cast<UHealthComponent>(testPawn->GetComponentByClass(UHealthComponent::StaticClass()));
+		if (healthComp && healthComp->GetHealth() > 0.f)
+		{
+			const float distanceToPawn = FVector::Distance(this->GetActorLocation(), testPawn->GetActorLocation());
+			if(distanceToPawn < nearestTargetDistance)
+			{
+				bestTarget = testPawn;
+				nearestTargetDistance = distanceToPawn;
+			}
+		}
+	}
+
+	if(bestTarget)
+	{
+		UNavigationPath* navPath = UNavigationSystem::FindPathToActorSynchronously(this, GetActorLocation(), bestTarget);
+
+		GetWorldTimerManager().ClearTimer(timerHandle_RefreshPath);
+		GetWorldTimerManager().SetTimer(timerHandle_RefreshPath, this, &AShooterTrackerBot::refreshPath, 2.5f, false);
+
+		if (navPath && navPath->PathPoints.Num() > 1)
+		{
+			//return next point in the path
+			return navPath->PathPoints[1];
+		}
 	}
 
 	//Failed to find path
@@ -189,6 +216,11 @@ void AShooterTrackerBot::onCheckNearbyBots()
 	}
 }
 
+void AShooterTrackerBot::refreshPath()
+{
+	nextPathPoint = GetNextPathPoint();
+}
+
 // Called every frame
 void AShooterTrackerBot::Tick(float DeltaTime)
 {
@@ -234,7 +266,8 @@ void AShooterTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	if(!bStartedSelfDestruction && !bExploded)
 	{
-		if (AShooterCharacter* shooterChar = Cast<AShooterCharacter>(OtherActor))
+		AShooterCharacter* shooterChar = Cast<AShooterCharacter>(OtherActor);
+		if (shooterChar && !UHealthComponent::IsFriendly(OtherActor, this))
 		{
 			if(HasAuthority())
 			{
