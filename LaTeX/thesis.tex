@@ -608,7 +608,7 @@ The focus of PCGML is to generate new content based on training with existing co
 \section{Development Considerations} \label{PCGML::devConsiderations}
 There are some unique development considerations to take when someone wants to make use of PCG via ML for game elements. In general, every design consideration, possible issue, pitfall and best practices described and discussed in chapters \ref{pcgDevelopment} and \ref{mlDevelopment} will apply when implementing PCGML algorithms. Furthermore, an initial examination of the data representation for the data used as the training set during the ML model’s training is necessary. On this account, the research of \cite{pcgml::paper} showed that every specific dataset has different but also shared possible training methods for the ML model to obtain excellent and practical generation results. The primarily used training models for their research purposes of using PCGML for, e.g., level generation were:
 \begin{itemize}
-	\item Neural networks like \ac{ANN}, \ac{CNN} or \ac{LSTM} networks
+	\item \ac{ANN}, \ac{CNN} or \ac{LSTM} networks
 	\item Markov models such as N-grams or multi-dimensional Markov chains
 	\item Bayes models
 	\item Autoencoders
@@ -1053,17 +1053,7 @@ Investigation showed that the game Battlefield 1, released in 2016, uses more th
 the provided data shows that its either sequence or graph data. as described in chapter 5.3.1, they have different advantages and disadvantages but they probably fit both. Compares to the PCGML generation example, it fits better with sequences but the best way to find out is to try both data structures within each method.
 
 \subsection{Learning Method}
-state different models which could be used and differ them
-
-trying different models if your model sucks! -> use WEKA as a rescue http://www.cs.waikato.ac.nz/ml/weka
-
-learning with logs! -> training set
-
-santi said: either NN or Gaussian Mixture Model
-
-As seen throughout the previous chapters, there is no distinctive right or wrong method to train a model. PCGML is relatively new and someone can just guess which one is usable. Best approach would be to use different methods and compare them. For simplicity, onle the method of NN is approached for this given problem. If there is enough time left then other methods can also be tested
-
-
+As seen throughout the previous chapters, there are no distinctive right or wrong methods to train a model. PCGML is a relatively new approach and many different methods are suitable to reach a certain goal. As the research of \cite{pcgml::paper} shows, methods like \ac{NN}, \ac{LSTM}, autoencoders, deep convolutional networks, markov models or markov chains are applicable for a model's training to generate, e.g., levels of \ac{2D} games. It is worth nothing, that all these mentioned methods are made with the help of \ac{NN} \cite{neuralNetworkZoo}. This common feature is the reason why the implementation for the prototype's PCGML training method focuses on a simple \ac{ANN} implementation. Nonetheless, there will be different approaches with advantages and disadvantages during the implementation process which are documented in the next chapter.
 
 \section{Implementation}
 its not a regression problem. data is provided which is used to generate new but similar data -> its a continuous predicition of connected values and not just 1 prediction value! -> $\vec{x}$ \sout{$(\rightarrow y)$} \\
