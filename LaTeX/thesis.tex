@@ -422,7 +422,7 @@ There are a few possibilities and use cases for PCG as mechanics in games. As se
 % ------------------------------- NEW CHAPTER ------------------------------- %
 %
 \clearpage
-\chapter{\acl{ML}}
+\chapter{\acl{ML}} \label{chapter::machineLearning}
 \ac{ML} is such a vast topic so that a detailed explanation of every type, approach, method, and model used in ML would go beyond the scope of this thesis. Therefore, the next sections will describe essential subjects of ML which can be useful to understand its further use in PCGML. \\
 However, let us ask a question first: What is the difference between ML and AI and what is ML about actually? The fact is, there is no difference between ML and AI. In particular, ML developed from fields of research in AI and is thus a subset of AI. It concentrates on using mechanisms to learn from given data where data represents experience for a given problem. For instance, a famous example of machine learning is an application where the machine can distinguish between apples and pears with the help of a given dataset of features for both apples and pears \cite{ai::book}. 
 
@@ -935,10 +935,10 @@ Dedication of this chapter is the development of a game prototype which uses the
 The next sections contain every conceivable necessary topic of implementing the PCGML game mechanic "\nameref{idea::changingWeapons}" in a game prototype. From an initial game idea to the most useful game engine to the training model and the working prototype. Note that the game idea functions as an idea of which a prototype with a PCGML game mechanic emerges rather than being a thoroughly sophisticated game. This chapter functions as a proof-of-concept and shows how a PCGML game mechanic can be implemented and used in a game.
 
 \section{Test Scenario}
-A two-player \ac{PvP} arena-like 3D game scenario in which each player is in control of a PCGML system which produces weapons such as pistols, machine guns and other kinds of guns to interact. Specific datasets of weapons can bias the system which leads the kind of game and its flow. The game forces players consistently to make use of their weapons to win the game.
+A two-player \ac{PvP} or \ac{PvE} arena-like 3D game scenario in which each player or AI opponent is in control of a PCGML system which produces weapons such as pistols, machine guns and other kinds of guns to interact. Specific datasets of weapons can bias the system which leads the kind of game and its flow. The game forces players consistently to make use of their weapons to win the game. 
 
 \subsection{Environment and Objective}
-The environment is a pure mountain-forest-like low poly environment. Players start on the same map but different locations and need to find each other to start the battle of the players which represents the last fight of the scenario. Figure \ref{prototype::exampleMap} shows an example of the map with each player at a different spawn location and the arena in the middle. The player's primary objective is to defeat the other player in a battle against each other at the end of the scenario. The winner of the battle wins the game.
+The environment is a mountain-forest-like environment. Players start on the same map but different locations and need to find each other to start the battle of the players which represents the last fight of the scenario. Figure \ref{prototype::exampleMap} shows an example of the map with each player at a different spawn location and the arena in the middle. The player's primary objective is to defeat the other player in a battle against each other at the end of the scenario. The winner of the battle wins the game.
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.8\linewidth]{PICs/Prototype/map_example}
@@ -959,16 +959,6 @@ Every generated weapon is feed into the existing PCGML model to specialize the s
 \subsection{Player and Enemies}
 The player is a first-person character with a specific amount of health, armor, and lives with no customization options. Synchronization of the values of these mentioned properties with the properties of the generated weapons is necessary.\\
 A simple AI controls all enemies to act as a training enemy for the battle. Enemies come in three different types of ascending power and health. They spawn in fixed locations throughout the training path. The enemies desire is to eliminate the player in a straightforward way rather than in a complex and sophisticated way. Killed enemies will drop ammunition, health, and armor which players can gather to refill their ammunition, health, and armor.
-
-\section{Data Acquisition}
--> Available data on the web and existing games\\
-it shows that games mostly use real world data for the game. observation of weapon data in Unreal Tournament and UE4 sample projects show the following used parameters:
-==== insert table ====
-This parameters can be used for the system and based on this data, other real data of weapons can be searched and found to get a dataset to train the model\\
-\\
--> Where to find data? What is usually found?\\
-could use weapon stats from CSGO\\
-provide an example of a found data row and entry which is usable for the system
 
 \section{Development Considerations}
 
@@ -1012,6 +1002,52 @@ The UE4 TensorFlow plugin currently only supports the Windows OS. To get started
 	\item \textbf{\ac{GPU}}: The GPU alternative of TensorFlow offers faster computation of ML algorithms and significantly reduces training time. The only requirement for using the GPU variant is that the user needs to use a GPU which is eligible for NVIDIA's CUDA toolkit \cite{nvidia::cudaToolkit} to run the GPU variant of TensorFlow. Nevertheless, modern PCs with an integrated NVIDIA graphic card are usually eligible to support the CUDA toolkit. 
 \end{itemize}
 As already mentioned before, the only fundamental difference between the installations is their result in different computation times. Notably, this is getting an important role when the game uses online training and requires suitable computation times for the model's training. For this reason and to avoid initial delays, it is advisable to use a pre-trained model and apply changes to a copy of the model during runtime so that players are not concerned about the computation time.
+
+\subsection{Data Acquisition}
+The most important part of the prototype is about the data to train the ML model. To get a well trained model, it is most likely that it needs a rather big dataset. For the sake of simplicity of the data search, this dataset size is defined to contain at least 100 entries. However, the right amount of data entries depends on the available variables to train the model and there is no simple formula for this problem as described in chapter \ref{chapter::machineLearning}. \\
+The search for appropriate data starts with the sample and template projects provided in UE4 since its the engine used for the prototype. The templates can offer a great advantage because they could provide usable data and implementation for the prototype. Unfortunately, this template projects are not eligible and the search ends with the conclusion of either using real world data or a games data. The next chapters are going into the detail of all evaluated data sources.
+
+\subsubsection{Unreal Tournament and Template Project}
+Epic Games provide the source code for Unreal Tournament for registered users on their GitHub account \cite{epicGames::unrealTournamentSourceCode}. After following their installation instructions, the project is ready to go and ready for inspection.\\
+It shows that Unreal Tournament does not use much weapons as needed for the training. The implementation contains only 16 different weapons with 10 common and usable parameters to train the model. Nevertheless, the source code of their weapons and used parameters are the perfect reference or template for implementing an own weapon class. \\
+The other starting point for finding appropriate data is the so-called "Shooter Game" project which is provided as a introduction for implementing FPS games \cite{epicGames::shooterGame}. Unfortunately, this project does not provide much usable data. In fact, it only provides the developer with basic implementation for two different kind of weapons with an example for each kind of gun. The parameters used in their implementation are similar to Unreal Tournament's weapon parameters.
+
+\subsubsection{\acl{CS:GO}}
+The next point of an initial reference is the popular eSports game \ac{CS:GO}. Websites about community-driven analysis on the game's main mechanic is the perfect base for finding data appropriate to train a ML model and use the data for weapon generation. Unfortunately, CS:GO does not use much weapons and is specialized to 32 weapons in the game \cite{counterstrike::wikiWeapons}. Nevertheless, the provided analysis data provides a good base to work with and to extend the available and balanced game data with, e.g., real world data.
+
+\subsubsection{Real World Data}
+Plenty of websites about weapons are findable on the \ac{WWW}. However, most of them do not provide much data about the weapon itself. The search leads to, e.g., Army and manufacturer websites to find the appropriate weapon data for specific weapons. Nevertheless, the procedure in finding and obtaining real world weapon data is a lenghty process. Besides, it shows that weapon manufacturer do not always provide all data and it would take real world tests to obtain particular weapon data. In particular, all found weapon data have about 7 to 8 similar variables which are usable to train the model. This parameters are: type of weapon, average weight, overall length, barrel length, bullet caliber, magazine size, muzzle velocity, and the rate of fire. \\
+For sure, this data is usable to train a model and generate weapons even if this takes more time to implement and balance. However, it would be easier to use already balanced game data to train the model and generate new weapons. For this reason, the search leads to the most valuable data source which is furthermore used for the implementation.
+
+\subsubsection{Battlefield 1}
+Research showed, that the game Battlefield 1 which was released in 2016, uses more than 100 different weapons in the game. The setting of the game takes place in the World War One and therefore uses weapons of this period. Fortunately, gamers gathered all possible weapon statistics for Battlefield games on the community website "http://symthic.com" \cite{symthic::bf1stats}. They provide a list of all 140 weapons used in the game with very detailed description and statistics \cite{symthic::bf1stats}. In fact, they provide 40 parameters which describe every weapon \cite{symthic::bf1stats}. Further evaluation specializes this parameters to 18 most usable variables for a weapon implementation. Nevertheless, one can use even more, less or other parameters to generate weapons and train the model and not all of them are always useful. Table \ref{battlefield::weaponStats} shows this most usable parameters for the weapon class and model training. As already indicated, the number of the variables is a subject to change during the implementation.
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Name}         & \textbf{Description}                         \\ \hline\hline
+		Damage Points         & Damage points per hit.                       \\ \hline
+		Firerate              & Fired rounds per minute.                     \\ \hline
+		Num of Pellets        & Number of pellets in one shot.               \\ \hline
+		Muzzle Velocity       & Bullet velocity when exiting the muzzle.     \\ \hline
+		Bullet Drop           & Gravitational bullet drop.                   \\ \hline
+		Magazine Size         & Amount of bullets in a magazine.             \\ \hline
+		Projectile            & Type of projectile used.                     \\ \hline
+		Horizontal Dispersion & Horizontal pellet dispersion.                \\ \hline
+		Vertical Dispersion   & Vertical pellet dispersion.                  \\ \hline
+		Reload Empty          & Reload time with an empty magazine.          \\ \hline
+		Reload Ammo           & Reload time with an magazine with ammo left. \\ \hline
+		Reload Single Bullet  & Reload time for a single bullet.             \\ \hline
+		Recoil Up             & Recoil in up direction.                      \\ \hline
+		Recoil Left           & Recoil in left direction.                    \\ \hline
+		Recoil Right          & Recoil in right direction.                   \\ \hline
+		Recoil Decrease       & Recoil decrease after a specific time.       \\ \hline
+		Spread Increase       & Spread increase per shot.                    \\ \hline
+		Spread Decrease       & Spread decrease after a specific time.       \\ \hline
+	\end{tabular}
+	\caption{Eligible weapon statistic for the prototype provided by \protect\cite{symthic::bf1stats}.}
+	\label{battlefield::weaponStats}
+\end{table}
 
 \subsection{Data Representation}
 the provided data shows that its either sequence or graph data. as described in chapter 5.3.1, they have different advantages and disadvantages but they probably fit both. Compares to the PCGML generation example, it fits better with sequences but the best way to find out is to try both data structures within each method.
@@ -1106,6 +1142,7 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
 	\acro{API}{Application Programming Interface}
 	\acro{CNN}{Convolutional Neural Network}
 	\acro{CPU}{Central Processing Unit}
+	\acro{CS:GO}{Counter-Strike: Global Offensive}
 	\acro{FPS}{First Person Shooter}
 	\acro{GB}{Gigabyte}
 	\acro{GPU}{Graphics Processing Unit}
@@ -1123,12 +1160,14 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
     \acro{PCG}{Procedural Content Generation}
     \acro{PCGML}{Procedural Content Generation via Machine Learning}
     \acro{PvP}{Player versus Player}
+    \acro{PvE}{Player versus Environment}
     \acro{RPG}{Roleplay Games}
     \acro{RL}{Reinforcement Learning}
     \acro{RNG}{Random Number Generator}
     \acro{SVM}{Support Vector Machine}
     \acro{UE4}{Unreal Engine 4}
     \acro{VR}{Virtual Reality}
+    \acro{WWW}{World Wide Web}
 \end{acronym}
 
 %
