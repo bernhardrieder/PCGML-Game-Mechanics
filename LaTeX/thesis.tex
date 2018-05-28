@@ -454,6 +454,9 @@ In short, \ac{RL} is a goal-oriented approach where an AI tries to reach a goal 
 In general, RL makes use of a bit of supervision in the form of feedback for an action executed by an agent \cite{ml::book::statistics}. Among experts, this feedback exists as the reward for actions in RL algorithms \cite{ml::book::statistics}.  The tricky part is that RL usually consists of following decisions and every chosen action — chosen out of a set of actions — by an agent is changing the environment which usually makes it difficult to train a model \cite{ml::book::statistics}. Hence, an agent executes different decisions in a loop and is looking for the highest total reward for its sequence of actions since it will always want to increase its total reward. \cite{ai::book} With this strategy, an RL algorithm is getting better and better over time in solving a specific problem until it found the best solution.\\
 During the last years, RL algorithms have been used to learn an AI how to play classical games, find the best strategy to win a game, learn an AI how to walk and many other applications \cite{ml::book::algorithms}. Algorithms include neural networks, deep neural networks, Q-Learning or Markov decision process. \cite{ml::book::statistics}
 
+\subsection{Generative versus Discriminative Models}
+{\color{blue}WRITE ABOUT IT!}
+
 \begin{comment} it doesn't make any sense to describe all learning models for machine learning if they won't be used at all?!
 \section{Learning Models}
 Which training models are used in ML? --> the 5 tribes of ML\\
@@ -1049,22 +1052,34 @@ Investigation showed that the game Battlefield 1, released in 2016, uses more th
 	\label{battlefield::weaponStats}
 \end{table}
 
-\subsection{Data Representation}
+\subsection{Data Representation - IS THIS REALLY IMPORTANT?}
 the provided data shows that its either sequence or graph data. as described in chapter 5.3.1, they have different advantages and disadvantages but they probably fit both. Compares to the PCGML generation example, it fits better with sequences but the best way to find out is to try both data structures within each method.
 
 \subsection{Learning Method}
-As seen throughout the previous chapters, there are no distinctive right or wrong methods to train a model. PCGML is a relatively new approach and many different methods are suitable to reach a certain goal. As the research of \cite{pcgml::paper} shows, methods like \ac{NN}, \ac{LSTM}, autoencoders, deep convolutional networks, markov models or markov chains are applicable for a model's training to generate, e.g., levels of \ac{2D} games. It is worth nothing, that all these mentioned methods are made with the help or resemble \ac{NN} \cite{neuralNetworkZoo}. This common feature is the reason why the implementation decision for the prototype's PCGML training method focuses on a simple \ac{ANN} with back propagation implementation. Nonetheless, there will be different approaches with advantages and disadvantages during the implementation process which are documented in the next chapter.
-
-\section{Implementation}
-its not a regression problem. data is provided which is used to generate new but similar data -> its a continuous predicition of connected values and not just 1 prediction value! -> $\vec{x}$ \sout{$(\rightarrow y)$} \\
+{\color{blue}
+WHAT IS THE PROBLEM? DESCRIBE IT AND COME UP WITH POSSIBLE LEARNING METHODS!\\
+some notes with santi: its not a regression problem. data is provided which is used to generate new but similar data -> its a continuous predicition of connected values and not just 1 prediction value! -> $\vec{x}$ \sout{$(\rightarrow y)$} \\
 x = values\\
 y = prediction result\\
 \\
 D -> M -> \boxed{M} -> d\\
 Data -> Model -> generated Model -> Density estimation\\
-\\
+	\\
+	
+As seen throughout the previous chapters, there are no distinctive right or wrong methods to train a model. PCGML is a relatively new approach and many different methods are suitable to reach a certain goal. As the research of \cite{pcgml::paper} shows, methods like \ac{NN}, \ac{LSTM}, autoencoders, deep convolutional networks, markov models or markov chains are applicable for a model's training to generate, e.g., levels of \ac{2D} games. It is worth nothing, that all these mentioned methods are made with the help or resemble \ac{NN} \cite{neuralNetworkZoo}. \\
+This common feature is the reason why the implementation decision for the prototype's PCGML training method focuses on a simplified supervised and discriminative method approach with an \ac{ANN} and an unsupervised and generative method approach with a \ac{VAE}. 
+}
+
+\section{Learning Method Basics}
+\subsection{\acl{ANN}}
+\subsection{\acl{VAE}}
+\section{Implementation}
 \textbf{previous considerations}\\
 mind all previous described considerations into the implementation!!
+\subsection{Data Pre-Processing}
+\subsubsection{Dump Extraction}
+\subsubsection{Manual Dimension Reduction}
+\subsubsection{Normalization}
 
 \subsection{Weapon Generation Process Design}
 
@@ -1156,6 +1171,7 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
     \acro{RNG}{Random Number Generator}
     \acro{SVM}{Support Vector Machine}
     \acro{UE4}{Unreal Engine 4}
+    \acro{VAE}{Variational Autoencoder}
     \acro{VR}{Virtual Reality}
     \acro{WWW}{World Wide Web}
 \end{acronym}
