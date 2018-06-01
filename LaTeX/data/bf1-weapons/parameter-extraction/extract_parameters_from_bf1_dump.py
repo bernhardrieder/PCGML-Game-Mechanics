@@ -76,13 +76,13 @@ def extractFirstAndLastValueOfParametersWithListValues(weapons):
                 parametersWithListValues.append(parameter)
 
     for i in range(0, len(weapons)):
-        copy = dict(weapons[i])
+        weaponCopy = copy.deepcopy(weapons[i])
         for parameter, value in weapons[i].items():
             if parameter in parametersWithListValues:
-                del copy[parameter]
-                copy[parameter+"_first"] = value[0]
-                copy[parameter+"_last"] = value[len(value)-1]
-        weapons[i] = copy
+                del weaponCopy[parameter]
+                weaponCopy[parameter+"_first"] = value[0]
+                weaponCopy[parameter+"_last"] = value[len(value)-1]
+        weapons[i] = weaponCopy
     return weapons
 
 def createAndWriteCSV(weapons, outputFile):
