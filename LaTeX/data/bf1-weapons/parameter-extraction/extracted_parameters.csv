@@ -1,149 +1,149 @@
-ammo,bdrop,drag,hiprecoildec,hiprecoilright,hiprecoilup,hipstandmovemax,hipstandmovespreaddec,hipstandmovespreadinc,hordispersion,initialspeed,magsize,reloadempty,reloadleft,rof,shotspershell,singlebulletreloadtime,verdispersion,firemode,type,weapshowname,damages_first,damages_last,dmg_distances_first,dmg_distances_last
-12g_Buckshot_A5_LowRecoil,12.0,0.007,4.5,0.48,4.4,2.0,4.5,0.15,1.200006,333,5,N/A,N/A,257,12,-1.0,1.200006,N/A,N/A,12g Automatic Backbored,7.7,3.85,12.0,19.0
-12g_Buckshot_A5,12.0,0.007,3.0,0.8,5.5,2.0,4.5,0.15,1.8,333,7,N/A,N/A,257,12,-1.0,1.8,N/A,N/A,12g Automatic Extended,7.7,3.85,14.0,21.0
-12g_Buckshot_A5,12.0,0.007,3.0,0.8,5.5,2.0,4.5,0.15,1.200006,333,5,N/A,N/A,257,12,-1.0,1.200006,N/A,N/A,12g Automatic Hunter,7.7,3.85,14.0,21.0
-32ACP_Pistol,12.0,0.0025,5.0,0.4,1.0,2.0,4.5,0.15,0.0,320,9,1.7,1.16,449,1,N/A,0.0,N/A,N/A,1903 Hammerless,26.5,13.5,6.0,31.33
-45cal_SMG,12.0,0.0025,8.0,0.45,0.55,2.5,2.7,0.045,0.0,380,20,3.633,2.933,830,1,N/A,0.0,N/A,N/A,Annihilator Trench,30.0,15.0,11.0,37.0
-455WebleyMkII,12.0,0.0025,5.0,1.0,4.0,2.0,9.0,0.3,0.0,230,6,3.17,3.17,224,1,N/A,0.0,N/A,N/A,Auto revolver,53.0,15.0,6.0,38.76
-25Remington,12.0,0.0025,3.0,0.15,0.68,3.5,3.0,0.05,0.0,660,16,3.033,2.433,359,1,N/A,0.0,N/A,N/A,Autoloading 8 .25 Extended,38.0,21.0,16.0,45.0
-35Remington,12.0,0.0025,5.25,0.15,0.85,3.5,6.0,0.1,0.0,660,5,N/A,N/A,359,1,0.5,0.0,N/A,N/A,Autoloading 8 .35 Factory,42.0,30.0,51.0,78.0
-35Remington,12.0,0.0025,3.0,0.15,0.85,3.5,3.0,0.1,0.0,660,5,N/A,N/A,359,1,0.5,0.0,N/A,N/A,Autoloading 8 .35 Marksman,42.0,30.0,51.0,78.0
-9x19mm_Gilsenti,12.0,0.0025,16.0,0.4,0.42,2.5,4.050000000000001,0.045,0.0,380,25,2.8,2.1,900,1,N/A,0.0,N/A,N/A,Automatico M1918 Factory,23.0,13.5,6.0,37.0
-9x19mm_Gilsenti,12.0,0.0025,8.0,0.32000000000000006,0.336,2.5,2.7,0.045,0.0,380,25,2.8,2.1,900,1,N/A,0.0,N/A,N/A,Automatico M1918 Storm,23.0,13.5,6.0,37.0
-9x19mm_Gilsenti,12.0,0.0025,8.0,0.4,0.42,2.5,2.7,0.045,0.0,380,25,2.8,2.1,900,1,N/A,0.0,N/A,N/A,Automatico M1918 Trench,23.0,13.5,6.0,37.0
-30-06_Heavy,12.0,0.002,6.0,0.20800000000000002,0.44000000000000006,4.25,4.5,-0.18,0.0,820,20,3.2,2.8,600,1,N/A,0.0,N/A,N/A,BAR 1918 Storm,26.5,23.0,11.0,35.0
-30-06_Heavy,12.0,0.002,6.0,0.26,0.55,4.25,4.5,-0.18,0.0,820,20,3.2,2.8,600,1,N/A,0.0,N/A,N/A,BAR 1918 Telescopic,26.5,23.0,11.0,35.0
-30-06_Heavy,12.0,0.002,6.0,0.26,0.55,4.25,4.5,-0.09,0.0,820,20,3.2,2.8,600,1,N/A,0.0,N/A,N/A,BAR 1918 Trench,26.5,23.0,11.0,35.0
-32ACP_Pistol,12.0,0.0025,5.0,0.4,1.0,2.0,4.5,0.15,0.0,320,9,2.0,1.5,449,1,N/A,0.0,N/A,N/A,Beretta M1915,26.5,13.5,6.0,31.33
-1035_Ordinanza_Italiana,12.0,0.0025,5.0,1.0,5.0,2.0,9.0,0.3,0.0,255,6,N/A,N/A,224,1,1.0,0.0,N/A,N/A,Bodeo 1889,53.0,17.5,10.0,38.5
-Borchardt765x25mm_Pistol,12.0,0.0025,5.0,0.3,1.3,2.0,4.5,0.15,0.0,390,9,2.05,1.35,359,1,N/A,0.0,N/A,N/A,Borchard C93,26.5,13.5,14.69,37.33
-442Webley,12.0,0.0025,5.0,0.8,4.0,2.0,9.0,0.3,0.0,215,6,N/A,N/A,257,1,1.1667,0.0,N/A,N/A,Bulldog,53.0,13.5,6.0,43.33
-Borchardt765x25mm_Pistol,12.0,0.0025,4.0,0.12,0.35,3.0,5.0,0.15,0.0,390,9,2.05,1.35,359,1,N/A,0.0,N/A,N/A,C93 Carbine,26.5,13.5,14.69,37.33
-Mauser763x25mm_Carbine,12.0,0.0025,5.0,0.3,1.2,3.0,4.5,0.15,0.0,460,20,N/A,N/A,299,1,0.5,0.0,N/A,N/A,C96 Carbine,28.0,15.0,17.46,38.76
-9x19mm_Semi,12.0,0.0025,5.0,0.12,0.36,2.5,2.1,0.07,0.0,460,41,3.5,2.1,359,1,N/A,0.0,N/A,N/A,C96 Trench,34.73,15.0,11.0,33.0
-Carcano65x52mm_Bolt,12.0,0.0025,3.0,1.0,5.0,5.0,10.05,1.0,0.0,700,6,N/A,N/A,73,1,N/A,0.0,N/A,N/A,Carcano M91,85.0,54.0,19.0,115.0
-Carcano65x52mm_Bolt,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,700,6,N/A,N/A,73,1,N/A,0.0,N/A,N/A,Carcano M91 Patrol Carbine,85.0,54.0,19.0,115.0
-Carcano65x52mm_Semi,12.0,0.0025,5.25,0.4,0.8,3.5,6.0,0.1,0.0,700,10,N/A,N/A,299,1,0.5,0.0,N/A,N/A,Cei-Rigotti Factory,38.0,28.0,50.0,62.0
-Carcano65x52mm_Semi,12.0,0.0025,3.0,0.4,0.8,3.5,3.0,0.1,0.0,700,10,N/A,N/A,299,1,0.5,0.0,N/A,N/A,Cei-Rigotti Optical,38.0,28.0,50.0,62.0
-Carcano65x52mm_Semi,12.0,0.0025,3.0,0.4,0.8,3.5,3.0,0.05,0.0,700,10,N/A,N/A,299,1,0.5,0.0,N/A,N/A,Cei-Rigotti Trench,38.0,28.0,50.0,62.0
-8mmLebel_Heavy,12.0,0.0025,10.002,0.22,0.55,4.25,27.0,-0.22499999999999998,0.0,720,20,3.55,2.9,359,1,N/A,0.0,N/A,N/A,Chauchat Low Weight,38.0,28.0,18.0,35.0
-8mmLebel_Heavy,12.0,0.0025,6.0,0.22,0.55,4.25,9.0,-0.18,0.0,720,20,3.55,2.9,359,1,N/A,0.0,N/A,N/A,Chauchat Telescopic,38.0,28.0,18.0,35.0
-9x20mm_Browning_Long,12.0,0.0025,4.0,0.15,1.0,3.0,4.5,0.15,0.0,350,11,2.8,2.05,359,1,N/A,0.0,N/A,N/A,FN1903 Extended,30.0,13.5,12.29,37.33
-British303_Semi,12.0,0.0025,3.0,0.3,0.9,4.0,3.0,0.1,0.0,740,20,3.2,3.0,257,1,N/A,0.0,N/A,N/A,Farquhar-Hill Optical,42.0,30.0,46.33,59.0
-British303_Semi,12.0,0.0025,3.0,0.18,0.54,4.0,3.0,0.1,0.0,740,20,3.2,3.0,257,1,N/A,0.0,N/A,N/A,Farquhar-Hill Storm,42.0,30.0,46.33,59.0
-65_Arisaka_Semi,12.0,0.002,4.0,0.2,0.45,3.5,3.0,0.1,0.0,570,26,3.8,2.7,449,1,N/A,0.0,N/A,N/A,Fedorov Avtomat Optical,28.0,19.0,28.0,40.0
-65_Arisaka_Semi,12.0,0.002,4.0,0.2,0.45,3.5,3.0,0.05,0.0,570,26,3.8,2.7,449,1,N/A,0.0,N/A,N/A,Fedorov Avtomat Trench,28.0,19.0,28.0,40.0
-32ACP_Pistol,12.0,0.0025,5.0,0.4,1.0,2.0,4.5,0.15,0.0,320,8,2.0,1.25,449,1,N/A,0.0,N/A,N/A,Frommer Stop,26.5,13.5,6.0,31.33
-32ACP_Auto,12.0,0.0025,12.0,0.6,0.5,2.5,2.7,0.045,0.0,350,16,2.1,1.25,900,1,N/A,0.0,N/A,N/A,Frommer Stop Auto,23.0,12.0,6.0,42.16
-112x295_Montenegrin,12.0,0.0025,5.0,1.0,6.0,2.0,9.0,0.3,0.0,230,6,N/A,N/A,179,1,1.033,0.0,N/A,N/A,Gasser M1870,53.0,21.0,14.0,38.11
-Mauser792x57mm_SemiHeavy,12.0,0.0025,5.25,0.5,1.3,4.0,6.0,0.1,0.0,800,6,N/A,N/A,299,1,N/A,0.0,N/A,N/A,General Liu Rifle Factory,40.0,35.0,40.0,80.0
-Mauser792x57mm_SemiHeavy,12.0,0.0025,3.0,0.3,0.78,4.0,3.0,0.1,0.0,800,6,N/A,N/A,299,1,N/A,0.0,N/A,N/A,General Liu Rifle Storm,40.0,35.0,40.0,80.0
-Mauser792x57mm_Bolt,12.0,0.0025,4.5,1.0,5.0,5.0,10.05,1.0,0.0,880,5,N/A,N/A,50,1,0.5,0.0,N/A,N/A,Gewehr 98 Infantry,80.0,80.0,0.0,165.0
-Mauser792x57mm_Bolt,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,880,5,N/A,N/A,50,1,0.5,0.0,N/A,N/A,Gewehr 98 Marksman,80.0,80.0,0.0,165.0
-Mauser792x57mm_Bolt,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,880,5,N/A,N/A,50,1,0.5,0.0,N/A,N/A,Gewehr 98 Sniper,80.0,80.0,0.0,165.0
-8x50mmR_Mannlicher,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,620,5,N/A,N/A,66,1,3.0,0.0,N/A,N/A,Gewehr M.95 Carbine,90.0,79.0,20.0,125.0
-8x50mmR_Mannlicher,12.0,0.0025,4.5,1.0,5.0,5.0,10.05,1.0,0.0,620,5,N/A,N/A,66,1,3.0,0.0,N/A,N/A,Gewehr M.95 Infantry,90.0,79.0,20.0,125.0
-8x50mmR_Mannlicher,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,620,5,N/A,N/A,66,1,3.0,0.0,N/A,N/A,Gewehr M.95 Marksman,90.0,79.0,20.0,125.0
-9x23mm_Steyr,12.0,0.0025,8.0,0.475,0.48,3.25,2.7,0.045,0.0,380,120,4.5,3.75,650,1,N/A,0.0,N/A,N/A,Hellriegel 1915 Defensive,26.5,15.0,11.0,37.0
-9x23mm_Steyr,12.0,0.0025,8.0,0.38,0.384,3.25,2.7,0.045,0.0,380,60,4.5,3.75,650,1,N/A,0.0,N/A,N/A,Hellriegel 1915 Factory,26.5,15.0,11.0,37.0
-455WebleyMkII,12.0,0.0025,5.0,1.5,5.0,2.0,9.0,0.3,0.0,230,4,3.3,3.3,257,1,N/A,0.0,N/A,N/A,Howdah Pistol,53.0,15.0,6.0,38.76
-British303_Semi,12.0,0.0025,5.25,0.24,1.0,4.0,6.0,0.1,0.0,740,21,3.8,2.7,257,1,N/A,0.0,N/A,N/A,Howell Automatic Factory,42.0,30.0,46.33,59.0
-British303_Semi,12.0,0.0025,3.0,0.24,1.0,4.0,3.0,0.1,0.0,740,21,3.8,2.7,257,1,N/A,0.0,N/A,N/A,Howell Automatic Sniper,42.0,30.0,46.33,59.0
-British303_Heavy,12.0,0.0025,10.002,0.14,0.28,4.25,27.0,-0.22499999999999998,0.0,740,26,4.25,2.85,475,1,N/A,0.0,N/A,N/A,Huot Automatic Low Weight,26.5,20.0,11.0,50.0
-British303_Heavy,12.0,0.0025,6.0,0.12320000000000002,0.28,4.25,9.0,-0.18,0.0,740,26,4.25,2.85,475,1,N/A,0.0,N/A,N/A,Huot Automatic Optical,26.5,20.0,11.0,50.0
-Mauser792x57mm,12.0,0.0025,10.002,0.575,0.42,5.75,18.9,-0.216,0.0,870,100,N/A,N/A,600,1,N/A,0.0,N/A,N/A,IMG 08-18 Low Weight,28.0,21.0,11.0,35.0
-Mauser792x57mm,12.0,0.0025,6.0,0.575,0.42,5.75,6.3,-0.18,0.0,870,100,N/A,N/A,600,1,N/A,0.0,N/A,N/A,IMG 08-18 Suppressive,28.0,21.0,11.0,35.0
-8mmLebel_Bolt,12.0,0.0025,4.5,1.0,5.0,5.0,10.05,1.0,0.0,720,8,N/A,N/A,56,1,0.43333334,0.0,N/A,N/A,Lebel Model 1886 Infantry,80.0,80.0,0.0,127.5
-8mmLebel_Bolt,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,720,8,N/A,N/A,56,1,0.43333334,0.0,N/A,N/A,Lebel Model 1886 Sniper,80.0,80.0,0.0,127.5
-British303_Heavy,12.0,0.0025,10.002,0.24,0.25,5.0,32.400000000000006,-0.216,0.0,740,47,4.2,2.85,480,1,N/A,0.0,N/A,N/A,Lewis Gun Low Weight,26.5,20.0,11.0,50.0
-British303_Heavy,12.0,0.0025,6.0,0.2112,0.25,5.0,10.8,-0.18,0.0,740,47,4.2,2.85,480,1,N/A,0.0,N/A,N/A,Lewis Gun Optical,26.5,20.0,11.0,50.0
-British303_Heavy,12.0,0.0025,6.0,0.24,0.25,5.0,10.8,-0.18,0.0,740,97,4.2,2.85,480,1,N/A,0.0,N/A,N/A,Lewis Gun Suppressive,26.5,20.0,11.0,50.0
-30-18_Auto,12.0,0.0025,5.0,0.1,0.28,5.0,2.1,0.07,0.0,400,41,3.0,2.25,359,1,N/A,0.0,N/A,N/A,M1903 Experimental,34.73,15.0,11.0,33.0
-30-06_Bolt,12.0,0.002,3.0,1.0,5.0,5.0,6.7,1.0,0.0,820,5,N/A,N/A,53,1,0.5,0.0,N/A,N/A,M1903 Marksman,80.0,80.0,0.0,190.0
-30-06_Bolt,12.0,0.002,3.0,1.0,5.0,5.0,6.7,1.0,0.0,820,5,N/A,N/A,53,1,0.5,0.0,N/A,N/A,M1903 Sniper,80.0,80.0,0.0,190.0
-351Winchester_Semi,12.0,0.0025,5.25,0.6,0.9,3.5,6.0,0.1,0.0,570,21,3.5,2.3,299,1,N/A,0.0,N/A,N/A,M1907 SL Factory,42.0,23.0,21.0,60.0
-351Winchester_Semi,12.0,0.0025,3.0,0.6,0.7200000000000001,3.5,3.0,0.05,0.0,570,21,3.5,2.3,299,1,N/A,0.0,N/A,N/A,M1907 SL Sweeper,42.0,23.0,21.0,60.0
-351Winchester_Semi,12.0,0.0025,3.0,0.6,0.9,3.5,3.0,0.05,0.0,570,21,3.5,2.3,299,1,N/A,0.0,N/A,N/A,M1907 SL Trench,42.0,23.0,21.0,60.0
-30-06_Heavy,12.0,0.002,6.0,0.1056,0.35,5.0,10.8,-0.18,0.0,820,30,3.9,2.6,450,1,N/A,0.0,N/A,N/A,M1909 Benet-Mercie Optical,26.5,23.0,11.0,35.0
-30-06_Heavy,12.0,0.002,6.0,0.096,0.27999999999999997,5.0,10.8,-0.18,0.0,820,30,3.9,2.6,450,1,N/A,0.0,N/A,N/A,M1909 Benet-Mercie Storm,26.5,23.0,11.0,35.0
-30-06_Heavy,12.0,0.002,6.0,0.12,0.35,5.0,10.8,-0.18,0.0,820,30,3.9,2.6,450,1,N/A,0.0,N/A,N/A,M1909 Benet-Mercie Telescopic,26.5,23.0,11.0,35.0
-45cal_Pistol,12.0,0.0025,5.0,0.7,2.3,2.0,6.0,0.2,0.0,250,8,1.7,1.16,299,1,N/A,0.0,N/A,N/A,M1911,35.0,15.0,6.0,32.76
-45cal_Pistol,12.0,0.0025,5.0,0.5,1.7,3.0,6.0,0.2,0.0,250,15,2.6,1.6,299,1,N/A,0.0,N/A,N/A,M1911 Extended,35.0,15.0,6.0,32.76
-30-06_Bolt,12.0,0.002,4.5,1.0,5.0,5.0,10.05,1.0,0.0,820,6,N/A,N/A,60,1,0.8,0.0,N/A,N/A,M1917 Enfield Infantry,80.0,80.0,0.0,190.0
-30-06_Bolt,12.0,0.002,3.0,1.0,5.0,5.0,6.7,1.0,0.0,820,6,N/A,N/A,60,1,0.8,0.0,N/A,N/A,M1917 Enfield Silenced,80.0,80.0,0.0,190.0
-30-06_Heavy,12.0,0.002,10.002,0.17,0.26,5.75,18.9,-0.209999988,0.0,820,250,8.33333,7.5,450,1,N/A,0.0,N/A,N/A,M1917 Low Weight,26.5,23.0,11.0,35.0
-9x19mm_Semi,12.0,0.0025,5.0,0.12,0.36,2.5,2.1,0.07,0.0,460,41,3.5,2.1,359,1,N/A,0.0,N/A,N/A,M1917 Patrol Carbine,34.73,15.0,11.0,33.0
-30-06_Heavy,12.0,0.002,6.0,0.17,0.26,5.75,6.3,-0.18,0.0,820,250,8.33333,7.5,450,1,N/A,0.0,N/A,N/A,M1917 Telescopic,26.5,23.0,11.0,35.0
-12g_Buckshot_M97_LowRecoil,12.0,0.007,4.5,0.8999999999999999,7.2,2.0,4.5,0.3,1.8,333,5,N/A,N/A,138,12,-1.0,1.8,N/A,N/A,M97 Trench Gun Backbored,10.0,5.0,12.0,19.0
-12g_Buckshot_M97,12.0,0.007,3.0,1.5,9.0,2.0,4.5,0.3,1.8,333,5,N/A,N/A,138,12,-1.0,1.8,N/A,N/A,M97 Trench Gun Hunter,10.0,5.0,14.0,21.0
-12g_Buckshot_M97_Sweeper,12.0,0.007,3.0,1.5,9.0,2.0,4.5,0.3,2.6999999999999997,333,5,N/A,N/A,138,12,-1.0,0.45,N/A,N/A,M97 Trench Gun Sweeper,12.5,4.2,10.0,16.0
-Mauser792x57mm,12.0,0.0025,6.0,0.15,0.28,4.0,3.6,-0.45,0.0,870,200,5.8,5.8,430,1,N/A,0.0,N/A,N/A,MG 08-15,28.0,21.0,11.0,35.0
-Mauser792x57mm,12.0,0.0025,10.002,0.35,0.4125,5.75,18.9,-0.209999988,0.0,870,100,4.45,4.45,500,1,N/A,0.0,N/A,N/A,MG15 N.A. Low Weight,28.0,21.0,11.0,35.0
-Mauser792x57mm,12.0,0.0025,6.0,0.27999999999999997,0.33,5.75,6.3,-0.18,0.0,870,100,4.45,4.45,500,1,N/A,0.0,N/A,N/A,MG15 N.A. Storm,28.0,21.0,11.0,35.0
-Mauser792x57mm,12.0,0.0025,6.0,0.35,0.4125,5.75,6.3,-0.18,0.0,870,200,4.45,4.45,500,1,N/A,0.0,N/A,N/A,MG15 N.A. Suppressive,28.0,21.0,11.0,35.0
-9x19mm_SMG,12.0,0.0025,8.0,0.138,0.42,2.5,2.7,0.045,0.0,420,30,3.3,2.1,550,1,N/A,0.0,N/A,N/A,MP 18 Experimental,28.0,15.0,11.0,37.0
-9x19mm_SMG,12.0,0.0025,8.0,0.23,0.42,2.5,2.7,0.045,0.0,420,32,2.96,2.1,550,1,N/A,0.0,N/A,N/A,MP 18 Optical,28.0,15.0,11.0,37.0
-9x19mm_SMG,12.0,0.0025,8.0,0.23,0.42,2.5,2.7,0.045,0.0,420,32,2.96,2.1,550,1,N/A,0.0,N/A,N/A,MP 18 Trench,28.0,15.0,11.0,37.0
-Mauser792x57mm,12.0,0.0025,10.002,0.275,0.38,4.25,13.5,-0.22499999999999998,0.0,800,30,4.2,2.65,540,1,N/A,0.0,N/A,N/A,Madsen MG Low Weight,28.0,21.0,11.0,35.0
-Mauser792x57mm,12.0,0.0025,6.0,0.22000000000000003,0.30400000000000005,4.25,4.5,-0.18,0.0,800,30,4.2,2.65,540,1,N/A,0.0,N/A,N/A,Madsen MG Storm,28.0,21.0,11.0,35.0
-Mauser792x57mm,12.0,0.0025,6.0,0.275,0.38,4.25,4.5,-0.09,0.0,800,30,4.2,2.65,540,1,N/A,0.0,N/A,N/A,Madsen MG Trench,28.0,21.0,11.0,35.0
-85mm_Mars,12.0,0.0025,5.0,0.8,4.0,2.0,6.0,0.2,0.0,530,11,2.93,2.13,199,1,N/A,0.0,N/A,N/A,Mars Automatic Pistol,40.0,23.0,14.0,30.06
-MartiniHenry577_450,12.0,0.0025,4.5,1.0,10.0,5.0,10.05,1.0,0.0,440,1,2.3,2.3,25,1,N/A,0.0,N/A,N/A,Martini-Henry Infantry,90.0,70.0,0.0,140.0
-MartiniHenry577_450,12.0,0.0025,3.0,1.0,10.0,5.0,6.7,1.0,0.0,440,1,2.3,2.3,25,1,N/A,0.0,N/A,N/A,Martini-Henry Sniper,90.0,70.0,0.0,140.0
-9x23mm_Steyr,12.0,0.0025,8.0,0.48,0.63,2.5,2.7,0.045,0.0,350,16,N/A,N/A,900,1,N/A,0.0,N/A,N/A,Maschinenpistole M1912,26.5,15.0,11.0,37.0
-9x23mm_Steyr,12.0,0.0025,8.0,0.36,0.7875,2.5,2.7,0.045,0.0,350,16,N/A,N/A,450,1,N/A,0.0,N/A,N/A,Maschinenpistole M1912 Experimental,26.5,15.0,11.0,37.0
-Mauser763x25mm_Pistol,12.0,0.0025,5.0,0.35,1.5,2.0,4.5,0.15,0.0,440,10,N/A,N/A,299,1,0.25,0.0,N/A,N/A,Mauser C96,28.0,15.0,13.66,32.76
-9x20mm_Browning_Long,12.0,0.0025,5.0,0.3,1.1,2.0,4.5,0.15,0.0,350,8,2.7,2.0,359,1,N/A,0.0,N/A,N/A,Mle M1903,30.0,13.5,12.29,37.33
-12g_Buckshot_10A,12.0,0.007,4.5,1.0,11.0,4.0,24.0,1.6,2.25,333,6,N/A,N/A,78,12,-1.0,2.25,N/A,N/A,Model 10-A Factory,12.5,6.25,14.0,21.0
-12g_Buckshot_10A,12.0,0.007,3.0,1.0,11.0,4.0,6.0,1.6,1.8,333,6,N/A,N/A,78,12,-1.0,1.8,N/A,N/A,Model 10-A Hunter,12.5,6.25,14.0,21.0
-12g_Slug_Pump,12.0,0.002,4.5,1.0,11.0,2.2,9.0,0.3,0.0,420,6,N/A,N/A,78,1,-1.0,0.0,N/A,N/A,Model 10-A Slug,112.0,45.0,8.0,60.0
-12g_Buckshot_10A,12.0,0.007,9.0,2.0,8.0,4.0,18.0,0.3,2.25,333,2,2.4,3.2,299,12,N/A,2.25,N/A,N/A,Model 1900 Factory,12.5,6.25,14.0,21.0
-12g_Slug_Pump,12.0,0.002,9.0,2.0,8.0,2.2,9.0,0.3,0.0,420,2,2.4,3.2,299,1,N/A,0.0,N/A,N/A,Model 1900 Slug,112.0,45.0,8.0,60.0
-Mauser792x57mm_SemiHeavy,12.0,0.0025,3.0,0.45,1.1,4.0,3.0,0.1,0.0,800,10,N/A,N/A,257,1,0.56666666,0.0,N/A,N/A,Mondragon Optical,40.0,35.0,40.0,80.0
-Mauser792x57mm_SemiHeavy,12.0,0.0025,3.0,0.45,1.1,4.0,3.0,0.1,0.0,800,10,N/A,N/A,257,1,0.56666666,0.0,N/A,N/A,Mondragon Sniper,40.0,35.0,40.0,80.0
-Mauser792x57mm_SemiHeavy,12.0,0.0025,3.0,0.27,0.66,4.0,3.0,0.1,0.0,800,10,N/A,N/A,257,1,0.56666666,0.0,N/A,N/A,Mondragon Storm,40.0,35.0,40.0,80.0
-762x54mmR_Bolt,12.0,0.0025,4.5,1.0,5.0,5.0,10.05,1.0,0.0,820,5,N/A,N/A,56,1,N/A,0.0,N/A,N/A,Mosin-Nagant M91 Infantry,80.0,80.0,0.0,140.0
-762x54mmR_Bolt,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,820,5,N/A,N/A,56,1,N/A,0.0,N/A,N/A,Mosin-Nagant M91 Marksman,80.0,80.0,0.0,140.0
-762x38mmR_Nagant,12.0,0.0025,5.0,0.8,3.0,2.0,9.0,0.3,0.0,335,7,N/A,N/A,199,1,N/A,0.0,N/A,N/A,Nagant Revolver,40.0,23.0,14.0,30.06
-44_American,12.0,0.0025,5.0,1.2,4.0,2.0,9.0,0.3,0.0,210,6,2.3,2.3,163,1,N/A,0.0,N/A,N/A,No. 3 Revolver,53.0,13.5,6.0,43.33
-762x54mmR_Pistol,12.0,0.0025,5.0,0.8,7.0,2.0,9.0,0.3,0.0,390,5,N/A,N/A,38,1,N/A,0.0,N/A,N/A,Obrez Pistol,100.0,45.0,10.0,35.0
-9x19mm_Carbine,12.0,0.0025,4.0,0.4,1.4,3.0,4.5,0.15,0.0,370,33,2.6,1.7,299,1,N/A,0.0,N/A,N/A,P08 Artillery,30.0,15.0,14.0,38.76
-9x19mm_Pistol,12.0,0.0025,5.0,0.5,1.5,2.0,4.5,0.15,0.0,350,9,2.05,1.35,299,1,N/A,0.0,N/A,N/A,P08 Pistol,30.0,15.0,12.29,32.76
-Mauser792x57mm,12.0,0.0025,10.002,0.8,0.38,5.75,16.200000000000003,-0.209999988,0.0,870,100,N/A,N/A,700,1,N/A,0.0,N/A,N/A,Parabellum MG14 Low Weight,28.0,21.0,11.0,35.0
-Mauser792x57mm,12.0,0.0025,6.0,0.8,0.38,5.75,5.4,-0.18,0.0,870,100,N/A,N/A,700,1,N/A,0.0,N/A,N/A,Parabellum MG14 Suppressive,28.0,21.0,11.0,35.0
-Carcano65x52mm_Heavy,12.0,0.0025,6.0,0.15,0.2,5.75,6.3,-0.18,0.0,700,120,N/A,N/A,450,1,N/A,0.0,N/A,N/A,Perino Model 1908 Defensive,26.5,20.0,11.0,50.0
-Carcano65x52mm_Heavy,12.0,0.0025,10.002,0.15,0.2,5.75,18.9,-0.216,0.0,700,120,N/A,N/A,450,1,N/A,0.0,N/A,N/A,Perino Model 1908 Low Weight,26.5,20.0,11.0,50.0
-8mmPieper,12.0,0.0025,3.0,0.1,1.2,3.0,6.0,0.2,0.0,420,9,4.0,4.0,224,1,N/A,0.0,N/A,N/A,Pieper M1893,40.0,21.0,13.0,40.0
-8mmLebel_Semi,12.0,0.0025,5.25,0.9,1.5,4.0,6.0,0.1,0.0,720,6,3.3,2.7,179,1,N/A,0.0,N/A,N/A,RSC 1917 Factory,53.0,38.0,66.0,89.0
-8mmLebel_Semi,12.0,0.0025,3.0,0.9,1.5,4.0,3.0,0.1,0.0,720,6,3.3,2.7,179,1,N/A,0.0,N/A,N/A,RSC 1917 Optical,53.0,38.0,66.0,89.0
-8mmLebel,12.0,0.0025,16.0,0.4,0.75,2.5,4.050000000000001,0.045,0.0,570,9,3.9,3.7,449,1,N/A,0.0,N/A,N/A,RSC SMG Factory,38.0,21.5,10.0,47.0
-8mmLebel,12.0,0.0025,8.0,0.4,0.75,2.5,2.7,0.045,0.0,570,9,3.9,3.7,449,1,N/A,0.0,N/A,N/A,RSC SMG Optical,38.0,21.5,10.0,47.0
-455WebleyMkII,12.0,0.0025,5.0,0.8,5.0,2.0,9.0,0.3,0.0,230,6,2.85,2.85,199,1,N/A,0.0,N/A,N/A,Revolver MkVI,53.0,15.0,6.0,38.76
-8mmRibeyrolles,12.0,0.0025,16.0,0.33,0.504,3.25,4.050000000000001,0.045,0.0,520,25,2.766,2.1,550,1,N/A,0.0,N/A,N/A,Ribeyrolles 1918 Factory,28.0,17.5,11.0,37.0
-8mmRibeyrolles,12.0,0.0025,8.0,0.33,0.504,3.25,2.7,0.045,0.0,520,25,2.766,2.1,550,1,N/A,0.0,N/A,N/A,Ribeyrolles 1918 Optical,28.0,17.5,11.0,37.0
-British303_Bolt,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,740,5,N/A,N/A,62,1,N/A,0.0,N/A,N/A,Ross MkIII,80.0,80.0,0.0,115.0
-British303_Bolt,12.0,0.0025,4.5,1.0,5.0,5.0,10.05,1.0,0.0,740,5,N/A,N/A,62,1,N/A,0.0,N/A,N/A,Ross MkIII Infantry,80.0,80.0,0.0,115.0
-30-40_Horse,12.0,0.0025,4.5,1.0,5.0,5.0,10.05,1.0,0.0,610,5,N/A,N/A,124,1,0.53,0.0,N/A,N/A,Russian 1895 Cavalry,79.0,40.0,61.0,100.0
-762x54mmR_Bolt,12.0,0.0025,4.5,1.0,5.0,5.0,10.05,1.0,0.0,820,5,N/A,N/A,56,1,0.53,0.0,N/A,N/A,Russian 1895 Infantry,80.0,80.0,0.0,140.0
-762x54mmR_Bolt,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,820,5,N/A,N/A,56,1,0.53,0.0,N/A,N/A,Russian 1895 Sniper,80.0,80.0,0.0,140.0
-30-40,12.0,0.0025,3.0,1.0,5.0,5.0,10.05,1.0,0.0,580,5,N/A,N/A,124,1,0.53,0.0,N/A,N/A,Russian 1895 Trench,79.0,40.0,41.0,80.0
-9x19mm_SMG,12.0,0.0025,16.0,0.6,0.47,3.25,4.050000000000001,0.045,0.0,380,81,4.5,3.95,770,1,N/A,0.0,N/A,N/A,SMG 08-18 Factory,28.0,15.0,11.0,37.0
-9x19mm_SMG,12.0,0.0025,8.0,0.6,0.47,3.25,2.7,0.045,0.0,380,81,4.5,3.95,770,1,N/A,0.0,N/A,N/A,SMG 08-18 Optical,28.0,15.0,11.0,37.0
-British303_Bolt,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,740,10,N/A,N/A,52,1,0.5,0.0,N/A,N/A,SMLE MKIII Carbine,80.0,80.0,0.0,115.0
-British303_Bolt,12.0,0.0025,4.5,1.0,5.0,5.0,10.05,1.0,0.0,740,10,N/A,N/A,52,1,0.5,0.0,N/A,N/A,SMLE MKIII Infantry,80.0,80.0,0.0,115.0
-British303_Bolt,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,740,10,N/A,N/A,52,1,0.5,0.0,N/A,N/A,SMLE MKIII Marksman,80.0,80.0,0.0,115.0
-12g_Buckshot_10A,12.0,0.007,6.0,1.2,11.0,2.0,4.5,0.3,2.7,333,2,N/A,N/A,299,12,-1.0,2.7,N/A,N/A,Sawed Off Shotgun,12.5,6.25,14.0,21.0
-Mauser792x57mm_SemiHeavy,12.0,0.0025,3.0,0.1,0.95,4.0,3.0,0.1,0.0,800,5,N/A,N/A,299,1,0.45,0.0,N/A,N/A,Selbstlader 1906 Factory,40.0,35.0,40.0,80.0
-Mauser792x57mm_SemiHeavy,12.0,0.0025,3.0,0.1,0.95,4.0,3.0,0.1,0.0,800,5,N/A,N/A,299,1,0.45,0.0,N/A,N/A,Selbstlader 1906 Sniper,40.0,35.0,40.0,80.0
-Mauser792x57mm_SemiHeavy,12.0,0.0025,5.25,0.53,1.1,4.0,6.0,0.1,0.0,800,26,3.47,2.37,224,1,N/A,0.0,N/A,N/A,Selbstlader M1916 Factory,40.0,35.0,40.0,80.0
-Mauser792x57mm_SemiHeavy,12.0,0.0025,3.0,0.53,1.1,4.0,3.0,0.1,0.0,800,26,3.47,2.37,224,1,N/A,0.0,N/A,N/A,Selbstlader M1916 Marksman,40.0,35.0,40.0,80.0
-Mauser792x57mm_SemiHeavy,12.0,0.0025,3.0,0.53,1.1,4.0,3.0,0.1,0.0,800,26,3.47,2.37,224,1,N/A,0.0,N/A,N/A,Selbstlader M1916 Optical,40.0,35.0,40.0,80.0
-12g_Buckshot_Sjogren,12.0,0.007,4.5,0.5,6.0,2.0,9.0,0.3,1.6,333,5,N/A,N/A,163,12,-1.0,1.6,N/A,N/A,Sjögren Inertial Factory,9.1,4.55,14.0,21.0
-12g_Slug_Semi,12.0,0.002,4.5,0.5,6.0,2.2,9.0,0.3,0.0,420,5,N/A,N/A,163,1,-1.0,0.0,N/A,N/A,Sjögren Inertial Slug,75.0,34.0,23.5,60.0
-9x23mm_Pistol,12.0,0.0025,5.0,0.25,1.5,2.0,4.5,0.15,0.0,350,8,N/A,N/A,359,1,4.75,0.0,N/A,N/A,Steyr M1912,30.0,15.0,12.29,32.76
-32ACP_Pistol,12.0,0.0025,5.0,0.4,1.0,2.0,4.5,0.15,0.0,320,9,1.4,1.25,449,1,N/A,0.0,N/A,N/A,Taschenpistole M1914,26.5,13.5,6.0,31.33
-65_Arisaka_Bolt,12.0,0.002,4.5,1.0,5.0,5.0,10.05,1.0,0.0,770,5,N/A,N/A,57,1,N/A,0.0,N/A,N/A,Type 38 Arisaka,80.0,80.0,0.0,102.5
-65_Arisaka_Bolt,12.0,0.002,3.0,1.0,5.0,5.0,6.7,1.0,0.0,770,5,N/A,N/A,57,1,N/A,0.0,N/A,N/A,Type 38 Arisaka Patrol,80.0,80.0,0.0,102.5
-104x47mm_Bolt,12.0,0.0025,3.0,1.0,5.0,5.0,6.7,1.0,0.0,440,4,N/A,N/A,46,1,N/A,0.0,N/A,N/A,Vetterli-Vitali M1870 Carbine,90.0,70.0,0.0,110.0
-104x47mm_Bolt,12.0,0.0025,4.5,1.0,5.0,5.0,10.05,1.0,0.0,440,4,N/A,N/A,46,1,N/A,0.0,N/A,N/A,Vetterli-Vitali M1870 Infantry,90.0,70.0,0.0,110.0
-9x19mm_Gilsenti,12.0,0.0025,10.0,0.4,0.38,2.5,3.0,0.05,0.5,380,25,5.0,3.6,900,2,N/A,0.0,N/A,N/A,Villar Perosa,23.0,13.5,6.0,37.0
+weapshowname,type,firemode,rof,ammo,initialspeed,bdrop,drag,magsize,shotspershell,reloadempty,reloadleft,singlebulletreloadtime,stripreloadtime,postreloaddelay,reloaddelay,hordispersion,verdispersion,hiprecoildec,hiprecoilright,hiprecoilup,hipstandmovemax,hipstandmovespreaddec,hipstandmovespreadinc,damages_first,damages_last,dmg_distances_first,dmg_distances_last
+12g Automatic Backbored,Shotgun,Semi-automatic,257,12g_Buckshot_A5_LowRecoil,333,12,0.007,5,12,N/A,N/A,-1,0.67,0.3,0.5,1.200006,1.200006,4.5,0.48,4.4,2,4.5,0.15,7.7,3.85,12,19
+12g Automatic Extended,Shotgun,Semi-automatic,257,12g_Buckshot_A5,333,12,0.007,7,12,N/A,N/A,-1,0.67,0.3,0.5,1.8,1.8,3,0.8,5.5,2,4.5,0.15,7.7,3.85,14,21
+12g Automatic Hunter,Shotgun,Semi-automatic,257,12g_Buckshot_A5,333,12,0.007,5,12,N/A,N/A,-1,0.67,0.3,0.5,1.200006,1.200006,3,0.8,5.5,2,4.5,0.15,7.7,3.85,14,21
+1903 Hammerless,Pistol,Semi-automatic,449,32ACP_Pistol,320,12,0.0025,9,1,1.7,1.16,N/A,N/A,N/A,N/A,0,0,5,0.4,1,2,4.5,0.15,26.5,13.5,6,31.33
+Annihilator Trench,Rifle,Automatic,830,45cal_SMG,380,12,0.0025,20,1,3.633,2.933,N/A,N/A,N/A,N/A,0,0,8,0.45,0.55,2.5,2.7,0.045,30,15,11,37
+Auto revolver,Pistol,Semi-automatic,224,455WebleyMkII,230,12,0.0025,6,1,3.17,3.17,N/A,N/A,N/A,N/A,0,0,5,1,4,2,9,0.3,53,15,6,38.76
+Autoloading 8 .25 Extended,Rifle,Semi-automatic,359,25Remington,660,12,0.0025,16,1,3.033,2.433,N/A,N/A,N/A,N/A,0,0,3,0.15,0.68,3.5,3,0.05,38,21,16,45
+Autoloading 8 .35 Factory,Rifle,Semi-automatic,359,35Remington,660,12,0.0025,5,1,N/A,N/A,0.5,1.5666667,0.8667,0.8,0,0,5.25,0.15,0.85,3.5,6,0.1,42,30,51,78
+Autoloading 8 .35 Marksman,Rifle,Semi-automatic,359,35Remington,660,12,0.0025,5,1,N/A,N/A,0.5,1.5666667,0.8667,0.8,0,0,3,0.15,0.85,3.5,3,0.1,42,30,51,78
+Automatico M1918 Factory,Submachine Gun,Automatic,900,9x19mm_Gilsenti,380,12,0.0025,25,1,2.8,2.1,N/A,N/A,N/A,N/A,0,0,16,0.4,0.42,2.5,4.05,0.045,23,13.5,6,37
+Automatico M1918 Storm,Submachine Gun,Automatic,900,9x19mm_Gilsenti,380,12,0.0025,25,1,2.8,2.1,N/A,N/A,N/A,N/A,0,0,8,0.32,0.336,2.5,2.7,0.045,23,13.5,6,37
+Automatico M1918 Trench,Submachine Gun,Automatic,900,9x19mm_Gilsenti,380,12,0.0025,25,1,2.8,2.1,N/A,N/A,N/A,N/A,0,0,8,0.4,0.42,2.5,2.7,0.045,23,13.5,6,37
+BAR 1918 Storm,Rifle,Automatic,600,30-06_Heavy,820,12,0.002,20,1,3.2,2.8,N/A,N/A,N/A,N/A,0,0,6,0.208,0.44,4.25,4.5,-0.18,26.5,23,11,35
+BAR 1918 Telescopic,Rifle,Automatic,600,30-06_Heavy,820,12,0.002,20,1,3.2,2.8,N/A,N/A,N/A,N/A,0,0,6,0.26,0.55,4.25,4.5,-0.18,26.5,23,11,35
+BAR 1918 Trench,Rifle,Automatic,600,30-06_Heavy,820,12,0.002,20,1,3.2,2.8,N/A,N/A,N/A,N/A,0,0,6,0.26,0.55,4.25,4.5,-0.09,26.5,23,11,35
+Beretta M1915,Pistol,Semi-automatic,449,32ACP_Pistol,320,12,0.0025,9,1,2,1.5,N/A,N/A,N/A,N/A,0,0,5,0.4,1,2,4.5,0.15,26.5,13.5,6,31.33
+Bodeo 1889,Pistol,Semi-automatic,224,1035_Ordinanza_Italiana,255,12,0.0025,6,1,N/A,N/A,1,3,1,0.667,0,0,5,1,5,2,9,0.3,53,17.5,10,38.5
+Borchard C93,Pistol,Semi-automatic,359,Borchardt765x25mm_Pistol,390,12,0.0025,9,1,2.05,1.35,N/A,N/A,N/A,N/A,0,0,5,0.3,1.3,2,4.5,0.15,26.5,13.5,14.69,37.33
+Bulldog,Pistol,Semi-automatic,257,442Webley,215,12,0.0025,6,1,N/A,N/A,1.1667,6,1.1,1,0,0,5,0.8,4,2,9,0.3,53,13.5,6,43.33
+C93 Carbine,Pistol,Semi-automatic,359,Borchardt765x25mm_Pistol,390,12,0.0025,9,1,2.05,1.35,N/A,N/A,N/A,N/A,0,0,4,0.12,0.35,3,5,0.15,26.5,13.5,14.69,37.33
+C96 Carbine,Pistol,Semi-automatic,299,Mauser763x25mm_Carbine,460,12,0.0025,20,1,N/A,N/A,0.5,1.3666667,0.75,0.6,0,0,5,0.3,1.2,3,4.5,0.15,28,15,17.46,38.76
+C96 Trench,Pistol,Semi-automatic,359,9x19mm_Semi,460,12,0.0025,41,1,3.5,2.1,N/A,N/A,N/A,N/A,0,0,5,0.12,0.36,2.5,2.1,0.07,34.73,15,11,33
+Carcano M91,Sniper Rifle,Bolt-Action,73,Carcano65x52mm_Bolt,700,12,0.0025,6,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,3,1,5,5,10.05,1,85,54,19,115
+Carcano M91 Patrol Carbine,Sniper Rifle,Bolt-Action,73,Carcano65x52mm_Bolt,700,12,0.0025,6,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,3,1,5,5,6.7,1,85,54,19,115
+Cei-Rigotti Factory,Rifle,Automatic,299,Carcano65x52mm_Semi,700,12,0.0025,10,1,N/A,N/A,0.5,1.5,0.6,1.1666666,0,0,5.25,0.4,0.8,3.5,6,0.1,38,28,50,62
+Cei-Rigotti Optical,Rifle,Automatic,299,Carcano65x52mm_Semi,700,12,0.0025,10,1,N/A,N/A,0.5,1.5,0.6,1.1666666,0,0,3,0.4,0.8,3.5,3,0.1,38,28,50,62
+Cei-Rigotti Trench,Rifle,Automatic,299,Carcano65x52mm_Semi,700,12,0.0025,10,1,N/A,N/A,0.5,1.5,0.6,1.1666666,0,0,3,0.4,0.8,3.5,3,0.05,38,28,50,62
+Chauchat Low Weight,Rifle,Automatic,359,8mmLebel_Heavy,720,12,0.0025,20,1,3.55,2.9,N/A,N/A,N/A,N/A,0,0,10.002,0.22,0.55,4.25,27,-0.225,38,28,18,35
+Chauchat Telescopic,Rifle,Automatic,359,8mmLebel_Heavy,720,12,0.0025,20,1,3.55,2.9,N/A,N/A,N/A,N/A,0,0,6,0.22,0.55,4.25,9,-0.18,38,28,18,35
+FN1903 Extended,Pistol,Semi-automatic,359,9x20mm_Browning_Long,350,12,0.0025,11,1,2.8,2.05,N/A,N/A,N/A,N/A,0,0,4,0.15,1,3,4.5,0.15,30,13.5,12.29,37.33
+Farquhar-Hill Optical,Rifle,Semi-automatic,257,British303_Semi,740,12,0.0025,20,1,3.2,3,N/A,N/A,N/A,N/A,0,0,3,0.3,0.9,4,3,0.1,42,30,46.33,59
+Farquhar-Hill Storm,Rifle,Semi-automatic,257,British303_Semi,740,12,0.0025,20,1,3.2,3,N/A,N/A,N/A,N/A,0,0,3,0.18,0.54,4,3,0.1,42,30,46.33,59
+Fedorov Avtomat Optical,Rifle,Automatic,449,65_Arisaka_Semi,570,12,0.002,26,1,3.8,2.7,N/A,N/A,N/A,N/A,0,0,4,0.2,0.45,3.5,3,0.1,28,19,28,40
+Fedorov Avtomat Trench,Rifle,Automatic,449,65_Arisaka_Semi,570,12,0.002,26,1,3.8,2.7,N/A,N/A,N/A,N/A,0,0,4,0.2,0.45,3.5,3,0.05,28,19,28,40
+Frommer Stop,Pistol,Semi-automatic,449,32ACP,320,12,0.0025,8,1,2,1.25,N/A,N/A,N/A,N/A,0,0,5,0.4,1,2,4.5,0.15,26.5,13.5,6,31.33
+Frommer Stop Auto,Pistol,Automatic,900,32ACP,350,12,0.0025,16,1,2.1,1.25,N/A,N/A,N/A,N/A,0,0,12,0.6,0.5,2.5,2.7,0.045,23,12,6,42.16
+Gasser M1870,Pistol,Semi-automatic,179,112x295_Montenegrin,230,12,0.0025,6,1,N/A,N/A,1.033,0,1.2,1.4,0,0,5,1,6,2,9,0.3,53,21,14,38.11
+General Liu Rifle Factory,Rifle,Semi-automatic,299,Mauser792x57mm_SemiHeavy,800,12,0.0025,6,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,5.25,0.5,1.3,4,6,0.1,40,35,40,80
+General Liu Rifle Storm,Rifle,Semi-automatic,299,Mauser792x57mm_SemiHeavy,800,12,0.0025,6,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,3,0.3,0.78,4,3,0.1,40,35,40,80
+Gewehr 98 Infantry,Sniper Rifle,Bolt-Action,50,Mauser792x57mm_Bolt,880,12,0.0025,5,1,N/A,N/A,0.5,1.5,0.8,1.1666666,0,0,4.5,1,5,5,10.05,1,80,80,0,165
+Gewehr 98 Marksman,Sniper Rifle,Bolt-Action,50,Mauser792x57mm_Bolt,880,12,0.0025,5,1,N/A,N/A,0.5,1.5,0.8,1.1666666,0,0,3,1,5,5,6.7,1,80,80,0,165
+Gewehr 98 Sniper,Sniper Rifle,Bolt-Action,50,Mauser792x57mm_Bolt,880,12,0.0025,5,1,N/A,N/A,0.5,1.5,0.8,1.1666666,0,0,3,1,5,5,6.7,1,80,80,0,165
+Gewehr M.95 Carbine,Sniper Rifle,Bolt-Action,66,8x50mmR_Mannlicher,620,12,0.0025,5,1,N/A,N/A,3,3,0,0,0,0,3,1,5,5,6.7,1,90,79,20,125
+Gewehr M.95 Infantry,Sniper Rifle,Bolt-Action,66,8x50mmR_Mannlicher,620,12,0.0025,5,1,N/A,N/A,3,3,0,0,0,0,4.5,1,5,5,10.05,1,90,79,20,125
+Gewehr M.95 Marksman,Sniper Rifle,Bolt-Action,66,8x50mmR_Mannlicher,620,12,0.0025,5,1,N/A,N/A,3,3,0,0,0,0,3,1,5,5,6.7,1,90,79,20,125
+Hellriegel 1915 Defensive,Submachine Gun,Automatic,650,9x23mm_Steyr,380,12,0.0025,120,1,4.5,3.75,N/A,N/A,N/A,N/A,0,0,8,0.475,0.48,3.25,2.7,0.045,26.5,15,11,37
+Hellriegel 1915 Factory,Submachine Gun,Automatic,650,9x23mm_Steyr,380,12,0.0025,60,1,4.5,3.75,N/A,N/A,N/A,N/A,0,0,8,0.38,0.384,3.25,2.7,0.045,26.5,15,11,37
+Howdah Pistol,Pistol,Semi-automatic,257,455WebleyMkII,230,12,0.0025,4,1,3.3,3.3,N/A,N/A,N/A,N/A,0,0,5,1.5,5,2,9,0.3,53,15,6,38.76
+Howell Automatic Factory,Rifle,Semi-automatic,257,British303_Semi,740,12,0.0025,21,1,3.8,2.7,N/A,N/A,N/A,N/A,0,0,5.25,0.24,1,4,6,0.1,42,30,46.33,59
+Howell Automatic Sniper,Rifle,Semi-automatic,257,British303_Semi,740,12,0.0025,21,1,3.8,2.7,N/A,N/A,N/A,N/A,0,0,3,0.24,1,4,3,0.1,42,30,46.33,59
+Huot Automatic Low Weight,Light Machine Gun,Automatic,475,British303_Heavy,740,12,0.0025,26,1,4.25,2.85,N/A,N/A,N/A,N/A,0,0,10.002,0.14,0.28,4.25,27,-0.225,26.5,20,11,50
+Huot Automatic Optical,Light Machine Gun,Automatic,475,British303_Heavy,740,12,0.0025,26,1,4.25,2.85,N/A,N/A,N/A,N/A,0,0,6,0.1232,0.28,4.25,9,-0.18,26.5,20,11,50
+IMG 08-18 Low Weight,Submachine Gun,Automatic,600,Mauser792x57mm,870,12,0.0025,100,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,10.002,0.575,0.42,5.75,18.9,-0.216,28,21,11,35
+IMG 08-18 Suppressive,Submachine Gun,Automatic,600,Mauser792x57mm,870,12,0.0025,100,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,6,0.575,0.42,5.75,6.3,-0.18,28,21,11,35
+Lebel Model 1886 Infantry,Sniper Rifle,Bolt-Action,56,8mmLebel_Bolt,720,12,0.0025,8,1,N/A,N/A,0.43333334,1.5,2.53,0.73333335,0,0,4.5,1,5,5,10.05,1,80,80,0,127.5
+Lebel Model 1886 Sniper,Sniper Rifle,Bolt-Action,56,8mmLebel_Bolt,720,12,0.0025,8,1,N/A,N/A,0.43333334,1.5,2.53,0.73333335,0,0,3,1,5,5,6.7,1,80,80,0,127.5
+Lewis Gun Low Weight,Light Machine Gun,Automatic,480,British303_Heavy,740,12,0.0025,47,1,4.2,2.85,N/A,N/A,N/A,N/A,0,0,10.002,0.24,0.25,5,32.4,-0.216,26.5,20,11,50
+Lewis Gun Optical,Light Machine Gun,Automatic,480,British303_Heavy,740,12,0.0025,47,1,4.2,2.85,N/A,N/A,N/A,N/A,0,0,6,0.2112,0.25,5,10.8,-0.18,26.5,20,11,50
+Lewis Gun Suppressive,Light Machine Gun,Automatic,480,British303_Heavy,740,12,0.0025,97,1,4.2,2.85,N/A,N/A,N/A,N/A,0,0,6,0.24,0.25,5,10.8,-0.18,26.5,20,11,50
+M1903 Experimental,Sniper Rifle,Semi-automatic,359,30-18_Auto,400,12,0.0025,41,1,3,2.25,N/A,N/A,N/A,N/A,0,0,5,0.1,0.28,5,2.1,0.07,34.73,15,11,33
+M1903 Marksman,Sniper Rifle,Bolt-Action,53,30-06_Bolt,820,12,0.002,5,1,N/A,N/A,0.5,1.7666667,0.7,1.2333,0,0,3,1,5,5,6.7,1,80,80,0,190
+M1903 Sniper,Sniper Rifle,Bolt-Action,53,30-06_Bolt,820,12,0.002,5,1,N/A,N/A,0.5,1.7666667,0.7,1.2333,0,0,3,1,5,5,6.7,1,80,80,0,190
+M1907 SL Factory,Rifle,Semi-automatic,299,351Winchester_Semi,570,12,0.0025,21,1,3.5,2.3,N/A,N/A,N/A,N/A,0,0,5.25,0.6,0.9,3.5,6,0.1,42,23,21,60
+M1907 SL Sweeper,Rifle,Automatic,299,351Winchester_Semi,570,12,0.0025,21,1,3.5,2.3,N/A,N/A,N/A,N/A,0,0,3,0.6,0.72,3.5,3,0.05,42,23,21,60
+M1907 SL Trench,Rifle,Semi-automatic,299,351Winchester_Semi,570,12,0.0025,21,1,3.5,2.3,N/A,N/A,N/A,N/A,0,0,3,0.6,0.9,3.5,3,0.05,42,23,21,60
+M1909 Benet-Mercie Optical,Light Machine Gun,Automatic,450,30-06_Heavy,820,12,0.002,30,1,3.9,2.6,N/A,N/A,N/A,N/A,0,0,6,0.1056,0.35,5,10.8,-0.18,26.5,23,11,35
+M1909 Benet-Mercie Storm,Light Machine Gun,Automatic,450,30-06_Heavy,820,12,0.002,30,1,3.9,2.6,N/A,N/A,N/A,N/A,0,0,6,0.096,0.28,5,10.8,-0.18,26.5,23,11,35
+M1909 Benet-Mercie Telescopic,Light Machine Gun,Automatic,450,30-06_Heavy,820,12,0.002,30,1,3.9,2.6,N/A,N/A,N/A,N/A,0,0,6,0.12,0.35,5,10.8,-0.18,26.5,23,11,35
+M1911,Pistol,Semi-automatic,299,45cal_Pistol,250,12,0.0025,8,1,1.7,1.16,N/A,N/A,N/A,N/A,0,0,5,0.7,2.3,2,6,0.2,35,15,6,32.76
+M1911 Extended,Pistol,Semi-automatic,299,45cal_Pistol,250,12,0.0025,15,1,2.6,1.6,N/A,N/A,N/A,N/A,0,0,5,0.5,1.7,3,6,0.2,35,15,6,32.76
+M1917 Enfield Infantry,Sniper Rifle,Bolt-Action,60,30-06_Bolt,820,12,0.002,6,1,N/A,N/A,0.8,1.8,1.4333,1.23333,0,0,4.5,1,5,5,10.05,1,80,80,0,190
+M1917 Enfield Silenced,Sniper Rifle,Bolt-Action,60,30-06_Bolt,820,12,0.002,6,1,N/A,N/A,0.8,1.8,1.4333,1.23333,0,0,3,1,5,5,6.7,1,80,80,0,190
+M1917 Low Weight,Light Machine Gun,Automatic,450,30-06_Heavy,820,12,0.002,250,1,8.33333,7.5,N/A,N/A,N/A,N/A,0,0,10.002,0.17,0.26,5.75,18.9,-0.209999988,26.5,23,11,35
+M1917 Patrol Carbine,Light Machine Gun,Automatic,359,9x19mm_Semi,460,12,0.0025,41,1,3.5,2.1,N/A,N/A,N/A,N/A,0,0,5,0.12,0.36,2.5,2.1,0.07,34.73,15,11,33
+M1917 Telescopic,Light Machine Gun,Automatic,450,30-06_Heavy,820,12,0.002,250,1,8.33333,7.5,N/A,N/A,N/A,N/A,0,0,6,0.17,0.26,5.75,6.3,-0.18,26.5,23,11,35
+M97 Trench Gun Backbored,Shotgun,Automatic,138,12g_Buckshot_M97_LowRecoil,333,12,0.007,5,12,N/A,N/A,-1,0.5,0.17,0.7,1.8,1.8,4.5,0.9,7.2,2,4.5,0.3,10,5,12,19
+M97 Trench Gun Hunter,Shotgun,Automatic,138,12g_Buckshot_M97,333,12,0.007,5,12,N/A,N/A,-1,0.5,0.17,0.7,1.8,1.8,3,1.5,9,2,4.5,0.3,10,5,14,21
+M97 Trench Gun Sweeper,Shotgun,Automatic,138,12g_Buckshot_M97_Sweeper,333,12,0.007,5,12,N/A,N/A,-1,0.5,0.17,0.7,2.7,0.45,3,1.5,9,2,4.5,0.3,12.5,4.2,10,16
+MG 08-15,Submachine Gun,Automatic,430,Mauser792x57mm,870,12,0.0025,200,1,5.8,5.8,N/A,N/A,N/A,N/A,0,0,6,0.15,0.28,4,3.6,-0.45,28,21,11,35
+MG15 N.A. Low Weight,Light Machine Gun,Automatic,500,Mauser792x57mm,870,12,0.0025,100,1,4.45,4.45,N/A,N/A,N/A,N/A,0,0,10.002,0.35,0.4125,5.75,18.9,-0.209999988,28,21,11,35
+MG15 N.A. Storm,Light Machine Gun,Automatic,500,Mauser792x57mm,870,12,0.0025,100,1,4.45,4.45,N/A,N/A,N/A,N/A,0,0,6,0.28,0.33,5.75,6.3,-0.18,28,21,11,35
+MG15 N.A. Suppressive,Light Machine Gun,Automatic,500,Mauser792x57mm,870,12,0.0025,200,1,4.45,4.45,N/A,N/A,N/A,N/A,0,0,6,0.35,0.4125,5.75,6.3,-0.18,28,21,11,35
+MP 18 Experimental,Submachine Gun,Semi-automatic,550,9x19mm_SMG,420,12,0.0025,30,1,3.3,2.1,N/A,N/A,N/A,N/A,0,0,8,0.138,0.42,2.5,2.7,0.045,28,15,11,37
+MP 18 Optical,Submachine Gun,Automatic,550,9x19mm_SMG,420,12,0.0025,32,1,2.96,2.1,N/A,N/A,N/A,N/A,0,0,8,0.23,0.42,2.5,2.7,0.045,28,15,11,37
+MP 18 Trench,Submachine Gun,Automatic,550,9x19mm_SMG,420,12,0.0025,32,1,2.96,2.1,N/A,N/A,N/A,N/A,0,0,8,0.23,0.42,2.5,2.7,0.045,28,15,11,37
+Madsen MG Low Weight,Light Machine Gun,Automatic,540,Mauser792x57mm,800,12,0.0025,30,1,4.2,2.65,N/A,N/A,N/A,N/A,0,0,10.002,0.275,0.38,4.25,13.5,-0.225,28,21,11,35
+Madsen MG Storm,Light Machine Gun,Automatic,540,Mauser792x57mm,800,12,0.0025,30,1,4.2,2.65,N/A,N/A,N/A,N/A,0,0,6,0.22,0.304,4.25,4.5,-0.18,28,21,11,35
+Madsen MG Trench,Light Machine Gun,Automatic,540,Mauser792x57mm,800,12,0.0025,30,1,4.2,2.65,N/A,N/A,N/A,N/A,0,0,6,0.275,0.38,4.25,4.5,-0.09,28,21,11,35
+Mars Automatic Pistol,Pistol,Semi-automatic,199,85mm_Mars,530,12,0.0025,11,1,2.93,2.13,N/A,N/A,N/A,N/A,0,0,5,0.8,4,2,6,0.2,40,23,14,30.06
+Martini-Henry Infantry,Sniper Rifle,Bolt-Action,25,MartiniHenry577_450,440,12,0.0025,1,1,2.3,2.3,N/A,N/A,N/A,N/A,0,0,4.5,1,10,5,10.05,1,90,70,0,140
+Martini-Henry Sniper,Sniper Rifle,Bolt-Action,25,MartiniHenry577_450,440,12,0.0025,1,1,2.3,2.3,N/A,N/A,N/A,N/A,0,0,3,1,10,5,6.7,1,90,70,0,140
+Maschinenpistole M1912,Pistol,Automatic,900,9x23mm_Steyr,350,12,0.0025,16,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,8,0.48,0.63,2.5,2.7,0.045,26.5,15,11,37
+Maschinenpistole M1912 Experimental,Pistol,Semi-automatic,450,9x23mm_Steyr,350,12,0.0025,16,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,8,0.36,0.7875,2.5,2.7,0.045,26.5,15,11,37
+Mauser C96,Pistol,Semi-automatic,299,Mauser763x25mm_Pistol,440,12,0.0025,10,1,N/A,N/A,0.25,1.4,0.8,0.5,0,0,5,0.35,1.5,2,4.5,0.15,28,15,13.66,32.76
+Mle M1903,Pistol,Semi-automatic,359,9x20mm_Browning_Long,350,12,0.0025,8,1,2.7,2,N/A,N/A,N/A,N/A,0,0,5,0.3,1.1,2,4.5,0.15,30,13.5,12.29,37.33
+Model 10-A Factory,Shotgun,Pump-Action,78,12g_Buckshot_10A,333,12,0.007,6,12,N/A,N/A,-1,0.5,0.17,0.7,2.25,2.25,4.5,1,11,4,24,1.6,12.5,6.25,14,21
+Model 10-A Hunter,Shotgun,Pump-Action,78,12g_Buckshot_10A,333,12,0.007,6,12,N/A,N/A,-1,0.5,0.17,0.7,1.8,1.8,3,1,11,4,6,1.6,12.5,6.25,14,21
+Model 10-A Slug,Shotgun,Pump-Action,78,12g_Slug_Pump,420,12,0.002,6,1,N/A,N/A,-1,0.5,0.17,0.7,0,0,4.5,1,11,2.2,9,0.3,112,45,8,60
+Model 1900 Factory,Shotgun,Double-Barrel Fire,299,12g_Buckshot_10A,333,12,0.007,2,12,2.4,3.2,N/A,N/A,N/A,N/A,2.25,2.25,9,2,8,4,18,0.3,12.5,6.25,14,21
+Model 1900 Slug,Shotgun,Single-Barrel Fire,299,12g_Slug_Pump,420,12,0.002,2,1,2.4,3.2,N/A,N/A,N/A,N/A,0,0,9,2,8,2.2,9,0.3,112,45,8,60
+Mondragon Optical,Rifle,Semi-automatic,257,Mauser792x57mm_SemiHeavy,800,12,0.0025,10,1,N/A,N/A,0.56666666,1.13333,0.5667,1,0,0,3,0.45,1.1,4,3,0.1,40,35,40,80
+Mondragon Sniper,Rifle,Semi-automatic,257,Mauser792x57mm_SemiHeavy,800,12,0.0025,10,1,N/A,N/A,0.56666666,1.13333,0.5667,1,0,0,3,0.45,1.1,4,3,0.1,40,35,40,80
+Mondragon Storm,Rifle,Semi-automatic,257,Mauser792x57mm_SemiHeavy,800,12,0.0025,10,1,N/A,N/A,0.56666666,1.13333,0.5667,1,0,0,3,0.27,0.66,4,3,0.1,40,35,40,80
+Mosin-Nagant M91 Infantry,Sniper Rifle,Bolt-Action,56,762x54mmR_Bolt,820,12,0.0025,5,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,4.5,1,5,5,10.05,1,80,80,0,140
+Mosin-Nagant M91 Marksman,Sniper Rifle,Bolt-Action,56,762x54mmR_Bolt,820,12,0.0025,5,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,3,1,5,5,6.7,1,80,80,0,140
+Nagant Revolver,Pistol,Single-Action,199,762x38mmR_Nagant,335,12,0.0025,7,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,5,0.8,3,2,9,0.3,40,23,14,30.06
+No. 3 Revolver,Pistol,Single-Action,163,44_American,210,12,0.0025,6,1,2.3,2.3,N/A,N/A,N/A,N/A,0,0,5,1.2,4,2,9,0.3,53,13.5,6,43.33
+Obrez Pistol,Pistol,Bolt-Action,38,762x54mmR_Pistol,390,12,0.0025,5,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,5,0.8,7,2,9,0.3,100,45,10,35
+P08 Artillery,Pistol,Semi-automatic,299,9x19mm_Carbine,370,12,0.0025,33,1,2.6,1.7,N/A,N/A,N/A,N/A,0,0,4,0.4,1.4,3,4.5,0.15,30,15,14,38.76
+P08 Pistol,Pistol,Semi-automatic,299,9x19mm_Pistol,350,12,0.0025,9,1,2.05,1.35,N/A,N/A,N/A,N/A,0,0,5,0.5,1.5,2,4.5,0.15,30,15,12.29,32.76
+Parabellum MG14 Low Weight,Light Machine Gun,Automatic,700,Mauser792x57mm,870,12,0.0025,100,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,10.002,0.8,0.38,5.75,16.2,-0.209999988,28,21,11,35
+Parabellum MG14 Suppressive,Light Machine Gun,Automatic,700,Mauser792x57mm,870,12,0.0025,100,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,6,0.8,0.38,5.75,5.4,-0.18,28,21,11,35
+Perino Model 1908 Defensive,Light Machine Gun,Automatic,450,Carcano65x52mm_Heavy,700,12,0.0025,120,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,6,0.15,0.2,5.75,6.3,-0.18,26.5,20,11,50
+Perino Model 1908 Low Weight,Light Machine Gun,Automatic,450,Carcano65x52mm_Heavy,700,12,0.0025,120,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,10.002,0.15,0.2,5.75,18.9,-0.216,26.5,20,11,50
+Pieper M1893,Rifle,Double-Action,224,8mmPieper,420,12,0.0025,9,1,4,4,N/A,N/A,N/A,N/A,0,0,3,0.1,1.2,3,6,0.2,40,21,13,40
+RSC 1917 Factory,Rifle,Semi-automatic,179,8mmLebel_Semi,720,12,0.0025,6,1,3.3,2.7,N/A,N/A,N/A,N/A,0,0,5.25,0.9,1.5,4,6,0.1,53,38,66,89
+RSC 1917 Optical,Rifle,Semi-automatic,179,8mmLebel_Semi,720,12,0.0025,6,1,3.3,2.7,N/A,N/A,N/A,N/A,0,0,3,0.9,1.5,4,3,0.1,53,38,66,89
+RSC SMG Factory,Submachine Gun,Automatic,449,8mmLebel,570,12,0.0025,9,1,3.9,3.7,N/A,N/A,N/A,N/A,0,0,16,0.4,0.75,2.5,4.05,0.045,38,21.5,10,47
+RSC SMG Optical,Submachine Gun,Automatic,449,8mmLebel,570,12,0.0025,9,1,3.9,3.7,N/A,N/A,N/A,N/A,0,0,8,0.4,0.75,2.5,2.7,0.045,38,21.5,10,47
+Revolver MkVI,Pistol,Double-Action,199,455WebleyMkII,230,12,0.0025,6,1,2.85,2.85,N/A,N/A,N/A,N/A,0,0,5,0.8,5,2,9,0.3,53,15,6,38.76
+Ribeyrolles 1918 Factory,Submachine Gun,Automatic,550,8mmRibeyrolles,520,12,0.0025,25,1,2.766,2.1,N/A,N/A,N/A,N/A,0,0,16,0.33,0.504,3.25,4.05,0.045,28,17.5,11,37
+Ribeyrolles 1918 Optical,Submachine Gun,Automatic,550,8mmRibeyrolles,520,12,0.0025,25,1,2.766,2.1,N/A,N/A,N/A,N/A,0,0,8,0.33,0.504,3.25,2.7,0.045,28,17.5,11,37
+Ross MkIII,Sniper Rifle,Bolt-Action,62,British303_Bolt,740,12,0.0025,5,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,3,1,5,5,6.7,1,80,80,0,115
+Ross MkIII Infantry,Sniper Rifle,Bolt-Action,62,British303_Bolt,740,12,0.0025,5,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,4.5,1,5,5,10.05,1,80,80,0,115
+Russian 1895 Cavalry,Sniper Rifle,Lever-Action,124,30-40_Horse,610,12,0.0025,5,1,N/A,N/A,0.53,1.5666667,1,1.31,0,0,4.5,1,5,5,10.05,1,79,40,61,100
+Russian 1895 Infantry,Sniper Rifle,Lever-Action,56,762x54mmR_Bolt,820,12,0.0025,5,1,N/A,N/A,0.53,1.5666667,1,1.31,0,0,4.5,1,5,5,10.05,1,80,80,0,140
+Russian 1895 Sniper,Sniper Rifle,Lever-Action,56,762x54mmR_Bolt,820,12,0.0025,5,1,N/A,N/A,0.53,1.5666667,1,1.31,0,0,3,1,5,5,6.7,1,80,80,0,140
+Russian 1895 Trench,Sniper Rifle,Lever-Action,124,30-40,580,12,0.0025,5,1,N/A,N/A,0.53,1.5666667,1,1.31,0,0,3,1,5,5,10.05,1,79,40,41,80
+SMG 08-18 Factory,Submachine Gun,Automatic,770,9x19mm_SMG,380,12,0.0025,81,1,4.5,3.95,N/A,N/A,N/A,N/A,0,0,16,0.6,0.47,3.25,4.05,0.045,28,15,11,37
+SMG 08-18 Optical,Submachine Gun,Automatic,770,9x19mm_SMG,380,12,0.0025,81,1,4.5,3.95,N/A,N/A,N/A,N/A,0,0,8,0.6,0.47,3.25,2.7,0.045,28,15,11,37
+SMLE MKIII Carbine,Sniper Rifle,Bolt-Action,52,British303_Bolt,740,12,0.0025,10,1,N/A,N/A,0.5,1.7666667,0.6333,1.2333,0,0,3,1,5,5,6.7,1,80,80,0,115
+SMLE MKIII Infantry,Sniper Rifle,Bolt-Action,52,British303_Bolt,740,12,0.0025,10,1,N/A,N/A,0.5,1.7666667,0.6333,1.2333,0,0,4.5,1,5,5,10.05,1,80,80,0,115
+SMLE MKIII Marksman,Sniper Rifle,Bolt-Action,52,British303_Bolt,740,12,0.0025,10,1,N/A,N/A,0.5,1.7666667,0.6333,1.2333,0,0,3,1,5,5,6.7,1,80,80,0,115
+Sawed Off Shotgun,Shotgun,Single-Action,299,12g_Buckshot_10A,333,12,0.007,2,12,N/A,N/A,-1,2.6666667,0,0,2.7,2.7,6,1.2,11,2,4.5,0.3,12.5,6.25,14,21
+Selbstlader 1906 Factory,Rifle,Semi-automatic,299,Mauser792x57mm_SemiHeavy,800,12,0.0025,5,1,N/A,N/A,0.45,0.7,1.0667,1.3,0,0,3,0.1,0.95,4,3,0.1,40,35,40,80
+Selbstlader 1906 Sniper,Rifle,Semi-automatic,299,Mauser792x57mm_SemiHeavy,800,12,0.0025,5,1,N/A,N/A,0.45,0.7,1.0667,1.3,0,0,3,0.1,0.95,4,3,0.1,40,35,40,80
+Selbstlader M1916 Factory,Rifle,Semi-automatic,224,Mauser792x57mm_SemiHeavy,800,12,0.0025,26,1,3.47,2.37,N/A,N/A,N/A,N/A,0,0,5.25,0.53,1.1,4,6,0.1,40,35,40,80
+Selbstlader M1916 Marksman,Rifle,Semi-automatic,224,Mauser792x57mm_SemiHeavy,800,12,0.0025,26,1,3.47,2.37,N/A,N/A,N/A,N/A,0,0,3,0.53,1.1,4,3,0.1,40,35,40,80
+Selbstlader M1916 Optical,Rifle,Semi-automatic,224,Mauser792x57mm_SemiHeavy,800,12,0.0025,26,1,3.47,2.37,N/A,N/A,N/A,N/A,0,0,3,0.53,1.1,4,3,0.1,40,35,40,80
+Sjögren Inertial Factory,Shotgun,Semi-automatic,163,12g_Buckshot_Sjogren,333,12,0.007,5,12,N/A,N/A,-1,0.53333336,0.15,0.8,1.6,1.6,4.5,0.5,6,2,9,0.3,9.1,4.55,14,21
+Sjögren Inertial Slug,Shotgun,Semi-automatic,163,12g_Slug_Semi,420,12,0.002,5,1,N/A,N/A,-1,0.53333336,0.15,0.8,0,0,4.5,0.5,6,2.2,9,0.3,75,34,23.5,60
+Steyr M1912,Pistol,Semi-automatic,359,9x23mm_Pistol,350,12,0.0025,8,1,N/A,N/A,4.75,2.6,0,0,0,0,5,0.25,1.5,2,4.5,0.15,30,15,12.29,32.76
+Taschenpistole M1914,Pistol,Semi-automatic,449,32ACP_Pistol,320,12,0.0025,9,1,1.4,1.25,N/A,N/A,N/A,N/A,0,0,5,0.4,1,2,4.5,0.15,26.5,13.5,6,31.33
+Type 38 Arisaka,Sniper Rifle,Bolt-Action,57,65_Arisaka_Bolt,770,12,0.002,5,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,4.5,1,5,5,10.05,1,80,80,0,102.5
+Type 38 Arisaka Patrol,Sniper Rifle,Bolt-Action,57,65_Arisaka_Bolt,770,12,0.002,5,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,3,1,5,5,6.7,1,80,80,0,102.5
+Vetterli-Vitali M1870 Carbine,Sniper Rifle,Bolt-Action,46,104x47mm_Bolt,440,12,0.0025,4,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,3,1,5,5,6.7,1,90,70,0,110
+Vetterli-Vitali M1870 Infantry,Sniper Rifle,Bolt-Action,46,104x47mm_Bolt,440,12,0.0025,4,1,N/A,N/A,N/A,N/A,N/A,N/A,0,0,4.5,1,5,5,10.05,1,90,70,0,110
+Villar Perosa,Pistol,Automatic,900,9x19mm_Gilsenti,380,12,0.0025,25,2,5,3.6,N/A,N/A,N/A,N/A,0.5,0,10,0.4,0.38,2.5,3,0.05,23,13.5,6,37
