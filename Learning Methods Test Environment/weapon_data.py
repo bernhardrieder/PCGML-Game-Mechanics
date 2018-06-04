@@ -50,7 +50,7 @@ class DataSet:
     @property
     def num_features(self):
         return self._num_features
-        
+
     @property
     def num_examples(self):
         return self._num_examples
@@ -107,6 +107,9 @@ class DataSet:
 
     def decode_processed_tensor(self, tensor):
         '''Decodes a processed tensor and returns a dict'''
+
+        unstandardized_tensor = self.__un_standardize(tensor, self._data_original)
+
         idx =  0 #keep track of the id to find the right value in the processed tensor
         result = dict()
         for key in self._feature_cols_to_vars_dict:
@@ -116,7 +119,7 @@ class DataSet:
             then key[0] = 'bdrop'
             '''
             if key[0] in NUMERICAL_PARAMS:
-                result[key[0]] = str(tensor[idx])
+                result[key[0]] = str(unstandardized_tensor[idx])
 
                 '''
                 e.g., key = _IndicatorColumn(categorical_column=_VocabularyListCategoricalColumn(
@@ -131,7 +134,7 @@ class DataSet:
             elif (len(key[0]) > 0) and key[0][0] in CATEGORICAL_PARAMS:
                 for i in range(0, len(key[0][1])-1):
                     param = key[0][0] + "_" + key[0][1][i]
-                    result[param] = str(tensor[idx])
+                    result[param] = str(unstandardized_tensor[idx])
                     idx += 1
 
             idx += 1
@@ -164,7 +167,7 @@ class DataSet:
         #convert all numerical data to float so they can be used as 'tf.feature_column.numeric_column'
         for key, values in features.items():
             if key in NUMERICAL_PARAMS:
-                features[key] = [float('{:.4f}'.format(float(value))) for value in values]
+                features[key] = [float(value) for value in values]
 
         #one hot encoding of categorical data
         type_column = tf.feature_column.categorical_column_with_vocabulary_list(key='type', vocabulary_list=WEAPON_TYPES)
@@ -212,4 +215,17 @@ class DataSet:
             sess.run((var_init, table_init))
             weapon_data = sess.run(inputs)
 
-        return np.array(weapon_data), cols_to_vars_dict
+        self._data_original = np.array(weapon_data)
+        return self.__standardize(self._data_original), cols_to_vars_dict
+
+
+    def __standardize(self, x_original):
+        std = np.std(x_original, dtype=np.float64)
+        mean = np.mean(x_original, dtype=np.float64)
+        x_standardized = (x_original - mean) / std
+        return x_standardized
+
+    def __un_standardize(self, x_standardized, x_original):
+        std = np.std(x_original, dtype=np.float64)
+        mean = np.mean(x_original, dtype=np.float64)
+        return mean + (x_standardized*std)
