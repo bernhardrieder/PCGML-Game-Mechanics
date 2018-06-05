@@ -108,7 +108,7 @@ class DataSet:
     def decode_processed_tensor(self, tensor):
         '''Decodes a processed tensor and returns a dict'''
 
-        unstandardized_tensor = self.__un_standardize(tensor, self._data_original)
+        unstandardized_tensor = self.__un_standardize_columns(tensor, self._data_original)
 
         idx =  0 #keep track of the id to find the right value in the processed tensor
         result = dict()
@@ -169,6 +169,7 @@ class DataSet:
             if key in NUMERICAL_PARAMS:
                 features[key] = [float(value) for value in values]
 
+
         #one hot encoding of categorical data
         type_column = tf.feature_column.categorical_column_with_vocabulary_list(key='type', vocabulary_list=WEAPON_TYPES)
         type_column = tf.feature_column.indicator_column(type_column) #could use embedding column to further reduce dimensions
@@ -176,8 +177,6 @@ class DataSet:
         #one hot encoding of categorical data
         firemode_colum = tf.feature_column.categorical_column_with_vocabulary_list(key='firemode', vocabulary_list=WEAPON_FIREMODES)
         firemode_colum = tf.feature_column.indicator_column(firemode_colum) #could use embedding column to further reduce dimensions
-
-
 
         #create list with all feature columns
         columns = [tf.feature_column.numeric_column(param) for param in NUMERICAL_PARAMS]
@@ -216,16 +215,27 @@ class DataSet:
             weapon_data = sess.run(inputs)
 
         self._data_original = np.array(weapon_data)
-        return self.__standardize(self._data_original), cols_to_vars_dict
+        return self.__standardize_columns(self._data_original), cols_to_vars_dict
 
 
-    def __standardize(self, x_original):
-        std = np.std(x_original, dtype=np.float64)
-        mean = np.mean(x_original, dtype=np.float64)
+    def __standardize_matrix(self, x_original):
+        std = x_original.std(dtype=np.float64)
+        mean = x_original.mean(dtype=np.float64)
         x_standardized = (x_original - mean) / std
         return x_standardized
 
-    def __un_standardize(self, x_standardized, x_original):
-        std = np.std(x_original, dtype=np.float64)
-        mean = np.mean(x_original, dtype=np.float64)
+    def __standardize_columns(self, x_original):
+        std = x_original.std(dtype=np.float64, axis=0)
+        mean = x_original.mean(dtype=np.float64, axis=0)
+        x_standardized = (x_original - mean) / std
+        return x_standardized
+
+    def __un_standardize_matrix(self, x_standardized, x_original):
+        std = x_original.std(dtype=np.float64)
+        mean = x_original.mean(dtype=np.float64)
+        return mean + (x_standardized*std)
+
+    def __un_standardize_columns(self, x_standardized, x_original):
+        std = x_original.std(dtype=np.float64, axis=0)
+        mean = x_original.mean(dtype=np.float64, axis=0)
         return mean + (x_standardized*std)
