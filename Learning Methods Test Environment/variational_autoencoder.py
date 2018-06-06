@@ -18,7 +18,7 @@ def get_untrained(session, network_architecture, optimizer, transfer_fct, batch_
 def get_new_trained(session, weapon_data, network_architecture, optimizer, transfer_fct,
                           batch_size=1, training_epochs=10, epoch_debug_step=5,
                           trained_model_save_path=DEFAULT_MODEL_PATH,
-                          save_model = True, save_model_every_epoch = True):
+                          save_model = True, save_model_every_epoch = False):
 
     #create vae
     vae = get_untrained(session=session, network_architecture=network_architecture, optimizer=optimizer,
@@ -93,14 +93,14 @@ class VariationalAutoencoder(object):
     """
     def __init__(self, session, network_architecture, optimizer, transfer_fct=tf.nn.tanh, batch_size=1, print_debug=True):
         self._print_debug = print_debug
-        self.__print_debug("Start initializing variational autoencoder (VAE) ...")
+        self.__print("Start initializing variational autoencoder (VAE) ...")
 
         self._network_architecture = network_architecture
         self._transfer_fct=transfer_fct
         self._optimizer_provided = optimizer
         self._batch_size = batch_size
         self._has_2_hidden_layer = ('n_hidden_2' in network_architecture)
-        self.__print_debug("Does VAE have 2 hidden layers? " + str(self._has_2_hidden_layer), 1)
+        self.__print("Does VAE have 2 hidden layers? " + str(self._has_2_hidden_layer), 1)
 
         # Input
         self.X = tf.placeholder(tf.float32, shape=[None, network_architecture["n_input"]], name="input_X")
@@ -117,7 +117,7 @@ class VariationalAutoencoder(object):
         #run the initializer for all tensorflow variables
         self._session.run(tf.global_variables_initializer())
 
-        self.__print_debug("VAE ready to use!")
+        self.__print("VAE ready to use!")
 
     def train_with_mini_batch(self, batch):
         """Train model based on mini-batch of input data.
@@ -144,11 +144,11 @@ class VariationalAutoencoder(object):
     def load_trained_model(self, save_path):
         ''' Loads trained model from disk. CAUTION: need to open session with 'tf.Session(graph=tf.Graph())'!'''
         self._train_saver.restore(self._session, save_path)
-        self.__print_debug("Trained model found in '"+save_path+"' restored!")
+        self.__print("Trained model found in '"+save_path+"' restored!")
 
     def save_trained_model(self, path):
         save_path = self._train_saver.save(self._session, path + "model.ckpt") #Saves the weights (not the graph)
-        self.__print_debug("Model saved in file: {}".format(save_path))
+        self.__print("Model saved in file: {}".format(save_path))
         return save_path
 
 
@@ -158,7 +158,7 @@ class VariationalAutoencoder(object):
     def calculate_z_mean(self, X):
         return self._session.run(self.z_mean, feed_dict={self.X: X})
 
-    def __print_debug(self, message, indent=0):
+    def __print(self, message, indent=0):
         if self._print_debug:
             tabs=""
             for i in range(indent):
@@ -166,7 +166,7 @@ class VariationalAutoencoder(object):
             print(tabs+message)
 
     def __create_network(self):
-        self.__print_debug("Start creating VAE network ...", 1)
+        self.__print("Start creating VAE network ...", 1)
         #init weights and biases of all network nodes
 
         weights_and_biases = self.__init_weights_and_biases()
@@ -186,11 +186,11 @@ class VariationalAutoencoder(object):
             self.__create_decoder_network(weights_and_biases['weights_decoder'],
                                           weights_and_biases['biases_decoder'])
 
-        self.__print_debug("Finished creating VAE network!", 1)
+        self.__print("Finished creating VAE network!", 1)
 
 
     def __create_encoder_network(self, weights, biases):
-        self.__print_debug("Start creating encoder network ...", 2)
+        self.__print("Start creating encoder network ...", 2)
 
         hidden_layer = self.__create_hidden_layer(self.X, weights, biases)
 
@@ -198,12 +198,12 @@ class VariationalAutoencoder(object):
         z_mean = tf.matmul(hidden_layer, weights['z_mean']) + biases['z_mean']
         z_log_sigma_sq = tf.matmul(hidden_layer, weights['z_ls2']) + biases['z_ls2']
 
-        self.__print_debug("Finished creating encoder network!", 2)
+        self.__print("Finished creating encoder network!", 2)
 
         return (z_mean, z_log_sigma_sq)
 
     def __create_z_sampling_operation(self):
-        self.__print_debug("Start creating z (latent layer) sampling operation ...", 2)
+        self.__print("Start creating z (latent layer) sampling operation ...", 2)
 
         n_z = self._network_architecture['n_z']
 
@@ -213,23 +213,23 @@ class VariationalAutoencoder(object):
         # sample z from a normal (gaussian) distribution -> z = mu + sigma*epsilon
         z = self.z_mean + tf.multiply(tf.sqrt(tf.exp(self.z_log_sigma_sq)), epsilon)
 
-        self.__print_debug("Finished creating z sampling operation!", 2)
+        self.__print("Finished creating z sampling operation!", 2)
 
         return z
 
     def __create_decoder_network(self, weights, biases):
-        self.__print_debug("Start creating decoder/generator network ...", 2)
+        self.__print("Start creating decoder/generator network ...", 2)
 
         hidden_layer = self.__create_hidden_layer(self.z, weights, biases)
 
         x_reconstructed = tf.matmul(hidden_layer,  weights['out']) + biases['out']
 
-        self.__print_debug("Finished creating decoder/generator network!", 2)
+        self.__print("Finished creating decoder/generator network!", 2)
 
         return x_reconstructed
 
     def __create_hidden_layer(self, x, weights, biases):
-        self.__print_debug("Start creating hidden layer ...", 3)
+        self.__print("Start creating hidden layer ...", 3)
 
         # First hidden layer
         hidden_layer_1 = tf.matmul(x, weights['h1']) + biases['h1']
@@ -239,12 +239,12 @@ class VariationalAutoencoder(object):
         hidden_layer_2 = tf.matmul(hidden_layer_1, weights['h2']) + biases['h2']
         hidden_layer_2 = self._transfer_fct(hidden_layer_2)
 
-        self.__print_debug("Finished creating hidden layer!", 3)
+        self.__print("Finished creating hidden layer!", 3)
 
         return hidden_layer_2 if self._has_2_hidden_layer else hidden_layer_1
 
     def __init_weights_and_biases(self):
-        self.__print_debug("Start initalizing weights and biases ...", 2)
+        self.__print("Start initalizing weights and biases ...", 2)
 
         n_input = self._network_architecture['n_input']
         n_hidden_1 = self._network_architecture['n_hidden_1']
@@ -279,32 +279,9 @@ class VariationalAutoencoder(object):
             'h2': self.__create_bias([n_hidden_2], "b_dec_h2"),
             'out': self.__create_bias([n_input], "b_out")
         }
-        self.__print_debug("Finished initalizing weights and biases!", 2)
+        self.__print("Finished initalizing weights and biases!", 2)
 
         return weights_and_biases
-
-    def __create_loss_optimizer(self):
-        self.__print_debug("Start creating optimizer/backprop operation ...", 1)
-
-        # The loss is composed of two terms:
-        #according to the VAE tutorial paper:
-        reconstr_loss = tf.reduce_sum(tf.square(tf.abs(self.X - self.x_reconstructed)), 1)
-        #reconstr_loss = self.__l2_loss(self.x_reconstructed, self.X)
-        #reconstr_loss = self.__cross_entropy(self.x_reconstructed, self.X)
-
-        # 2.) The latent loss, which is defined as the Kullback Leibler divergence
-        ##    between the distribution in latent space induced by the encoder on
-        #     the data and some prior. This acts as a kind of regularizer.
-        #     This can be interpreted as the number of "nats" required
-        #     for transmitting the the latent space distribution given
-        #     the prior.
-        latent_loss = self.__kullback_leibler(self.z_mean, tf.log(tf.sqrt(tf.exp(self.z_log_sigma_sq))))
-
-        self.cost = tf.reduce_mean(reconstr_loss + latent_loss)   # average over batch
-        self.optimizer = self._optimizer_provided.minimize(self.cost)
-
-        self.__print_debug("Finished creating optimizer/backprop operation!", 1)
-
 
     def __create_weight(self, shape, name=""):
         initial = tf.truncated_normal(shape, stddev=0.1)
@@ -319,23 +296,42 @@ class VariationalAutoencoder(object):
         #initial = tf.contrib.layers.xavier_initializer()
         #return tf.Variable(initial(shape), dtype=tf.float32, name=name)
 
-    def __kullback_leibler(self, mu, log_sigma):
-        """(Gaussian) Kullback-Leibler divergence KL(q||p), per training example"""
-        # (tf.Tensor, tf.Tensor) -> tf.Tensor
-        with tf.name_scope("KL_divergence"):
-            # = -0.5 * (1 + log(sigma**2) - mu**2 - sigma**2)
-            return -0.5 * tf.reduce_sum(1 + 2 * log_sigma - mu**2 - tf.exp(2 * log_sigma), 1)
+    def __create_loss_optimizer(self):
+        self.__print("Start creating optimizer/backprop operation ...", 1)
 
+        #The loss is composed of two terms:
+
+        # 1.) The reconstruction loss, ...
+        reconstr_loss = self.__l2_loss(self.x_reconstructed, self.X)
+        #reconstr_loss = self.__cross_entropy(self.x_reconstructed, self.X)
+
+        # 2.) The latent loss, which is defined as the Kullback Leibler divergence
+        #     between the distribution in latent space induced by the encoder on
+        #     the data and some prior. This acts as a kind of regularizer.
+        #     This can be interpreted as the number of "nats" required
+        #     for transmitting the the latent space distribution given
+        #     the prior.
+        latent_loss = self.__kullback_leibler(self.z_mean, tf.log(tf.sqrt(tf.exp(self.z_log_sigma_sq))))
+
+        self.cost = tf.reduce_mean(reconstr_loss + latent_loss)   # average over batch
+        self.optimizer = self._optimizer_provided.minimize(self.cost)
+
+        self.__print("Finished creating optimizer/backprop operation!", 1)
+
+    #more information about why using L2 loss/MSE/LSE -> http://aoliver.org/why-mse
+    def __l2_loss(self, obs, actual):
+        """L2 loss aka LSE, MSE or Euclidian"""
+        return tf.reduce_sum(tf.square(obs - actual), 1)
+        
+    #from https://github.com/RuiShu/micro-projects/tree/master/tf-vae
+    def __kullback_leibler(self, mu, log_sigma):
+        """(Gaussian) Kullback-Leibler divergence KL(q||p)"""
+        # = -0.5 * (1 + log(sigma**2) - mu**2 - sigma**2)
+        return -0.5 * tf.reduce_sum(1 + 2 * log_sigma - mu**2 - tf.exp(2 * log_sigma), 1)
+
+    #from https://github.com/RuiShu/micro-projects/tree/master/tf-vae
     def __cross_entropy(self, obs, actual, offset=1e-7):
         """Binary cross-entropy, per training example"""
-        # (tf.Tensor, tf.Tensor, float) -> tf.Tensor
-        with tf.name_scope("cross_entropy"):
-            # bound by clipping to avoid nan (--> log(0))
-            obs_ = tf.clip_by_value(obs, offset, 1 - offset)
-            return -tf.reduce_sum(actual * tf.log(obs_) + (1 - actual) * tf.log(1 - obs_), 1)
-
-    def __l2_loss(self, obs, actual):
-        """L2 loss (a.k.a. Euclidean / LSE), per training example"""
-        # (tf.Tensor, tf.Tensor, float) -> tf.Tensor
-        with tf.name_scope("l2_loss"):
-            return tf.reduce_sum(tf.square(obs - actual), 1)
+        # bound by clipping to avoid nan (--> log(0))
+        obs_ = tf.clip_by_value(obs, offset, 1 - offset)
+        return -tf.reduce_sum(actual * tf.log(obs_) + (1 - actual) * tf.log(1 - obs_), 1)
