@@ -13,11 +13,55 @@ from tensorflow.python.framework import random_seed
 DEFAULT_SOURCE_PATH = "./weapon_data.csv"
 #define constants for data processing
 CATEGORICAL_PARAMS  = ['type', 'firemode'] #exclude ammo because I'm not interested in decoding its values
-NUMERICAL_PARAMS = ['rof', 'damages_first', 'damages_last', 'dmg_distances_first', 'dmg_distances_last', 'initialspeed',
-                    'drag', 'magsize', 'shotspershell', 'reloadempty', 'hordispersion', 'verdispersion',
-                    'hiprecoildec', 'hiprecoilright', 'hiprecoilup' ]
+#this numerical params are ordered by priority to omit less important ones in 'get_data()'
+NUMERICAL_PARAMS = ['damages_first', 'damages_last', 'dmg_distances_last', 'rof',
+                    'magsize', 'reloadempty', 'shotspershell', 'hiprecoilright', 'hiprecoilup', 'dmg_distances_first',
+                    'initialspeed', 'hiprecoildec', 'drag', 'hordispersion', 'verdispersion' ]
 WEAPON_TYPES = ['Shotgun', 'Pistol', 'Rifle', 'Submachine Gun', 'Sniper Rifle', 'Light Machine Gun']
 WEAPON_FIREMODES = ['Automatic', 'Semi-Automatic', 'Single-Action']
+NUM_OF_AMMO_TYPES = 31
+EMBEDDED_AMMO_FEATURE_DIMENSION = 1
+
+
+#quick'n'dirty convenience wrapper
+def get_data(num_of_categorical_param, num_of_numerical_param, ammo_feature_column_dimension=EMBEDDED_AMMO_FEATURE_DIMENSION, seed=19071991, debug=False):
+    include_ammo = False
+    if num_of_categorical_param > len(CATEGORICAL_PARAMS):
+        include_ammo = True
+        num_of_categorical_param = len(CATEGORICAL_PARAMS)
+    categorical = CATEGORICAL_PARAMS[0:num_of_categorical_param]
+
+    if num_of_numerical_param > len(NUMERICAL_PARAMS):
+        num_of_numerical_param = len(NUMERICAL_PARAMS)
+    numerical = NUMERICAL_PARAMS[0:num_of_numerical_param]
+
+    if ammo_feature_column_dimension == 0:
+        ammo_feature_column_dimension = 1
+
+    data = DataSet(categorical_params=categorical, include_ammo=include_ammo, numerical_params=numerical,
+                    ammo_feature_column_dimension=ammo_feature_column_dimension, seed=seed, show_debug=False)
+
+    if debug:
+        print("Using %i categorical data:" %(len(categorical) if not include_ammo else len(categorical)+1 ))
+        [print("\t"+x) for x in categorical]
+        if include_ammo:
+            print("\tammo")
+
+        print("Using %i numerical data:" %len(numerical))
+        [print("\t"+x) for x in numerical]
+
+        param_sum=len(numerical)+len(categorical)
+        if 'type' in categorical:
+            param_sum += len(WEAPON_TYPES)-1
+        if 'firemode' in categorical:
+            param_sum += len(WEAPON_FIREMODES)-1
+        if include_ammo:
+            param_sum += ammo_feature_column_dimension
+        print("That will sum up to %i parameters!" %param_sum)
+
+
+    return data
+
 
 def debug_printDict(dictionary):
     for key, value in dictionary.items():
@@ -25,12 +69,21 @@ def debug_printDict(dictionary):
 
 class DataSet:
     def __init__(self,
+                 categorical_params,
+                 include_ammo,
+                 numerical_params,
+                 ammo_feature_column_dimension,
                  data_source=DEFAULT_SOURCE_PATH,
                  seed=None,
                  show_debug=False):
         self._show_debug = show_debug
         seed1, seed2 = random_seed.get_seed(seed)
         np.random.seed(seed1 if seed is None else seed2)
+
+        self._categorical_params = categorical_params
+        self._include_ammo = include_ammo
+        self._numerical_params = numerical_params
+        self._ammo_feature_column_dimension = ammo_feature_column_dimension
 
         features = self.__getCsvAsDict(data_source)
         self._data, self._feature_cols_to_vars_dict = self.__encodeFeatures(features)
@@ -118,7 +171,7 @@ class DataSet:
                         dtype=tf.float32, normalizer_fn=None)
             then key[0] = 'bdrop'
             '''
-            if key[0] in NUMERICAL_PARAMS:
+            if key[0] in self._numerical_params:
                 result[key[0]] = str(unstandardized_tensor[idx])
 
                 '''
@@ -131,7 +184,7 @@ class DataSet:
                 and key[0][0] = 'firemode'
                 and key[0][0][0] = 'Automatic'
                 '''
-            elif (len(key[0]) > 0) and key[0][0] in CATEGORICAL_PARAMS:
+            elif (len(key[0]) > 0) and key[0][0] in self._categorical_params:
                 for i in range(0, len(key[0][1])-1):
                     param = key[0][0] + "_" + key[0][1][i]
                     result[param] = str(unstandardized_tensor[idx])
@@ -166,28 +219,29 @@ class DataSet:
     def __encodeFeatures(self, features):
         #convert all numerical data to float so they can be used as 'tf.feature_column.numeric_column'
         for key, values in features.items():
-            if key in NUMERICAL_PARAMS:
+            if key in self._numerical_params:
                 features[key] = [float(value) for value in values]
 
+        #create list where all feature columns come in
+        columns = [tf.feature_column.numeric_column(param) for param in self._numerical_params]
 
-        #one hot encoding of categorical data
-        type_column = tf.feature_column.categorical_column_with_vocabulary_list(key='type', vocabulary_list=WEAPON_TYPES)
-        type_column = tf.feature_column.indicator_column(type_column) #could use embedding column to further reduce dimensions
+        if 'type' in self._categorical_params:
+            #one hot encoding of categorical data
+            type_column = tf.feature_column.categorical_column_with_vocabulary_list(key='type', vocabulary_list=WEAPON_TYPES)
+            type_column = tf.feature_column.indicator_column(type_column) #could use embedding column to further reduce dimensions
+            columns.append(type_column)
 
-        #one hot encoding of categorical data
-        firemode_colum = tf.feature_column.categorical_column_with_vocabulary_list(key='firemode', vocabulary_list=WEAPON_FIREMODES)
-        firemode_colum = tf.feature_column.indicator_column(firemode_colum) #could use embedding column to further reduce dimensions
+        if 'firemode' in self._categorical_params:
+            #one hot encoding of categorical data
+            firemode_colum = tf.feature_column.categorical_column_with_vocabulary_list(key='firemode', vocabulary_list=WEAPON_FIREMODES)
+            firemode_colum = tf.feature_column.indicator_column(firemode_colum) #could use embedding column to further reduce dimensions
+            columns.append(firemode_colum)
 
-        #create list with all feature columns
-        columns = [tf.feature_column.numeric_column(param) for param in NUMERICAL_PARAMS]
-        columns.append(type_column)
-        columns.append(firemode_colum)
-
-        if False:
+        if self._include_ammo:
             #create this bucket just because i don't wnat to define the vocabulary list with every ammo name
-            ammo_column = tf.feature_column.categorical_column_with_hash_bucket(key = "ammo", hash_bucket_size = 31)
+            ammo_column = tf.feature_column.categorical_column_with_hash_bucket(key = "ammo", hash_bucket_size = NUM_OF_AMMO_TYPES)
             #actual dimension reduction with an embedding column
-            ammo_column = tf.feature_column.embedding_column(ammo_column, dimension=1)
+            ammo_column = tf.feature_column.embedding_column(ammo_column, dimension=self._ammo_feature_column_dimension)
             columns.append(ammo_column)
 
         #make sure you know whats going on inside
