@@ -1,4 +1,3 @@
-#based on https://github.com/tensorflow/tensorflow/blob/r0.7/tensorflow/examples/tutorials/mnist/input_data.py
 #based on https://github.com/tensorflow/tensorflow/blob/r1.8/tensorflow/contrib/learn/python/learn/datasets/mnist.py
 from __future__ import absolute_import
 from __future__ import division
@@ -10,7 +9,8 @@ import csv
 
 from tensorflow.python.framework import random_seed
 
-DEFAULT_SOURCE_PATH = "./weapon_data.csv"
+DEFAULT_TRAINING_DATA = "./training_data.csv"
+DEFAULT_TEST_DATA = "./test_data.csv"
 #define constants for data processing
 CATEGORICAL_PARAMS  = ['type', 'firemode'] #exclude ammo because I'm not interested in decoding its values
 #this numerical params are ordered by priority to omit less important ones in 'get_data()'
@@ -38,8 +38,12 @@ def get_data(num_of_categorical_param, num_of_numerical_param, ammo_feature_colu
     if ammo_feature_column_dimension == 0:
         ammo_feature_column_dimension = 1
 
-    data = DataSet(categorical_params=categorical, include_ammo=include_ammo, numerical_params=numerical,
-                    ammo_feature_column_dimension=ammo_feature_column_dimension, seed=seed, show_debug=False)
+    training_data = DataSet(categorical_params=categorical, include_ammo=include_ammo, numerical_params=numerical,
+                            ammo_feature_column_dimension=ammo_feature_column_dimension, seed=seed,
+                            data_source=DEFAULT_TRAINING_DATA, show_debug=debug)
+    test_data = DataSet(categorical_params=categorical, include_ammo=include_ammo, numerical_params=numerical,
+                        ammo_feature_column_dimension=ammo_feature_column_dimension, seed=seed,
+                        data_source=DEFAULT_TEST_DATA, show_debug=debug)
 
     if debug:
         print("Using %i categorical data:" %(len(categorical) if not include_ammo else len(categorical)+1 ))
@@ -60,7 +64,7 @@ def get_data(num_of_categorical_param, num_of_numerical_param, ammo_feature_colu
         print("That will sum up to %i parameters!" %param_sum)
 
 
-    return data
+    return training_data, test_data
 
 
 def debug_printDict(dictionary):
@@ -73,7 +77,7 @@ class DataSet:
                  include_ammo,
                  numerical_params,
                  ammo_feature_column_dimension,
-                 data_source=DEFAULT_SOURCE_PATH,
+                 data_source,
                  seed=None,
                  show_debug=False):
         self._show_debug = show_debug
