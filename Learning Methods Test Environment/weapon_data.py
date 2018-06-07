@@ -195,7 +195,7 @@ class DataSet:
                     idx += 1
 
             idx += 1
-        return result
+        return result, unstandardized_tensor
 
     def add_new_weapon(self, processed_tensor):
         self._data = np.append(self.data, [processed_tensor], axis=0)

@@ -18,17 +18,20 @@ def get_untrained(session, network_architecture, optimizer, transfer_fct, batch_
 def get_new_trained(session, weapon_data, network_architecture, optimizer, transfer_fct,
                           batch_size=1, training_epochs=10, epoch_debug_step=5,
                           trained_model_save_path=DEFAULT_MODEL_PATH,
-                          save_model = True, save_model_every_epoch = False):
+                          save_model = True, save_model_every_epoch = False, get_log_as_string=False):
 
     #create vae
     vae = get_untrained(session=session, network_architecture=network_architecture, optimizer=optimizer,
                                  transfer_fct=transfer_fct, batch_size=batch_size)
 
     #train it
-    vae = train(vae, weapon_data, batch_size, training_epochs, epoch_debug_step,
-                       trained_model_save_path, save_model, save_model_every_epoch)
+    vae, log_str = train(vae, weapon_data, batch_size, training_epochs, epoch_debug_step,
+                       trained_model_save_path, save_model, save_model_every_epoch, get_log_as_string)
 
-    return vae
+    if get_log_as_string:
+        return vae, log_str
+    else:
+        return vae
 
 #just a convenience wrapper
 def restore(untrained_vae, model_path):
@@ -37,10 +40,12 @@ def restore(untrained_vae, model_path):
 
 def train(vae, weapon_data, batch_size=1, training_epochs=10, epoch_debug_step=5,
               trained_model_save_path=DEFAULT_MODEL_PATH,
-              save_model = True, save_model_every_epoch = True):
+              save_model = True, save_model_every_epoch = True,
+              get_log_as_string=False):
 
     num_samples = weapon_data.num_examples
     trained_model_path = ""
+    log_str = ""
 
     #training cycle
     for epoch in range(training_epochs):
@@ -61,14 +66,24 @@ def train(vae, weapon_data, batch_size=1, training_epochs=10, epoch_debug_step=5
         if epoch % epoch_debug_step == 0:
             if save_model and save_model_every_epoch:
                 trained_model_path = vae.save_trained_model(trained_model_save_path)
-            print("Epoch:"+ '%04d' % (epoch+1) + ", cost=" + "{:.9f}".format(avg_cost))
+
+            log = "Epoch:"+ '%04d' % (epoch+1) + " - Cost:" + "{:.9f}".format(avg_cost) + " - "
+            if get_log_as_string:
+                log_str += log
+            else:
+                print(log)
 
     if save_model and not save_model_every_epoch:
         trained_model_path = vae.save_trained_model(trained_model_save_path)
 
     if save_model:
-        print("Trained model saved! You can find it in '"+trained_model_path+"'")
+        log = "Trained model saved! You can find it in '"+trained_model_path+"'" + " - "
+        if get_log_as_string:
+            log_str += log
+        else:
+            print(log)
 
+    return vae, log_str
 
 class VariationalAutoencoder(object):
     """ Variation Autoencoder (VAE) with an sklearn-like interface implemented using TensorFlow.
@@ -100,6 +115,7 @@ class VariationalAutoencoder(object):
         self._optimizer_provided = optimizer
         self._batch_size = batch_size
         self._has_2_hidden_layer = ('n_hidden_2' in network_architecture)
+        self._has_2_hidden_layer = network_architecture['n_hidden_2'] > 0
         self.__print("Does VAE have 2 hidden layers? " + str(self._has_2_hidden_layer), 1)
 
         # Input
@@ -151,12 +167,15 @@ class VariationalAutoencoder(object):
         self.__print("Model saved in file: {}".format(save_path))
         return save_path
 
-
     def calculate_z(self, X):
         return self._session.run(self.z, feed_dict={self.X: X})
 
     def calculate_z_mean(self, X):
         return self._session.run(self.z_mean, feed_dict={self.X: X})
+
+    def calculate_loss(self, batch):
+        cost = self._session.run(self.cost, feed_dict={self.X: batch})
+        return cost
 
     def __print(self, message, indent=0):
         if self._print_debug:
@@ -322,7 +341,7 @@ class VariationalAutoencoder(object):
     def __l2_loss(self, obs, actual):
         """L2 loss aka LSE, MSE or Euclidian"""
         return tf.reduce_sum(tf.square(obs - actual), 1)
-        
+
     #from https://github.com/RuiShu/micro-projects/tree/master/tf-vae
     def __kullback_leibler(self, mu, log_sigma):
         """(Gaussian) Kullback-Leibler divergence KL(q||p)"""
