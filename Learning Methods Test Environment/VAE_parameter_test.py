@@ -19,7 +19,7 @@ def format_seconds(seconds):
     h, m = divmod(m, 60)
     d, h = divmod(h, 24)
 
-    return "%02d:%02d:%02d:%02d" % (d, h, m, s)
+    return "%02d:%02d:%02d" % (h, m, s)
 
 last_update_time = 0
 #based on https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
@@ -37,58 +37,57 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     """
     global last_update_time
     deltaTime = time.time() - last_update_time
-    remaining_time = "Remaining time: %s " %format_seconds((total - iteration)*deltaTime)
+    remaining_time = " - Remaining time: %s" %format_seconds((total - iteration)*deltaTime)
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
-    it_progress = "(%i/%i)" %(iteration, total)
-    print('\r%s |%s| %s%% %s %s - %s' % (prefix, bar, percent, suffix, it_progress, remaining_time), end = '\r')
+    it_progress = " (%i/%i)" %(iteration, total)
+    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix + it_progress + remaining_time), end = '\r')
 
     last_update_time = time.time()
     # Print New Line on Complete
     if iteration == total:
         print()
 
-def create_csv_file_and_write_header(filename):
-    path = "VAE_parameter_test/"+filename+".csv"
-    with open(path, 'w', newline='') as csvfile:
-        header = ["avg_cost","avg_un_dist","avg_n_dist","l_r", "n_h_1",
-                  "n_h_2", "n_z", "optimiz", "transf", "epochs", "batch",
-                 "n_cat", "n_num", "ammo_f", "train_log"]
-        writer = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_NONE)
-        writer.writerow(header)
+def create_csv_file_and_write_header():
+    date = datetime.now().strftime("%Y-%m-%d_%H-%M")
+    path = "VAE_parameter_test/summary_"+date+".csv"
+    csvfile = open(path, 'a', newline='')
+    header = ["avg_cost","avg_un_dist","avg_n_dist","l_r", "n_h_1",
+              "n_h_2", "n_z", "optimiz", "transf", "epochs", "batch",
+             "n_cat", "n_num", "ammo_f", "train_log"]
+    writer = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_NONE)
+    writer.writerow(header)
 
-    return open(path, 'a')
+    return csvfile
 
-
-file_count = 0
 csv_file = None;
 cached_output = []
 def write_to_csv(avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1, n_h_2, n_z, opt, tran, epochs,
                  batch, n_cat, n_num, ammo_f, train_log):
-    global cached_output, file_count, csv_file
+    global cached_output
 
     cached_output.append([avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1,
                      n_h_2, n_z, opt, tran, epochs, batch, n_cat,
                      n_num, ammo_f, train_log])
 
-    if len(cached_output) % 100 == 0:
-        write_cache();
+    if len(cached_output) % 10 == 0:
+        write_cache()
 
-def write_cache():
-    global csv_file, cached_output, file_count
+def write_cache(close_file=False):
+    global csv_file, cached_output
     if csv_file == None:
-        file_count += 1
-        csv_file = create_csv_file_and_write_header(str(file_count))
+        csv_file = create_csv_file_and_write_header()
     for out in cached_output:
         text = ""
         for t in out:
             text += (t + ",")
         csv_file.write(text + "\n")
 
-    csv_file.close()
-    csv_file = None
     cached_output[:] = []
+    if close_file:
+        csv_file.close()
+
 
 def train_model(train_data, test_data, network_architecture, optimizer, transfer_fct, batch_size, num_epochs, epoch_debug_step):
     sess = tf.Session(graph=tf.get_default_graph())
@@ -162,12 +161,10 @@ def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2
 
 
 def run_constellations_test(total_iterations, dry_run=False):
-    global csv_file
-
     iteration_count = 0
     total_iterations = total_iterations
 
-    params = dict(learning_rate = 1,
+    params = dict(learning_rate = 0.001,
                   n_hidden_1 = 10,
                   n_hidden_2 = 0, #not included
                   n_z = 4,
@@ -175,11 +172,11 @@ def run_constellations_test(total_iterations, dry_run=False):
                   n_categorical = 2, #constant
                   n_numerical = 15, #constant
                   n_ammo_features = 0, #constant
-                  n_epochs = 5, #constant
-                  transfer_fct = [#tf.sigmoid, tf.tanh,
+                  n_epochs = 20, #constant
+                  transfer_fct = [tf.sigmoid, tf.tanh,
                                   tf.nn.elu,
-                                  #tf.nn.selu,
-                                  #tf.nn.softsign
+                                  tf.nn.selu,
+                                  tf.nn.softsign
                                   ],
                   optimizer =   [tf.train.AdamOptimizer,
                                  tf.train.RMSPropOptimizer,
@@ -192,75 +189,76 @@ def run_constellations_test(total_iterations, dry_run=False):
         printProgressBar(0, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
 
     learning_rate = params['learning_rate']
+    #while True:
+    #    learning_rate *= 0.1
+    #    if learning_rate < 0.001:
+    #        break
+
+    n_hidden_1 = params['n_hidden_1']
     while True:
-        learning_rate *= 0.1
-        if learning_rate < 0.001:
+        n_hidden_1 -= 2
+        if n_hidden_1 < 3:
             break
-
-        n_hidden_1 = params['n_hidden_1']
+        '''
+        n_hidden_2 = params['n_hidden_2']
         while True:
-            n_hidden_1 -= 2
-            if n_hidden_1 < 3:
+            n_hidden_2 -= 2
+            if n_hidden_2 < 0:
                 break
-            '''
-            n_hidden_2 = params['n_hidden_2']
+        '''
+        n_z = params['n_z']
+        while True:
+            n_z -= 1
+            if n_z < 1:
+                break
+
+            batch_size = params['batch_size']
             while True:
-                n_hidden_2 -= 2
-                if n_hidden_2 < 0:
-                    break
-            '''
-            n_z = params['n_z']
-            while True:
-                n_z -= 1
-                if n_z < 1:
+                batch_size *= 0.5
+                batch_size = int(batch_size)
+                if batch_size < 1:
                     break
 
-                batch_size = params['batch_size']
-                while True:
-                    batch_size *= 0.5
-                    batch_size = int(batch_size)
-                    if batch_size < 1:
-                        break
+                n_categorical = params['n_categorical']
+                #while True:
+                #    n_categorical -= 1
+                #    if n_categorical < 0:
+                #        break
 
-                    n_categorical = params['n_categorical']
-                    #while True:
-                    #    n_categorical -= 1
-                    #    if n_categorical < 0:
-                    #        break
+                n_numerical = params['n_numerical']
+                #    while True:
+                #        n_numerical -= 1
+                #        if n_numerical < 5:
+                #            break
 
-                    n_numerical = params['n_numerical']
-                    #    while True:
-                    #        n_numerical -= 1
-                    #        if n_numerical < 5:
-                    #            break
-
-                    n_ammo_features = params['n_ammo_features']
-                    #        while True:
-                    #            n_ammo_features -= 1
-                    #            if n_ammo_features < 0:
-                    #                break
+                n_ammo_features = params['n_ammo_features']
+                #        while True:
+                #            n_ammo_features -= 1
+                #            if n_ammo_features < 0:
+                #                break
 
 
-                    n_epochs = 5
-                                #n_epochs = params['n_epochs']
-                                #while True:
-                                    #n_epochs *= 0.5
-                                    #n_epochs = int(n_epochs)
-                                    #if n_epochs < 1:
-                                        #break
+                n_epochs = params['n_epochs']
+                            #n_epochs = params['n_epochs']
+                            #while True:
+                                #n_epochs *= 0.5
+                                #n_epochs = int(n_epochs)
+                                #if n_epochs < 1:
+                                    #break
 
-                    transfer_fct = params['transfer_fct']
-                    for fct in transfer_fct:
+                transfer_fct = params['transfer_fct']
+                for fct in transfer_fct:
 
-                        optimizer = params['optimizer']
-                        for opt in optimizer:
-                            iteration_count += 1
-                            if not dry_run:
-                                start_model_training_and_write_results(learning_rate, n_hidden_1, 0, n_z, batch_size, n_categorical,
-                                                                        n_numerical, n_ammo_features, n_epochs, fct, opt)
-                                printProgressBar(iteration_count, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
+                    optimizer = params['optimizer']
+                    for opt in optimizer:
+                        iteration_count += 1
+                        if not dry_run:
+                            start_model_training_and_write_results(learning_rate, n_hidden_1, 0, n_z, batch_size, n_categorical,
+                                                                    n_numerical, n_ammo_features, n_epochs, fct, opt)
+                            printProgressBar(iteration_count, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
 
-    write_cache()
+    if not dry_run:
+        write_cache(close_file=True)
     return iteration_count
 
 print("Start time = %s" %str(datetime.now()))
