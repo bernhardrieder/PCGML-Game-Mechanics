@@ -176,8 +176,11 @@ def run_constellations_test(total_iterations, dry_run=False):
                   n_numerical = 15, #constant
                   n_ammo_features = 0, #constant
                   n_epochs = 5, #constant
-                  transfer_fct = [#tf.sigmoid, tf.tanh, tf.elu, tf.selu
-                                  tf.nn.softsign],
+                  transfer_fct = [#tf.sigmoid, tf.tanh,
+                                  tf.nn.elu,
+                                  #tf.nn.selu,
+                                  #tf.nn.softsign
+                                  ],
                   optimizer =   [tf.train.AdamOptimizer,
                                  tf.train.RMSPropOptimizer,
                                  tf.train.FtrlOptimizer,
@@ -257,17 +260,16 @@ def run_constellations_test(total_iterations, dry_run=False):
                                                                         n_numerical, n_ammo_features, n_epochs, fct, opt)
                                 printProgressBar(iteration_count, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
 
-    if csv_file:
-        write_cache()
+    write_cache()
     return iteration_count
 
 print("Start time = %s" %str(datetime.now()))
 print("Gathering amount of possible constellations...")
-total_iterations = run_a_funny_test(1000000,dry_run=True)
-print("Start constellation test")
+total_iterations = run_constellations_test(1000000,dry_run=True)
+print("Start test with %i different constellations" %total_iterations)
 start_time = time.time()
 run_constellations_test(total_iterations)
-print("It took %s (hh:mm:ss) and %i iteration" %(format_seconds(time.time()-start_time), iteration_count))
+print("It took %s (dd:hh:mm:ss)" %(format_seconds(time.time()-start_time)))
 
 #start_model_training_and_write_results(0.01, 14, 0, 2, 1, 2, 15, 0, 10, tf.nn.tanh, tf.train.AdamOptimizer)
 #start_model_training_and_write_results(0.01, 14, 0, 2, 1, 2, 15, 0, 10, tf.nn.tanh, tf.train.RMSPropOptimizer)
