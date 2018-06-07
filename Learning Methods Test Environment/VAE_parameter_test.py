@@ -21,9 +21,8 @@ def format_seconds(seconds):
 
     return "%02d:%02d:%02d:%02d" % (d, h, m, s)
 
-#based on https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
-# Print iterations progress
 last_update_time = 0
+#based on https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█'):
     """
     Call in a loop to create terminal progress bar
@@ -38,12 +37,12 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     """
     global last_update_time
     deltaTime = time.time() - last_update_time
-    remaining_time = " - Remaining time: %s " %format_seconds((total - iteration)*deltaTime)
+    remaining_time = "Remaining time: %s " %format_seconds((total - iteration)*deltaTime)
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
-    it_progress = "(" + str(iteration) + "/" + str(total) +")"
-    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix + it_progress + remaining_time), end = '\r')
+    it_progress = "(%i/%i)" %(iteration, total)
+    print('\r%s |%s| %s%% %s %s - %s' % (prefix, bar, percent, suffix, it_progress, remaining_time), end = '\r')
 
     last_update_time = time.time()
     # Print New Line on Complete
@@ -74,17 +73,22 @@ def write_to_csv(avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1, n_h_2, n_z, opt,
                      n_num, ammo_f, train_log])
 
     if len(cached_output) % 100 == 0:
-        if csv_file == None:
-            file_count += 1
-            csv_file = create_csv_file_and_write_header(str(file_count))
-        for out in cached_output:
-            text = ""
-            for t in out:
-                text += (t + ",")
-            csv_file.write(text + "\n")
+        write_cache();
 
-        csv_file = None
-        cached_output[:] = []
+def write_cache():
+    global csv_file, cached_output, file_count
+    if csv_file == None:
+        file_count += 1
+        csv_file = create_csv_file_and_write_header(str(file_count))
+    for out in cached_output:
+        text = ""
+        for t in out:
+            text += (t + ",")
+        csv_file.write(text + "\n")
+
+    csv_file.close()
+    csv_file = None
+    cached_output[:] = []
 
 def train_model(train_data, test_data, network_architecture, optimizer, transfer_fct, batch_size, num_epochs, epoch_debug_step):
     sess = tf.Session(graph=tf.get_default_graph())
@@ -124,12 +128,9 @@ def train_model(train_data, test_data, network_architecture, optimizer, transfer
 
     return log, avg_cost, avg_distance_unnorm, avg_distance_norm
 
-#train_data, test_data = weapons.get_data(2, 15, 0)
 
 def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2, n_z, batch_size, n_categorical,
                                           n_numerical, n_ammo_features, n_epochs, transfer_fct, optimizer):
-    #start_time = time.time()
-    #global train_data, test_data
     train_data, test_data = weapons.get_data(n_categorical, n_numerical, n_ammo_features)
 
     network_architecture = dict()
@@ -156,31 +157,27 @@ def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2
     write_to_csv(avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1, n_h_2, n_z, opt, tran,
                  epochs, batch, n_cat, n_num, ammo_f, train_log)
 
-    #end_time = time.time()
-    #print("Finished! It took %s (hh:mm:ss) " %(format_seconds(end_time-start_time)))
     gc.collect()
     tf.reset_default_graph()
 
-def run_a_funny_test(total_iterations, dry_run=False):
-    global csv_file
 
-    cmd_file = None
-    #if dry_run:
-    #    cmd_file = open("test_commands.py", "w")
+def run_constellations_test(total_iterations, dry_run=False):
+    global csv_file
 
     iteration_count = 0
     total_iterations = total_iterations
 
     params = dict(learning_rate = 1,
                   n_hidden_1 = 10,
-                  n_hidden_2 = 0, #deleted
+                  n_hidden_2 = 0, #not included
                   n_z = 4,
                   batch_size = 20,
-                  n_categorical = 2, #deleted
-                  n_numerical = 15, #deleted
-                  n_ammo_features = 0, #deleted
-                  n_epochs = 5, #deleted
-                  transfer_fct = [tf.sigmoid, tf.tanh, tf.nn.softplus],
+                  n_categorical = 2, #constant
+                  n_numerical = 15, #constant
+                  n_ammo_features = 0, #constant
+                  n_epochs = 5, #constant
+                  transfer_fct = [#tf.sigmoid, tf.tanh, tf.elu, tf.selu
+                                  tf.nn.softsign],
                   optimizer =   [tf.train.AdamOptimizer,
                                  tf.train.RMSPropOptimizer,
                                  tf.train.FtrlOptimizer,
@@ -189,8 +186,6 @@ def run_a_funny_test(total_iterations, dry_run=False):
                  )
 
     if not dry_run:
-        start_time = time.time()
-        # Initial call to print 0% progress
         printProgressBar(0, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
 
     learning_rate = params['learning_rate']
@@ -261,26 +256,19 @@ def run_a_funny_test(total_iterations, dry_run=False):
                                 start_model_training_and_write_results(learning_rate, n_hidden_1, 0, n_z, batch_size, n_categorical,
                                                                         n_numerical, n_ammo_features, n_epochs, fct, opt)
                                 printProgressBar(iteration_count, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
-                            #else:
-                            #    txt = "start_model_training_and_write_results(%f, %i, 0, %i, %i, %i, %i, %i, %i, tf.nn.%s, tf.train.%s)\n" \
-                            #    %(learning_rate, n_hidden_1, n_z, batch_size, n_categorical, n_numerical, n_ammo_features, n_epochs, fct.__name__, opt.__name__)
-                            #    cmd_file.write(txt)
 
-
-    if not dry_run:
-        end_time = time.time()
-        print("It took %s (hh:mm:ss) and %i iteration" %(format_seconds(end_time-start_time), iteration_count))
     if csv_file:
-        csv_file.close()
-    #if cmd_file:
-    #    cmd_file.close()
+        write_cache()
     return iteration_count
 
-print("You just started the funniest test you'll ever start! :D -> NOT!")
 print("Start time = %s" %str(datetime.now()))
 print("Gathering amount of possible constellations...")
 total_iterations = run_a_funny_test(1000000,dry_run=True)
-run_a_funny_test(total_iterations)
+print("Start constellation test")
+start_time = time.time()
+run_constellations_test(total_iterations)
+print("It took %s (hh:mm:ss) and %i iteration" %(format_seconds(time.time()-start_time), iteration_count))
+
 #start_model_training_and_write_results(0.01, 14, 0, 2, 1, 2, 15, 0, 10, tf.nn.tanh, tf.train.AdamOptimizer)
 #start_model_training_and_write_results(0.01, 14, 0, 2, 1, 2, 15, 0, 10, tf.nn.tanh, tf.train.RMSPropOptimizer)
 #start_model_training_and_write_results(0.01, 14, 0, 2, 1, 2, 15, 0, 10, tf.nn.tanh, tf.train.FtrlOptimizer)
