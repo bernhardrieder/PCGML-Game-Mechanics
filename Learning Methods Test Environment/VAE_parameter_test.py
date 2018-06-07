@@ -160,45 +160,26 @@ def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2
     tf.reset_default_graph()
 
 
-def run_constellations_test(total_iterations, dry_run=False):
+def run_constellations_test(hyperparams, dry_run=False):
     iteration_count = 0
-    total_iterations = total_iterations
-
-    params = dict(learning_rate = [1.0], #constant
-                  n_hidden_1 = [8,6,4],
-                  n_hidden_2 = [0], #not included
-                  n_z = [3,2,1],
-                  batch_size = [10,5,2,1],
-                  n_categorical = [2], #constant
-                  n_numerical = [15],
-                  n_ammo_features = [0],
-                  n_epochs = [10],
-                  transfer_fct = [tf.tanh,
-                                  tf.nn.elu,
-                                  tf.nn.selu,
-                                  tf.nn.softsign
-                                  ],
-                  optimizer =   [tf.train.AdamOptimizer,
-                                 tf.train.RMSPropOptimizer,
-                                 tf.train.FtrlOptimizer,
-                                 tf.train.AdagradOptimizer
-                                ]
-                 )
 
     if not dry_run:
+        print("Gathering amount of possible constellations...")
+        total_iterations = run_constellations_test(hyperparams, dry_run=True)
+        print("Calculated %i different constellations" %total_iterations)
         printProgressBar(0, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
 
-    for learning_rate in params['learning_rate']:
-        for n_hidden_1 in params['n_hidden_1']:
-            for n_hidden_2 in params['n_hidden_2']:
-                for n_z in params['n_z']:
-                    for batch_size in params['batch_size']:
-                        for n_categorical in params['n_categorical']:
-                            for n_numerical in params['n_numerical']:
-                                for n_ammo_features in params['n_ammo_features']:
-                                    for n_epochs in params['n_epochs']:
-                                        for transfer_fct in params['transfer_fct']:
-                                            for optimizer in params['optimizer']:
+    for learning_rate in hyperparams['learning_rate']:
+        for n_hidden_1 in hyperparams['n_hidden_1']:
+            for n_hidden_2 in hyperparams['n_hidden_2']:
+                for n_z in hyperparams['n_z']:
+                    for batch_size in hyperparams['batch_size']:
+                        for n_categorical in hyperparams['n_categorical']:
+                            for n_numerical in hyperparams['n_numerical']:
+                                for n_ammo_features in hyperparams['n_ammo_features']:
+                                    for n_epochs in hyperparams['n_epochs']:
+                                        for transfer_fct in hyperparams['transfer_fct']:
+                                            for optimizer in hyperparams['optimizer']:
                                                 iteration_count += 1
                                                 if not dry_run:
                                                     start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2, n_z, batch_size, n_categorical,
@@ -207,18 +188,35 @@ def run_constellations_test(total_iterations, dry_run=False):
 
     if not dry_run:
         write_cache(close_file=True)
-    return iteration_count
+    else:
+        return iteration_count
+
+#__main__
+hyperparams = dict( \
+                    learning_rate = [0.01],
+                    n_hidden_1 = [8],
+                    n_hidden_2 = [0],
+                    n_z = [2,8,4],
+                    batch_size = [2,1],
+                    n_categorical = [2],
+                    n_numerical = [11],
+                    n_ammo_features = [0],
+                    n_epochs = [50],
+                    transfer_fct = [
+                                    tf.tanh, #stick with that one
+                                    tf.nn.elu,
+                                    tf.nn.selu,
+                                    tf.nn.softsign
+                                   ],
+                    optimizer = [
+                                    tf.train.AdamOptimizer, #stick with that one
+                                    tf.train.RMSPropOptimizer,
+                                    #tf.train.FtrlOptimizer,
+                                    #tf.train.AdagradOptimizer
+                                ]
+                  )
 
 print("Start time = %s" %str(datetime.now()))
-print("Gathering amount of possible constellations...")
-total_iterations = run_constellations_test(1000000,dry_run=True)
-print("Start test with %i different constellations" %total_iterations)
 start_time = time.time()
-run_constellations_test(total_iterations)
+run_constellations_test(hyperparams)
 print("It took %s (hh:mm:ss)" %(format_seconds(time.time()-start_time)))
-
-#start_model_training_and_write_results(0.01, 14, 0, 2, 1, 2, 15, 0, 10, tf.nn.tanh, tf.train.AdamOptimizer)
-#start_model_training_and_write_results(0.01, 14, 0, 2, 1, 2, 15, 0, 10, tf.nn.tanh, tf.train.RMSPropOptimizer)
-#start_model_training_and_write_results(0.01, 14, 0, 2, 1, 2, 15, 0, 10, tf.nn.tanh, tf.train.FtrlOptimizer)
-#start_model_training_and_write_results(0.01, 14, 0, 2, 1, 2, 15, 0, 10, tf.nn.tanh, tf.train.AdagradOptimizer)
-#csv_file.close()

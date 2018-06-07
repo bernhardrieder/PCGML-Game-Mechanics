@@ -116,6 +116,14 @@ class DataSet:
     def epochs_completed(self):
         return self._epochs_completed
 
+    @property
+    def standardized_max_values(self):
+        return self._standardized_max_values
+
+    @property
+    def standardized_min_values(self):
+        return self._standardized_min_values
+
     def __shuffleData(self):
         perm = np.arange(self._num_examples)
         np.random.shuffle(perm)
@@ -280,12 +288,16 @@ class DataSet:
         std = x_original.std(dtype=np.float64)
         mean = x_original.mean(dtype=np.float64)
         x_standardized = (x_original - mean) / std
+        self._standardized_max_values = np.amax(x_standardized)
+        self._standardized_min_values = np.amin(x_standardized)
         return x_standardized
 
     def __standardize_columns(self, x_original):
         std = x_original.std(dtype=np.float64, axis=0)
         mean = x_original.mean(dtype=np.float64, axis=0)
         x_standardized = (x_original - mean) / std
+        self._standardized_max_values = np.amax(x_standardized, axis=0)
+        self._standardized_min_values = np.amin(x_standardized, axis=0)
         return x_standardized
 
     def __un_standardize_matrix(self, x_standardized, x_original):
