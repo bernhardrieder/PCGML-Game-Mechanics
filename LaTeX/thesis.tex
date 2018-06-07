@@ -430,7 +430,7 @@ However, let us ask a question first: What is the difference between ML and AI a
 Machine learning consists out of three main types which all address a different kind of problem to solve and goal to achieve. One can classify types of supervised learning, unsupervised learning and reinforcement learning \cite{ml::book::developer}. Each of them functions as a solver to a specific task or problem where it fits best and creates the desired results.
 
 \subsection{Supervised Learning}
-This type of learning is a task-driven approach of ML \cite{ml::book::developer}. Its primary application is predicting or approximating data based on existing historical or empirical values where the answer to the problem is already known \cite{ai::book}. The previously described problem of classifying apples and pears is a problem is a supervised learning problem which is solved by predicting the specific fruit or also referred as a class \cite{ml::book::developer}. In this case, we would provide a sample set of real data with features for both fruits and classify each feature to a specific fruit. With this, the algorithm links the given features to a specific result and can predict those fruits based on a given test set \cite{ml::book::developer}. A training and test set could exist out of a bunch of pictures or other specific features described with numeric values in a table for each fruit. Hence, the reason why this is called supervised learning is that an ML algorithm is provided with data and therefore knows what to learn \cite{ai::book}.\\
+This type of learning is a task-driven approach of ML \cite{ml::book::developer}. Its primary application is predicting or approximating data based on existing historical or empirical values where the answer to the problem is already known \cite{ai::book}. The previously described problem of classifying apples and pears is a problem is a supervised learning problem which is solved by predicting the specific fruit or also referred as a class \cite{ml::book::developer}. In this case, we would provide a sample set of real data with features for both fruits and classify each feature to a specific fruit. With this, the algorithm links the given features to a specific result and can predict those fruits based on a given test set \cite{ml::book::developer}. A training and test set could exist out of a bunch of pictures or other specific features described with numeric values in a table for each fruit. Hence, the reason why this is called supervised learning is that an ML algorithm is provided with data labels and therefore knows what to learn \cite{ai::book}.\\
 Typical applications for supervised learning are, for example, image recognition and classification, spam detection, pattern detection, speech recognition, \ac{NLP}, sentiment analysis or forecasting \cite{ml::book::algorithms}.
 
 \subsubsection{Regression}
@@ -603,7 +603,7 @@ As shown in figure \ref{fig::PCGML::devExample::sequenceWithModels} with a dashe
 It is worth noting that values do not need just one predecessor, they can also have more than one predecessor which would change the dashed rectangles, ML models and their associated variables shown in figure \ref{fig::PCGML::devExample::sequenceWithModels}.
 
 \subsection{Data}
-First of all, it is necessary to come up with efficient and sufficient data for the system’s training. Depending on the variables, it does need more or less data for the model. For example, a data structure with around ten variables would probably need at least 100 data rows to train the ML model properly. Table \ref{table::PCGML::devExample::data} shows a simple example data table which could be usable for the systems training. The table’s data can contain any discrete or continuous values which could originate from any decoded non-numerical data.
+First of all, it is necessary to come up with efficient and sufficient data for the system’s training. Depending on the variables, it does need more or less data for the model. For example, a data structure with around ten variables would probably need at least 100 data rows to train the ML model properly. In particular, there is an unofficial rule of thumb that the dataset should be ten time times bigger than the provided number of parameters. Table \ref{table::PCGML::devExample::data} shows a simple example data table which could be usable for the systems training. The table’s data can contain any discrete or continuous values which could originate from any decoded non-numerical data.
 \begin{table}[!htbp]
 	\centering
 	\begin{tabular}{|c||c|c|c|c|}
@@ -616,7 +616,9 @@ First of all, it is necessary to come up with efficient and sufficient data for 
 	\caption{PCGML example data table.}
 	\label{table::PCGML::devExample::data}
 \end{table}\\
-Furthermore, a standard procedure in ML is the technique of data pre-processing so that data values are consistent with each other. For example, if the data set provides categorical data like the values for \textbf{V\textsubscript{2}}, as shown in table \ref{table::PCGML::devExample::data}, then this data needs to be encoded, so it does not differ from the other data values. This procedure is a standard procedure in the data pre-processing for training an ML model and can be done with so-called "One Hot Encoding." Table \ref{table::PCGML::devExample::oneHotEncoder} shows an example of what a One Hot Encoder does with categorical data as provided by \textbf{V\textsubscript{2}}. 
+Furthermore, a standard procedure in ML is the technique of data pre-processing so that data values are consistent with each other. 
+\subsubsection{Encoding}
+For example, if the data set provides categorical data like the values for \textbf{V\textsubscript{2}}, as shown in table \ref{table::PCGML::devExample::data}, then this data needs to be encoded, so it does not differ from the other data values. This procedure is a standard procedure in the data pre-processing for training an ML model and can be done with so-called "One Hot Encoding." Table \ref{table::PCGML::devExample::oneHotEncoder} shows an example of what a One Hot Encoder does with categorical data as provided by \textbf{V\textsubscript{2}}. 
 \begin{table}[!htbp]
 	\centering
 	\begin{tabular}{|c|c|c|c|c|}
@@ -630,6 +632,9 @@ Furthermore, a standard procedure in ML is the technique of data pre-processing 
 	\label{table::PCGML::devExample::oneHotEncoder}
 \end{table}
 The new values generated by the One Hot Encoder replace the old categorizes values and the data set is ready to go.
+
+\subsubsection{Feature Scaling}
+\todo[inline]{toooooodoooooooo}
 
 \subsection{Training}
 After provision and pre-processing of the dataset follows training. Training can happen with different training models as described in chapter \ref{PCGML::devConsiderations}. For example, the use of an ANN or Gaussian Mixture Model could be a suitable training model for a given example dataset. In the scenario of the given sequence data, the \ac{NN} would be trained for each pair of values to output the next value in the sequence. Figure \ref{fig::PCGML::devExample::NNbasic} shows an example for an \ac{NN} where the start value and the first variable are used to predict the second variable.
@@ -986,7 +991,7 @@ For sure, this data is used to train a model and generate weapons even if this t
 {\color{blue}Investigation showed that the game Battlefield 1, released in 2016, uses more than 100 different weapons in the game. The setting of the game takes place in the World War One and therefore uses weapons of this period. Fortunately, gamers gathered all possible weapon statistics for Battlefield games on the community website "http://symthic.com" \cite{symthic::bf1stats}. They provide a list of all 140 weapons used in the game with very detailed description and statistics \cite{symthic::bf1stats}. In fact, they provide 40 parameters which describe every weapon \cite{symthic::bf1stats}. Further evaluation specializes these parameters to 18 most suitable variables for a weapon implementation. Nevertheless, one can use even more, less or other parameters to generate weapons and train the model and not all of them are always useful. Table \ref{battlefield::weaponStats} shows these most useful parameters for the weapon class and model training. As already indicated, the number of the variables is a subject to change during the implementation.}
 
 \section{TODO: Data Representation - IS THIS REALLY IMPORTANT?}
-{\color{blue}the provided data shows that its either sequence or graph data. as described in chapter 5.3.1, they have different advantages and disadvantages but they probably fit both. Compares to the PCGML generation example, it fits better with sequences but the best way to find out is to try both data structures within each method.}
+{\color{blue}the provided data shows that its either sequence or graph data. as described in chapter 5.3.1, they have different advantages and disadvantages but they probably fit both. Compares to the PCGML generation example, it fits better with sequences but the best way to find out is to try both data structures within each method. --->> THERE IS NO NEED FOR A SPECIAL DATA REPRESENATION FOR THIS PROBLEM: THE DATA IS STRAIGHT FORWARD AND DOESNT NEED CONNECTIONS BETWEEN EACH OTHER: ALSO VAE TRIES TO LEARN THOSE CONNECTIONS}
 
 \section{TODO: Learning Methods}
 
@@ -1094,13 +1099,17 @@ manually added weapon type (pistol, rifle, etc), firemode (semi, automatic, etc)
 simplified bolt-action, pump-action, single-barrel fire and lever-action to "single-action" because it has actually the same kind of reload mechanic\\
 needed to remove ammo from the features because I'd need to apply a one hot encoder to use the data and it would blow up my data and cause curse of dimensionality.
 
-\subsection{TODO: Normalization}
+\subsection{TODO: Encoding and Feature Scaling}
 firemode and weapon type encoded with tensorflow\\
 what is with the other params? is there a best practice? is it really necessary for a AE? 
 
 -) normalize intervals\\
 -) get rid of pseudo categorical data \\
 -) full/semi weapons?
+
+why feature scaling? the algorithm uses euclidian distance to measure errors, cost, etc and it is not helpful if there is a value which dominates the other values. for example, ROF would dominate every other value (because of the formula $Distance(P2-P1) = \sqrt{(x2-x1)^2+(y2-y1)^2}$\\
+therefore, apply feature scaling with either standardization $x_{stand}={\dfrac{x - mean(x)}{standard deviation (x)}}$ or normalization $x_{norm}={\dfrac{x - min(x)}{max(x)-min(x)}}$\\
+%see http://sebastianraschka.com/Articles/2014_about_feature_scaling.html#about-standardization
 
 \section{TODO: Weapon Generation Process Design}
 
