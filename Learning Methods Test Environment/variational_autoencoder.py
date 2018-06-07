@@ -62,14 +62,14 @@ def train(vae, weapon_data, batch_size=1, training_epochs=10, epoch_debug_step=5
             #compute average loss/cost
             avg_cost += cost / num_samples * batch_size
 
+        if save_model and save_model_every_epoch:
+            trained_model_path = vae.save_trained_model(trained_model_save_path)
+
         # Display logs per epoch step
         if epoch % epoch_debug_step == 0:
-            if save_model and save_model_every_epoch:
-                trained_model_path = vae.save_trained_model(trained_model_save_path)
-
-            log = "Epoch:"+ '%04d' % (epoch+1) + " - Cost:" + "{:.9f}".format(avg_cost) + " - "
+            log = "Epoch:"+ '%04d' % (epoch+1) + " - Cost:" + "{:.9f}".format(avg_cost)
             if get_log_as_string:
-                log_str += log
+                log_str += log + " - "
             else:
                 print(log)
 
@@ -77,9 +77,9 @@ def train(vae, weapon_data, batch_size=1, training_epochs=10, epoch_debug_step=5
         trained_model_path = vae.save_trained_model(trained_model_save_path)
 
     if save_model:
-        log = "Trained model saved! You can find it in '"+trained_model_path+"'" + " - "
+        log = "Trained model saved! You can find it in '"+trained_model_path+"'"
         if get_log_as_string:
-            log_str += log
+            log_str += log  + " - "
         else:
             print(log)
 
