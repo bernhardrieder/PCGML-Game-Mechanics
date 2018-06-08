@@ -225,10 +225,10 @@ However, as necessary as a well-prepared agenda are some methodological question
 
 
 \section{Thesis Overview}
-{\color{blue}Finish and write this section afterwards the thesis is finished!} {\color{red} [santi: I marked it blue, just to distinguish text that is a place-holder from actual text :)]}
+{\color{blue}Finish and write this section afterwards the thesis is finished!}
 
 \section{Target Audience}
-Advanced game developers who are interested in using PCGML game mechanics in their game are the core focus of this thesis. The theoretical part assumes a basic knowledge of game design and mechanics, PCG, \ac{AI}, and ML since it will not be explained everything in detail. In particular, specific topics of PCG and ML which contribute to the use of PCGML as a game mechanic will be discussed and handled in more detail.\\
+Advanced game developers who are interested in using PCGML game mechanics in their game are the core focus of this thesis. The theoretical part assumes knowledge of game design and mechanics, PCG, \ac{AI}, and ML since it will not be explained everything in detail. In particular, specific topics of PCG and ML which contribute to the use of PCGML as a game mechanic will be discussed and handled in more detail.\\
 The practical part concentrates primarily on the design and implementation of a game and game mechanics which makes it necessary for the reader to be familiar with these subjects. Particular algorithms used throughout the chapters will be covered in detail whereas basic algorithm knowledge is assumed. Furthermore, it does not require exceptional game development back-end skills since it addresses the use of the technique in game engines.
 
 %
@@ -444,7 +444,7 @@ Like regression algorithms, classification algorithms are applicable for imitati
 
 \subsection{Unsupervised Learning}
 In contrast to supervised learning, the base of unsupervised learning is a data-driven approach where the algorithm has no information about the meaning or value of any sample and needs to infer it automatically \cite{ml::book::developer}. Hence, an unsupervised learning algorithm gets so-called unlabeled data without having a specific relationship to the target output and finds unknown structures and pattern in that set \cite{ai::book}. Thinking about the apples and pears example, then an algorithm would try to detect that there are two different types or classes in the dataset instead of predicting if its an apple or a pear.\\
-Typical applications for unsupervised learning are object segmentation, similarity or pattern detection, automatic labeling, pre-training of supervised algorithms or pre-processing data such as data compression, noise smoothing or outlier detection \cite{ml::book::algorithms} \cite{ai::book}.
+Typical applications for unsupervised learning are object segmentation, similarity or pattern detection, automatic labeling, pre-training of supervised algorithms or preprocessing data such as data compression, noise smoothing or outlier detection \cite{ml::book::algorithms} \cite{ai::book}.
 
 \subsubsection{Clustering}
 For example, solves the previous described apples and pears problem by clustering apples and pears out of the given training set with features of both fruits. Based on the trained knowledge due to the training set, it can differentiate new and unknown samples into either apples, pears or an entirely new class \cite{ai::book}. In detail, clustering algorithms are looking for similarities between given features and values, and by doing this, they are inferring a relationship between them and thus separate specific classes \cite{ml::book::developer}.\\
@@ -457,11 +457,12 @@ During the last years, RL algorithms have been used to learn an AI how to play c
 
 \subsection{TODO: Generative versus Discriminative Models}
 {\color{blue}\todo[inline]{WRITE ABOUT IT!}}
+\cite{ml::book::nnProgrammingTF}
 
 
 
 \section{Development} \label{mlDevelopment}
-Developing an easy to use AI needs to be a well-structured and planned process. Especially, when using ML as a focus of interaction, it is even more important to be well-prepared. For this reason, this reason addresses some design considerations about developing user-friendly AI systems in games, as well as standard pitfalls to keep in mind and also possibilities of how to use ML algorithms in two commonly used game engines.
+Developing an easy to use AI needs to be a well-structured and planned process. Especially, when using ML as a focus of interaction, it is even more important to be well-prepared. For this reason, this reason addresses some design considerations about developing user-friendly AI systems in games, as well as standard pitfalls to keep in mind, standard procedures for data preprocessing and possibilities of how to use ML algorithms in two commonly used game engines.
 
 \subsection{Design Considerations}
 Someone cannot just develop a new novel AI system and expect to create a whole new experience — it needs to have a thoughtful plan how to achieve new experience \cite{ai::gameDesign}. Firstly, it is useful to think about the MDA framework, which was described in chapter \ref{gameMechanicsChapter}, because an AI-based game is often tightly integrated into its game mechanics and therefore it is necessary to make no mistakes in the first place to fulfill playability and emerging experience \cite{ai::gameDesign}. \\
@@ -489,6 +490,58 @@ Therefore, a right amount of information for the training of a machine learning 
 
 \subsubsection{Curse of Dimensionality}
 This problem often occurs when the training set is smaller than the number of feature variables, or also called the dimensions of a set, which are used to train a model \cite{ml::book::algorithms}. In this case, if the number of features increases then the performance of the model gets dramatically reduced \cite{ml::book::algorithms}. Possible ways to prevent and solve this problem are, e.g., a decrease of dimensions or providing more training data \cite{ml::book::algorithms}.
+
+\subsection{Data Preprocessing} \label{ML::dataPreprocessing}
+A standard procedure in ML is the technique of data preprocessing so that data values are consistent with each other. Table \ref{table::PCGML::devExample::data} shows a simple example data table which could be usable for the systems training. The table’s data can contain any discrete or continuous values which could originate from any decoded non-numerical data.
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{V\textsubscript{1}} & \textbf{V\textsubscript{2}} & \textbf{...} & \textbf{V\textsubscript{n}} \\ \hline\hline
+		 2.1         & A           & ...          & 100         \\ \hline
+		 5           & B           & ...          & 64          \\ \hline
+		 ...         & ...         & ...          & ...         \\ \hline
+		-0.958         & A         & ...          & 986         \\ \hline
+	\end{tabular}
+	\caption{Machine learning training data example.}
+	\label{table::PCGML::devExample::data}
+\end{table}
+
+\subsubsection{Encoding}
+For example, if the data set provides categorical data like the values for \textbf{V\textsubscript{2}}, as shown in table \ref{table::PCGML::devExample::data}, then this data needs to be encoded, so it does not differ from the other data values. This procedure is a standard procedure in the data preprocessing for training an ML model and can be done with so-called "One Hot Encoding." Table \ref{table::PCGML::devExample::oneHotEncoder} shows an example of what a One Hot Encoder does with categorical data as provided by \textbf{V\textsubscript{2}}. 
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\cline{1-1} \cline{3-5}
+		\textbf{V\textsubscript{2}} &  & \textbf{V\textsubscript{2}\textsuperscript{1}} & \textbf{V\textsubscript{2}\textsuperscript{2}} & \textbf{V\textsubscript{2}\textsuperscript{3}} \\ \hhline{=~===}
+		A           & $\longrightarrow$         & 1           & 0           & 0           \\ \cline{1-1} \cline{3-5} 
+		B           & $\longrightarrow$         & 0           & 1           & 0           \\ \cline{1-1} \cline{3-5} 
+		C           & $\longrightarrow$         & 0           & 0           & 1           \\ \cline{1-1} \cline{3-5} 
+	\end{tabular}
+	\caption{One Hot Encoder example.}
+	\label{table::PCGML::devExample::oneHotEncoder}
+\end{table}
+The new values generated by the One Hot Encoder replace the old categorizes values and the data set is ready to go. This encoding can cause the curse of dimension
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+		\hline
+		\textbf{V\textsubscript{1}} & \textbf{V\textsubscript{2}\textsuperscript{1}}& \textbf{V\textsubscript{2}\textsuperscript{2}}& \textbf{V\textsubscript{2}\textsuperscript{3}} & \textbf{...} & \textbf{V\textsubscript{n}} \\ \hline\hline
+		2.1         & 1   & 0   & 0       & ...          & 100         \\ \hline
+		5           & 0   & 1   & 0       & ...          & 64          \\ \hline
+		...         & ... & ... & ...     & ...          & ...         \\ \hline
+		-0.958      & 0   & 0   & 1       & ...          & 986         \\ \hline
+	\end{tabular}
+	\caption{Encoded training data example.}
+	\label{table::PCGML::devExample::data_encoded}
+\end{table}
+
+\subsubsection{Feature Scaling}
+{\color{blue}
+why feature scaling? the algorithm uses euclidian distance to measure errors, cost, etc and it is not helpful if there is a value which dominates the other values. for example, ROF would dominate every other value (because of the formula $Distance(P2-P1) = \sqrt{(x2-x1)^2+(y2-y1)^2}$\\
+therefore, apply feature scaling with either standardization $x_{stand}={\dfrac{x - mean(x)}{standard deviation (x)}}$ or normalization $x_{norm}={\dfrac{x - min(x)}{max(x)-min(x)}}$\\
+%see http://sebastianraschka.com/Articles/2014_about_feature_scaling.html#about-standardization
+}
 
 \subsection{Game Engine Plugins} \label{chapter::mlPluginsGameEngines}
 Indeed, all the different machine learning models or the one which applies to the game prototype of this thesis could be self-implemented. However, there are other people out there who have already implemented and improved their implementations which are a good starting point when implementing a PCGML game mechanic. As discussed at the beginning of the thesis, it is going to focus on an implementation in commonly used game engines which is the reason why to envisage the two most used free to use game engines nowadays.
@@ -568,9 +621,9 @@ The focus of PCGML is to generate new content based on training with existing co
 \end{itemize}
 
 \section{Development Considerations} \label{PCGML::devConsiderations}
-There are some unique development considerations to take when someone wants to make use of PCG via ML for game elements. In general, every design consideration, possible issue, pitfall and best practices described and discussed in chapters \ref{pcgDevelopment} and \ref{mlDevelopment} will apply when implementing PCGML algorithms. Furthermore, an initial examination of the data representation for the data used as the training set during the ML model’s training is necessary. On this account, the research of \citep{pcgml::paper} showed that every specific dataset has different but also shared possible training methods for the ML model to obtain excellent and practical generation results. The primarily used training models for their research purposes of using PCGML for, e.g., level generation were:
+There are some unique development considerations to take when someone wants to make use of PCG via ML for game elements. In general, every design consideration, possible issue, pitfall and best practices described and discussed in chapters \ref{pcgDevelopment} and \ref{mlDevelopment} will apply when implementing PCGML algorithms. Furthermore, an initial examination of the data representation for the data used as the training set during the ML model’s training is necessary. On this account, the research of \citep{pcgml::paper} showed that every specific dataset has different but also shared possible training methods for the ML model to obtain excellent and practical generation results. The primarily used training models for their research purposes of using PCGML for, e.g., level generation, are based on the paradigm of \ac{ANN} and were:
 \begin{itemize}
-	\item \ac{ANN}, \ac{CNN} or \ac{LSTM} networks
+	\item \ac{CNN} or \ac{LSTM} networks
 	\item Markov models such as N-grams or multi-dimensional Markov chains
 	\item Bayes models
 	\item Autoencoders
@@ -579,6 +632,7 @@ There are some unique development considerations to take when someone wants to m
 \end{itemize} 
 
 \subsection{TODO: Data Representation - IMPORTANT?!}
+\todo[inline]{its not important for me but i should mention it that it is helpful to differ between data representations when its used for level generation. but i wouldn't write a whole chapter about it}
 {\color{blue}One of the essential parts in implementing a PCGML system is the data representation of the data used as the training set in the ML model's training method. One can easily see a clear difference between the prediction of game elements and standard prediction problems such as the prediction of, e.g., an employee's monthly salary. The latter problem’s training set consists mostly of a simple data structure with some dependent values and a value which it needs to predict whereas this is not possible for a game element. In their survey focused on using PCGML systems mainly for a level generation, \citep{pcgml::paper} approached this problem with different techniques and tried different training models with different data representations. In general, they used the following three different data representations:
 \begin{enumerate}
 	\item \textbf{Sequences}: Represents a format for content which shows a natural order in its structure \cite{pcgml::paper}. For example, the Super Mario Bros. levels consist of this native format because the player can only traverse from left-to-right and it can be represented in a sequence \cite{pcgml::paper}. 
@@ -587,7 +641,7 @@ There are some unique development considerations to take when someone wants to m
 \end{enumerate}
 As mentioned before, every game element determines its data representation for which reason there is no general rule for the data representation. Nevertheless, the used data representations used in \citename{pcgml::paper}'s research offers a good starting point when developing the data representation for the game mechanic.}
 
-\section{Development Example}
+\section{TODO REWORK: Development Example}
 There is no right or wrong proceeding in the generation process for PCGML. PCGML is a very new paradigm in the content generation community, and its research results drive the right or wrong approaches. With this in mind, the PCGML generation process can take shape in any form, and someone should do what fits best for the problem.\\
 This section explains a development example of a generation process for continuous variables in a sequence data structure. However, chapter \ref{chapter::gamePrototype} provides the detailed development walk-through of a PCGML system. For this example, a data’s structure example for a PCGML system provides the figure \ref{fig::PCGML::devExample::sequenceBase}. As it is a sequence of data, there is a connection between all variables. In the figure, the node "S" represents a start value, and all other nodes represent data row values. 
 \begin{figure}[!htbp]
@@ -604,41 +658,11 @@ As shown in figure \ref{fig::PCGML::devExample::sequenceWithModels} with a dashe
 It is worth noting that values do not need just one predecessor, they can also have more than one predecessor which would change the dashed rectangles, ML models and their associated variables shown in figure \ref{fig::PCGML::devExample::sequenceWithModels}.
 
 \subsection{Data}
-First of all, it is necessary to come up with efficient and sufficient data for the system’s training. Depending on the variables, it does need more or less data for the model. For example, a data structure with around ten variables would probably need at least 100 data rows to train the ML model properly. In particular, there is an unofficial rule of thumb that the dataset should be ten time times bigger than the provided number of parameters. Table \ref{table::PCGML::devExample::data} shows a simple example data table which could be usable for the systems training. The table’s data can contain any discrete or continuous values which could originate from any decoded non-numerical data.
-\begin{table}[!htbp]
-	\centering
-	\begin{tabular}{|c||c|c|c|c|}
-		\hline
-		\textbf{S} & \textbf{V\textsubscript{1}} & \textbf{V\textsubscript{2}} & \textbf{...} & \textbf{V\textsubscript{n}} \\ \hline\hline
-		6           & 2.1         & A           & ...          & 100         \\ \hline
-		3           & 5           & B           & ...          & 64          \\ \hline
-		...         & ...         & ...         & ...          & ...         \\ \hline
-	\end{tabular}
-	\caption{PCGML example data table.}
-	\label{table::PCGML::devExample::data}
-\end{table}\\
-Furthermore, a standard procedure in ML is the technique of data pre-processing so that data values are consistent with each other. 
-\subsubsection{Encoding}
-For example, if the data set provides categorical data like the values for \textbf{V\textsubscript{2}}, as shown in table \ref{table::PCGML::devExample::data}, then this data needs to be encoded, so it does not differ from the other data values. This procedure is a standard procedure in the data pre-processing for training an ML model and can be done with so-called "One Hot Encoding." Table \ref{table::PCGML::devExample::oneHotEncoder} shows an example of what a One Hot Encoder does with categorical data as provided by \textbf{V\textsubscript{2}}. 
-\begin{table}[!htbp]
-	\centering
-	\begin{tabular}{|c|c|c|c|c|}
-		\cline{1-1} \cline{3-5}
-		\textbf{V\textsubscript{2}} &  & \textbf{V\textsubscript{2}\textsuperscript{1}} & \textbf{V\textsubscript{2}\textsuperscript{2}} & \textbf{V\textsubscript{2}\textsuperscript{3}} \\ \hhline{=~===}
-		A           & $\longrightarrow$         & 1           & 0           & 0           \\ \cline{1-1} \cline{3-5} 
-		B           & $\longrightarrow$         & 0           & 1           & 0           \\ \cline{1-1} \cline{3-5} 
-		C           & $\longrightarrow$         & 0           & 0           & 1           \\ \cline{1-1} \cline{3-5} 
-	\end{tabular}
-	\caption{One Hot Encoder example.}
-	\label{table::PCGML::devExample::oneHotEncoder}
-\end{table}
-The new values generated by the One Hot Encoder replace the old categorizes values and the data set is ready to go.
+First of all, it is necessary to come up with efficient and sufficient data for the system’s training. Depending on the variables, it does need more or less data for the model. For example, a data structure with around ten variables would probably need at least 100 data rows to train the ML model properly. In particular, there is an unofficial rule of thumb that the dataset should be ten time times bigger than the provided number of parameters. As soon as the data is available it needs to be preprocessed for the training. This preprocessing follows the steps described in chapter \ref{ML::dataPreprocessing}.
 
-\subsubsection{Feature Scaling}
-\todo[inline]{toooooodoooooooo}
 
 \subsection{Training}
-After provision and pre-processing of the dataset follows training. Training can happen with different training models as described in chapter \ref{PCGML::devConsiderations}. For example, the use of an ANN or Gaussian Mixture Model could be a suitable training model for a given example dataset. In the scenario of the given sequence data, the \ac{NN} would be trained for each pair of values to output the next value in the sequence. Figure \ref{fig::PCGML::devExample::NNbasic} shows an example for an \ac{NN} where the start value and the first variable are used to predict the second variable.
+After provision and preprocessing of the dataset follows training. Training can happen with different training models as described in chapter \ref{PCGML::devConsiderations}. For example, the use of an ANN or Gaussian Mixture Model could be a suitable training model for a given example dataset. In the scenario of the given sequence data, the \ac{NN} would be trained for each pair of values to output the next value in the sequence. Figure \ref{fig::PCGML::devExample::NNbasic} shows an example for an \ac{NN} where the start value and the first variable are used to predict the second variable.
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.25\linewidth]{PICs/neurons_legend.jpg}
@@ -997,9 +1021,6 @@ For sure, this data is used to train a model and generate weapons even if this t
 \subsection{TODO: Battlefield 1}
 {\color{blue}Investigation showed that the game Battlefield 1, released in 2016, uses more than 100 different weapons in the game. The setting of the game takes place in the World War One and therefore uses weapons of this period. Fortunately, gamers gathered all possible weapon statistics for Battlefield games on the community website "http://symthic.com" \cite{symthic::bf1stats}. They provide a list of all 140 weapons used in the game with very detailed description and statistics \cite{symthic::bf1stats}. In fact, they provide 40 parameters which describe every weapon \cite{symthic::bf1stats}. Further evaluation specializes these parameters to 18 most suitable variables for a weapon implementation. Nevertheless, one can use even more, less or other parameters to generate weapons and train the model and not all of them are always useful. Table \ref{battlefield::weaponStats} shows these most useful parameters for the weapon class and model training. As already indicated, the number of the variables is a subject to change during the implementation.}
 
-\section{TODO: Data Representation - IS THIS REALLY IMPORTANT?}
-{\color{blue}the provided data shows that its either sequence or graph data. as described in chapter 5.3.1, they have different advantages and disadvantages but they probably fit both. Compares to the PCGML generation example, it fits better with sequences but the best way to find out is to try both data structures within each method. --->> THERE IS NO NEED FOR A SPECIAL DATA REPRESENATION FOR THIS PROBLEM: THE DATA IS STRAIGHT FORWARD AND DOESNT NEED CONNECTIONS BETWEEN EACH OTHER: ALSO VAE TRIES TO LEARN THOSE CONNECTIONS}
-
 \section{TODO: Learning Methods}
 
 
@@ -1027,16 +1048,16 @@ GANs would also be a possible solution to this problem but there are difficult t
 In contrast, VAEs are easy to train, generating blurry results which is perfect, have nice probabilistic, and are easy to introduce.
 
 }
-\subsection{TODO: PCGML paper insights}
 LSTM, RNN are focused on timeline and sequenced data -> not suitable for the weapon problem
 
 \subsection{TODO: Suitable Models}
-
+generative models in specific, like GAN, VAE 
 
 
 
 \section{TODO: Learning Method Background}
 \subsection{TODO: \acl{ANN}}
+just if i'd implement the supervised approach
 \begin{comment} 
 
 \subsection{Neural Networks}
@@ -1119,9 +1140,7 @@ what is with the other params? is there a best practice? is it really necessary 
 -) get rid of pseudo categorical data \\
 -) full/semi weapons?
 
-why feature scaling? the algorithm uses euclidian distance to measure errors, cost, etc and it is not helpful if there is a value which dominates the other values. for example, ROF would dominate every other value (because of the formula $Distance(P2-P1) = \sqrt{(x2-x1)^2+(y2-y1)^2}$\\
-therefore, apply feature scaling with either standardization $x_{stand}={\dfrac{x - mean(x)}{standard deviation (x)}}$ or normalization $x_{norm}={\dfrac{x - min(x)}{max(x)-min(x)}}$\\
-%see http://sebastianraschka.com/Articles/2014_about_feature_scaling.html#about-standardization
+
 
 \section{TODO: Weapon Generation Process Design}
 
