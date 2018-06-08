@@ -1,4 +1,4 @@
-#based on https://github.com/tensorflow/tensorflow/blob/r1.8/tensorflow/contrib/learn/python/learn/datasets/mnist.py
+# Copyright 2018 - Bernhard Rieder - All Rights Reserved.
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -71,6 +71,7 @@ def debug_printDict(dictionary):
     for key, value in dictionary.items():
         print(key, "=", value)
 
+#based on https://github.com/tensorflow/tensorflow/blob/r1.8/tensorflow/contrib/learn/python/learn/datasets/mnist.py
 class DataSet:
     def __init__(self,
                  categorical_params,
@@ -284,6 +285,7 @@ class DataSet:
         return self.__standardize_columns(self._data_original), cols_to_vars_dict
 
 
+    #standardizes the values
     def __standardize_matrix(self, x_original):
         std = x_original.std(dtype=np.float64)
         mean = x_original.mean(dtype=np.float64)
@@ -292,6 +294,7 @@ class DataSet:
         self._standardized_min_values = np.amin(x_standardized)
         return x_standardized
 
+    #standardizes the values
     def __standardize_columns(self, x_original):
         std = x_original.std(dtype=np.float64, axis=0)
         mean = x_original.mean(dtype=np.float64, axis=0)
@@ -300,11 +303,13 @@ class DataSet:
         self._standardized_min_values = np.amin(x_standardized, axis=0)
         return x_standardized
 
+    #reverts the standardization
     def __un_standardize_matrix(self, x_standardized, x_original):
         std = x_original.std(dtype=np.float64)
         mean = x_original.mean(dtype=np.float64)
         return mean + (x_standardized*std)
 
+    #reverts the standardization
     def __un_standardize_columns(self, x_standardized, x_original):
         std = x_original.std(dtype=np.float64, axis=0)
         mean = x_original.mean(dtype=np.float64, axis=0)
