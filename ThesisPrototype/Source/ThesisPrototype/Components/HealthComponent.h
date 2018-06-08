@@ -21,7 +21,7 @@ protected:
 	uint8 TeamNumber;
 
 protected:
-	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = "Health Component")
+	UPROPERTY(BlueprintReadOnly, Category = "Health Component")
 	float Health;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health Component")
@@ -39,10 +39,6 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-	//this function triggers health change on the client
-	UFUNCTION()
-	void OnRep_Health(float oldHealth); // can have the old value as parameter!
 
 	UFUNCTION()
 	void handleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);

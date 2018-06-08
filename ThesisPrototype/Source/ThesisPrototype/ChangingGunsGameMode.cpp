@@ -116,8 +116,6 @@ void AChangingGunsGameMode::checkAnyPlayerAlive()
 		}
 	}
 
-	//TODO: change this to check if just 1 player is alive
-	//no player alive
 	gameOver();
 }
 

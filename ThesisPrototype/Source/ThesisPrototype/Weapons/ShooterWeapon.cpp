@@ -21,13 +21,6 @@ FAutoConsoleVariableRef CVARDebugWeaponDrawing (
 	ECVF_Cheat
 );
 
-void AShooterWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME_CONDITION(AShooterWeapon, HitScanTrace, COND_SkipOwner);
-}
-
 // Sets default values
 AShooterWeapon::AShooterWeapon()
 {
@@ -39,10 +32,6 @@ AShooterWeapon::AShooterWeapon()
 	BaseDamage = 20.f;
 	RateOfFire = 600; //bullets per minute
 	BulletSpread = 2.0f;
-
-	SetReplicates(true);
-	NetUpdateFrequency = 66.f;
-	MinNetUpdateFrequency = 33.f;
 }
 
 void AShooterWeapon::BeginPlay()
@@ -63,16 +52,9 @@ void AShooterWeapon::StopFire()
 	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
 }
 
-
 void AShooterWeapon::Fire()
 {
 	//trace the world, from pawn eyes to crosshair location
-
-	//if this weapon is on an client, then trigger fire also on server
-	if(Role < ROLE_Authority)
-	{
-		ServerFire();
-	}
 
 	//but fire anyway because you are a client
 	if(AActor* owner = GetOwner())
@@ -126,33 +108,9 @@ void AShooterWeapon::Fire()
 
 		PlayFireEffects(tracerEndPoint);
 
-		//if you are a character on or hosting the server then replicate your weapon effects to other players too
-		if(HasAuthority())
-		{
-			HitScanTrace.TraceEnd = tracerEndPoint;
-			HitScanTrace.SurfaceType = surfaceType;
-		}
-
 		lastFireTime = GetWorld()->TimeSeconds;
 	}
 
-}
-
-void AShooterWeapon::OnRep_HitScanTrace()
-{
-	// Play cosmetic FX
-	PlayFireEffects(HitScanTrace.TraceEnd);
-	PlayImpactEffects(HitScanTrace.SurfaceType, HitScanTrace.TraceEnd);
-}
-
-void AShooterWeapon::ServerFire_Implementation()
-{
-	Fire();
-}
-
-bool AShooterWeapon::ServerFire_Validate()
-{
-	return true;
 }
 
 void AShooterWeapon::PlayFireEffects(const FVector& FireImpactPoint)

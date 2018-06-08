@@ -20,8 +20,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Power Ups")
 	int32 TotalNumOfTicks;
 
-	UPROPERTY(ReplicatedUsing=OnRep_PowerUpActive)
+	UPROPERTY()
 	bool bIsPowerUpActive;
+
 public:
 	// Sets default values for this actor's properties
 	APowerUpActor();
@@ -29,11 +30,10 @@ public:
 protected:
 	void onTickPowerUp();
 
-	UFUNCTION()
-	void OnRep_PowerUpActive();
-
 	UFUNCTION(BlueprintImplementableEvent, Category = "Power Ups")
 	void OnPowerUpStateChanged(bool bNewIsActive);
+
+	void setPowerUpState(bool val);
 
 public:
 	void ActivatePowerUp(AActor* ActivatedFor);
@@ -46,6 +46,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Power Ups")
 	void OnExpired();
+
 
 protected:
 	FTimerHandle timerHandle_PowerUpTick;

@@ -4,20 +4,11 @@
 #include "TimerManager.h"
 #include "UnrealNetwork.h"
 
-void APowerUpActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(APowerUpActor, bIsPowerUpActive);
-}
-
 APowerUpActor::APowerUpActor()
 {
 	PowerUpInterval = 0.f;
 	TotalNumOfTicks = 0;
 	bIsPowerUpActive = false;
-
-	SetReplicates(true);
 }
 
 void APowerUpActor::onTickPowerUp()
@@ -28,8 +19,7 @@ void APowerUpActor::onTickPowerUp()
 
 	if(ticksProcessed >= TotalNumOfTicks)
 	{
-		bIsPowerUpActive = false;
-		OnRep_PowerUpActive();
+		setPowerUpState(false);
 
 		OnExpired();
 
@@ -37,17 +27,17 @@ void APowerUpActor::onTickPowerUp()
 	}
 }
 
-void APowerUpActor::OnRep_PowerUpActive()
+void APowerUpActor::setPowerUpState(bool val)
 {
-	OnPowerUpStateChanged(bIsPowerUpActive);
+	bIsPowerUpActive = val;
+	OnPowerUpStateChanged(val);
 }
 
 void APowerUpActor::ActivatePowerUp(AActor* ActivatedFor)
 {
 	OnActivated(ActivatedFor);
 
-	bIsPowerUpActive = true;
-	OnRep_PowerUpActive(); //server does not call this function automatically
+	setPowerUpState(true);
 
 	if (PowerUpInterval > 0.f)
 	{

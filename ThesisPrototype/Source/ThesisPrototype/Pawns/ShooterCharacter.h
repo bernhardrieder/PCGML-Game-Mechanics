@@ -41,10 +41,10 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
 	UHealthComponent* HealthComp;
 
-	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Player")
+	UPROPERTY(BlueprintReadOnly, Category = "Player")
 	bool bDied;
 
-	UPROPERTY(Replicated)
+	UPROPERTY()
 	AShooterWeapon* CurrentWeapon;
 
 public:

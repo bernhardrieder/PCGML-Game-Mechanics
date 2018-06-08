@@ -46,8 +46,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Explosive Barrel")
 	float DamageRadius;
 
-	UPROPERTY(ReplicatedUsing = OnRep_Exploded)
-	bool bExploded;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SFX")
 	USoundCue* ExplosionSound;
@@ -61,6 +59,6 @@ protected:
 	UFUNCTION()
 	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* healthDamageType, AController* InstigatedBy, AActor* DamageCauser);
 
-	UFUNCTION()
-	void OnRep_Exploded();
+protected:
+	bool bExploded = false;
 };

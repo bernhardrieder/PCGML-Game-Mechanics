@@ -15,11 +15,10 @@ class THESISPROTOTYPE_API AShooterProjectileWeapon : public AShooterWeapon
 	GENERATED_BODY()
 
 protected:
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	TSubclassOf<AActor> ProjectileClass;
-public:
 
+public:
 	void Fire() override;
 
 

@@ -14,20 +14,10 @@ FAutoConsoleVariableRef CVARDebuHealthComponents(
 	ECVF_Cheat
 );
 
-
-void UHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(UHealthComponent, Health);
-}
-
 UHealthComponent::UHealthComponent()
 {
 	DefaultHealth = 100;
 	TeamNumber = 255;
-
-	SetIsReplicated(true);
 }
 
 void UHealthComponent::Heal(float HealAmount)
@@ -52,20 +42,11 @@ void UHealthComponent::BeginPlay()
 	Super::BeginPlay();
 
 	//only hook if we are server
-	if(GetOwnerRole() == ROLE_Authority)
+	if (AActor* owner = GetOwner())
 	{
-		if (AActor* owner = GetOwner())
-		{
-			owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::handleTakeAnyDamage);
-		}
+		owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::handleTakeAnyDamage);
 	}
 	Health = DefaultHealth;
-}
-
-void UHealthComponent::OnRep_Health(float oldHealth)
-{
-	float damage = Health - oldHealth;
-	OnHealthChangedEvent.Broadcast(this, Health, damage, nullptr, nullptr, nullptr);
 }
 
 void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)

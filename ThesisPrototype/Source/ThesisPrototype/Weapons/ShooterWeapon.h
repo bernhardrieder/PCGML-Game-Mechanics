@@ -11,19 +11,6 @@ class UDamageType;
 class UParticleSystem;
 class UCameraShake;
 
-//contains information of a single hitscan weapon linetrace
-USTRUCT()
-struct FHitScanTrace
-{
-	GENERATED_BODY()
-
-public:
-	UPROPERTY()
-	TEnumAsByte<EPhysicalSurface> SurfaceType; //cant replicate normal enums! you need to convert them into bytes
-	UPROPERTY()
-	FVector_NetQuantize TraceEnd;
-};
-
 UCLASS()
 class THESISPROTOTYPE_API AShooterWeapon : public AActor
 {
@@ -68,9 +55,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon", meta = (ClampMin = 0.0f))
 	float BulletSpread;
 
-	UPROPERTY(ReplicatedUsing=OnRep_HitScanTrace)
-	FHitScanTrace HitScanTrace;
-
 public:
 	// Sets default values for this actor's properties
 	AShooterWeapon();
@@ -83,12 +67,6 @@ protected:
 	virtual void PlayFireEffects(const FVector& FireImpactPoint);
 	virtual void PlayImpactEffects(EPhysicalSurface surfaceType, const FVector& impactPoint);
 	virtual void Fire();
-
-	UFUNCTION(Server, Reliable, WithValidation)
-	virtual void ServerFire();
-
-	UFUNCTION()
-	void OnRep_HitScanTrace();
 
 protected:
 	FTimerHandle TimerHandle_TimeBetweenShots;

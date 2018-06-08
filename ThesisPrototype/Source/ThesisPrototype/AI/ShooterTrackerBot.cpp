@@ -64,14 +64,11 @@ void AShooterTrackerBot::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if(HasAuthority())
-	{
-		// find initial move to
-		nextPathPoint = GetNextPathPoint();
+	// find initial move to
+	nextPathPoint = GetNextPathPoint();
 
-		FTimerHandle timerHandle_CheckPowerLevel;
-		GetWorldTimerManager().SetTimer(timerHandle_CheckPowerLevel, this, &AShooterTrackerBot::onCheckNearbyBots, 1.f, true);
-	}
+	FTimerHandle timerHandle_CheckPowerLevel;
+	GetWorldTimerManager().SetTimer(timerHandle_CheckPowerLevel, this, &AShooterTrackerBot::onCheckNearbyBots, 1.f, true);
 
 	if (!materialInstance)
 	{
@@ -151,21 +148,18 @@ void AShooterTrackerBot::selfDestruct()
 	MeshComp->SetSimulatePhysics(false);
 	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	if(HasAuthority())
+	TArray<AActor*> ignoreDamageActors{ this };
+
+	const float actualDamage = ExplosionDamage + (ExplosionDamage * currentPowerLevel);
+
+	UGameplayStatics::ApplyRadialDamage(GetWorld(), actualDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
+
+	if (DebugTrackerBotDrawing > 0)
 	{
-		TArray<AActor*> ignoreDamageActors{ this };
-
-		const float actualDamage = ExplosionDamage + (ExplosionDamage * currentPowerLevel);
-
-		UGameplayStatics::ApplyRadialDamage(GetWorld(), actualDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
-
-		if (DebugTrackerBotDrawing > 0)
-		{
-			DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 12, FColor::Red, false, 2.f, 0, 2.f);
-		}
-
-		SetLifeSpan(2.0f);
+		DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 12, FColor::Red, false, 2.f, 0, 2.f);
 	}
+
+	SetLifeSpan(2.0f);
 }
 
 void AShooterTrackerBot::damageSelf()
@@ -226,7 +220,7 @@ void AShooterTrackerBot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if(HasAuthority() && !bExploded)
+	if(!bExploded)
 	{
 		float distanceToTarget = (GetActorLocation() - nextPathPoint).Size();
 		if (distanceToTarget <= RequiredDistanceToTarget)
@@ -269,11 +263,8 @@ void AShooterTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
 		AShooterCharacter* shooterChar = Cast<AShooterCharacter>(OtherActor);
 		if (shooterChar && !UHealthComponent::IsFriendly(OtherActor, this))
 		{
-			if(HasAuthority())
-			{
-				//Start self destruction sequence
-				GetWorldTimerManager().SetTimer(timerHandle_SelfDamage, this, &AShooterTrackerBot::damageSelf, SelfDamageInterval, true, 0.0f);
-			}
+			//Start self destruction sequence
+			GetWorldTimerManager().SetTimer(timerHandle_SelfDamage, this, &AShooterTrackerBot::damageSelf, SelfDamageInterval, true, 0.0f);
 
 			bStartedSelfDestruction = true;
 

@@ -29,16 +29,13 @@ class THESISPROTOTYPE_API AChangingGunsGameState : public AGameStateBase
 	GENERATED_BODY()
 	
 protected:
-	UPROPERTY(ReplicatedUsing = OnRep_WaveState, BlueprintReadOnly, Category = "Game State")
+	UPROPERTY(BlueprintReadOnly, Category = "Game State")
 	EWaveState WaveState;
 
 public:
 	void SetWaveState(EWaveState newState);
 
 protected:
-	UFUNCTION()
-	void OnRep_WaveState(EWaveState oldState);
-
 	UFUNCTION(BlueprintImplementableEvent, Category = "Game State")
 	void waveStateChanged(EWaveState newState, EWaveState oldState);
 };
