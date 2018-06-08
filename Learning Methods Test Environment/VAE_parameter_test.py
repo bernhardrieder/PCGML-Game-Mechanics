@@ -1,3 +1,4 @@
+# Copyright 2018 - Bernhard Rieder - All Rights Reserved.
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -10,6 +11,7 @@ import tensorflow as tf
 import variational_autoencoder as vae
 import weapon_data as weapons
 import gc
+import numpy as np
 
 tf.logging.set_verbosity(0)
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -53,7 +55,7 @@ def create_csv_file_and_write_header():
     date = datetime.now().strftime("%Y-%m-%d_%H-%M")
     path = "VAE_parameter_test/summary_"+date+".csv"
     csvfile = open(path, 'a', newline='')
-    header = ["avg_cost","avg_un_dist","avg_n_dist","l_r", "n_h_1",
+    header = ["avg_cost_rand","avg_cost","avg_un_dist","avg_n_dist","l_r", "n_h_1",
               "n_h_2", "n_z", "optimiz", "transf", "epochs", "batch",
              "n_cat", "n_num", "ammo_f", "train_log"]
     writer = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_NONE)
@@ -63,13 +65,12 @@ def create_csv_file_and_write_header():
 
 csv_file = None;
 cached_output = []
-def write_to_csv(avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1, n_h_2, n_z, opt, tran, epochs,
+def write_to_csv(avg_cost_rand, avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1, n_h_2, n_z, opt, tran, epochs,
                  batch, n_cat, n_num, ammo_f, train_log):
     global cached_output
 
-    cached_output.append([avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1,
-                     n_h_2, n_z, opt, tran, epochs, batch, n_cat,
-                     n_num, ammo_f, train_log])
+    cached_output.append([avg_cost_rand, avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1,
+                     n_h_2, n_z, opt, tran, epochs, batch, n_cat, n_num, ammo_f, train_log])
 
     if len(cached_output) % 10 == 0:
         write_cache()
@@ -95,6 +96,7 @@ def train_model(train_data, test_data, network_architecture, optimizer, transfer
                                    transfer_fct, batch_size, num_epochs, epoch_debug_step,
                                    get_log_as_string=True, save_model=False)
 
+    avg_cost_rand = 0.
     avg_cost = 0.
     avg_distance_norm = 0.
     avg_distance_unnorm = 0.
@@ -115,17 +117,22 @@ def train_model(train_data, test_data, network_architecture, optimizer, transfer
 
         distance_unnorm, distance_norm = sess.run((distance_unnorm, distance_norm))
 
+        sample = np.random.uniform(low=test_data.standardized_min_values, high=test_data.standardized_max_values, size=(1,network_architecture["n_input"]))
+        cost_rand = network.calculate_loss(sample)
+
         #compute average loss/cost
+        avg_cost_rand += cost_rand / num_samples
         avg_cost += cost / num_samples
         avg_distance_unnorm += distance_unnorm / num_samples
         avg_distance_norm += distance_norm / num_samples
 
     sess.close()
-    avg_cost = "{:.5f}".format(avg_cost)
-    avg_distance_unnorm = "{:.5f}".format(avg_distance_unnorm)
-    avg_distance_norm = "{:.9f}".format(avg_distance_norm)
+    avg_cost_rand = "{:.2f}".format(avg_cost_rand)
+    avg_cost = "{:.2f}".format(avg_cost)
+    avg_distance_unnorm = "{:.2f}".format(avg_distance_unnorm)
+    avg_distance_norm = "{:.2f}".format(avg_distance_norm)
 
-    return log, avg_cost, avg_distance_unnorm, avg_distance_norm
+    return log, avg_cost_rand, avg_cost, avg_distance_unnorm, avg_distance_norm
 
 
 def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2, n_z, batch_size, n_categorical,
@@ -139,7 +146,7 @@ def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2
     network_architecture['n_z'] = n_z
 
     opti = optimizer(learning_rate)
-    train_log, avg_cost, avg_un_dist, avg_n_dist = train_model(train_data, test_data, network_architecture, opti, transfer_fct, batch_size, n_epochs, 1)
+    train_log, avg_cost_random, avg_cost, avg_un_dist, avg_n_dist = train_model(train_data, test_data, network_architecture, opti, transfer_fct, batch_size, n_epochs, 1)
 
     l_r = str(learning_rate)
     n_h_1 = str(n_hidden_1)
@@ -153,7 +160,7 @@ def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2
     n_num = str(n_numerical)
     ammo_f = str(n_ammo_features)
 
-    write_to_csv(avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1, n_h_2, n_z, opt, tran,
+    write_to_csv(avg_cost_random, avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1, n_h_2, n_z, opt, tran,
                  epochs, batch, n_cat, n_num, ammo_f, train_log)
 
     gc.collect()
@@ -194,23 +201,23 @@ def run_constellations_test(hyperparams, dry_run=False):
 #__main__
 hyperparams = dict( \
                     learning_rate = [0.01],
-                    n_hidden_1 = [8],
-                    n_hidden_2 = [0],
-                    n_z = [2,8,4],
-                    batch_size = [2,1],
+                    n_hidden_1 = [12,10,8],
+                    n_hidden_2 = [13,11,9],
+                    n_z = [5,4,3,2],
+                    batch_size = [4,2,1],
                     n_categorical = [2],
-                    n_numerical = [11],
+                    n_numerical = [11,13],
                     n_ammo_features = [0],
-                    n_epochs = [50],
+                    n_epochs = [60],
                     transfer_fct = [
-                                    tf.tanh, #stick with that one
-                                    tf.nn.elu,
-                                    tf.nn.selu,
-                                    tf.nn.softsign
+                                    tf.tanh#, #stick with that one
+                                    #tf.nn.elu,
+                                    #tf.nn.selu,
+                                    #tf.nn.softsign
                                    ],
                     optimizer = [
                                     tf.train.AdamOptimizer, #stick with that one
-                                    tf.train.RMSPropOptimizer,
+                                    #tf.train.RMSPropOptimizer,
                                     #tf.train.FtrlOptimizer,
                                     #tf.train.AdagradOptimizer
                                 ]
