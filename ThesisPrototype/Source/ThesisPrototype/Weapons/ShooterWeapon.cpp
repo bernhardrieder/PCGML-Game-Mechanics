@@ -77,6 +77,7 @@ void AShooterWeapon::StartMagazineReloading()
 	const int bulletDifference = BulletsPerMagazine - m_currentBulletsInMagazine;
 	const float reloadTimeNeeded = bulletDifference == BulletsPerMagazine ? ReloadTimeEmptyMagazine : m_singleBulletReloadTime * bulletDifference;
 	GetWorldTimerManager().SetTimer(TimerHandle_ReloadMagazine, this, &AShooterWeapon::reloadMagazine, reloadTimeNeeded);
+	OnReloadStateChangedEvent.Broadcast(m_bIsReloading, reloadTimeNeeded, m_currentBulletsInMagazine);
 }
 
 void AShooterWeapon::reloadMagazine()
@@ -91,17 +92,20 @@ void AShooterWeapon::reloadMagazine()
 	OnAmmoChangedEvent.Broadcast(m_availableBulletsLeft, m_currentBulletsInMagazine);
 	m_bIsAmmoLeftInMagazine = m_currentBulletsInMagazine > 0;
 	m_bIsReloading = false;
+	OnReloadStateChangedEvent.Broadcast(m_bIsReloading, 0.f, m_currentBulletsInMagazine);
 }
 
 void AShooterWeapon::startStockReloading()
 {
 	m_bIsReloading = true;
 	GetWorldTimerManager().SetTimer(TimerHandle_ReloadStock, this, &AShooterWeapon::reloadStock, m_singleBulletReloadTime);
+	OnReloadStateChangedEvent.Broadcast(m_bIsReloading, m_singleBulletReloadTime, m_currentBulletsInMagazine);
 }
 
 void AShooterWeapon::reloadStock()
 {
 	m_bIsReloading = false;
+	OnReloadStateChangedEvent.Broadcast(m_bIsReloading, 0.f, m_currentBulletsInMagazine);
 }
 
 void AShooterWeapon::Equip()

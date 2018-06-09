@@ -7,6 +7,8 @@
 #include "ShooterWeapon.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAmmoChangedEvent, int, overallAvailableBulletsLeftToShoot, int, amountOfBulletsLeftInMagazine);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnReloadStateChangedEvent, bool, isReloading, float, timeToFinish, int, amountOfBulletsInMagazine);
+
 
 class USkeletalMeshComponent;
 class UDamageType;
@@ -77,10 +79,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float BulletSpreadDecrease;
 
-	UPROPERTY(EditdefaultsOnly, Category="Weapon")
+	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category="Weapon")
 	int BulletsPerMagazine;
 
-	UPROPERTY(EditdefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	int AvailableMagazines;
 
 	// amount of bullets which are fired per shot. e.g. a shotgun has 12
@@ -107,6 +109,15 @@ protected:
 
 	UPROPERTY(BlueprintAssignable, Category="Weapon")
 	FOnAmmoChangedEvent OnAmmoChangedEvent;
+
+	UPROPERTY(BlueprintAssignable, Category = "Weapon")
+	FOnReloadStateChangedEvent OnReloadStateChangedEvent;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon", meta=(DisplayName="Bullets in magazine"))
+	int m_currentBulletsInMagazine = 0;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon", meta=(DisplayName="Available bullets left to shoot"))
+	int m_availableBulletsLeft = 0;
 
 public:
 	// Sets default values for this actor's properties
@@ -151,9 +162,7 @@ protected:
 	float timeBetweenShots;
 
 	float m_singleBulletReloadTime;
-	
-	int m_currentBulletsInMagazine = 0;
-	int m_availableBulletsLeft = 0;
+
 
 	FVector2D m_currentRecoil = FVector2D::ZeroVector;
 };
