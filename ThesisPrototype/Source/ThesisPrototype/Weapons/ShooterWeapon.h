@@ -33,90 +33,96 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USkeletalMeshComponent* MeshComp;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	TSubclassOf<UDamageType> DamageType;
-
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	FName MuzzleSocketName;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	FName TracerTargetName;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|FX")
 	UParticleSystem* MuzzleEffect;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|FX")
 	UParticleSystem* DefaultImpactEffect;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|FX")
 	UParticleSystem* FleshImpactEffect;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|FX")
 	UParticleSystem* TracerEffect;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<UCameraShake> FireCamShake;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	float BaseDamage;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
+	TSubclassOf<UDamageType> DamageType;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	UCurveFloat* BaseDamageCurve;
+	//x = damage until distance x and y = damage at distance y of specified distance range
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
+	FVector2D DamageRange;
+
+	//x = begin and y = end of damage reduction
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
+	FVector2D DamageReductionAtDistance;
+
+	//x = damage, y = distance
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon|Damage")
+	UCurveFloat* DamageCurve;
 
 	// bullets per minute fired
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float RateOfFire;
 
 	// bullet spread in degrees */
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon", meta = (ClampMin = 0.0f))
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Ammo", meta = (ClampMin = 0.0f))
 	float BulletSpread;
 
 	// increase of spread per fired bullet
-	UPROPERTY(EditDefaultsOnly, Category="Weapon")
+	UPROPERTY(EditDefaultsOnly, Category="Weapon|Ammo")
 	float BulletSpreadIncrease;
 
 	// bullet spread decrease in degree, applied per second
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Ammo")
 	float BulletSpreadDecrease;
 
-	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category="Weapon")
+	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category="Weapon|Ammo")
 	int BulletsPerMagazine;
 
-	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category = "Weapon|Ammo")
 	int AvailableMagazines;
 
 	// amount of bullets which are fired per shot. e.g. a shotgun has 12
-	UPROPERTY(EditDefaultsOnly, Category="Weapon")
+	UPROPERTY(EditDefaultsOnly, Category="Weapon|Ammo")
 	int BulletsPerShot;
 
 	// reload time of an empty magazine in seconds
-	UPROPERTY(EditDefaultsOnly, Category="Weapon")
+	UPROPERTY(EditDefaultsOnly, Category="Weapon|Ammo")
 	float ReloadTimeEmptyMagazine;
 
 	// random recoil range in degree
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Recoil")
 	FVector RandomRecoilRange;
 
 	// recoil decrease 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Recoil")
 	float RecoilDecrease;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	EFireMode FireMode;
 
-	UPROPERTY(EditAnywhere, Category="Weapon")
+	UPROPERTY(EditAnywhere, Category="Weapon|Ammo")
 	bool bUnlimitiedBullets;
 
-	UPROPERTY(BlueprintAssignable, Category="Weapon")
+	UPROPERTY(BlueprintAssignable, Category="Weapon|Events")
 	FOnAmmoChangedEvent OnAmmoChangedEvent;
 
-	UPROPERTY(BlueprintAssignable, Category = "Weapon")
+	UPROPERTY(BlueprintAssignable, Category = "Weapon|Events")
 	FOnReloadStateChangedEvent OnReloadStateChangedEvent;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Weapon", meta=(DisplayName="Bullets in magazine"))
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon|Ammo", meta=(DisplayName="Bullets in Magazine"))
 	int m_currentBulletsInMagazine = 0;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Weapon", meta=(DisplayName="Available bullets left to shoot"))
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon|Ammo", meta=(DisplayName="Available Bullets Left to Shoot"))
 	int m_availableBulletsLeft = 0;
 
 public:
@@ -127,19 +133,11 @@ public:
 	virtual void StopFire();
 	virtual void StartMagazineReloading();
 
-	UFUNCTION(BlueprintCallable, Category="Weapon")
-	FORCEINLINE int GetAmountOfBulletsLeftInMagazine() { return m_currentBulletsInMagazine;}
-
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	FORCEINLINE int GetAmountOfBulletsLeftToShoot() { return m_availableBulletsLeft; }
-
 	//call when the weapon is used 
 	virtual void Equip();
 
 	//call when the weapon is stored
 	virtual void Disarm();
-
-
 
 protected:
 	virtual void BeginPlay() override;

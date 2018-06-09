@@ -12,6 +12,7 @@
 #include "ChangingGuns.h"
 #include "TimerManager.h"
 #include "UnrealNetwork.h"
+#include "Curves/CurveFloat.h"
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVARDebugWeaponDrawing (
@@ -27,9 +28,10 @@ AShooterWeapon::AShooterWeapon()
 	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
 	RootComponent = MeshComp;
 
+	DamageCurve = CreateDefaultSubobject<UCurveFloat>(TEXT("DamageCurve"));
+
 	MuzzleSocketName = "MuzzleSocket";
 	TracerTargetName = "BeamEnd";
-	BaseDamage = 20.f;
 	RateOfFire = 600; //bullets per minute
 	BulletSpread = 2.0f;
 	AvailableMagazines = 3;
@@ -38,6 +40,9 @@ AShooterWeapon::AShooterWeapon()
 	ReloadTimeEmptyMagazine = 3.f;
 	FireMode = EFireMode::Automatic;
 	bUnlimitiedBullets = false;
+
+	DamageRange = FVector2D(20.f, 5.f);
+	DamageReductionAtDistance = FVector2D(1000.f, 10000.f); // 10m to 100m
 
 	m_singleBulletReloadTime = ReloadTimeEmptyMagazine / BulletsPerMagazine;
 }
@@ -49,6 +54,11 @@ void AShooterWeapon::BeginPlay()
 	timeBetweenShots = 60.f / RateOfFire;
 	m_currentBulletsInMagazine = BulletsPerMagazine;
 	m_availableBulletsLeft = AvailableMagazines * BulletsPerMagazine;
+
+	DamageCurve->FloatCurve.AddKey(0.f, DamageRange.X);
+	DamageCurve->FloatCurve.AddKey(DamageReductionAtDistance.X, DamageRange.X);
+	DamageCurve->FloatCurve.AddKey(DamageReductionAtDistance.Y, DamageRange.Y);
+	DamageCurve->FloatCurve.AddKey(DamageReductionAtDistance.Y * 100, DamageRange.Y);
 }
 
 void AShooterWeapon::StartFire()
@@ -158,7 +168,7 @@ void AShooterWeapon::Fire()
 		if(GetWorld()->LineTraceSingleByChannel(hitResult, eyeLocation, traceEnd, COLLISION_WEAPON, queryParams))
 		{
 			//is blocking hit! -> process damage
-			float actualDamage = BaseDamage;
+			float actualDamage = DamageCurve->GetFloatValue(hitResult.Distance);
 
 			AActor* hitActor = hitResult.GetActor();
 
