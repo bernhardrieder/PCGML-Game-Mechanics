@@ -32,28 +32,98 @@ AShooterWeapon::AShooterWeapon()
 	BaseDamage = 20.f;
 	RateOfFire = 600; //bullets per minute
 	BulletSpread = 2.0f;
+	AvailableMagazines = 3;
+	BulletsPerMagazine = 30;
+	BulletsPerShot = 1;
+	ReloadTimeEmptyMagazine = 3.f;
+	FireMode = EFireMode::Automatic;
+	bUnlimitiedBullets = false;
+
+	m_singleBulletReloadTime = ReloadTimeEmptyMagazine / BulletsPerMagazine;
 }
 
 void AShooterWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	timeBetweenShots = 60 / RateOfFire;
+	timeBetweenShots = 60.f / RateOfFire;
+	m_currentBulletsInMagazine = BulletsPerMagazine;
+	m_availableBulletsLeft = AvailableMagazines * BulletsPerMagazine;
 }
 
 void AShooterWeapon::StartFire()
 {
+	if (m_bIsReloading) 
+	{
+		return;
+	}
 	float firstDelay = FMath::Max(lastFireTime + timeBetweenShots - GetWorld()->TimeSeconds, 0.f);
-	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &AShooterWeapon::Fire, timeBetweenShots, true, firstDelay);
+	GetWorldTimerManager().SetTimer(TimerHandle_AutomaticFire, this, &AShooterWeapon::Fire, timeBetweenShots, true, firstDelay);
 }
 
 void AShooterWeapon::StopFire()
 {
-	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
+	GetWorldTimerManager().ClearTimer(TimerHandle_AutomaticFire);
+}
+
+void AShooterWeapon::StartMagazineReloading()
+{
+	if(m_bIsReloading || m_availableBulletsLeft <= 0)
+	{
+		return;
+	}
+	m_bIsReloading = true;
+	GetWorldTimerManager().ClearTimer(TimerHandle_ReloadStock);
+	const int bulletDifference = BulletsPerMagazine - m_currentBulletsInMagazine;
+	const float reloadTimeNeeded = bulletDifference == BulletsPerMagazine ? ReloadTimeEmptyMagazine : m_singleBulletReloadTime * bulletDifference;
+	GetWorldTimerManager().SetTimer(TimerHandle_ReloadMagazine, this, &AShooterWeapon::reloadMagazine, reloadTimeNeeded);
+}
+
+void AShooterWeapon::reloadMagazine()
+{
+	const int bulletDifference = BulletsPerMagazine - m_currentBulletsInMagazine;
+	m_currentBulletsInMagazine = m_availableBulletsLeft >= BulletsPerMagazine ? BulletsPerMagazine : m_availableBulletsLeft;
+	if(!bUnlimitiedBullets)
+	{
+		m_availableBulletsLeft -= bulletDifference;
+	}
+
+	OnAmmoChangedEvent.Broadcast(m_availableBulletsLeft, m_currentBulletsInMagazine);
+	m_bIsAmmoLeftInMagazine = m_currentBulletsInMagazine > 0;
+	m_bIsReloading = false;
+}
+
+void AShooterWeapon::startStockReloading()
+{
+	m_bIsReloading = true;
+	GetWorldTimerManager().SetTimer(TimerHandle_ReloadStock, this, &AShooterWeapon::reloadStock, m_singleBulletReloadTime);
+}
+
+void AShooterWeapon::reloadStock()
+{
+	m_bIsReloading = false;
+}
+
+void AShooterWeapon::Equip()
+{
+}
+
+void AShooterWeapon::Disarm()
+{
+	GetWorldTimerManager().ClearTimer(TimerHandle_AutomaticFire);
+	GetWorldTimerManager().ClearTimer(TimerHandle_ReloadMagazine);
+	GetWorldTimerManager().ClearTimer(TimerHandle_ReloadStock);
+	m_bIsReloading = false;
 }
 
 void AShooterWeapon::Fire()
 {
+	if(!m_bIsAmmoLeftInMagazine)
+	{
+		//play some 'click click click' out of ammo sound
+		StopFire();
+		return;
+	}
 	//trace the world, from pawn eyes to crosshair location
 
 	//but fire anyway because you are a client
@@ -109,6 +179,23 @@ void AShooterWeapon::Fire()
 		PlayFireEffects(tracerEndPoint);
 
 		lastFireTime = GetWorld()->TimeSeconds;
+
+		if(!bUnlimitiedBullets)
+		{
+			--m_currentBulletsInMagazine;
+		}
+		m_bIsAmmoLeftInMagazine = m_currentBulletsInMagazine > 0;
+		OnAmmoChangedEvent.Broadcast(m_availableBulletsLeft, m_currentBulletsInMagazine);
+
+		if (FireMode == EFireMode::SemiAutomatic || FireMode == EFireMode::SingleFire)
+		{
+			StopFire();
+		}
+
+		if (m_bIsAmmoLeftInMagazine && FireMode == EFireMode::SingleFire)
+		{
+			startStockReloading();
+		}
 	}
 
 }

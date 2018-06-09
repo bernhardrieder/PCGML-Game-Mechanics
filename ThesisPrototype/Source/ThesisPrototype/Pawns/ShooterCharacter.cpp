@@ -61,6 +61,7 @@ void AShooterCharacter::BeginPlay()
 	{
 		CurrentWeapon->SetOwner(this);
 		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
+		OnCurrentWeaponChangedEvent.Broadcast(CurrentWeapon);
 	}
 }
 
@@ -92,6 +93,14 @@ void AShooterCharacter::BeginZoom()
 void AShooterCharacter::EndZoom()
 {
 	bWantsToZoom = false;
+}
+
+void AShooterCharacter::reloadWeapon()
+{
+	if(CurrentWeapon)
+	{
+		CurrentWeapon->StartMagazineReloading();
+	}
 }
 
 void AShooterCharacter::StartFire()
@@ -156,5 +165,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AShooterCharacter::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AShooterCharacter::StopFire);
+
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AShooterCharacter::reloadWeapon);
 }
 

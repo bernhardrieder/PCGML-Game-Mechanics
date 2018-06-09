@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "ShooterCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentWeaponChangedEvent, class AShooterWeapon*, newCurrentWeapon);
 
 class UCameraComponent;
 class USpringArmComponent;
@@ -47,6 +48,9 @@ protected:
 	UPROPERTY()
 	AShooterWeapon* CurrentWeapon;
 
+	UPROPERTY(BlueprintAssignable, Category = "Player")
+	FOnCurrentWeaponChangedEvent OnCurrentWeaponChangedEvent;
+
 public:
 	// Sets default values for this character's properties
 	AShooterCharacter();
@@ -68,9 +72,12 @@ protected:
 	void EndCrouch();
 	void BeginZoom();
 	void EndZoom();
+	void reloadWeapon();
 
 	UFUNCTION()
 	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
+
+
 
 public:
 	// Called every frame
