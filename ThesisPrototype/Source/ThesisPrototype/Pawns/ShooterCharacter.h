@@ -42,6 +42,10 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player|Required Mesh Sockets")
 	FName SubMachineGunAttachSocketName;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player|Required Mesh Sockets")
+	FName PistolAttachSocketName;
+
+
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
 	UHealthComponent* HealthComp;
 
@@ -80,7 +84,7 @@ protected:
 	UFUNCTION()
 	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
-
+	FName getSocketNameFor(const AShooterWeapon* weapon) const;
 
 public:
 	// Called every frame

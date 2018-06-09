@@ -35,6 +35,7 @@ AShooterCharacter::AShooterCharacter()
 	ZoomInterpSpeed = 20.0f;
 	WeaponAttachSocketName = "WeaponSocket";
 	SubMachineGunAttachSocketName = "SMGSocket";
+	PistolAttachSocketName = "PistolSocket";
 }
 
 FVector AShooterCharacter::GetPawnViewLocation() const
@@ -61,11 +62,28 @@ void AShooterCharacter::BeginPlay()
 	if (CurrentWeapon)
 	{
 		CurrentWeapon->SetOwner(this);
-		const FName socketName = CurrentWeapon->GetType() == EWeaponType::SubMachineGun ? SubMachineGunAttachSocketName : WeaponAttachSocketName;
-		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, socketName);
+		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, getSocketNameFor(CurrentWeapon));
 		OnCurrentWeaponChangedEvent.Broadcast(CurrentWeapon);
 	}
 }
+
+FName AShooterCharacter::getSocketNameFor(const AShooterWeapon* weapon) const
+{
+	if (!weapon)
+		return WeaponAttachSocketName;
+
+	switch(weapon->GetType())
+	{
+		case EWeaponType::Pistol: return PistolAttachSocketName;
+		case EWeaponType::SubMachineGun: return SubMachineGunAttachSocketName;
+		case EWeaponType::Shotgun:
+		case EWeaponType::HeavyMachineGun:
+		case EWeaponType::SniperRifle:
+		case EWeaponType::Rifle: 
+		default: return WeaponAttachSocketName;
+	}
+}
+
 
 void AShooterCharacter::MoveForward(float Value)
 {
