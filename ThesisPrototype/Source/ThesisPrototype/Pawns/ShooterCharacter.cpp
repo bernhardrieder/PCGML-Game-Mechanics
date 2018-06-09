@@ -34,6 +34,7 @@ AShooterCharacter::AShooterCharacter()
 	ZoomedFOV = 65.0;
 	ZoomInterpSpeed = 20.0f;
 	WeaponAttachSocketName = "WeaponSocket";
+	SubMachineGunAttachSocketName = "SMGSocket";
 }
 
 FVector AShooterCharacter::GetPawnViewLocation() const
@@ -60,7 +61,8 @@ void AShooterCharacter::BeginPlay()
 	if (CurrentWeapon)
 	{
 		CurrentWeapon->SetOwner(this);
-		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
+		const FName socketName = CurrentWeapon->GetType() == EWeaponType::SubMachineGun ? SubMachineGunAttachSocketName : WeaponAttachSocketName;
+		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, socketName);
 		OnCurrentWeaponChangedEvent.Broadcast(CurrentWeapon);
 	}
 }

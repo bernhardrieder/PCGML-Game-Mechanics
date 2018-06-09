@@ -36,8 +36,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	TSubclassOf<AShooterWeapon> StarterWeaponClass;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player|Required Mesh Sockets")
 	FName WeaponAttachSocketName;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player|Required Mesh Sockets")
+	FName SubMachineGunAttachSocketName;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
 	UHealthComponent* HealthComp;

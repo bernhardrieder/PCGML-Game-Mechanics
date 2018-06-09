@@ -15,6 +15,18 @@ class UDamageType;
 class UParticleSystem;
 class UCameraShake;
 class UCurveFloat;
+struct FRuntimeFloatCurve;
+
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	Pistol,
+	Shotgun,
+	SubMachineGun,
+	Rifle,
+	SniperRifle,
+	HeavyMachineGun
+};
 
 UENUM(BlueprintType)
 enum class EFireMode : uint8
@@ -57,17 +69,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
 	TSubclassOf<UDamageType> DamageType;
 
-	//x = damage until distance x and y = damage at distance y of specified distance range
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
-	FVector2D DamageRange;
-
-	//x = begin and y = end of damage reduction
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
-	FVector2D DamageReductionAtDistance;
-
 	//x = damage, y = distance
-	UPROPERTY(BlueprintReadOnly, Category = "Weapon|Damage")
-	UCurveFloat* DamageCurve;
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Damage")
+	FRuntimeFloatCurve DamageCurve;
 
 	// bullets per minute fired
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
@@ -125,6 +129,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon|Ammo", meta=(DisplayName="Available Bullets Left to Shoot"))
 	int m_availableBulletsLeft = 0;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	EWeaponType Type;
+
 public:
 	// Sets default values for this actor's properties
 	AShooterWeapon();
@@ -138,6 +145,8 @@ public:
 
 	//call when the weapon is stored
 	virtual void Disarm();
+
+	FORCEINLINE EWeaponType GetType() const { return Type; }
 
 protected:
 	virtual void BeginPlay() override;

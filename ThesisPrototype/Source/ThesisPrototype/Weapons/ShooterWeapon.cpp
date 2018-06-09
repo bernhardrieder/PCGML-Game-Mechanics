@@ -28,8 +28,6 @@ AShooterWeapon::AShooterWeapon()
 	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
 	RootComponent = MeshComp;
 
-	DamageCurve = CreateDefaultSubobject<UCurveFloat>(TEXT("DamageCurve"));
-
 	MuzzleSocketName = "MuzzleSocket";
 	TracerTargetName = "BeamEnd";
 	RateOfFire = 600; //bullets per minute
@@ -41,10 +39,12 @@ AShooterWeapon::AShooterWeapon()
 	FireMode = EFireMode::Automatic;
 	bUnlimitiedBullets = false;
 
-	DamageRange = FVector2D(20.f, 5.f);
-	DamageReductionAtDistance = FVector2D(1000.f, 10000.f); // 10m to 100m
+	DamageCurve.GetRichCurve()->AddKey(1000.f, 20.f);
+	DamageCurve.GetRichCurve()->AddKey(10000.f, 5.f);
 
 	m_singleBulletReloadTime = ReloadTimeEmptyMagazine / BulletsPerMagazine;
+
+	Type = EWeaponType::Rifle;
 }
 
 void AShooterWeapon::BeginPlay()
@@ -54,11 +54,6 @@ void AShooterWeapon::BeginPlay()
 	timeBetweenShots = 60.f / RateOfFire;
 	m_currentBulletsInMagazine = BulletsPerMagazine;
 	m_availableBulletsLeft = AvailableMagazines * BulletsPerMagazine;
-
-	DamageCurve->FloatCurve.AddKey(0.f, DamageRange.X);
-	DamageCurve->FloatCurve.AddKey(DamageReductionAtDistance.X, DamageRange.X);
-	DamageCurve->FloatCurve.AddKey(DamageReductionAtDistance.Y, DamageRange.Y);
-	DamageCurve->FloatCurve.AddKey(DamageReductionAtDistance.Y * 100, DamageRange.Y);
 }
 
 void AShooterWeapon::StartFire()
@@ -168,7 +163,7 @@ void AShooterWeapon::Fire()
 		if(GetWorld()->LineTraceSingleByChannel(hitResult, eyeLocation, traceEnd, COLLISION_WEAPON, queryParams))
 		{
 			//is blocking hit! -> process damage
-			float actualDamage = DamageCurve->GetFloatValue(hitResult.Distance);
+			float actualDamage = DamageCurve.GetRichCurveConst()->Eval(hitResult.Distance);
 
 			AActor* hitActor = hitResult.GetActor();
 
