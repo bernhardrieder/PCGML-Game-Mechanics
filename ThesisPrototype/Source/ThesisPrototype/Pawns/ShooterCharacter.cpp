@@ -57,7 +57,7 @@ void AShooterCharacter::BeginPlay()
 	for(const TSubclassOf<AShooterWeapon> weaponClass : StarterWeaponClasses)
 	{
 		AShooterWeapon* starterWeapon = GetWorld()->SpawnActor<AShooterWeapon>(weaponClass, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
-		AddWeapon(starterWeapon);
+		addWeapon(starterWeapon);
 	}
 	//(actually, that'd be an axis input)
 	switchWeapon(1.0f);
@@ -201,7 +201,7 @@ void AShooterCharacter::StopFire()
 	}
 }
 
-void AShooterCharacter::AddWeapon(AShooterWeapon* weapon)
+void AShooterCharacter::addWeapon(AShooterWeapon* weapon)
 {
 	if(weapon)
 	{
@@ -223,6 +223,22 @@ void AShooterCharacter::removeWeapon(AShooterWeapon* weapon)
 			weapon->Destroy();
 		}
 	}
+}
+
+void AShooterCharacter::dismantleEquippedWeaponAndGenerateNew()
+{
+	disarmWeapon(m_equippedWeapon);
+	AShooterWeapon* dismantle = m_equippedWeapon;
+	m_equippedWeapon = nullptr;
+	removeWeapon(dismantle);
+
+	//todo: change the code to use one of a weapon factory class or something similar
+	FActorSpawnParameters spawnParams;
+	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	//assume we have more than 0 defined classes because thats just a stub
+	AShooterWeapon* weapon = GetWorld()->SpawnActor<AShooterWeapon>(StarterWeaponClasses[0], FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
+	addWeapon(weapon);
+	equipWeapon(weapon);
 }
 
 void AShooterCharacter::onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -280,6 +296,6 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("SwitchToLastEquippedWeapon", IE_Pressed, this, &AShooterCharacter::switchToLastEquipedWeapon);
 	PlayerInputComponent->BindAxis("SwitchWeapon", this, &AShooterCharacter::switchWeapon);
-
+	PlayerInputComponent->BindAction("DismantleEquippedWeaponAndGenerateNew", IE_Pressed, this, &AShooterCharacter::dismantleEquippedWeaponAndGenerateNew);
 }
 

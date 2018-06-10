@@ -56,7 +56,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player")
 	void StopFire();
 
-	void AddWeapon(AShooterWeapon* weapon);
 
 protected:
 	// Called when the game starts or when spawned
@@ -69,12 +68,14 @@ protected:
 	void BeginZoom();
 	void EndZoom();
 	void reloadWeapon();
+	void addWeapon(AShooterWeapon* weapon);
 	void equipWeapon(AShooterWeapon* weapon);
 	void disarmWeapon(AShooterWeapon* weapon);
 	//switches to next weapon if val is positive otherwise to the previous weapon
 	void switchWeapon(float val);
 	void switchToLastEquipedWeapon();
 	void removeWeapon(AShooterWeapon* weapon);
+	void dismantleEquippedWeaponAndGenerateNew();
 
 
 	UFUNCTION()
