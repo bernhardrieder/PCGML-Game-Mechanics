@@ -11,6 +11,7 @@
 #include "ChangingGuns.h"
 #include "Components/HealthComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -49,6 +50,9 @@ void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	m_maxWalkSpeedDefault = GetCharacterMovement()->MaxWalkSpeed;
+	m_maxWalkSpeedCrouchedDefault = GetCharacterMovement()->MaxWalkSpeedCrouched;
+
 	DefaultFOV = CameraComp->FieldOfView;
 	HealthComp->OnHealthChangedEvent.AddDynamic(this, &AShooterCharacter::onHealthChanged);
 
@@ -61,6 +65,7 @@ void AShooterCharacter::BeginPlay()
 	}
 	//(actually, that'd be an axis input)
 	switchWeapon(1.0f);
+
 }
 
 FName AShooterCharacter::getSocketNameFor(const AShooterWeapon* weapon) const
@@ -133,6 +138,9 @@ void AShooterCharacter::equipWeapon(AShooterWeapon* weapon)
 		m_equippedWeapon->SetActorEnableCollision(true);
 		OnCurrentWeaponChangedEvent.Broadcast(m_equippedWeapon);
 		//change movemementspeed according to some constants regarding the weapon type
+
+		GetCharacterMovement()->MaxWalkSpeed = m_maxWalkSpeedDefault * weapon->GetWalkinSpeedModifier();
+		GetCharacterMovement()->MaxWalkSpeedCrouched = m_maxWalkSpeedCrouchedDefault * weapon->GetWalkinSpeedModifier();
 	}
 }
 

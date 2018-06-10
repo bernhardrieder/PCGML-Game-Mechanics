@@ -45,6 +45,8 @@ AShooterWeapon::AShooterWeapon()
 	m_singleBulletReloadTime = ReloadTimeEmptyMagazine / BulletsPerMagazine;
 
 	Type = EWeaponType::Rifle;
+
+	m_walkinSpeedModifier = 1.f;
 }
 
 void AShooterWeapon::BeginPlay()

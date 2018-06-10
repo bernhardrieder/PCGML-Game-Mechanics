@@ -132,6 +132,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	EWeaponType Type;
 
+	//character walking speed modifier in percent/100, e.g., 0.8
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon", meta = (DisplayName = "Walking Speed Modifier", ClampMin = 0.0, ClampMax = 1.0))
+	float m_walkinSpeedModifier;
+
 public:
 	// Sets default values for this actor's properties
 	AShooterWeapon();
@@ -146,6 +150,7 @@ public:
 	//call when the weapon is stored
 	virtual void Disarm();
 
+	FORCEINLINE float GetWalkinSpeedModifier() const { return m_walkinSpeedModifier; }
 	FORCEINLINE EWeaponType GetType() const { return Type; }
 
 protected:

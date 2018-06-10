@@ -97,4 +97,7 @@ protected:
 	AShooterWeapon* m_equippedWeapon;
 	AShooterWeapon* m_lastEquippedWeapon;
 	TArray<AShooterWeapon*> m_availableWeapons;
+
+	float m_maxWalkSpeedDefault;
+	float m_maxWalkSpeedCrouchedDefault;
 };
