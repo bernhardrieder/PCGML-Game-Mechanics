@@ -54,14 +54,13 @@ void AShooterCharacter::BeginPlay()
 
 	FActorSpawnParameters spawnParams;
 	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	CurrentWeapon = GetWorld()->SpawnActor<AShooterWeapon>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
-	if (CurrentWeapon)
+	for(const TSubclassOf<AShooterWeapon> weaponClass : StarterWeaponClasses)
 	{
-		CurrentWeapon->SetOwner(this);
-		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, getSocketNameFor(CurrentWeapon));
-		OnCurrentWeaponChangedEvent.Broadcast(CurrentWeapon);
+		AShooterWeapon* starterWeapon = GetWorld()->SpawnActor<AShooterWeapon>(weaponClass, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
+		AddWeapon(starterWeapon);
 	}
+	//(actually, that'd be an axis input)
+	switchWeapon(1.0f);
 }
 
 FName AShooterCharacter::getSocketNameFor(const AShooterWeapon* weapon) const
@@ -115,25 +114,114 @@ void AShooterCharacter::EndZoom()
 
 void AShooterCharacter::reloadWeapon()
 {
-	if(CurrentWeapon)
+	if(m_equippedWeapon)
 	{
-		CurrentWeapon->StartMagazineReloading();
+		m_equippedWeapon->StartMagazineReloading();
+	}
+}
+
+void AShooterCharacter::equipWeapon(AShooterWeapon* weapon)
+{
+	if (weapon)
+	{
+		if(m_equippedWeapon && m_lastEquippedWeapon != m_equippedWeapon)
+		{
+			m_lastEquippedWeapon = m_equippedWeapon;
+		}
+		m_equippedWeapon = weapon;
+		m_equippedWeapon->SetActorHiddenInGame(false);
+		m_equippedWeapon->SetActorEnableCollision(true);
+		OnCurrentWeaponChangedEvent.Broadcast(m_equippedWeapon);
+		//change movemementspeed according to some constants regarding the weapon type
+	}
+}
+
+void AShooterCharacter::disarmWeapon(AShooterWeapon* weapon)
+{
+	if (weapon)
+	{
+		weapon->Disarm();
+		weapon->SetActorHiddenInGame(true);
+		weapon->SetActorEnableCollision(false);
+	}
+}
+
+void AShooterCharacter::switchWeapon(float val)
+{
+	if (!FMath::IsNearlyZero(val) && m_availableWeapons.Num() > 0)
+	{
+		int32 nextIdx = 0;
+		if (m_equippedWeapon)
+		{
+			bool nextWeapon = val >= 0.f;
+			int32 idx = m_availableWeapons.Find(m_equippedWeapon);
+			if(nextWeapon)
+			{
+				++idx;
+				nextIdx = idx >= m_availableWeapons.Num() ? 0 : idx;
+			}
+			else
+			{
+				--idx;
+				nextIdx = idx < 0 ? m_availableWeapons.Num() - 1 : idx;
+			}
+			if(m_equippedWeapon == m_availableWeapons[nextIdx])
+			{
+				//do nothing!
+				return;
+			}
+			disarmWeapon(m_equippedWeapon);
+		}
+		equipWeapon(m_availableWeapons[nextIdx]);
+	}
+}
+
+void AShooterCharacter::switchToLastEquipedWeapon()
+{
+	if(m_lastEquippedWeapon && m_lastEquippedWeapon != m_equippedWeapon)
+	{
+		disarmWeapon(m_equippedWeapon);
+		equipWeapon(m_lastEquippedWeapon);
 	}
 }
 
 void AShooterCharacter::StartFire()
 {
-	if(CurrentWeapon)
+	if(m_equippedWeapon)
 	{
-		CurrentWeapon->StartFire();
+		m_equippedWeapon->StartFire();
 	}
 }
 
 void AShooterCharacter::StopFire()
 {
-	if (CurrentWeapon)
+	if (m_equippedWeapon)
 	{
-		CurrentWeapon->StopFire();
+		m_equippedWeapon->StopFire();
+	}
+}
+
+void AShooterCharacter::AddWeapon(AShooterWeapon* weapon)
+{
+	if(weapon)
+	{
+		weapon->SetOwner(this);
+		weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, getSocketNameFor(weapon));
+		disarmWeapon(weapon);
+		m_availableWeapons.Add(weapon);
+	}
+
+}
+
+void AShooterCharacter::removeWeapon(AShooterWeapon* weapon)
+{
+	if(weapon && weapon != m_equippedWeapon)
+	{
+		m_availableWeapons.Remove(weapon);
+		if(!weapon->IsPendingKill())
+		{
+			weapon->Destroy();
+		}
 	}
 }
 
@@ -149,7 +237,11 @@ void AShooterCharacter::onHealthChanged(const UHealthComponent* HealthComponent,
 
 		DetachFromControllerPendingDestroy();
 		SetLifeSpan(10.f);
-		CurrentWeapon->SetLifeSpan(10.f);
+
+		for(AShooterWeapon* weapon : m_availableWeapons)
+		{
+			weapon->SetLifeSpan(10.f);
+		}
 	}
 }
 
@@ -185,5 +277,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AShooterCharacter::StopFire);
 
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AShooterCharacter::reloadWeapon);
+
+	PlayerInputComponent->BindAction("SwitchToLastEquippedWeapon", IE_Pressed, this, &AShooterCharacter::switchToLastEquipedWeapon);
+	PlayerInputComponent->BindAxis("SwitchWeapon", this, &AShooterCharacter::switchWeapon);
+
 }
 

@@ -34,16 +34,13 @@ protected:
 	float ZoomInterpSpeed;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
-	TSubclassOf<AShooterWeapon> StarterWeaponClass;
+	TArray<TSubclassOf<AShooterWeapon>> StarterWeaponClasses;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
 	UHealthComponent* HealthComp;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Player")
 	bool bDied;
-
-	UPROPERTY()
-	AShooterWeapon* CurrentWeapon;
 
 	UPROPERTY(BlueprintAssignable, Category = "Player")
 	FOnCurrentWeaponChangedEvent OnCurrentWeaponChangedEvent;
@@ -59,6 +56,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player")
 	void StopFire();
 
+	void AddWeapon(AShooterWeapon* weapon);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -70,6 +69,13 @@ protected:
 	void BeginZoom();
 	void EndZoom();
 	void reloadWeapon();
+	void equipWeapon(AShooterWeapon* weapon);
+	void disarmWeapon(AShooterWeapon* weapon);
+	//switches to next weapon if val is positive otherwise to the previous weapon
+	void switchWeapon(float val);
+	void switchToLastEquipedWeapon();
+	void removeWeapon(AShooterWeapon* weapon);
+
 
 	UFUNCTION()
 	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
@@ -86,4 +92,8 @@ public:
 protected:
 	bool bWantsToZoom;
 	float DefaultFOV;
+
+	AShooterWeapon* m_equippedWeapon;
+	AShooterWeapon* m_lastEquippedWeapon;
+	TArray<AShooterWeapon*> m_availableWeapons;
 };

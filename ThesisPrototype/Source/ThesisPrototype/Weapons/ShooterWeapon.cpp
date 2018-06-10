@@ -119,6 +119,7 @@ void AShooterWeapon::Equip()
 
 void AShooterWeapon::Disarm()
 {
+	StopFire();
 	GetWorldTimerManager().ClearTimer(TimerHandle_AutomaticFire);
 	GetWorldTimerManager().ClearTimer(TimerHandle_ReloadMagazine);
 	GetWorldTimerManager().ClearTimer(TimerHandle_ReloadStock);
