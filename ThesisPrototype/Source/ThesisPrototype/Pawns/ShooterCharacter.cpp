@@ -80,7 +80,7 @@ FName AShooterCharacter::getSocketNameFor(const AShooterWeapon* weapon) const
 		case EWeaponType::SubMachineGun: return FName("SMGSocket");
 		case EWeaponType::HeavyMachineGun: return FName("MGSocket");
 		case EWeaponType::SniperRifle: return FName("SniperRifleSocket");
-		case EWeaponType::Shotgun:
+		case EWeaponType::Shotgun: return FName("ShotgunSocket");
 		case EWeaponType::Rifle: 
 		default: return FName("WeaponSocket");
 	}
