@@ -77,16 +77,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float RateOfFire;
 
-	// bullet spread in degrees */
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Ammo", meta = (ClampMin = 0.0f))
-	float BulletSpread;
-
 	// increase of spread per fired bullet
-	UPROPERTY(EditDefaultsOnly, Category="Weapon|Ammo")
+	UPROPERTY(EditDefaultsOnly, Category="Weapon|Bullet Spread")
 	float BulletSpreadIncrease;
 
 	// bullet spread decrease in degree, applied per second
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Ammo")
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Bullet Spread")
 	float BulletSpreadDecrease;
 
 	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category="Weapon|Ammo")
@@ -161,6 +157,7 @@ protected:
 	virtual void reloadMagazine();
 	virtual void startStockReloading();
 	virtual void reloadStock();
+	void decreaseBulletSpread();
 
 	float getDamageMultiplierFor(EPhysicalSurface surfaceType);
 
@@ -171,6 +168,11 @@ protected:
 	FTimerHandle TimerHandle_AutomaticFire;
 	FTimerHandle TimerHandle_ReloadMagazine;
 	FTimerHandle TimerHandle_ReloadStock;
+	FTimerHandle TimerHandle_SpreadDecrease;
+
+
+	float m_currentBulletSpread = 0;
+
 	float lastFireTime;
 	//derived from rate of fire
 	float timeBetweenShots;

@@ -31,7 +31,6 @@ AShooterWeapon::AShooterWeapon()
 	MuzzleSocketName = "MuzzleSocket";
 	TracerTargetName = "BeamEnd";
 	RateOfFire = 600; //bullets per minute
-	BulletSpread = 2.0f;
 	AvailableMagazines = 3;
 	BulletsPerMagazine = 30;
 	BulletsInOneShot = 1;
@@ -47,6 +46,8 @@ AShooterWeapon::AShooterWeapon()
 	Type = EWeaponType::Rifle;
 
 	m_walkinSpeedModifier = 1.f;
+	BulletSpreadIncrease = 0.1f;
+	BulletSpreadDecrease = 4.f;
 }
 
 void AShooterWeapon::BeginPlay()
@@ -115,6 +116,16 @@ void AShooterWeapon::reloadStock()
 	OnReloadStateChangedEvent.Broadcast(m_bIsReloading, 0.f, m_currentBulletsInMagazine);
 }
 
+void AShooterWeapon::decreaseBulletSpread()
+{
+	m_currentBulletSpread -= BulletSpreadDecrease;
+	if(m_currentBulletSpread <= 0)
+	{
+		m_currentBulletSpread = 0;
+		GetWorldTimerManager().ClearTimer(TimerHandle_SpreadDecrease);
+	}
+}
+
 float AShooterWeapon::getDamageMultiplierFor(EPhysicalSurface surfaceType)
 {
 	switch (surfaceType)
@@ -137,7 +148,9 @@ void AShooterWeapon::Disarm()
 	GetWorldTimerManager().ClearTimer(TimerHandle_AutomaticFire);
 	GetWorldTimerManager().ClearTimer(TimerHandle_ReloadMagazine);
 	GetWorldTimerManager().ClearTimer(TimerHandle_ReloadStock);
+	GetWorldTimerManager().ClearTimer(TimerHandle_SpreadDecrease);
 	m_bIsReloading = false;
+	m_currentBulletSpread = 0.f;
 }
 
 void AShooterWeapon::Fire()
@@ -159,9 +172,26 @@ void AShooterWeapon::Fire()
 
 		FVector shotDirection = eyeRotator.Vector();
 
-		// bullet spread
-		float halfRad = FMath::DegreesToRadians(BulletSpread);
-		shotDirection = FMath::VRandCone(shotDirection, halfRad, halfRad);
+				
+		//bullet spread calculations according to http://symthic.com/bf1-general-info?p=misc
+		if(m_currentBulletSpread > 0.f)
+		{
+			const float random = FMath::FRandRange(0.f, 1.f);
+			const float randomSinCos = FMath::FRandRange(0.f, 2 * PI);
+			const float pow = Type == EWeaponType::Shotgun ? 1.0f : 0.5;
+			const float randomPowered = FMath::Pow(random, pow);
+			const float horizontalDispersion = randomPowered * m_currentBulletSpread * FMath::Cos(randomSinCos);
+			const float verticalDispersion = randomPowered * m_currentBulletSpread * FMath::Sin(randomSinCos);
+			shotDirection.Y += horizontalDispersion;
+			shotDirection.Z += verticalDispersion;
+			shotDirection.Normalize();
+		}
+		m_currentBulletSpread += BulletSpreadIncrease;
+		if (!GetWorldTimerManager().IsTimerActive(TimerHandle_SpreadDecrease))
+		{
+			GetWorldTimerManager().SetTimer(TimerHandle_SpreadDecrease, this, &AShooterWeapon::decreaseBulletSpread, 1.f, true, timeBetweenShots);
+		}
+
 
 		FVector traceEnd = eyeLocation + shotDirection * 10000;
 
