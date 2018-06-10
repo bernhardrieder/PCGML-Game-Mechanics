@@ -95,9 +95,9 @@ protected:
 	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category = "Weapon|Ammo")
 	int AvailableMagazines;
 
-	// amount of bullets which are fired per shot. e.g. a shotgun has 12
+	// amount of bullets which are fired in one shot. e.g. a shotgun has 12
 	UPROPERTY(EditDefaultsOnly, Category="Weapon|Ammo")
-	int BulletsPerShot;
+	int BulletsInOneShot;
 
 	// reload time of an empty magazine in seconds
 	UPROPERTY(EditDefaultsOnly, Category="Weapon|Ammo")
@@ -161,6 +161,8 @@ protected:
 	virtual void reloadMagazine();
 	virtual void startStockReloading();
 	virtual void reloadStock();
+
+	float getDamageMultiplierFor(EPhysicalSurface surfaceType);
 
 protected:
 	bool m_bIsAmmoLeftInMagazine = true;

@@ -34,7 +34,7 @@ AShooterWeapon::AShooterWeapon()
 	BulletSpread = 2.0f;
 	AvailableMagazines = 3;
 	BulletsPerMagazine = 30;
-	BulletsPerShot = 1;
+	BulletsInOneShot = 1;
 	ReloadTimeEmptyMagazine = 3.f;
 	FireMode = EFireMode::Automatic;
 	bUnlimitiedBullets = false;
@@ -115,6 +115,18 @@ void AShooterWeapon::reloadStock()
 	OnReloadStateChangedEvent.Broadcast(m_bIsReloading, 0.f, m_currentBulletsInMagazine);
 }
 
+float AShooterWeapon::getDamageMultiplierFor(EPhysicalSurface surfaceType)
+{
+	switch (surfaceType)
+	{
+		case SURFACE_FLESHLOWERBOYDANDARMS: return 0.85f;
+		case SURFACE_FLESHUPPERBODY: return 1.f;
+		case SURFACE_FLESHHEAD: return 1.8f;
+		case SURFACE_FLESHDEFAULT:
+		default: return 1.f;
+	}
+}
+
 void AShooterWeapon::Equip()
 {
 }
@@ -172,10 +184,7 @@ void AShooterWeapon::Fire()
 
 			surfaceType = UPhysicalMaterial::DetermineSurfaceType(hitResult.PhysMaterial.Get());
 
-			if(surfaceType == SURFACE_FLESHVULNERABLE)
-			{
-				actualDamage *= 4.f;
-			}
+			actualDamage *= getDamageMultiplierFor(surfaceType);
 			UGameplayStatics::ApplyPointDamage(hitActor, actualDamage, shotDirection, hitResult, owner->GetInstigatorController(), owner, DamageType);
 
 			PlayImpactEffects(surfaceType, hitResult.ImpactPoint);
@@ -241,7 +250,9 @@ void AShooterWeapon::PlayImpactEffects(EPhysicalSurface surfaceType, const FVect
 	switch (surfaceType)
 	{
 	case SURFACE_FLESHDEFAULT:
-	case SURFACE_FLESHVULNERABLE:
+	case SURFACE_FLESHLOWERBOYDANDARMS:
+	case SURFACE_FLESHUPPERBODY:
+	case SURFACE_FLESHHEAD:
 		selectedEffect = FleshImpactEffect;
 		break;
 	default:
