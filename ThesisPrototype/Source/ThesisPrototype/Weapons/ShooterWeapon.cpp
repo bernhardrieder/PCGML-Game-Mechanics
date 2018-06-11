@@ -192,7 +192,7 @@ void AShooterWeapon::compensateRecoil(float deltaTime)
 	m_owningCharacter->AddControllerYawInput(recoilDelta.X);
 	m_owningCharacter->AddControllerPitchInput(recoilDelta.Y);
 
-	if(FMath::IsNearlyZero(m_currentRecoil.X, 0.1f) && FMath::IsNearlyZero(m_currentRecoil.Y, 0.1f))
+	if(FMath::IsNearlyZero(m_currentRecoil.X, 1.f) && FMath::IsNearlyZero(m_currentRecoil.Y, 1.f))
 	{
 		m_currentRecoil = FVector2D::ZeroVector;
 		PrimaryActorTick.SetTickFunctionEnable(false);
