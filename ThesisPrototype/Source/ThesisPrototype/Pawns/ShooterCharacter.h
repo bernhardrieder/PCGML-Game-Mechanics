@@ -59,8 +59,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player")
 	void StopFire();
 
+	UFUNCTION(BlueprintCallable, Category="Player")
 	bool IsMoving() const;
+	UFUNCTION(BlueprintCallable, Category = "Player")
 	bool IsCrouching() const;
+	UFUNCTION(BlueprintCallable, Category = "Player")
 	bool IsAiming() const { return bWantsToZoom; }
 
 protected:
