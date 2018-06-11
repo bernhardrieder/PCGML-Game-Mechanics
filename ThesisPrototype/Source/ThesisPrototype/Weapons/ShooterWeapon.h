@@ -17,6 +17,8 @@ class UCameraShake;
 class UCurveFloat;
 struct FRuntimeFloatCurve;
 class AShooterCharacter;
+class UAudioComponent;
+class USoundCue;
 
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
@@ -159,6 +161,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Modifier", meta = (DisplayName = "Owner-based Recoil Modifier"))
 	FOwnerBasedModifier m_recoilModifier;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|SFX")
+	USoundCue* FireSound;
 
 public:
 	// Sets default values for this actor's properties

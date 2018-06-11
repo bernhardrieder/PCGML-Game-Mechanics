@@ -16,6 +16,8 @@
 #include "GameFramework/Character.h"
 #include "Pawns/ShooterCharacter.h"
 #include "ChangingGunsPlayerState.h"
+#include "Sound/SoundCue.h"
+
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVARDebugWeaponDrawing (
@@ -358,6 +360,8 @@ void AShooterWeapon::Fire()
 
 			PlayFireEffects(tracerEndPoint);
 		}
+
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 
 		applyRecoil();
 
