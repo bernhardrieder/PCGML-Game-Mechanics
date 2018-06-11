@@ -17,6 +17,8 @@ enum class EWaveState : uint8
 	WaitingToComplete,
 	
 	WaveComplete,
+
+	BossFight,
 	
 	GameOver
 };
@@ -33,7 +35,10 @@ protected:
 	EWaveState WaveState;
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "Game State")
 	void SetWaveState(EWaveState newState);
+
+	FORCEINLINE EWaveState GetWaveState() const { return WaveState; };
 
 protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Game State")

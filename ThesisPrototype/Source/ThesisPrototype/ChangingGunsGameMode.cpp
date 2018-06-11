@@ -16,12 +16,13 @@ AChangingGunsGameMode::AChangingGunsGameMode() : Super()
 	PlayerStateClass = AChangingGunsPlayerState::StaticClass();
 
 	TimeBetweenWaves = 2.f;
+	BotsPerWaveMultiplier = 2;
 }
 
 void AChangingGunsGameMode::StartPlay()
 {
 	Super::StartPlay();
-
+	m_gameState = GetGameState<AChangingGunsGameState>();
 	prepareForNextWave();
 }
 
@@ -46,7 +47,7 @@ void AChangingGunsGameMode::spawnBotTimerElapsed()
 void AChangingGunsGameMode::startWave()
 {
 	++WaveCount;
-	NumOfBotsToSpawn = 2 * WaveCount;
+	NumOfBotsToSpawn = BotsPerWaveMultiplier * WaveCount;
 	GetWorldTimerManager().SetTimer(timerHandle_BotSpawner, this, &AChangingGunsGameMode::spawnBotTimerElapsed, 1.f, true, 0.f);
 
 	setWaveState(EWaveState::WaveInProgress);
@@ -64,12 +65,17 @@ void AChangingGunsGameMode::prepareForNextWave()
 	GetWorldTimerManager().SetTimer(timerHandle_NextWaveStart, this, &AChangingGunsGameMode::startWave, TimeBetweenWaves, false);
 
 	setWaveState(EWaveState::WaitingToStart);
-
-	restartDeadPlayers();
 }
 
 void AChangingGunsGameMode::checkWaveState()
 {
+	if(m_gameState->GetWaveState() == EWaveState::BossFight)
+	{
+		GetWorldTimerManager().ClearTimer(timerHandle_BotSpawner);
+		GetWorldTimerManager().ClearTimer(timerHandle_NextWaveStart);
+		return;
+	}
+
 	const bool bIsPreparingForWave = GetWorldTimerManager().IsTimerActive(timerHandle_NextWaveStart);
 
 	if(NumOfBotsToSpawn > 0 || bIsPreparingForWave)
@@ -124,25 +130,10 @@ void AChangingGunsGameMode::gameOver()
 	endWave();
 
 	setWaveState(EWaveState::GameOver);
-	UE_LOG(LogTemp, Log, TEXT("Game over! All players are dead!"));
+	UE_LOG(LogTemp, Log, TEXT("Game over! Player is dead!"));
 }
 
 void AChangingGunsGameMode::setWaveState(EWaveState newState)
 {
-	if(AChangingGunsGameState* gameState = GetGameState<AChangingGunsGameState>())
-	{
-		gameState->SetWaveState(newState);
-	}
-}
-
-void AChangingGunsGameMode::restartDeadPlayers()
-{
-	for (FConstPlayerControllerIterator it = GetWorld()->GetPlayerControllerIterator(); it; ++it)
-	{
-		APlayerController* pc = it->Get();
-		if (pc && !pc->GetPawn())
-		{
-			RestartPlayer(pc);
-		}
-	}
+	m_gameState->SetWaveState(newState);
 }
