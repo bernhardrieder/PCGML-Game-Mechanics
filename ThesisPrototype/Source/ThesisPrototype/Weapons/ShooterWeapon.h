@@ -219,5 +219,5 @@ protected:
 
 	FVector2D m_currentRecoil;
 	FRuntimeFloatCurve m_damageCurve;
-
+	float m_timeEquipped = 0;
 };

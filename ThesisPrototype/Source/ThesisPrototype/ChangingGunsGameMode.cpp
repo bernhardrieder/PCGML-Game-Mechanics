@@ -6,6 +6,7 @@
 #include "Components/HealthComponent.h"
 #include "ChangingGunsGameState.h"
 #include "ChangingGunsPlayerState.h"
+#include "Pawns/ShooterCharacter.h"
 
 AChangingGunsGameMode::AChangingGunsGameMode() : Super()
 {
@@ -22,6 +23,7 @@ AChangingGunsGameMode::AChangingGunsGameMode() : Super()
 void AChangingGunsGameMode::StartPlay()
 {
 	Super::StartPlay();
+	OnActorKilledEvent.AddDynamic(this, &AChangingGunsGameMode::onActorKilled);
 	m_gameState = GetGameState<AChangingGunsGameState>();
 	prepareForNextWave();
 }
@@ -136,4 +138,18 @@ void AChangingGunsGameMode::gameOver()
 void AChangingGunsGameMode::setWaveState(EWaveState newState)
 {
 	m_gameState->SetWaveState(newState);
+}
+
+void AChangingGunsGameMode::onActorKilled(AActor* victimActor, AActor* killerActor, AController* killerController)
+{
+	if(killerController && killerController->GetCharacter())
+	{
+		if (AShooterCharacter* character = Cast<AShooterCharacter>(killerController->GetCharacter()))
+		{
+			if(auto playerState = Cast<AChangingGunsPlayerState>(killerController->PlayerState))
+			{
+				playerState->AddKill(character->GetEquippedWeapon());
+			}
+		}
+	}
 }

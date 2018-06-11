@@ -15,6 +15,7 @@
 #include "Curves/CurveFloat.h"
 #include "GameFramework/Character.h"
 #include "Pawns/ShooterCharacter.h"
+#include "ChangingGunsPlayerState.h"
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVARDebugWeaponDrawing (
@@ -127,6 +128,7 @@ void AShooterWeapon::StartMagazineReloading()
 void AShooterWeapon::Equip(AShooterCharacter* euqippedBy)
 {
 	m_owningCharacter = euqippedBy;
+	m_timeEquipped = GetWorld()->TimeSeconds;
 }
 
 void AShooterWeapon::Disarm()
@@ -139,8 +141,18 @@ void AShooterWeapon::Disarm()
 	m_bIsReloading = false;
 	m_currentBulletSpread = 0.f;
 	m_currentRecoil = FVector2D::ZeroVector;
+	
+	if (m_owningCharacter)
+	{
+		if (auto playerState = Cast<AChangingGunsPlayerState>(m_owningCharacter->PlayerState))
+		{
+			playerState->AddUsageTime(m_owningCharacter->GetEquippedWeapon(), GetWorld()->TimeSeconds - m_timeEquipped);
+		}
+	}
+
 	m_owningCharacter = nullptr;
 	PrimaryActorTick.SetTickFunctionEnable(false);
+
 }
 
 void AShooterWeapon::RefillAmmunition(int amountOfBullets)

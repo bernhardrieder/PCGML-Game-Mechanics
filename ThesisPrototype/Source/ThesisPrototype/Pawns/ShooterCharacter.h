@@ -66,6 +66,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player")
 	bool IsAiming() const { return bWantsToZoom; }
 
+	FORCEINLINE AShooterWeapon* GetEquippedWeapon() const { return m_equippedWeapon; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
