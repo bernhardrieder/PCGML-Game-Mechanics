@@ -92,7 +92,7 @@ void AChangingGunsGameMode::checkWaveState()
 			continue;
 		}
 		UHealthComponent* healthComp = Cast<UHealthComponent>(testPawn->GetComponentByClass(UHealthComponent::StaticClass()));
-		if(healthComp && healthComp->GetHealth() > 0.f)
+		if(healthComp && healthComp->IsHandlingDamage() && healthComp->GetHealth() > 0.f)
 		{
 			bIsAnyBotAlive = true;
 			break;

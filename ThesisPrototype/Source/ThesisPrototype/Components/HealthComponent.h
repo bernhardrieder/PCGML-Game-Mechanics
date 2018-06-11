@@ -40,6 +40,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health Component")
 	int32 DefaultExtraLives;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Health Component")
+	bool bHandleDamageEnabled;
+
 public:
 	// Sets default values for this component's properties
 	UHealthComponent();
@@ -56,6 +59,11 @@ public:
 
 	FORCEINLINE float GetHealth() const { return Health; }
 	FORCEINLINE float GetArmor() const { return Armor; }
+
+	FORCEINLINE bool IsHandlingDamage() const { return bHandleDamageEnabled; }
+
+	UFUNCTION(BlueprintCallable, Category="Health Component")
+	void SetHandleDamageEnabled(bool val);
 
 protected:
 	// Called when the game starts

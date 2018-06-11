@@ -20,6 +20,7 @@ UHealthComponent::UHealthComponent()
 	TeamNumber = 255;
 	DefaultArmor = 0;
 	DefaultExtraLives = 0;
+	bHandleDamageEnabled = true;
 }
 
 void UHealthComponent::Heal(float HealAmount)
@@ -61,6 +62,11 @@ void UHealthComponent::AddExtraLife(int32 amount)
 	OnExtraLivesChangedEvent.Broadcast(this, ExtraLives);
 }
 
+void UHealthComponent::SetHandleDamageEnabled(bool val)
+{
+	bHandleDamageEnabled = val;
+}
+
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -77,7 +83,7 @@ void UHealthComponent::BeginPlay()
 
 void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	if(Damage <= 0.0f || bIsDead)
+	if(Damage <= 0.0f || bIsDead || !bHandleDamageEnabled)
 	{
 		return;
 	}
