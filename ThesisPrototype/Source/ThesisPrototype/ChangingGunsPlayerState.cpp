@@ -27,7 +27,7 @@ void AChangingGunsPlayerState::AddUsageTime(AShooterWeapon* weapon, float second
 	stats.SecondsUsed += secondsUsed;
 	if (DebugPlayerStateOutput)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Seconds used with %s: %i"), *stats.Weapon->GetName(), stats.SecondsUsed);
+		UE_LOG(LogTemp, Log, TEXT("Seconds used with %s: %f"), *stats.Weapon->GetName(), stats.SecondsUsed);
 	}
 }
 

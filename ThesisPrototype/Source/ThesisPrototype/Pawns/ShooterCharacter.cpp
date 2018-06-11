@@ -12,6 +12,7 @@
 #include "Components/HealthComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "ChangingGunsPlayerState.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -154,8 +155,6 @@ void AShooterCharacter::equipWeapon(AShooterWeapon* weapon)
 		m_equippedWeapon->SetActorHiddenInGame(false);
 		m_equippedWeapon->SetActorEnableCollision(true);
 		OnCurrentWeaponChangedEvent.Broadcast(m_equippedWeapon);
-		//change movemementspeed according to some constants regarding the weapon type
-
 		GetCharacterMovement()->MaxWalkSpeed = m_maxWalkSpeedDefault * weapon->GetWalkinSpeedModifier();
 		GetCharacterMovement()->MaxWalkSpeedCrouched = m_maxWalkSpeedCrouchedDefault * weapon->GetWalkinSpeedModifier();
 	}
@@ -218,8 +217,6 @@ void AShooterCharacter::StartFire()
 	}
 }
 
-
-
 void AShooterCharacter::StopFire()
 {
 	if (m_equippedWeapon)
@@ -268,6 +265,10 @@ void AShooterCharacter::dismantleEquippedWeaponAndGenerateNew()
 	AShooterWeapon* dismantle = m_equippedWeapon;
 	m_equippedWeapon = nullptr;
 	removeWeapon(dismantle);
+	if(AChangingGunsPlayerState* state = Cast<AChangingGunsPlayerState>(PlayerState))
+	{
+		state->RemoveWeaponFromStatistics(dismantle);
+	}
 
 	//todo: change the code to use one of a weapon factory class or something similar
 	FActorSpawnParameters spawnParams;

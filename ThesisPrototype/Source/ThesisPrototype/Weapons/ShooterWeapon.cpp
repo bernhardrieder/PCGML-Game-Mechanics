@@ -142,7 +142,7 @@ void AShooterWeapon::Disarm()
 	m_currentBulletSpread = 0.f;
 	m_currentRecoil = FVector2D::ZeroVector;
 	
-	if (m_owningCharacter)
+	if (m_owningCharacter && m_timeEquipped > 0.f)
 	{
 		if (auto playerState = Cast<AChangingGunsPlayerState>(m_owningCharacter->PlayerState))
 		{
