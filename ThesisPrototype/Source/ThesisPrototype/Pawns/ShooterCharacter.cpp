@@ -134,6 +134,7 @@ void AShooterCharacter::equipWeapon(AShooterWeapon* weapon)
 			m_lastEquippedWeapon = m_equippedWeapon;
 		}
 		m_equippedWeapon = weapon;
+		m_equippedWeapon->Equip(this);
 		m_equippedWeapon->SetActorHiddenInGame(false);
 		m_equippedWeapon->SetActorEnableCollision(true);
 		OnCurrentWeaponChangedEvent.Broadcast(m_equippedWeapon);
@@ -201,6 +202,8 @@ void AShooterCharacter::StartFire()
 	}
 }
 
+
+
 void AShooterCharacter::StopFire()
 {
 	if (m_equippedWeapon)
@@ -248,6 +251,8 @@ void AShooterCharacter::dismantleEquippedWeaponAndGenerateNew()
 	addWeapon(weapon);
 	equipWeapon(weapon);
 }
+
+
 
 void AShooterCharacter::onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {

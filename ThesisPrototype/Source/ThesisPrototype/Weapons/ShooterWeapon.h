@@ -99,9 +99,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Weapon|Ammo")
 	float ReloadTimeEmptyMagazine;
 
-	// random recoil range in degree
+	// random recoil in degree (x = horizontal, y = vertical)
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Recoil")
-	FVector RandomRecoilRange;
+	FVector2D RecoilIncreasePerShot;
 
 	// recoil decrease 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Recoil")
@@ -140,10 +140,9 @@ public:
 	virtual void StopFire();
 	virtual void StartMagazineReloading();
 
-	//call when the weapon is used 
-	virtual void Equip();
-
-	//call when the weapon is stored
+	//call when the weapon is currently used as main weapon
+	virtual void Equip(APawn* euqippedBy);
+	//call when the weapon is stored inventory
 	virtual void Disarm();
 
 	FORCEINLINE float GetWalkinSpeedModifier() const { return m_walkinSpeedModifier; }
@@ -151,6 +150,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float deltaTime) override;
 	virtual void PlayFireEffects(const FVector& FireImpactPoint);
 	virtual void PlayImpactEffects(EPhysicalSurface surfaceType, const FVector& impactPoint);
 	virtual void Fire();
@@ -158,10 +158,15 @@ protected:
 	virtual void startStockReloading();
 	virtual void reloadStock();
 	void decreaseBulletSpread();
+	//applies recoil to the character and returns the applied recoil (x = horizontal, y = vertical)
+	void applyRecoil();
+	void compensateRecoil(float deltaTime);
 
 	float getDamageMultiplierFor(EPhysicalSurface surfaceType);
 
 protected:
+	APawn* m_owningPawn;
+	
 	bool m_bIsAmmoLeftInMagazine = true;
 	bool m_bIsReloading = false;
 
@@ -179,6 +184,7 @@ protected:
 
 	float m_singleBulletReloadTime;
 
-
-	FVector2D m_currentRecoil = FVector2D::ZeroVector;
+	//is the total applied recoil to the playercontroller
+	FVector2D m_totalAppliedRecoil;
+	FVector2D m_currentRecoil;
 };

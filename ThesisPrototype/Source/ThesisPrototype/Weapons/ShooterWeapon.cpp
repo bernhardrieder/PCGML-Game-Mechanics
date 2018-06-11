@@ -13,6 +13,7 @@
 #include "TimerManager.h"
 #include "UnrealNetwork.h"
 #include "Curves/CurveFloat.h"
+#include "GameFramework/Character.h"
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVARDebugWeaponDrawing (
@@ -25,6 +26,9 @@ FAutoConsoleVariableRef CVARDebugWeaponDrawing (
 // Sets default values
 AShooterWeapon::AShooterWeapon()
 {
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = false;
+
 	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
 	RootComponent = MeshComp;
 
@@ -59,6 +63,12 @@ void AShooterWeapon::BeginPlay()
 	m_availableBulletsLeft = AvailableMagazines * BulletsPerMagazine;
 }
 
+void AShooterWeapon::Tick(float deltaTime)
+{
+	Super::Tick(deltaTime);
+	compensateRecoil(deltaTime);
+}
+
 void AShooterWeapon::StartFire()
 {
 	if (m_bIsReloading) 
@@ -86,6 +96,99 @@ void AShooterWeapon::StartMagazineReloading()
 	const float reloadTimeNeeded = bulletDifference == BulletsPerMagazine ? ReloadTimeEmptyMagazine : m_singleBulletReloadTime * bulletDifference;
 	GetWorldTimerManager().SetTimer(TimerHandle_ReloadMagazine, this, &AShooterWeapon::reloadMagazine, reloadTimeNeeded);
 	OnReloadStateChangedEvent.Broadcast(m_bIsReloading, reloadTimeNeeded, m_currentBulletsInMagazine);
+}
+
+void AShooterWeapon::Equip(APawn* euqippedBy)
+{
+	m_owningPawn = euqippedBy;
+}
+
+void AShooterWeapon::Disarm()
+{
+	StopFire();
+	GetWorldTimerManager().ClearTimer(TimerHandle_AutomaticFire);
+	GetWorldTimerManager().ClearTimer(TimerHandle_ReloadMagazine);
+	GetWorldTimerManager().ClearTimer(TimerHandle_ReloadStock);
+	GetWorldTimerManager().ClearTimer(TimerHandle_SpreadDecrease);
+	m_bIsReloading = false;
+	m_currentBulletSpread = 0.f;
+	m_currentRecoil = FVector2D::ZeroVector;
+	m_totalAppliedRecoil = FVector2D::ZeroVector;
+	m_owningPawn = nullptr;
+	PrimaryActorTick.SetTickFunctionEnable(false);
+}
+
+void AShooterWeapon::applyRecoil()
+{
+	FVector2D recoil;
+	
+	recoil.Y = -RecoilIncreasePerShot.Y;
+	m_owningPawn->AddControllerPitchInput(recoil.Y);
+
+	recoil.X = FMath::FRandRange(-RecoilIncreasePerShot.X, RecoilIncreasePerShot.X);
+	m_owningPawn->AddControllerYawInput(recoil.X);
+
+	m_totalAppliedRecoil += recoil;
+	m_currentRecoil += recoil;
+
+	PrimaryActorTick.SetTickFunctionEnable(true);
+}
+
+void AShooterWeapon::compensateRecoil(float deltaTime)
+{
+	//if (m_currentRecoil.X >= 0 || m_currentRecoil.Y >= 0)
+	{
+		//calculations according to http://symthic.com/bf1-general-info?p=misc
+
+		//C = Some constant(approx. 5.0)
+		const float magicConstant = 5.0f;
+		
+		//RecoilTerm = ((abs(CurrentRecoil) / 0.5) ^ 0.6 + .001)
+		FVector2D recoilTerm;
+		recoilTerm.X = FMath::Pow(FMath::Abs(m_currentRecoil.X) / 0.5f, 0.6) + 0.001f;
+		recoilTerm.Y = FMath::Pow(FMath::Abs(m_currentRecoil.Y) / 0.5f, 0.6) + 0.001f;
+
+		//Decrease = RecoilTerm * RecoilDecrease * DeltaTime * TimeSinceLastShot^0.5 * C
+		float timeSinceLastShot = GetWorld()->TimeSeconds - lastFireTime;
+		FVector2D decreaseDelta;
+		decreaseDelta.X = recoilTerm.X * RecoilDecrease * deltaTime * FMath::Pow(timeSinceLastShot, 0.5f) * magicConstant;
+		decreaseDelta.Y = recoilTerm.Y * RecoilDecrease * deltaTime * FMath::Pow(timeSinceLastShot, 0.5f) * magicConstant;
+
+		//NewRecoil = (CurrentRecoil - Decrease) if CurrentRecoil > 0 else (CurrentRecoil + Decrease)
+		FVector2D newRecoil;
+		decreaseDelta.X *= m_currentRecoil.X > 0.f ? -1.f : 1.f;
+		decreaseDelta.Y *= m_currentRecoil.Y > 0.f ? -1.f : 1.f;
+
+		newRecoil.X = m_currentRecoil.X + decreaseDelta.X;
+		newRecoil.Y = m_currentRecoil.Y + decreaseDelta.Y;
+
+		if(!FMath::IsNearlyZero(m_currentRecoil.X, 0.1f))
+		{
+			m_currentRecoil.X = newRecoil.X;
+			m_owningPawn->AddControllerYawInput(decreaseDelta.X);
+		}
+		else
+		{
+			m_currentRecoil.X = 0.f;
+		}
+		if (!FMath::IsNearlyZero(m_currentRecoil.Y, 0.1f))
+		{
+			m_currentRecoil.Y = newRecoil.Y;
+			m_owningPawn->AddControllerPitchInput(decreaseDelta.Y);
+		}
+		else
+		{
+			m_currentRecoil.Y = 0.f;
+		}
+
+
+		if(FMath::IsNearlyZero(m_currentRecoil.X, 0.1f) && FMath::IsNearlyZero(m_currentRecoil.Y, 0.1f))
+		{
+			//m_totalAppliedRecoil = FVector2D::ZeroVector;
+			m_currentRecoil = FVector2D::ZeroVector;
+			PrimaryActorTick.SetTickFunctionEnable(false);
+		}
+	}
 }
 
 void AShooterWeapon::reloadMagazine()
@@ -138,20 +241,7 @@ float AShooterWeapon::getDamageMultiplierFor(EPhysicalSurface surfaceType)
 	}
 }
 
-void AShooterWeapon::Equip()
-{
-}
 
-void AShooterWeapon::Disarm()
-{
-	StopFire();
-	GetWorldTimerManager().ClearTimer(TimerHandle_AutomaticFire);
-	GetWorldTimerManager().ClearTimer(TimerHandle_ReloadMagazine);
-	GetWorldTimerManager().ClearTimer(TimerHandle_ReloadStock);
-	GetWorldTimerManager().ClearTimer(TimerHandle_SpreadDecrease);
-	m_bIsReloading = false;
-	m_currentBulletSpread = 0.f;
-}
 
 void AShooterWeapon::Fire()
 {
@@ -164,11 +254,11 @@ void AShooterWeapon::Fire()
 	//trace the world, from pawn eyes to crosshair location
 
 	//but fire anyway because you are a client
-	if(AActor* owner = GetOwner())
+	if(m_owningPawn)
 	{
 		FVector eyeLocation;
 		FRotator eyeRotator;
-		owner->GetActorEyesViewPoint(eyeLocation, eyeRotator);
+		m_owningPawn->GetActorEyesViewPoint(eyeLocation, eyeRotator);
 
 		FVector shotDirection = eyeRotator.Vector();
 
@@ -196,7 +286,7 @@ void AShooterWeapon::Fire()
 		FVector traceEnd = eyeLocation + shotDirection * 10000;
 
 		FCollisionQueryParams queryParams;
-		queryParams.AddIgnoredActor(owner);
+		queryParams.AddIgnoredActor(m_owningPawn);
 		queryParams.AddIgnoredActor(this);
 		queryParams.bTraceComplex = true; //gives us the exact result because traces every triangle instead of a simple collider
 		queryParams.bReturnPhysicalMaterial = true;
@@ -215,7 +305,7 @@ void AShooterWeapon::Fire()
 			surfaceType = UPhysicalMaterial::DetermineSurfaceType(hitResult.PhysMaterial.Get());
 
 			actualDamage *= getDamageMultiplierFor(surfaceType);
-			UGameplayStatics::ApplyPointDamage(hitActor, actualDamage, shotDirection, hitResult, owner->GetInstigatorController(), owner, DamageType);
+			UGameplayStatics::ApplyPointDamage(hitActor, actualDamage, shotDirection, hitResult, m_owningPawn->GetInstigatorController(), m_owningPawn, DamageType);
 
 			PlayImpactEffects(surfaceType, hitResult.ImpactPoint);
 
@@ -228,6 +318,8 @@ void AShooterWeapon::Fire()
 		}
 
 		PlayFireEffects(tracerEndPoint);
+
+		applyRecoil();
 
 		lastFireTime = GetWorld()->TimeSeconds;
 
