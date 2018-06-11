@@ -18,6 +18,7 @@ UHealthComponent::UHealthComponent()
 {
 	DefaultHealth = 100;
 	TeamNumber = 255;
+	DefaultArmor = 0;
 }
 
 void UHealthComponent::Heal(float HealAmount)
@@ -37,6 +38,22 @@ void UHealthComponent::Heal(float HealAmount)
 	OnHealthChangedEvent.Broadcast(this, Health, -HealAmount, nullptr, nullptr, nullptr);
 }
 
+void UHealthComponent::RepairArmor(float RepairAmount)
+{
+	if (RepairAmount <= 0.f)
+	{
+		return;
+	}
+	Armor = FMath::Clamp(Armor + RepairAmount, 0.f, DefaultArmor);
+
+	if (DebugHealthComponents > 0 && GetOwner())
+	{
+		UE_LOG(LogTemp, Log, TEXT("%s - Armor changed to %s (+%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(Armor), *FString::SanitizeFloat(RepairAmount));
+	}
+
+	OnArmorChangedEvent.Broadcast(this, Armor, -RepairAmount, nullptr, nullptr, nullptr);
+}
+
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -47,6 +64,7 @@ void UHealthComponent::BeginPlay()
 		owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::handleTakeAnyDamage);
 	}
 	Health = DefaultHealth;
+	Armor = DefaultArmor;
 }
 
 void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -61,6 +79,16 @@ void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, c
 		return;
 	}
 
+	if(Armor > 0.f)
+	{
+		Armor = FMath::Clamp(Armor - Damage, 0.f, DefaultArmor);
+		if (DebugHealthComponents > 0 && GetOwner())
+		{
+			UE_LOG(LogTemp, Log, TEXT("%s - Armor changed to %s (-%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(Armor), *FString::SanitizeFloat(Damage));
+		}
+		OnArmorChangedEvent.Broadcast(this, Armor, Damage, nullptr, nullptr, nullptr);
+		return;
+	}
 	Health = FMath::Clamp(Health - Damage, 0.f, DefaultHealth);
 	bIsDead = Health <= 0.f;
 

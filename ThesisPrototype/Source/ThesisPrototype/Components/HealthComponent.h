@@ -7,6 +7,7 @@
 #include "HealthComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnHealthChangedEvent, const class UHealthComponent*, OwningHealthComp, float, Health, float, HealthDelta, const class UDamageType*, CausedDamageType, class AController*, InstigatedBy, AActor*, DamageCauser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnArmorChangedEvent, const class UHealthComponent*, OwningHealthComp, float, Armor, float, ArmorDelta, const class UDamageType*, CausedDamageType, class AController*, InstigatedBy, AActor*, DamageCauser);
 
 class UDamageType;
 class AController;
@@ -27,6 +28,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health Component")
 	float DefaultHealth;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Health Component")
+	float Armor;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health Component")
+	float DefaultArmor;
+
 public:
 	// Sets default values for this component's properties
 	UHealthComponent();
@@ -34,7 +41,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Health Component")
 	void Heal(float HealAmount);
 
+	UFUNCTION(BlueprintCallable, Category = "Health Component")
+	void RepairArmor(float RepairAmount);
+
 	FORCEINLINE float GetHealth() const { return Health; }
+	FORCEINLINE float GetArmor() const { return Armor; }
 
 protected:
 	// Called when the game starts
@@ -46,6 +57,10 @@ protected:
 public:
 	UPROPERTY(BlueprintAssignable, Category = "Health Component")
 	FOnHealthChangedEvent OnHealthChangedEvent;
+
+	UPROPERTY(BlueprintAssignable, Category = "Health Component")
+	FOnArmorChangedEvent OnArmorChangedEvent;
+
 
 	UFUNCTION(BlueprintPure, Category = "Health Component")
 	static bool IsFriendly(AActor* actorA, AActor* actorB);
