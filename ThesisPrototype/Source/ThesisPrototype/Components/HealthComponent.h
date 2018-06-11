@@ -54,7 +54,7 @@ public:
 	void RepairArmor(float RepairAmount);
 
 	UFUNCTION(BlueprintCallable, Category = "Health Component")
-	void AddExtraLife(int32 amount);
+	void RestoreExtraLife(int32 amount);
 
 
 	FORCEINLINE float GetHealth() const { return Health; }

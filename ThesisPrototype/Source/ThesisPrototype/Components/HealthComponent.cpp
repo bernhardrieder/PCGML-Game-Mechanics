@@ -56,9 +56,10 @@ void UHealthComponent::RepairArmor(float RepairAmount)
 	OnArmorChangedEvent.Broadcast(this, Armor, -RepairAmount, nullptr, nullptr, nullptr);
 }
 
-void UHealthComponent::AddExtraLife(int32 amount)
+void UHealthComponent::RestoreExtraLife(int32 amount)
 {
-	ExtraLives += amount;
+	ExtraLives = FMath::Clamp(ExtraLives + amount, 0, DefaultExtraLives);
+
 	OnExtraLivesChangedEvent.Broadcast(this, ExtraLives);
 }
 
