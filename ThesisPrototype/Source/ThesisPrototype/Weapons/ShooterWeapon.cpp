@@ -218,6 +218,15 @@ float AShooterWeapon::getDamageMultiplierFor(EPhysicalSurface surfaceType)
 	}
 }
 
+FVector2D AShooterWeapon::calculateBulletSpreadDispersion(float randomPower, float currentSpread)
+{
+	const float random = FMath::FRandRange(0.f, 1.f);
+	const float randomSinCos = FMath::FRandRange(0.f, 2 * PI);
+	const float randomPowered = FMath::Pow(random, randomPower);
+	const float horizontalDispersion = randomPowered * currentSpread * FMath::Cos(randomSinCos);
+	const float verticalDispersion = randomPowered * currentSpread * FMath::Sin(randomSinCos);
+	return FVector2D(horizontalDispersion, verticalDispersion);
+}
 
 
 void AShooterWeapon::Fire()
@@ -239,18 +248,13 @@ void AShooterWeapon::Fire()
 
 		FVector shotDirection = eyeRotator.Vector();
 
-				
+
 		//bullet spread calculations according to http://symthic.com/bf1-general-info?p=misc
 		if(m_currentBulletSpread > 0.f)
 		{
-			const float random = FMath::FRandRange(0.f, 1.f);
-			const float randomSinCos = FMath::FRandRange(0.f, 2 * PI);
-			const float pow = Type == EWeaponType::Shotgun ? 1.0f : 0.5;
-			const float randomPowered = FMath::Pow(random, pow);
-			const float horizontalDispersion = randomPowered * m_currentBulletSpread * FMath::Cos(randomSinCos);
-			const float verticalDispersion = randomPowered * m_currentBulletSpread * FMath::Sin(randomSinCos);
-			shotDirection.Y += horizontalDispersion;
-			shotDirection.Z += verticalDispersion;
+			const FVector2D spread = calculateBulletSpreadDispersion(Type == EWeaponType::Shotgun ? 1.0f : 0.5f, m_currentBulletSpread);
+			shotDirection.Y += spread.X;
+			shotDirection.Z += spread.Y;
 			shotDirection.Normalize();
 		}
 		m_currentBulletSpread += BulletSpreadIncrease;
@@ -259,42 +263,52 @@ void AShooterWeapon::Fire()
 			GetWorldTimerManager().SetTimer(TimerHandle_SpreadDecrease, this, &AShooterWeapon::decreaseBulletSpread, 1.f, true, timeBetweenShots);
 		}
 
-
-		FVector traceEnd = eyeLocation + shotDirection * 10000;
-
-		FCollisionQueryParams queryParams;
-		queryParams.AddIgnoredActor(m_owningPawn);
-		queryParams.AddIgnoredActor(this);
-		queryParams.bTraceComplex = true; //gives us the exact result because traces every triangle instead of a simple collider
-		queryParams.bReturnPhysicalMaterial = true;
-
-		FVector tracerEndPoint = traceEnd;
-		EPhysicalSurface surfaceType = SurfaceType_Default;
-
-		FHitResult hitResult;
-		if(GetWorld()->LineTraceSingleByChannel(hitResult, eyeLocation, traceEnd, COLLISION_WEAPON, queryParams))
+		for(int32 i = 0; i < BulletsInOneShot; ++i)
 		{
-			//is blocking hit! -> process damage
-			float actualDamage = DamageCurve.GetRichCurveConst()->Eval(hitResult.Distance);
+			FVector bulletShotDirection = shotDirection;
+			if(BulletsInOneShot > 1)
+			{
+				const FVector2D spread = calculateBulletSpreadDispersion(1.0f, FMath::FRandRange(0.001f, 0.1f));
+				bulletShotDirection.Y += spread.X;
+				bulletShotDirection.Z += spread.Y;
+				bulletShotDirection.Normalize();
+			}
+			FVector traceEnd = eyeLocation + bulletShotDirection * 10000;
 
-			AActor* hitActor = hitResult.GetActor();
+			FCollisionQueryParams queryParams;
+			queryParams.AddIgnoredActor(m_owningPawn);
+			queryParams.AddIgnoredActor(this);
+			queryParams.bTraceComplex = true; //gives us the exact result because traces every triangle instead of a simple collider
+			queryParams.bReturnPhysicalMaterial = true;
 
-			surfaceType = UPhysicalMaterial::DetermineSurfaceType(hitResult.PhysMaterial.Get());
+			FVector tracerEndPoint = traceEnd;
+			EPhysicalSurface surfaceType = SurfaceType_Default;
 
-			actualDamage *= getDamageMultiplierFor(surfaceType);
-			UGameplayStatics::ApplyPointDamage(hitActor, actualDamage, shotDirection, hitResult, m_owningPawn->GetInstigatorController(), m_owningPawn, DamageType);
+			FHitResult hitResult;
+			if (GetWorld()->LineTraceSingleByChannel(hitResult, eyeLocation, traceEnd, COLLISION_WEAPON, queryParams))
+			{
+				//is blocking hit! -> process damage
+				float actualDamage = DamageCurve.GetRichCurveConst()->Eval(hitResult.Distance);
 
-			PlayImpactEffects(surfaceType, hitResult.ImpactPoint);
+				AActor* hitActor = hitResult.GetActor();
 
-			tracerEndPoint = hitResult.ImpactPoint;
+				surfaceType = UPhysicalMaterial::DetermineSurfaceType(hitResult.PhysMaterial.Get());
+
+				actualDamage *= getDamageMultiplierFor(surfaceType);
+				UGameplayStatics::ApplyPointDamage(hitActor, actualDamage, shotDirection, hitResult, m_owningPawn->GetInstigatorController(), m_owningPawn, DamageType);
+
+				PlayImpactEffects(surfaceType, hitResult.ImpactPoint);
+
+				tracerEndPoint = hitResult.ImpactPoint;
+			}
+
+			if (DebugWeaponDrawing > 0)
+			{
+				DrawDebugLine(GetWorld(), eyeLocation, traceEnd, FColor::White, false, 1.f, 0, 1.f);
+			}
+
+			PlayFireEffects(tracerEndPoint);
 		}
-
-		if(DebugWeaponDrawing > 0)
-		{
-			DrawDebugLine(GetWorld(), eyeLocation, traceEnd, FColor::White, false, 1.f, 0, 1.f);
-		}
-
-		PlayFireEffects(tracerEndPoint);
 
 		applyRecoil();
 
