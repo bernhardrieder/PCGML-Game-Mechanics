@@ -8,6 +8,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnHealthChangedEvent, const class UHealthComponent*, OwningHealthComp, float, Health, float, HealthDelta, const class UDamageType*, CausedDamageType, class AController*, InstigatedBy, AActor*, DamageCauser);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnArmorChangedEvent, const class UHealthComponent*, OwningHealthComp, float, Armor, float, ArmorDelta, const class UDamageType*, CausedDamageType, class AController*, InstigatedBy, AActor*, DamageCauser);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnExtraLivesChangedEvent, const class UHealthComponent*, OwningHealthComp, int32, extraLives);
 
 class UDamageType;
 class AController;
@@ -21,7 +22,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Health Component")
 	uint8 TeamNumber;
 
-protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Health Component")
 	float Health;
 
@@ -34,6 +34,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health Component")
 	float DefaultArmor;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Health Component")
+	int32 ExtraLives;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health Component")
+	int32 DefaultExtraLives;
+
 public:
 	// Sets default values for this component's properties
 	UHealthComponent();
@@ -43,6 +49,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Health Component")
 	void RepairArmor(float RepairAmount);
+
+	UFUNCTION(BlueprintCallable, Category = "Health Component")
+	void AddExtraLife(int32 amount);
+
 
 	FORCEINLINE float GetHealth() const { return Health; }
 	FORCEINLINE float GetArmor() const { return Armor; }
@@ -61,6 +71,8 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Health Component")
 	FOnArmorChangedEvent OnArmorChangedEvent;
 
+	UPROPERTY(BlueprintAssignable, Category = "Health Component")
+	FOnExtraLivesChangedEvent OnExtraLivesChangedEvent;
 
 	UFUNCTION(BlueprintPure, Category = "Health Component")
 	static bool IsFriendly(AActor* actorA, AActor* actorB);
