@@ -14,6 +14,7 @@
 #include "UnrealNetwork.h"
 #include "Curves/CurveFloat.h"
 #include "GameFramework/Character.h"
+#include "Pawns/ShooterCharacter.h"
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVARDebugWeaponDrawing (
@@ -22,6 +23,16 @@ FAutoConsoleVariableRef CVARDebugWeaponDrawing (
 	TEXT("Draw Debug Lines for Weapons"),
 	ECVF_Cheat
 );
+
+
+float FOwnerBasedModifier::GetCurrentModifier(AShooterCharacter* character)
+{
+	float modifier = 1.f;
+	modifier *= character->IsCrouching() ? Crouching : 1.f;
+	modifier *= character->IsMoving() ? Moving : 1.f;
+	modifier += character->IsAiming() ? Aiming : 1.f;
+	return modifier;
+}
 
 // Sets default values
 AShooterWeapon::AShooterWeapon()
@@ -52,6 +63,17 @@ AShooterWeapon::AShooterWeapon()
 	m_walkinSpeedModifier = 1.f;
 	BulletSpreadIncrease = 0.1f;
 	BulletSpreadDecrease = 4.f;
+
+	m_spreadModifier.Moving = 1.3f;
+	m_spreadModifier.Crouching = 0.5f;
+	m_spreadModifier.Aiming = 0.2;
+
+	m_recoilModifier.Moving = 1.3f;
+	m_recoilModifier.Crouching = 0.5f;
+	m_recoilModifier.Aiming = 0.2f;
+
+	RecoilIncreasePerShot = FVector2D(0.4f, 1.5f);
+	RecoilDecrease = 3.f;
 }
 
 void AShooterWeapon::BeginPlay()
@@ -98,9 +120,9 @@ void AShooterWeapon::StartMagazineReloading()
 	OnReloadStateChangedEvent.Broadcast(m_bIsReloading, reloadTimeNeeded, m_currentBulletsInMagazine);
 }
 
-void AShooterWeapon::Equip(APawn* euqippedBy)
+void AShooterWeapon::Equip(AShooterCharacter* euqippedBy)
 {
-	m_owningPawn = euqippedBy;
+	m_owningCharacter = euqippedBy;
 }
 
 void AShooterWeapon::Disarm()
@@ -113,7 +135,7 @@ void AShooterWeapon::Disarm()
 	m_bIsReloading = false;
 	m_currentBulletSpread = 0.f;
 	m_currentRecoil = FVector2D::ZeroVector;
-	m_owningPawn = nullptr;
+	m_owningCharacter = nullptr;
 	PrimaryActorTick.SetTickFunctionEnable(false);
 }
 
@@ -122,10 +144,11 @@ void AShooterWeapon::applyRecoil()
 	FVector2D recoil;
 	
 	recoil.Y = -RecoilIncreasePerShot.Y;
-	m_owningPawn->AddControllerPitchInput(recoil.Y);
-
 	recoil.X = FMath::FRandRange(-RecoilIncreasePerShot.X, RecoilIncreasePerShot.X);
-	m_owningPawn->AddControllerYawInput(recoil.X);
+	recoil *= m_recoilModifier.GetCurrentModifier(m_owningCharacter);
+
+	m_owningCharacter->AddControllerPitchInput(recoil.Y);
+	m_owningCharacter->AddControllerYawInput(recoil.X);
 
 	m_currentRecoil += recoil;
 
@@ -143,7 +166,7 @@ float AShooterWeapon::calculateRecoilCompensationDelta(float deltaTime, float cu
 
 	//Decrease = RecoilTerm * RecoilDecrease * DeltaTime * TimeSinceLastShot^0.5 * C
 	const float timeSinceLastShot = GetWorld()->TimeSeconds - lastFireTime;
-	float delta = recoilTerm * RecoilDecrease * deltaTime * FMath::Pow(timeSinceLastShot, 0.5f) * magicConstant;
+	float delta = recoilTerm * RecoilDecrease * m_recoilModifier.GetCurrentModifier(m_owningCharacter) * deltaTime * FMath::Pow(timeSinceLastShot, 0.5f) * magicConstant;
 
 	delta *= currentRecoil > 0.f ? -1.f : 1.f;
 
@@ -158,8 +181,8 @@ void AShooterWeapon::compensateRecoil(float deltaTime)
 
 	m_currentRecoil += recoilDelta;
 
-	m_owningPawn->AddControllerYawInput(recoilDelta.X);
-	m_owningPawn->AddControllerPitchInput(recoilDelta.Y);
+	m_owningCharacter->AddControllerYawInput(recoilDelta.X);
+	m_owningCharacter->AddControllerPitchInput(recoilDelta.Y);
 
 	if(FMath::IsNearlyZero(m_currentRecoil.X, 0.1f) && FMath::IsNearlyZero(m_currentRecoil.Y, 0.1f))
 	{
@@ -225,7 +248,9 @@ FVector2D AShooterWeapon::calculateBulletSpreadDispersion(float randomPower, flo
 	const float randomPowered = FMath::Pow(random, randomPower);
 	const float horizontalDispersion = randomPowered * currentSpread * FMath::Cos(randomSinCos);
 	const float verticalDispersion = randomPowered * currentSpread * FMath::Sin(randomSinCos);
-	return FVector2D(horizontalDispersion, verticalDispersion);
+	FVector2D spreadDispersion = FVector2D(horizontalDispersion, verticalDispersion);
+	spreadDispersion *= m_spreadModifier.GetCurrentModifier(m_owningCharacter);
+	return spreadDispersion;
 }
 
 
@@ -240,11 +265,11 @@ void AShooterWeapon::Fire()
 	//trace the world, from pawn eyes to crosshair location
 
 	//but fire anyway because you are a client
-	if(m_owningPawn)
+	if(m_owningCharacter)
 	{
 		FVector eyeLocation;
 		FRotator eyeRotator;
-		m_owningPawn->GetActorEyesViewPoint(eyeLocation, eyeRotator);
+		m_owningCharacter->GetActorEyesViewPoint(eyeLocation, eyeRotator);
 
 		FVector shotDirection = eyeRotator.Vector();
 
@@ -276,7 +301,7 @@ void AShooterWeapon::Fire()
 			FVector traceEnd = eyeLocation + bulletShotDirection * 10000;
 
 			FCollisionQueryParams queryParams;
-			queryParams.AddIgnoredActor(m_owningPawn);
+			queryParams.AddIgnoredActor(m_owningCharacter);
 			queryParams.AddIgnoredActor(this);
 			queryParams.bTraceComplex = true; //gives us the exact result because traces every triangle instead of a simple collider
 			queryParams.bReturnPhysicalMaterial = true;
@@ -295,7 +320,7 @@ void AShooterWeapon::Fire()
 				surfaceType = UPhysicalMaterial::DetermineSurfaceType(hitResult.PhysMaterial.Get());
 
 				actualDamage *= getDamageMultiplierFor(surfaceType);
-				UGameplayStatics::ApplyPointDamage(hitActor, actualDamage, shotDirection, hitResult, m_owningPawn->GetInstigatorController(), m_owningPawn, DamageType);
+				UGameplayStatics::ApplyPointDamage(hitActor, actualDamage, shotDirection, hitResult, m_owningCharacter->GetInstigatorController(), m_owningCharacter, DamageType);
 
 				PlayImpactEffects(surfaceType, hitResult.ImpactPoint);
 

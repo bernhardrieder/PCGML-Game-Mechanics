@@ -56,6 +56,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player")
 	void StopFire();
 
+	bool IsMoving() const;
+	bool IsCrouching() const;
+	bool IsAiming() const { return bWantsToZoom; }
 
 protected:
 	// Called when the game starts or when spawned

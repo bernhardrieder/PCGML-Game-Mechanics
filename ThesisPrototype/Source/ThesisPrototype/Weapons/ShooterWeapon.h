@@ -16,6 +16,7 @@ class UParticleSystem;
 class UCameraShake;
 class UCurveFloat;
 struct FRuntimeFloatCurve;
+class AShooterCharacter;
 
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
@@ -34,6 +35,23 @@ enum class EFireMode : uint8
 	SingleFire,
 	SemiAutomatic,
 	Automatic
+};
+
+USTRUCT(BlueprintType)
+struct FOwnerBasedModifier
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="OwnerBasedModifier")
+	float Moving;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "OwnerBasedModifier")
+	float Crouching;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "OwnerBasedModifier")
+	float Aiming;
+
+	float GetCurrentModifier(AShooterCharacter* character);
 };
 
 UCLASS()
@@ -129,8 +147,14 @@ protected:
 	EWeaponType Type;
 
 	//character walking speed modifier in percent/100, e.g., 0.8
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon", meta = (DisplayName = "Walking Speed Modifier", ClampMin = 0.0, ClampMax = 1.0))
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Modifier", meta = (DisplayName = "Walking Speed Modifier", ClampMin = 0.0, ClampMax = 1.0))
 	float m_walkinSpeedModifier;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Modifier", meta = (DisplayName = "Owner-based Spread Modifier"))
+	FOwnerBasedModifier m_spreadModifier;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Modifier", meta = (DisplayName = "Owner-based Recoil Modifier"))
+	FOwnerBasedModifier m_recoilModifier;
 
 public:
 	// Sets default values for this actor's properties
@@ -141,7 +165,7 @@ public:
 	virtual void StartMagazineReloading();
 
 	//call when the weapon is currently used as main weapon
-	virtual void Equip(APawn* euqippedBy);
+	virtual void Equip(AShooterCharacter* euqippedBy);
 	//call when the weapon is stored inventory
 	virtual void Disarm();
 
@@ -167,7 +191,7 @@ protected:
 	float getDamageMultiplierFor(EPhysicalSurface surfaceType);
 
 protected:
-	APawn* m_owningPawn;
+	AShooterCharacter* m_owningCharacter;
 	
 	bool m_bIsAmmoLeftInMagazine = true;
 	bool m_bIsReloading = false;
@@ -187,4 +211,6 @@ protected:
 	float m_singleBulletReloadTime;
 
 	FVector2D m_currentRecoil;
+
+
 };

@@ -212,6 +212,16 @@ void AShooterCharacter::StopFire()
 	}
 }
 
+bool AShooterCharacter::IsMoving() const
+{
+	return GetCharacterMovement()->GetCurrentAcceleration() != FVector::ZeroVector;
+}
+
+bool AShooterCharacter::IsCrouching() const
+{
+	return GetCharacterMovement()->IsCrouching();
+}
+
 void AShooterCharacter::addWeapon(AShooterWeapon* weapon)
 {
 	if(weapon)
