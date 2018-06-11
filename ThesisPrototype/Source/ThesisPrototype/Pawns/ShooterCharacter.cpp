@@ -117,6 +117,22 @@ void AShooterCharacter::EndZoom()
 	bWantsToZoom = false;
 }
 
+void AShooterCharacter::beginRun()
+{
+	if(auto movementComp = GetCharacterMovement())
+	{
+		movementComp->MaxWalkSpeed *= 1.5f;
+	}
+}
+
+void AShooterCharacter::endRun()
+{
+	if (auto movementComp = GetCharacterMovement())
+	{
+		movementComp->MaxWalkSpeed /= 1.5f;
+	}
+}
+
 void AShooterCharacter::reloadWeapon()
 {
 	if(m_equippedWeapon)
@@ -314,6 +330,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AShooterCharacter::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AShooterCharacter::StopFire);
+
+	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &AShooterCharacter::beginRun);
+	PlayerInputComponent->BindAction("Run", IE_Released, this, &AShooterCharacter::endRun);
 
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AShooterCharacter::reloadWeapon);
 

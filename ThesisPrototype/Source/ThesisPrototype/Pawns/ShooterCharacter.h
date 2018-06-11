@@ -76,6 +76,8 @@ protected:
 	void EndCrouch();
 	void BeginZoom();
 	void EndZoom();
+	void beginRun();
+	void endRun();
 	void reloadWeapon();
 	void addWeapon(AShooterWeapon* weapon);
 	void equipWeapon(AShooterWeapon* weapon);
