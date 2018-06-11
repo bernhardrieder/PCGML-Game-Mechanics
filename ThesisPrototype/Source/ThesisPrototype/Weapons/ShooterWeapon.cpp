@@ -113,7 +113,6 @@ void AShooterWeapon::Disarm()
 	m_bIsReloading = false;
 	m_currentBulletSpread = 0.f;
 	m_currentRecoil = FVector2D::ZeroVector;
-	m_totalAppliedRecoil = FVector2D::ZeroVector;
 	m_owningPawn = nullptr;
 	PrimaryActorTick.SetTickFunctionEnable(false);
 }
@@ -128,66 +127,44 @@ void AShooterWeapon::applyRecoil()
 	recoil.X = FMath::FRandRange(-RecoilIncreasePerShot.X, RecoilIncreasePerShot.X);
 	m_owningPawn->AddControllerYawInput(recoil.X);
 
-	m_totalAppliedRecoil += recoil;
 	m_currentRecoil += recoil;
 
 	PrimaryActorTick.SetTickFunctionEnable(true);
 }
 
+float AShooterWeapon::calculateRecoilCompensationDelta(float deltaTime, float currentRecoil)
+{
+	//calculations according to http://symthic.com/bf1-general-info?p=misc
+	//C = Some constant(approx. 5.0)
+	const float magicConstant = 5.0f;
+
+	//RecoilTerm = ((abs(CurrentRecoil) / 0.5) ^ 0.6 + .001)
+	const float recoilTerm = FMath::Pow(FMath::Abs(currentRecoil) / 0.5f, 0.6) + 0.001f;
+
+	//Decrease = RecoilTerm * RecoilDecrease * DeltaTime * TimeSinceLastShot^0.5 * C
+	const float timeSinceLastShot = GetWorld()->TimeSeconds - lastFireTime;
+	float delta = recoilTerm * RecoilDecrease * deltaTime * FMath::Pow(timeSinceLastShot, 0.5f) * magicConstant;
+
+	delta *= currentRecoil > 0.f ? -1.f : 1.f;
+
+	return delta;
+}
+
 void AShooterWeapon::compensateRecoil(float deltaTime)
 {
-	//if (m_currentRecoil.X >= 0 || m_currentRecoil.Y >= 0)
+	FVector2D recoilDelta;
+	recoilDelta.X = calculateRecoilCompensationDelta(deltaTime, m_currentRecoil.X);
+	recoilDelta.Y = calculateRecoilCompensationDelta(deltaTime, m_currentRecoil.Y);
+
+	m_currentRecoil += recoilDelta;
+
+	m_owningPawn->AddControllerYawInput(recoilDelta.X);
+	m_owningPawn->AddControllerPitchInput(recoilDelta.Y);
+
+	if(FMath::IsNearlyZero(m_currentRecoil.X, 0.1f) && FMath::IsNearlyZero(m_currentRecoil.Y, 0.1f))
 	{
-		//calculations according to http://symthic.com/bf1-general-info?p=misc
-
-		//C = Some constant(approx. 5.0)
-		const float magicConstant = 5.0f;
-		
-		//RecoilTerm = ((abs(CurrentRecoil) / 0.5) ^ 0.6 + .001)
-		FVector2D recoilTerm;
-		recoilTerm.X = FMath::Pow(FMath::Abs(m_currentRecoil.X) / 0.5f, 0.6) + 0.001f;
-		recoilTerm.Y = FMath::Pow(FMath::Abs(m_currentRecoil.Y) / 0.5f, 0.6) + 0.001f;
-
-		//Decrease = RecoilTerm * RecoilDecrease * DeltaTime * TimeSinceLastShot^0.5 * C
-		float timeSinceLastShot = GetWorld()->TimeSeconds - lastFireTime;
-		FVector2D decreaseDelta;
-		decreaseDelta.X = recoilTerm.X * RecoilDecrease * deltaTime * FMath::Pow(timeSinceLastShot, 0.5f) * magicConstant;
-		decreaseDelta.Y = recoilTerm.Y * RecoilDecrease * deltaTime * FMath::Pow(timeSinceLastShot, 0.5f) * magicConstant;
-
-		//NewRecoil = (CurrentRecoil - Decrease) if CurrentRecoil > 0 else (CurrentRecoil + Decrease)
-		FVector2D newRecoil;
-		decreaseDelta.X *= m_currentRecoil.X > 0.f ? -1.f : 1.f;
-		decreaseDelta.Y *= m_currentRecoil.Y > 0.f ? -1.f : 1.f;
-
-		newRecoil.X = m_currentRecoil.X + decreaseDelta.X;
-		newRecoil.Y = m_currentRecoil.Y + decreaseDelta.Y;
-
-		if(!FMath::IsNearlyZero(m_currentRecoil.X, 0.1f))
-		{
-			m_currentRecoil.X = newRecoil.X;
-			m_owningPawn->AddControllerYawInput(decreaseDelta.X);
-		}
-		else
-		{
-			m_currentRecoil.X = 0.f;
-		}
-		if (!FMath::IsNearlyZero(m_currentRecoil.Y, 0.1f))
-		{
-			m_currentRecoil.Y = newRecoil.Y;
-			m_owningPawn->AddControllerPitchInput(decreaseDelta.Y);
-		}
-		else
-		{
-			m_currentRecoil.Y = 0.f;
-		}
-
-
-		if(FMath::IsNearlyZero(m_currentRecoil.X, 0.1f) && FMath::IsNearlyZero(m_currentRecoil.Y, 0.1f))
-		{
-			//m_totalAppliedRecoil = FVector2D::ZeroVector;
-			m_currentRecoil = FVector2D::ZeroVector;
-			PrimaryActorTick.SetTickFunctionEnable(false);
-		}
+		m_currentRecoil = FVector2D::ZeroVector;
+		PrimaryActorTick.SetTickFunctionEnable(false);
 	}
 }
 

@@ -161,6 +161,7 @@ protected:
 	//applies recoil to the character and returns the applied recoil (x = horizontal, y = vertical)
 	void applyRecoil();
 	void compensateRecoil(float deltaTime);
+	float calculateRecoilCompensationDelta(float deltaTime, float currentRecoil);
 
 	float getDamageMultiplierFor(EPhysicalSurface surfaceType);
 
@@ -184,7 +185,5 @@ protected:
 
 	float m_singleBulletReloadTime;
 
-	//is the total applied recoil to the playercontroller
-	FVector2D m_totalAppliedRecoil;
 	FVector2D m_currentRecoil;
 };
