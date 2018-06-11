@@ -112,7 +112,7 @@ void AShooterWeapon::StopFire()
 
 void AShooterWeapon::StartMagazineReloading()
 {
-	if(m_bIsReloading || m_availableBulletsLeft <= 0)
+	if(m_bIsReloading || m_availableBulletsLeft <= 0 || m_currentBulletsInMagazine == BulletsPerMagazine)
 	{
 		return;
 	}
