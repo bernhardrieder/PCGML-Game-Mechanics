@@ -139,6 +139,14 @@ void AShooterWeapon::Disarm()
 	PrimaryActorTick.SetTickFunctionEnable(false);
 }
 
+void AShooterWeapon::RefillAmmunition(int amountOfBullets)
+{
+	int maxBullets = AvailableMagazines * BulletsPerMagazine;
+	int maxNewBullets = maxBullets - m_availableBulletsLeft;
+	m_availableBulletsLeft += amountOfBullets < maxNewBullets ? amountOfBullets : maxNewBullets;
+	OnAmmoChangedEvent.Broadcast(m_availableBulletsLeft, m_currentBulletsInMagazine);
+}
+
 void AShooterWeapon::applyRecoil()
 {
 	FVector2D recoil;

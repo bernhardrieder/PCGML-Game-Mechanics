@@ -169,6 +169,9 @@ public:
 	//call when the weapon is stored inventory
 	virtual void Disarm();
 
+	UFUNCTION(BlueprintCallable, Category="Weapon|Ammo")
+	virtual void RefillAmmunition(int amountOfBullets);
+
 	FORCEINLINE float GetWalkinSpeedModifier() const { return m_walkinSpeedModifier; }
 	FORCEINLINE EWeaponType GetType() const { return Type; }
 

@@ -45,6 +45,9 @@ protected:
 	UPROPERTY(BlueprintAssignable, Category = "Player")
 	FOnCurrentWeaponChangedEvent OnCurrentWeaponChangedEvent;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Player|Weapon", meta(DisplayName = "Equipped Weapon"))
+	AShooterWeapon* m_equippedWeapon;
+
 public:
 	// Sets default values for this character's properties
 	AShooterCharacter();
@@ -97,7 +100,7 @@ protected:
 	bool bWantsToZoom;
 	float DefaultFOV;
 
-	AShooterWeapon* m_equippedWeapon;
+
 	AShooterWeapon* m_lastEquippedWeapon;
 	TArray<AShooterWeapon*> m_availableWeapons;
 
