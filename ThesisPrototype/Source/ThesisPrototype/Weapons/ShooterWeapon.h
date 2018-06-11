@@ -88,8 +88,12 @@ protected:
 	TSubclassOf<UDamageType> DamageType;
 
 	//x = damage, y = distance
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Damage")
-	FRuntimeFloatCurve DamageCurve;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
+	FVector2D MaxDamageWithDistance;
+
+	//x = damage, y = distance
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
+	FVector2D MinDamageWithDistance;
 
 	// bullets per minute fired
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
@@ -114,7 +118,7 @@ protected:
 	int BulletsInOneShot;
 
 	// reload time of an empty magazine in seconds
-	UPROPERTY(EditDefaultsOnly, Category="Weapon|Ammo")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon|Ammo")
 	float ReloadTimeEmptyMagazine;
 
 	// random recoil in degree (x = horizontal, y = vertical)
@@ -125,7 +129,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Recoil")
 	float RecoilDecrease;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	EFireMode FireMode;
 
 	UPROPERTY(EditAnywhere, Category="Weapon|Ammo")
@@ -143,7 +147,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon|Ammo", meta=(DisplayName="Available Bullets Left to Shoot"))
 	int m_availableBulletsLeft = 0;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	EWeaponType Type;
 
 	//character walking speed modifier in percent/100, e.g., 0.8
@@ -214,6 +218,6 @@ protected:
 	float m_singleBulletReloadTime;
 
 	FVector2D m_currentRecoil;
-
+	FRuntimeFloatCurve m_damageCurve;
 
 };

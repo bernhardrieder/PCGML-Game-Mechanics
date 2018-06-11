@@ -53,8 +53,8 @@ AShooterWeapon::AShooterWeapon()
 	FireMode = EFireMode::Automatic;
 	bUnlimitiedBullets = false;
 
-	DamageCurve.GetRichCurve()->AddKey(1000.f, 20.f);
-	DamageCurve.GetRichCurve()->AddKey(10000.f, 5.f);
+	MaxDamageWithDistance = FVector2D(20.f, 1000.f); // 10m
+	MinDamageWithDistance = FVector2D(5.f, 10000.f); // 5m
 
 	m_singleBulletReloadTime = ReloadTimeEmptyMagazine / BulletsPerMagazine;
 
@@ -83,6 +83,10 @@ void AShooterWeapon::BeginPlay()
 	timeBetweenShots = 60.f / RateOfFire;
 	m_currentBulletsInMagazine = BulletsPerMagazine;
 	m_availableBulletsLeft = AvailableMagazines * BulletsPerMagazine;
+
+	m_damageCurve.GetRichCurve()->AddKey(0.f, MaxDamageWithDistance.X);
+	m_damageCurve.GetRichCurve()->AddKey(MaxDamageWithDistance.Y, MaxDamageWithDistance.X);
+	m_damageCurve.GetRichCurve()->AddKey(MinDamageWithDistance.Y, MinDamageWithDistance.X);
 }
 
 void AShooterWeapon::Tick(float deltaTime)
@@ -321,7 +325,7 @@ void AShooterWeapon::Fire()
 			if (GetWorld()->LineTraceSingleByChannel(hitResult, eyeLocation, traceEnd, COLLISION_WEAPON, queryParams))
 			{
 				//is blocking hit! -> process damage
-				float actualDamage = DamageCurve.GetRichCurveConst()->Eval(hitResult.Distance);
+				float actualDamage = m_damageCurve.GetRichCurveConst()->Eval(hitResult.Distance);
 
 				AActor* hitActor = hitResult.GetActor();
 
