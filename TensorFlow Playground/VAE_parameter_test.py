@@ -176,24 +176,25 @@ def run_constellations_test(hyperparams, dry_run=False):
         print("Calculated %i different constellations" %total_iterations)
         printProgressBar(0, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
 
-    for learning_rate in hyperparams['learning_rate']:
-        for n_hidden_1 in hyperparams['n_hidden_1']:
-            for n_hidden_2 in hyperparams['n_hidden_2']:
-                for n_z in hyperparams['n_z']:
-                    if n_z >= n_hidden_2:
-                        continue
-                    for batch_size in hyperparams['batch_size']:
-                        for n_categorical in hyperparams['n_categorical']:
-                            for n_numerical in hyperparams['n_numerical']:
-                                for n_ammo_features in hyperparams['n_ammo_features']:
-                                    for n_epochs in hyperparams['n_epochs']:
-                                        for transfer_fct in hyperparams['transfer_fct']:
-                                            for optimizer in hyperparams['optimizer']:
-                                                iteration_count += 1
-                                                if not dry_run:
-                                                    start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2, n_z, batch_size, n_categorical,
-                                                                                            n_numerical, n_ammo_features, n_epochs, transfer_fct, optimizer)
-                                                    printProgressBar(iteration_count, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
+    for i in range(0,100):
+        for learning_rate in hyperparams['learning_rate']:
+            for n_hidden_1 in hyperparams['n_hidden_1']:
+                for n_hidden_2 in hyperparams['n_hidden_2']:
+                    for n_z in hyperparams['n_z']:
+                        #if n_z >= n_hidden_1:
+                            #continue
+                        for batch_size in hyperparams['batch_size']:
+                            for n_categorical in hyperparams['n_categorical']:
+                                for n_numerical in hyperparams['n_numerical']:
+                                    for n_ammo_features in hyperparams['n_ammo_features']:
+                                        for n_epochs in hyperparams['n_epochs']:
+                                            for transfer_fct in hyperparams['transfer_fct']:
+                                                for optimizer in hyperparams['optimizer']:
+                                                    iteration_count += 1
+                                                    if not dry_run:
+                                                        start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2, n_z, batch_size, n_categorical,
+                                                                                                n_numerical, n_ammo_features, n_epochs, transfer_fct, optimizer)
+                                                        printProgressBar(iteration_count, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
 
     if not dry_run:
         write_cache(close_file=True)
@@ -203,14 +204,14 @@ def run_constellations_test(hyperparams, dry_run=False):
 #__main__
 hyperparams = dict( \
                     learning_rate = [0.01],
-                    n_hidden_1 = [26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,6,4],
-                    n_hidden_2 = [26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,6,4],
-                    n_z = [14,13,12,11,10,9,8,7,6,5,4,3,2],
-                    batch_size = [1],
+                    n_hidden_1 = [26],
+                    n_hidden_2 = [12],
+                    n_z = [2],
+                    batch_size = [4],
                     n_categorical = [2],
                     n_numerical = [14],
                     n_ammo_features = [0],
-                    n_epochs = [35],
+                    n_epochs = [70],
                     #all possible nonlinear activation functions
                     transfer_fct = [
                                     #tf.tanh, #stick with that one

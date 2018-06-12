@@ -443,16 +443,12 @@ class VariationalAutoencoder(object):
         return weights_and_biases
 
     def __create_weight(self, shape, name=""):
-        initial = tf.truncated_normal(shape, stddev=0.1)
-        return tf.Variable(initial, dtype=tf.float32, name=name)
-        #initial = tf.contrib.layers.xavier_initializer()
-        #return tf.Variable(initial(shape), dtype=tf.float32, name=name)
+        initial = tf.contrib.layers.xavier_initializer()
+        return tf.Variable(initial(shape), dtype=tf.float32, name=name)
 
     def __create_bias(self, shape, name=""):
-        initial = tf.constant(0.1, shape=shape, dtype=tf.float32)
-        return tf.Variable(initial, name=name)
-        #initial = tf.contrib.layers.xavier_initializer()
-        #return tf.Variable(initial(shape), dtype=tf.float32, name=name)
+        initial = tf.contrib.layers.xavier_initializer()
+        return tf.Variable(initial(shape), dtype=tf.float32, name=name)
 
     def __create_loss_optimizer(self):
         self.__print("Start creating optimizer/backprop operation ...", 1)
