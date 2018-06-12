@@ -415,7 +415,7 @@ Games like Black \& White, Diablo, Dwarf Fortress, Elite, Eve Online, Roque, Spe
 There are a few possibilities and use cases for PCG as mechanics in games. As seen, some core mechanics aim at weapon creation and progressing through generated space with the help of generated or altered "helper" mechanisms. Apart from that promising ideas are also other noteworthy ideas:
 \begin{itemize}
 	\item One exciting idea is about using PCG for multiplayer games as a multi-instance PCG system given by \citep{pcg::futureOfPcgInGames}. A game could use a central PCG system consisting of different and unique systems for each player, and every content generation would affect the PCG systems of other players \cite{pcg::futureOfPcgInGames}.  In that case, the core mechanic of the game would include influencing other players with each others PCG system to work towards a specific goal. For example, a use case would be a collaborative multiplayer game where each content generation causes a new content generated in the other’s player space, and they must find a way to communicate how to achieve a mutual objective \cite{pcg::futureOfPcgInGames}. 
-	\item There is a lot of research done in the generation of quests as well. The research of \citep{pcg::questGenerator} introduced generated quests based on analysis of four existing \ac{MMORPG} and their quests. One could create a simulation game where players need to create random quests by doing interaction with the PCG system in order to provide an AI agent with missions which needs to be fulfilled to solve some other problems in the game and thus progress throughout the game.
+	\item There is a lot of research done in the generation of quests as well. The research of \citep{pcg::questGenerator} introduced generated quests based on analysis of four existing \acp{MMORPG} and their quests. One could create a simulation game where players need to create random quests by doing interaction with the PCG system in order to provide an AI agent with missions which needs to be fulfilled to solve some other problems in the game and thus progress throughout the game.
 	\item Another idea is to adapt existing and successful introduced game mechanics with a PCG-backend. For example, one could create a game like Tetris where the core mechanics of rotating a block generates new blocks. For example, every time the player rotates the block, the next block will be altered with evolutionary algorithms and changes their shapes to increase the difficulty. Moreover, the system could adapt its difficulty to the player's skills regarding the success or failure rate of using the new blocks to maintain an acceptable experience.
 \end{itemize} 
 
@@ -623,7 +623,7 @@ The focus of PCGML is to generate new content based on training with existing co
 \section{Development Considerations} \label{PCGML::devConsiderations}
 There are some unique development considerations to take when someone wants to make use of PCG via ML for game elements. In general, every design consideration, possible issue, pitfall and best practices described and discussed in chapters \ref{pcgDevelopment} and \ref{mlDevelopment} will apply when implementing PCGML algorithms. Furthermore, an initial examination of the data representation for the data used as the training set during the ML model’s training is necessary. On this account, the research of \citep{pcgml::paper} showed that every specific dataset has different but also shared possible training methods for the ML model to obtain excellent and practical generation results. The primarily used training models for their research purposes of using PCGML for, e.g., level generation, are based on the paradigm of \ac{ANN} and were:
 \begin{itemize}
-	\item \ac{CNN} or \ac{LSTM} networks
+	\item \ac{CNN} or \ac{LSTM}
 	\item Markov models such as N-grams or multi-dimensional Markov chains
 	\item Bayes models
 	\item Autoencoders
@@ -673,7 +673,7 @@ After provision and preprocessing of the dataset follows training. Training can 
 	\includegraphics[width=0.3\linewidth]{PICs/PCGML_development_example_NN_basic}
 	\caption{Basic neural network to output a variable based on given input variables.}\label{fig::PCGML::devExample::NNbasic}
 \end{figure}
-In specific, the training of several NN’s for every following variable of the data sequence is necessary. Another possibility to use NN would be to make use of the so-called "Softmax" function which outputs the categorical distribution or probability distribution of a variable. With this probability, it can generate and train the following variables. Figure \ref{fig::PCGML::devExample::NNwithSoftmax} shows this kind of NN with an example probability distribution in the output layer.
+In specific, the training of several \acp{NN} for every following variable of the data sequence is necessary. Another possibility to use \acp{NN} would be to make use of the so-called "Softmax" function which outputs the categorical distribution or probability distribution of a variable. With this probability, it can generate and train the following variables. Figure \ref{fig::PCGML::devExample::NNwithSoftmax} shows this kind of NN with an example probability distribution in the output layer.
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.3\linewidth]{PICs/PCGML_development_example_NN_categorical_distributions}
@@ -713,7 +713,7 @@ Game mechanics often share a connection with some interactable objects. In the c
 For example, a game could be an FPS game with generated weapons from a pre-trained PCGML system whereby the model will be fed with the new generated weapons during runtime and furthermore specializes in a specific direction. After a bunch of time, the system only generates a specific weapon, and that is where the game or session would end.
 
 \subsection{Changing Powers} \label{idea::changingPowers}
-Often, the central mechanic provided in most \ac{RPG} is fighting with a sword, any weapon or applying magic spells as an attack on the enemy. Moreover, the weapons often possess a magic power as advantage or disadvantage. These powers and the magic spells themselves can be part of a generation process powered by a PCGML system. The system could generate new weapons or spells affecting the duration, spell category, continuing effect on the enemy or player, energy cost and other similar and often used properties. Providing useful weapons with advantages or disadvantages or some magic attacks as an example would serve as the training of the system.
+Often, the central mechanic provided in most \acp{RPG} is fighting with a sword, any weapon or applying magic spells as an attack on the enemy. Moreover, the weapons often possess a magic power as advantage or disadvantage. These powers and the magic spells themselves can be part of a generation process powered by a PCGML system. The system could generate new weapons or spells affecting the duration, spell category, continuing effect on the enemy or player, energy cost and other similar and often used properties. Providing useful weapons with advantages or disadvantages or some magic attacks as an example would serve as the training of the system.
 
 \subsection{Solver Weapon} \label{idea::solverWeapon}
 The solver weapon is an idea based on the co-creator pattern described in chapter \ref{AI-basedMechanicsDesignPattern}. It is about a game mechanic of using a generation weapon to progress through the game. The weapon's purpose is to help the player in special conditions such as solving puzzles with a missing piece in it. The highlight of the game mechanic is the required drawing interaction to generate a missing piece. A player needs to draw the missing piece on a given "drawing panel" connected with the weapon which tries to replicate the figured piece. Drawings could consist of big solid circles indicating corners and lines representing edges. The detection of the drawing involves object detection via ML which forwards detected chunks to the PCGML system. For example, introductive gameplay could be to find or generate the missing key for a door whereas the player is aware of the lock's shape.\\
@@ -748,7 +748,7 @@ A PCGML system which is trained to generate and modify terrains with a particula
 An application as a game mechanic in a point and click game could be a PCGML system, trained to generate new storylines, events, choices and outcomes of chosen choices. The system is trained on designed stories and learns the dependencies to create new and novel storylines which individual possible choices and outcomes. Like in the idea described in \ref{idea::rulesAndBehavior}, the designer can provide more game elements than used in the game which provides the system which a variety of possibilities on how to compose the game. The spectacle pattern is the base of this idea of a PCGML generated story.
 
 \subsection{Big Boss Helper} \label{idea::bigBossHelper}
-Based on the villain pattern in which the AI mobs a player rather than tries to defeat them, is this idea. This kind of design pattern fits almost perfectly in, e.g., an RPG game big boss fight with more than one \ac{NPC} to defeat. For example, there are two NPC’s to defeat to win the fight and obtain unique items - one applies mainly damage, and the other one protects the other one. This helper NPC is represented by the PCGML system which is trained on player behavior such as attack preferences or movement behavior in a specific level or environment to generate or alter the terrain or level to keep the player off the main enemy in the fight.
+Based on the villain pattern in which the AI mobs a player rather than tries to defeat them, is this idea. This kind of design pattern fits almost perfectly in, e.g., an RPG big boss fight with more than one \ac{NPC} to defeat. For example, there are two NPC’s to defeat to win the fight and obtain unique items - one applies mainly damage, and the other one protects the other one. This helper NPC is represented by the PCGML system which is trained on player behavior such as attack preferences or movement behavior in a specific level or environment to generate or alter the terrain or level to keep the player off the main enemy in the fight.
 
 \subsection{Figure it Out} \label{idea::figureItOut}
 A possible application in a multiplayer game could be a mechanic in which each player possesses a PCGML system for generation purposes. However, the challenge in the game is that each generation of the system changes the other’s systems output, and they need to work together towards a specific goal. For instance, a puzzle game where players need to figure out the connection between their system. The PCGML system would be trained with a specific game corpus and enables interaction based on the editable pattern. The player changes parameters and also changes the other while they need to generate an object combined with each of the system's output. Parameter adjustment can either be done directly or indirectly with any moving stones around in a room and find the right position. Furthermore, this idea is also applicable in a single player puzzle game without the need of another player.
@@ -1040,7 +1040,7 @@ Data -> Model -> generated Model -> Density estimation\\
  why use what - eg. why use neural network over other and stuff like that!\\
  its a classification and regression problem. use softmax to get probabilities\\
  \\	
-As seen throughout the previous chapters, there are no distinctive right or wrong methods to train a model. PCGML is a relatively new approach and many different methods are suitable to reach a certain goal. As the research of \cite{pcgml::paper} shows, methods like \ac{NN}, \ac{LSTM}, autoencoders, deep convolutional networks, markov models or markov chains are applicable for a model's training to generate, e.g., levels of \ac{2D} games. It is worth nothing, that all these mentioned methods are made with the help or resemble \ac{NN} \cite{neuralNetworkZoo}. \\
+As seen throughout the previous chapters, there are no distinctive right or wrong methods to train a model. PCGML is a relatively new approach and many different methods are suitable to reach a certain goal. As the research of \cite{pcgml::paper} shows, methods like \ac{NN}, \ac{LSTM}, autoencoders, deep convolutional networks, markov models or markov chains are applicable for a model's training to generate, e.g., levels of \ac{2D} games. It is worth nothing, that all these mentioned methods are made with the help or resemble \acp{NN} \cite{neuralNetworkZoo}. \\
 This common feature is the reason why the implementation decision for the prototype's PCGML training method focuses on a simplified supervised and discriminative method approach with an \ac{ANN} and an unsupervised and generative method approach with a \ac{VAE}. \todo{describe the ideas, how would both of them work?}\\
 
 A simple ANN which is trained on each parameter to predict another one and so forth\\
@@ -1213,13 +1213,13 @@ further implementations
 	\acro{NLP}{Natural Language Processing}
 	\acro{NN}{Neural Network}
 	\acro{NPC}{Non-playable Character}
-	\acro{OS}{Operating Systems}
+	\acro{OS}{Operating System}
 	\acro{PC}{Personal Computer}
     \acro{PCG}{Procedural Content Generation}
     \acro{PCGML}{Procedural Content Generation via Machine Learning}
     \acro{PvP}{Player versus Player}
     \acro{PvE}{Player versus Environment}
-    \acro{RPG}{Roleplay Games}
+    \acro{RPG}{Roleplay Game}
     \acro{RL}{Reinforcement Learning}
     \acro{RNG}{Random Number Generator}
     \acro{SVM}{Support Vector Machine}
