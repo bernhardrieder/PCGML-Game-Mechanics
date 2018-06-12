@@ -98,41 +98,29 @@ def train_model(train_data, test_data, network_architecture, optimizer, transfer
 
     avg_cost_rand = 0.
     avg_cost = 0.
-    avg_distance_norm = 0.
-    avg_distance_unnorm = 0.
-
     num_samples = test_data.num_examples
 
-    for i in range(num_samples):
-        batch = test_data.next_batch(batch_size)
+    total_batch = int(num_samples / batch_size)
 
-        x_reconstructed = network.encode_and_decode(batch)
+    # Loop over all batches
+    for i in range(total_batch):
+        batch = test_data.next_batch(batch_size)
         cost = network.calculate_loss(batch)
 
-        _, unstandardized_batch = test_data.decode_processed_tensor(batch[0])
-        _, unstandardized_x = test_data.decode_processed_tensor(x_reconstructed[0])
-
-        distance_unnorm = tf.reduce_sum(tf.abs(unstandardized_batch - unstandardized_x))
-        distance_norm = tf.reduce_sum(tf.abs(batch[0] - x_reconstructed[0]))
-
-        distance_unnorm, distance_norm = sess.run((distance_unnorm, distance_norm))
-
-        sample = np.random.uniform(low=test_data.standardized_min_values, high=test_data.standardized_max_values, size=(batch_size,network_architecture["n_input"]))
+        sample = np.random.uniform(low=test_data.standardized_min_values,
+                                    high=test_data.standardized_max_values,
+                                    size=(batch_size,network_architecture["n_input"]))
         cost_rand = network.calculate_loss(sample)
 
         #compute average loss/cost
-        avg_cost_rand += min(cost_rand, 1000) / num_samples
-        avg_cost += cost / num_samples
-        avg_distance_unnorm += distance_unnorm / num_samples
-        avg_distance_norm += distance_norm / num_samples
+        avg_cost_rand += min(cost_rand, 1000) / total_batch
+        avg_cost += cost / total_batch
 
     sess.close()
     avg_cost_rand = "{:.2f}".format(avg_cost_rand)
     avg_cost = "{:.2f}".format(avg_cost)
-    avg_distance_unnorm = "{:.2f}".format(avg_distance_unnorm)
-    avg_distance_norm = "{:.2f}".format(avg_distance_norm)
 
-    return log, avg_cost_rand, avg_cost, avg_distance_unnorm, avg_distance_norm
+    return log, avg_cost_rand, avg_cost
 
 
 def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2, n_z, batch_size, n_categorical,
@@ -146,8 +134,10 @@ def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2
     network_architecture['n_z'] = n_z
 
     opti = optimizer(learning_rate)
-    train_log, avg_cost_random, avg_cost, avg_un_dist, avg_n_dist = train_model(train_data, test_data, network_architecture, opti, transfer_fct, batch_size, n_epochs, 1)
+    train_log, avg_cost_random, avg_cost  = train_model(train_data, test_data, network_architecture, opti, transfer_fct, batch_size, n_epochs, 1)
 
+    avg_un_dist = "N/A"
+    avg_n_dist = "N/A"
     l_r = str(learning_rate)
     n_h_1 = str(n_hidden_1)
     n_h_2 = str(n_hidden_2)
@@ -176,7 +166,7 @@ def run_constellations_test(hyperparams, dry_run=False):
         print("Calculated %i different constellations" %total_iterations)
         printProgressBar(0, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
 
-    for i in range(0,10):
+    for i in range(0,100):
         for learning_rate in hyperparams['learning_rate']:
             for n_hidden_1 in hyperparams['n_hidden_1']:
                 for n_hidden_2 in hyperparams['n_hidden_2']:

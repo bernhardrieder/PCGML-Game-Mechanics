@@ -208,46 +208,60 @@ class VariationalAutoencoder(object):
         opt, cost = self._session.run((self.optimizer, self.cost), feed_dict={self.X: mini_batch})
         return cost
 
-    def encode_to_latent_space(self, x):
-        """Encodes data by mapping it into the latent space.
-
-        Args:
-            x: Samples of data - the shape need to match with the input data.
-
-        Returns:
-            [float]: The mean of the latent space z.
-            [float]: The log sigma square of the latent space z.
-            [float]: The sampled latent space z (+ Gaussian distribution)
-
-            The Shape of the return value is based on the given network parameters.
-        """
-        return self._session.run((self.z_mean, self.z_log_sigma_sq, self.z), feed_dict={self.X: x})
-
-    def decode_from_latent_space(self, z):
+    def decode_from_latent_space(self, z, matches_trained_batch_size):
         """Generate data by sampling from latent space.
 
         Args:
             z: Samples of data - the shape need to match with the latent space dimension.
+                Furthermore, either needs to be the size of the used batch_size during
+                training or just 1 dataset.
+                see the 'matches_trained_batch_size' for more information
+            matches_trained_batch_size (bool): Indicates if the input data has the size
+                of the batch which was used during training. That is because the latent
+                space was sampled with the batch size and outputs batch_size times data.
 
         Returns:
-            [float]: The reconstruction of the latent space into input space.
+            [float]: if 'matches_trained_batch_size' is set to 'True' then it returns the
+                reconstruction of the latent space into input space times batch_size.
+                else: The reconstruction mean of the latent space input batch_size*z (z
+                will be replicated batch_size times)
+                see the 'matches_trained_batch_size' for more information
 
             The Shape of the return value is based on the given network parameters.
         """
-        return self._session.run(self.x_reconstructed, feed_dict={self.z: z})
 
-    def encode_and_decode(self, x):
+        if matches_trained_batch_size:
+            return self._session.run(self.x_reconstructed, feed_dict={self.z: z})
+        else:
+            samples = [z[0] for _ in range(self._batch_size)]
+            return self._session.run(self.x_reconstructed_mean, feed_dict={self.z: samples})
+
+    def encode_and_decode(self, x, matches_trained_batch_size):
         """Use VAE to reconstruct given data. Encodes and decodes in the same run.
 
         Args:
-            x: Samples of data - the shape need to match with the input data.
+            x: Samples of data - the shape need to match with the latent space dimension.
+                Furthermore, either needs to be the size of the used batch_size during
+                training or just 1 dataset.
+                see the 'matches_trained_batch_size' for more information
+            matches_trained_batch_size (bool): Indicates if the input data has the size
+                of the batch which was used during training. That is because the latent
+                space was sampled with the batch size and outputs batch_size times data.
 
         Returns:
-            [float]: The reconstruction of the input.
+            [float]: if 'matches_trained_batch_size' is set to 'True' then it returns the
+                reconstruction of the input times batch size.
+                else: The reconstruction mean of the input times batch_size (the input x
+                will be replicated batch_size times)
+                see the 'matches_trained_batch_size' for more information
 
             The Shape of the return value is based on the given network parameters.
         """
-        return self._session.run(self.x_reconstructed, feed_dict={self.X: x})
+        if matches_trained_batch_size:
+            return self._session.run(self.x_reconstructed, feed_dict={self.X: x})
+        else:
+            samples = [x[0] for _ in range(self._batch_size)]
+            return self._session.run(self.x_reconstructed_mean, feed_dict={self.X: samples})
 
     def load_trained_model(self, save_path):
         """Loads trained model from disk.
@@ -278,7 +292,8 @@ class VariationalAutoencoder(object):
         """Calculates the sampled latent space z for a given dataset X.
 
         Args:
-            x: Samples of data - the shape need to match with the input data.
+            x: Batch samples of data - the shape need to match with the input data.
+                Batch size needs to be the same as used during training.
 
         Returns:
             [float]: The sampled latent space z (+ Gaussian distribution)
@@ -304,7 +319,8 @@ class VariationalAutoencoder(object):
         """Calculates the loss for a given batch of samples
 
         Args:
-            batch: Samples of data - the shape need to match with the input data.
+            batch: Batch samples of data - the shape need to match with the input data.
+                Batch size needs to be the same as used during training.
 
         Returns:
             float: Cost of the mini-batch.
@@ -340,6 +356,8 @@ class VariationalAutoencoder(object):
         self.x_reconstructed = \
             self.__create_decoder_network(weights_and_biases['weights_decoder'],
                                           weights_and_biases['biases_decoder'])
+
+        self.x_reconstructed_mean = tf.reduce_mean(self.x_reconstructed, axis=0)
 
         self.__print("Finished creating VAE network!", 1)
 
@@ -456,7 +474,7 @@ class VariationalAutoencoder(object):
         reconstr_loss = self.__l2_loss(self.x_reconstructed, self.X)
         latent_loss = self.__kullback_leibler(self.z_mean, tf.log(tf.sqrt(tf.exp(self.z_log_sigma_sq))))
 
-        self.cost = tf.reduce_mean(reconstr_loss + latent_loss)
+        self.cost = tf.reduce_mean((reconstr_loss + latent_loss), name="cost")
         self.optimizer = self._optimizer_provided.minimize(self.cost)
 
         self.__print("Finished creating optimizer/backprop operation!", 1)
