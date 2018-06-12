@@ -1,149 +1,149 @@
-weapshowname,type,firemode,rof,damages_first,damages_last,dmg_distances_first,dmg_distances_last,ammo,initialspeed,drag,magsize,shotspershell,reloadempty,hordispersion,verdispersion,hiprecoildec,hiprecoilright,hiprecoilup
-12g Automatic Backbored,Shotgun,Semi-Automatic,257,7.7,3.85,12,19,12g_Buckshot,333,0.007,5,12,4.15,1.200006,1.200006,4.5,0.48,4.4
-12g Automatic Extended,Shotgun,Semi-Automatic,257,7.7,3.85,14,21,12g_Buckshot,333,0.007,7,12,5.49,1.8,1.8,3,0.8,5.5
-12g Automatic Hunter,Shotgun,Semi-Automatic,257,7.7,3.85,14,21,12g_Buckshot,333,0.007,5,12,4.15,1.200006,1.200006,3,0.8,5.5
-1903 Hammerless,Pistol,Semi-Automatic,449,26.5,13.5,6,31.33,32ACP,320,0.0025,9,1,1.7,0,0,5,0.4,1
-Annihilator Trench,Rifle,Automatic,830,30,15,11,37,45cal,380,0.0025,20,1,3.633,0,0,8,0.45,0.55
-Auto revolver,Pistol,Semi-Automatic,224,53,15,6,38.76,455WebleyMkII,230,0.0025,6,1,3.17,0,0,5,1,4
-Autoloading 8 .25 Extended,Rifle,Semi-Automatic,359,38,21,16,45,25Remington,660,0.0025,16,1,3.033,0,0,3,0.15,0.68
-Autoloading 8 .35 Factory,Rifle,Semi-Automatic,359,42,30,51,78,35Remington,660,0.0025,5,1,3.2333667,0,0,5.25,0.15,0.85
-Autoloading 8 .35 Marksman,Rifle,Semi-Automatic,359,42,30,51,78,35Remington,660,0.0025,5,1,3.2333667,0,0,3,0.15,0.85
-Automatico M1918 Factory,Submachine Gun,Automatic,900,23,13.5,6,37,9x19mm,380,0.0025,25,1,2.8,0,0,16,0.4,0.42
-Automatico M1918 Storm,Submachine Gun,Automatic,900,23,13.5,6,37,9x19mm,380,0.0025,25,1,2.8,0,0,8,0.32,0.336
-Automatico M1918 Trench,Submachine Gun,Automatic,900,23,13.5,6,37,9x19mm,380,0.0025,25,1,2.8,0,0,8,0.4,0.42
-BAR 1918 Storm,Rifle,Automatic,600,26.5,23,11,35,30-06,820,0.002,20,1,3.2,0,0,6,0.208,0.44
-BAR 1918 Telescopic,Rifle,Automatic,600,26.5,23,11,35,30-06,820,0.002,20,1,3.2,0,0,6,0.26,0.55
-BAR 1918 Trench,Rifle,Automatic,600,26.5,23,11,35,30-06,820,0.002,20,1,3.2,0,0,6,0.26,0.55
-Beretta M1915,Pistol,Semi-Automatic,449,26.5,13.5,6,31.33,32ACP,320,0.0025,9,1,2,0,0,5,0.4,1
-Bodeo 1889,Pistol,Semi-Automatic,224,53,17.5,10,38.5,1035_Ordinanza_Italiana,255,0.0025,6,1,4.238428571,0,0,5,1,5
-Borchard C93,Pistol,Semi-Automatic,359,26.5,13.5,14.69,37.33,765x25mm,390,0.0025,9,1,2.05,0,0,5,0.3,1.3
-Bulldog,Pistol,Semi-Automatic,257,53,13.5,6,43.33,442Webley,215,0.0025,6,1,7.242857143,0,0,5,0.8,4
-C93 Carbine,Pistol,Semi-Automatic,359,26.5,13.5,14.69,37.33,765x25mm,390,0.0025,9,1,2.05,0,0,4,0.12,0.35
-C96 Carbine,Pistol,Semi-Automatic,299,28,15,17.46,38.76,763x25mm,460,0.0025,20,1,4.0833334,0,0,5,0.3,1.2
-C96 Trench,Pistol,Semi-Automatic,359,34.73,15,11,33,9x19mm,460,0.0025,41,1,3.5,0,0,5,0.12,0.36
-Carcano M91,Sniper Rifle,Single-Action,73,85,54,19,115,65x52mm,700,0.0025,6,1,3.333,0,0,3,1,5
-Carcano M91 Patrol Carbine,Sniper Rifle,Single-Action,73,85,54,19,115,65x52mm,700,0.0025,6,1,3.333,0,0,3,1,5
-Cei-Rigotti Factory,Rifle,Automatic,299,38,28,50,62,65x52mm,700,0.0025,10,1,4.7666666,0,0,5.25,0.4,0.8
-Cei-Rigotti Optical,Rifle,Automatic,299,38,28,50,62,65x52mm,700,0.0025,10,1,4.7666666,0,0,3,0.4,0.8
-Cei-Rigotti Trench,Rifle,Automatic,299,38,28,50,62,65x52mm,700,0.0025,10,1,4.7666666,0,0,3,0.4,0.8
-Chauchat Low Weight,Rifle,Automatic,359,38,28,18,35,8mm,720,0.0025,20,1,3.55,0,0,10.002,0.22,0.55
-Chauchat Telescopic,Rifle,Automatic,359,38,28,18,35,8mm,720,0.0025,20,1,3.55,0,0,6,0.22,0.55
-FN1903 Extended,Pistol,Semi-Automatic,359,30,13.5,12.29,37.33,9x20mm,350,0.0025,11,1,2.8,0,0,4,0.15,1
-Farquhar-Hill Optical,Rifle,Semi-Automatic,257,42,30,46.33,59,British303,740,0.0025,20,1,3.2,0,0,3,0.3,0.9
-Farquhar-Hill Storm,Rifle,Semi-Automatic,257,42,30,46.33,59,British303,740,0.0025,20,1,3.2,0,0,3,0.18,0.54
-Fedorov Avtomat Optical,Rifle,Automatic,449,28,19,28,40,65_Arisaka,570,0.002,26,1,3.8,0,0,4,0.2,0.45
-Fedorov Avtomat Trench,Rifle,Automatic,449,28,19,28,40,65_Arisaka,570,0.002,26,1,3.8,0,0,4,0.2,0.45
-Frommer Stop,Pistol,Semi-Automatic,449,26.5,13.5,6,31.33,32ACP,320,0.0025,8,1,2,0,0,5,0.4,1
-Frommer Stop Auto,Pistol,Automatic,900,23,12,6,42.16,32ACP,350,0.0025,16,1,2.1,0,0,12,0.6,0.5
-Gasser M1870,Pistol,Semi-Automatic,179,53,21,14,38.11,112x295,230,0.0025,6,1,2.6,0,0,5,1,6
-General Liu Rifle Factory,Rifle,Semi-Automatic,299,40,35,40,80,792x57mm,800,0.0025,6,1,3.583,0,0,5.25,0.5,1.3
-General Liu Rifle Storm,Rifle,Semi-Automatic,299,40,35,40,80,792x57mm,800,0.0025,6,1,3.583,0,0,3,0.3,0.78
-Gewehr 98 Infantry,Sniper Rifle,Single-Action,50,80,80,0,165,792x57mm,880,0.0025,5,1,3.4666666,0,0,4.5,1,5
-Gewehr 98 Marksman,Sniper Rifle,Single-Action,50,80,80,0,165,792x57mm,880,0.0025,5,1,3.4666666,0,0,3,1,5
-Gewehr 98 Sniper,Sniper Rifle,Single-Action,50,80,80,0,165,792x57mm,880,0.0025,5,1,3.4666666,0,0,3,1,5
-Gewehr M.95 Carbine,Sniper Rifle,Single-Action,66,90,79,20,125,8x50mm,620,0.0025,5,1,3,0,0,3,1,5
-Gewehr M.95 Infantry,Sniper Rifle,Single-Action,66,90,79,20,125,8x50mm,620,0.0025,5,1,3,0,0,4.5,1,5
-Gewehr M.95 Marksman,Sniper Rifle,Single-Action,66,90,79,20,125,8x50mm,620,0.0025,5,1,3,0,0,3,1,5
-Hellriegel 1915 Defensive,Submachine Gun,Automatic,650,26.5,15,11,37,9x23mm,380,0.0025,120,1,4.5,0,0,8,0.475,0.48
-Hellriegel 1915 Factory,Submachine Gun,Automatic,650,26.5,15,11,37,9x23mm,380,0.0025,60,1,4.5,0,0,8,0.38,0.384
-Howdah Pistol,Pistol,Semi-Automatic,257,53,15,6,38.76,455WebleyMkII,230,0.0025,4,1,3.3,0,0,5,1.5,5
-Howell Automatic Factory,Rifle,Semi-Automatic,257,42,30,46.33,59,British303,740,0.0025,21,1,3.8,0,0,5.25,0.24,1
-Howell Automatic Sniper,Rifle,Semi-Automatic,257,42,30,46.33,59,British303,740,0.0025,21,1,3.8,0,0,3,0.24,1
-Huot Automatic Low Weight,Light Machine Gun,Automatic,475,26.5,20,11,50,British303,740,0.0025,26,1,4.25,0,0,10.002,0.14,0.28
-Huot Automatic Optical,Light Machine Gun,Automatic,475,26.5,20,11,50,British303,740,0.0025,26,1,4.25,0,0,6,0.1232,0.28
-IMG 08-18 Low Weight,Submachine Gun,Automatic,600,28,21,11,35,792x57mm,870,0.0025,100,1,8.433,0,0,10.002,0.575,0.42
-IMG 08-18 Suppressive,Submachine Gun,Automatic,600,28,21,11,35,792x57mm,870,0.0025,100,1,8.433,0,0,6,0.575,0.42
-Lebel Model 1886 Infantry,Sniper Rifle,Single-Action,56,80,80,0,127.5,8mm,720,0.0025,8,1,4.596666683,0,0,4.5,1,5
-Lebel Model 1886 Sniper,Sniper Rifle,Single-Action,56,80,80,0,127.5,8mm,720,0.0025,8,1,4.596666683,0,0,3,1,5
-Lewis Gun Low Weight,Light Machine Gun,Automatic,480,26.5,20,11,50,British303,740,0.0025,47,1,4.2,0,0,10.002,0.24,0.25
-Lewis Gun Optical,Light Machine Gun,Automatic,480,26.5,20,11,50,British303,740,0.0025,47,1,4.2,0,0,6,0.2112,0.25
-Lewis Gun Suppressive,Light Machine Gun,Automatic,480,26.5,20,11,50,British303,740,0.0025,97,1,4.2,0,0,6,0.24,0.25
-M1903 Experimental,Sniper Rifle,Semi-Automatic,359,34.73,15,11,33,30-18_Auto,400,0.0025,41,1,3,0,0,5,0.1,0.28
-M1903 Marksman,Sniper Rifle,Single-Action,53,80,80,0,190,30-06,820,0.002,5,1,3.6999667,0,0,3,1,5
-M1903 Sniper,Sniper Rifle,Single-Action,53,80,80,0,190,30-06,820,0.002,5,1,3.6999667,0,0,3,1,5
-M1907 SL Factory,Rifle,Semi-Automatic,299,42,23,21,60,351Winchester,570,0.0025,21,1,3.5,0,0,5.25,0.6,0.9
-M1907 SL Sweeper,Rifle,Automatic,299,42,23,21,60,351Winchester,570,0.0025,21,1,3.5,0,0,3,0.6,0.72
-M1907 SL Trench,Rifle,Semi-Automatic,299,42,23,21,60,351Winchester,570,0.0025,21,1,3.5,0,0,3,0.6,0.9
-M1909 Benet-Mercie Optical,Light Machine Gun,Automatic,450,26.5,23,11,35,30-06,820,0.002,30,1,3.9,0,0,6,0.1056,0.35
-M1909 Benet-Mercie Storm,Light Machine Gun,Automatic,450,26.5,23,11,35,30-06,820,0.002,30,1,3.9,0,0,6,0.096,0.28
-M1909 Benet-Mercie Telescopic,Light Machine Gun,Automatic,450,26.5,23,11,35,30-06,820,0.002,30,1,3.9,0,0,6,0.12,0.35
-M1911,Pistol,Semi-Automatic,299,35,15,6,32.76,45cal,250,0.0025,8,1,1.7,0,0,5,0.7,2.3
-M1911 Extended,Pistol,Semi-Automatic,299,35,15,6,32.76,45cal,250,0.0025,15,1,2.6,0,0,5,0.5,1.7
-M1917 Enfield Infantry,Sniper Rifle,Single-Action,60,80,80,0,190,30-06,820,0.002,6,1,4.82663,0,0,4.5,1,5
-M1917 Enfield Silenced,Sniper Rifle,Single-Action,60,80,80,0,190,30-06,820,0.002,6,1,4.82663,0,0,3,1,5
-M1917 Low Weight,Light Machine Gun,Automatic,450,26.5,23,11,35,30-06,820,0.002,250,1,8.33333,0,0,10.002,0.17,0.26
-M1917 Patrol Carbine,Light Machine Gun,Automatic,359,34.73,15,11,33,9x19mm,460,0.0025,41,1,3.5,0,0,5,0.12,0.36
-M1917 Telescopic,Light Machine Gun,Automatic,450,26.5,23,11,35,30-06,820,0.002,250,1,8.33333,0,0,6,0.17,0.26
-M97 Trench Gun Backbored,Shotgun,Automatic,138,10,5,12,19,12g_Buckshot,333,0.007,5,12,3.37,1.8,1.8,4.5,0.9,7.2
-M97 Trench Gun Hunter,Shotgun,Automatic,138,10,5,14,21,12g_Buckshot,333,0.007,5,12,3.37,1.8,1.8,3,1.5,9
-M97 Trench Gun Sweeper,Shotgun,Automatic,138,12.5,4.2,10,16,12g_Buckshot,333,0.007,5,12,3.37,2.7,0.45,3,1.5,9
-MG 08-15,Submachine Gun,Automatic,430,28,21,11,35,792x57mm,870,0.0025,200,1,5.8,0,0,6,0.15,0.28
-MG15 N.A. Low Weight,Light Machine Gun,Automatic,500,28,21,11,35,792x57mm,870,0.0025,100,1,4.45,0,0,10.002,0.35,0.4125
-MG15 N.A. Storm,Light Machine Gun,Automatic,500,28,21,11,35,792x57mm,870,0.0025,100,1,4.45,0,0,6,0.28,0.33
-MG15 N.A. Suppressive,Light Machine Gun,Automatic,500,28,21,11,35,792x57mm,870,0.0025,200,1,4.45,0,0,6,0.35,0.4125
-MP 18 Experimental,Submachine Gun,Semi-Automatic,550,28,15,11,37,9x19mm,420,0.0025,30,1,3.3,0,0,8,0.138,0.42
-MP 18 Optical,Submachine Gun,Automatic,550,28,15,11,37,9x19mm,420,0.0025,32,1,2.96,0,0,8,0.23,0.42
-MP 18 Trench,Submachine Gun,Automatic,550,28,15,11,37,9x19mm,420,0.0025,32,1,2.96,0,0,8,0.23,0.42
-Madsen MG Low Weight,Light Machine Gun,Automatic,540,28,21,11,35,792x57mm,800,0.0025,30,1,4.2,0,0,10.002,0.275,0.38
-Madsen MG Storm,Light Machine Gun,Automatic,540,28,21,11,35,792x57mm,800,0.0025,30,1,4.2,0,0,6,0.22,0.304
-Madsen MG Trench,Light Machine Gun,Automatic,540,28,21,11,35,792x57mm,800,0.0025,30,1,4.2,0,0,6,0.275,0.38
-Mars Automatic Pistol,Pistol,Semi-Automatic,199,40,23,14,30.06,8.5mm,530,0.0025,11,1,2.93,0,0,5,0.8,4
-Martini-Henry Infantry,Sniper Rifle,Single-Action,25,90,70,0,140,MartiniHenry577_450,440,0.0025,1,1,2.3,0,0,4.5,1,10
-Martini-Henry Sniper,Sniper Rifle,Single-Action,25,90,70,0,140,MartiniHenry577_450,440,0.0025,1,1,2.3,0,0,3,1,10
-Maschinenpistole M1912,Pistol,Automatic,900,26.5,15,11,37,9x23mm,350,0.0025,16,1,4.1,0,0,8,0.48,0.63
-Maschinenpistole M1912 Experimental,Pistol,Semi-Automatic,450,26.5,15,11,37,9x23mm,350,0.0025,16,1,4.1,0,0,8,0.36,0.7875
-Mauser C96,Pistol,Semi-Automatic,299,28,15,13.66,32.76,763x25mm,440,0.0025,10,1,2.7,0,0,5,0.35,1.5
-Mle M1903,Pistol,Semi-Automatic,359,30,13.5,12.29,37.33,9x20mm,350,0.0025,8,1,2.7,0,0,5,0.3,1.1
-Model 10-A Factory,Shotgun,Single-Action,78,12.5,6.25,14,21,12g_Buckshot,333,0.007,6,12,3.87,2.25,2.25,4.5,1,11
-Model 10-A Hunter,Shotgun,Single-Action,78,12.5,6.25,14,21,12g_Buckshot,333,0.007,6,12,3.87,1.8,1.8,3,1,11
-Model 10-A Slug,Shotgun,Single-Action,78,112,45,8,60,12g_Slug,420,0.002,6,1,3.87,0,0,4.5,1,11
-Model 1900 Factory,Shotgun,Semi-Automatic,299,12.5,6.25,14,21,12g_Buckshot,333,0.007,2,12,2.4,2.25,2.25,9,2,8
-Model 1900 Slug,Shotgun,Single-Action,299,112,45,8,60,12g_Slug,420,0.002,2,1,2.4,0,0,9,2,8
-Mondragon Optical,Rifle,Semi-Automatic,257,40,35,40,80,792x57mm,800,0.0025,10,1,3.83336,0,0,3,0.45,1.1
-Mondragon Sniper,Rifle,Semi-Automatic,257,40,35,40,80,792x57mm,800,0.0025,10,1,3.83336,0,0,3,0.45,1.1
-Mondragon Storm,Rifle,Semi-Automatic,257,40,35,40,80,792x57mm,800,0.0025,10,1,3.83336,0,0,3,0.27,0.66
-Mosin-Nagant M91 Infantry,Sniper Rifle,Single-Action,56,80,80,0,140,762x54mm,820,0.0025,5,1,3.9,0,0,4.5,1,5
-Mosin-Nagant M91 Marksman,Sniper Rifle,Single-Action,56,80,80,0,140,762x54mm,820,0.0025,5,1,3.9,0,0,3,1,5
-Nagant Revolver,Pistol,Single-Action,199,40,23,14,30.06,762x38mm,335,0.0025,7,1,6.8,0,0,5,0.8,3
-No. 3 Revolver,Pistol,Single-Action,163,53,13.5,6,43.33,44_American,210,0.0025,6,1,2.3,0,0,5,1.2,4
-Obrez Pistol,Pistol,Single-Action,38,100,45,10,35,762x54mm,390,0.0025,5,1,4.8,0,0,5,0.8,7
-P08 Artillery,Pistol,Semi-Automatic,299,30,15,14,38.76,9x19mm,370,0.0025,33,1,2.6,0,0,4,0.4,1.4
-P08 Pistol,Pistol,Semi-Automatic,299,30,15,12.29,32.76,9x19mm,350,0.0025,9,1,2.05,0,0,5,0.5,1.5
-Parabellum MG14 Low Weight,Light Machine Gun,Automatic,700,28,21,11,35,792x57mm,870,0.0025,100,1,6.9,0,0,10.002,0.8,0.38
-Parabellum MG14 Suppressive,Light Machine Gun,Automatic,700,28,21,11,35,792x57mm,870,0.0025,100,1,6.9,0,0,6,0.8,0.38
-Perino Model 1908 Defensive,Light Machine Gun,Automatic,450,26.5,20,11,50,65x52mm,700,0.0025,120,1,8.7598,0,0,6,0.15,0.2
-Perino Model 1908 Low Weight,Light Machine Gun,Automatic,450,26.5,20,11,50,65x52mm,700,0.0025,120,1,8.7598,0,0,10.002,0.15,0.2
-Pieper M1893,Rifle,Semi-Automatic,224,40,21,13,40,8mm,420,0.0025,9,1,4,0,0,3,0.1,1.2
-RSC 1917 Factory,Rifle,Semi-Automatic,179,53,38,66,89,8mm,720,0.0025,6,1,3.3,0,0,5.25,0.9,1.5
-RSC 1917 Optical,Rifle,Semi-Automatic,179,53,38,66,89,8mm,720,0.0025,6,1,3.3,0,0,3,0.9,1.5
-RSC SMG Factory,Submachine Gun,Automatic,449,38,21.5,10,47,8mm,570,0.0025,9,1,3.9,0,0,16,0.4,0.75
-RSC SMG Optical,Submachine Gun,Automatic,449,38,21.5,10,47,8mm,570,0.0025,9,1,3.9,0,0,8,0.4,0.75
-Revolver MkVI,Pistol,Semi-Automatic,199,53,15,6,38.76,455WebleyMkII,230,0.0025,6,1,2.85,0,0,5,0.8,5
-Ribeyrolles 1918 Factory,Submachine Gun,Automatic,550,28,17.5,11,37,8mm,520,0.0025,25,1,2.766,0,0,16,0.33,0.504
-Ribeyrolles 1918 Optical,Submachine Gun,Automatic,550,28,17.5,11,37,8mm,520,0.0025,25,1,2.766,0,0,8,0.33,0.504
-Ross MkIII,Sniper Rifle,Single-Action,62,80,80,0,115,British303,740,0.0025,5,1,3.8,0,0,3,1,5
-Ross MkIII Infantry,Sniper Rifle,Single-Action,62,80,80,0,115,British303,740,0.0025,5,1,3.8,0,0,4.5,1,5
-Russian 1895 Cavalry,Sniper Rifle,Single-Action,124,79,40,61,100,30-40,610,0.0025,5,1,3.8766667,0,0,4.5,1,5
-Russian 1895 Infantry,Sniper Rifle,Single-Action,56,80,80,0,140,762x54mm,820,0.0025,5,1,3.8766667,0,0,4.5,1,5
-Russian 1895 Sniper,Sniper Rifle,Single-Action,56,80,80,0,140,762x54mm,820,0.0025,5,1,3.8766667,0,0,3,1,5
-Russian 1895 Trench,Sniper Rifle,Single-Action,124,79,40,41,80,30-40,580,0.0025,5,1,3.8766667,0,0,3,1,5
-SMG 08-18 Factory,Submachine Gun,Automatic,770,28,15,11,37,9x19mm,380,0.0025,81,1,4.5,0,0,16,0.6,0.47
-SMG 08-18 Optical,Submachine Gun,Automatic,770,28,15,11,37,9x19mm,380,0.0025,81,1,4.5,0,0,8,0.6,0.47
-SMLE MKIII Carbine,Sniper Rifle,Single-Action,52,80,80,0,115,British303,740,0.0025,10,1,5.3999334,0,0,3,1,5
-SMLE MKIII Infantry,Sniper Rifle,Single-Action,52,80,80,0,115,British303,740,0.0025,10,1,5.3999334,0,0,4.5,1,5
-SMLE MKIII Marksman,Sniper Rifle,Single-Action,52,80,80,0,115,British303,740,0.0025,10,1,5.3999334,0,0,3,1,5
-Sawed Off Shotgun,Shotgun,Single-Action,299,12.5,6.25,14,21,12g_Buckshot,333,0.007,2,12,5.3333334,2.7,2.7,6,1.2,11
-Selbstlader 1906 Factory,Rifle,Semi-Automatic,299,40,35,40,80,792x57mm,800,0.0025,5,1,3.0667,0,0,3,0.1,0.95
-Selbstlader 1906 Sniper,Rifle,Semi-Automatic,299,40,35,40,80,792x57mm,800,0.0025,5,1,3.0667,0,0,3,0.1,0.95
-Selbstlader M1916 Factory,Rifle,Semi-Automatic,224,40,35,40,80,792x57mm,800,0.0025,26,1,3.47,0,0,5.25,0.53,1.1
-Selbstlader M1916 Marksman,Rifle,Semi-Automatic,224,40,35,40,80,792x57mm,800,0.0025,26,1,3.47,0,0,3,0.53,1.1
-Selbstlader M1916 Optical,Rifle,Semi-Automatic,224,40,35,40,80,792x57mm,800,0.0025,26,1,3.47,0,0,3,0.53,1.1
-Sjögren Inertial Factory,Shotgun,Semi-Automatic,163,9.1,4.55,14,21,12g_Buckshot,333,0.007,5,12,3.6166668,1.6,1.6,4.5,0.5,6
-Sjögren Inertial Slug,Shotgun,Semi-Automatic,163,75,34,23.5,60,12g_Slug,420,0.002,5,1,3.6166668,0,0,4.5,0.5,6
-Steyr M1912,Pistol,Semi-Automatic,359,30,15,12.29,32.76,9x23mm,350,0.0025,8,1,2.6,0,0,5,0.25,1.5
-Taschenpistole M1914,Pistol,Semi-Automatic,449,26.5,13.5,6,31.33,32ACP,320,0.0025,9,1,1.4,0,0,5,0.4,1
-Type 38 Arisaka,Sniper Rifle,Single-Action,57,80,80,0,102.5,65_Arisaka,770,0.002,5,1,3.9,0,0,4.5,1,5
-Type 38 Arisaka Patrol,Sniper Rifle,Single-Action,57,80,80,0,102.5,65_Arisaka,770,0.002,5,1,3.9,0,0,3,1,5
-Vetterli-Vitali M1870 Carbine,Sniper Rifle,Single-Action,46,90,70,0,110,104x47mm,440,0.0025,4,1,3.8,0,0,3,1,5
-Vetterli-Vitali M1870 Infantry,Sniper Rifle,Single-Action,46,90,70,0,110,104x47mm,440,0.0025,4,1,3.8,0,0,4.5,1,5
-Villar Perosa,Pistol,Automatic,900,23,13.5,6,37,9x19mm,380,0.0025,25,2,5,0.5,0,10,0.4,0.38
+weapshowname,firemode,rof,damages_first,damages_last,dmg_distances_first,dmg_distances_last,ammo,initialspeed,drag,magsize,shotspershell,reloadempty,hordispersion,verdispersion,hiprecoildec,hiprecoilright,hiprecoilup,hipstandbasespreaddec,hipstandbasespreadinc
+12g Automatic Backbored,Semi-Automatic,257,7.7,3.85,12,19,12g_Buckshot,333,0.007,5,12,4.15,1.200006,1.200006,4.5,0.48,4.4,4.5,0.15
+12g Automatic Extended,Semi-Automatic,257,7.7,3.85,14,21,12g_Buckshot,333,0.007,7,12,5.49,1.8,1.8,3,0.8,5.5,4.5,0.15
+12g Automatic Hunter,Semi-Automatic,257,7.7,3.85,14,21,12g_Buckshot,333,0.007,5,12,4.15,1.200006,1.200006,3,0.8,5.5,4.5,0.15
+1903 Hammerless,Semi-Automatic,449,26.5,13.5,6,31.33,32ACP,320,0.0025,9,1,1.7,0,0,5,0.4,1,4.5,0.15
+Annihilator Trench,Automatic,830,30,15,11,37,45cal,380,0.0025,20,1,3.633,0,0,8,0.45,0.55,2.7,0.045
+Auto revolver,Semi-Automatic,224,53,15,6,38.76,455WebleyMkII,230,0.0025,6,1,3.17,0,0,5,1,4,9,0.3
+Autoloading 8 .25 Extended,Semi-Automatic,359,38,21,16,45,25Remington,660,0.0025,16,1,3.033,0,0,3,0.15,0.68,3,0.05
+Autoloading 8 .35 Factory,Semi-Automatic,359,42,30,51,78,35Remington,660,0.0025,5,1,3.2333667,0,0,5.25,0.15,0.85,6,0.1
+Autoloading 8 .35 Marksman,Semi-Automatic,359,42,30,51,78,35Remington,660,0.0025,5,1,3.2333667,0,0,3,0.15,0.85,3,0.1
+Automatico M1918 Factory,Automatic,900,23,13.5,6,37,9x19mm,380,0.0025,25,1,2.8,0,0,16,0.4,0.42,4.05,0.045
+Automatico M1918 Storm,Automatic,900,23,13.5,6,37,9x19mm,380,0.0025,25,1,2.8,0,0,8,0.32,0.336,2.7,0.045
+Automatico M1918 Trench,Automatic,900,23,13.5,6,37,9x19mm,380,0.0025,25,1,2.8,0,0,8,0.4,0.42,2.7,0.045
+BAR 1918 Storm,Automatic,600,26.5,23,11,35,30-06,820,0.002,20,1,3.2,0,0,6,0.208,0.44,4.5,0.18
+BAR 1918 Telescopic,Automatic,600,26.5,23,11,35,30-06,820,0.002,20,1,3.2,0,0,6,0.26,0.55,4.5,0.18
+BAR 1918 Trench,Automatic,600,26.5,23,11,35,30-06,820,0.002,20,1,3.2,0,0,6,0.26,0.55,4.5,0.09
+Beretta M1915,Semi-Automatic,449,26.5,13.5,6,31.33,32ACP,320,0.0025,9,1,2,0,0,5,0.4,1,4.5,0.15
+Bodeo 1889,Semi-Automatic,224,53,17.5,10,38.5,1035_Ordinanza_Italiana,255,0.0025,6,1,4.238428571,0,0,5,1,5,9,0.3
+Borchard C93,Semi-Automatic,359,26.5,13.5,14.69,37.33,765x25mm,390,0.0025,9,1,2.05,0,0,5,0.3,1.3,4.5,0.15
+Bulldog,Semi-Automatic,257,53,13.5,6,43.33,442Webley,215,0.0025,6,1,7.242857143,0,0,5,0.8,4,9,0.3
+C93 Carbine,Semi-Automatic,359,26.5,13.5,14.69,37.33,765x25mm,390,0.0025,9,1,2.05,0,0,4,0.12,0.35,5,0.15
+C96 Carbine,Semi-Automatic,299,28,15,17.46,38.76,763x25mm,460,0.0025,20,1,4.0833334,0,0,5,0.3,1.2,4.5,0.15
+C96 Trench,Semi-Automatic,359,34.73,15,11,33,9x19mm,460,0.0025,41,1,3.5,0,0,5,0.12,0.36,2.1,0.07
+Carcano M91,Single-Action,73,85,54,19,115,65x52mm,700,0.0025,6,1,3.333,0,0,3,1,5,10.05,1
+Carcano M91 Patrol Carbine,Single-Action,73,85,54,19,115,65x52mm,700,0.0025,6,1,3.333,0,0,3,1,5,6.7,1
+Cei-Rigotti Factory,Automatic,299,38,28,50,62,65x52mm,700,0.0025,10,1,4.7666666,0,0,5.25,0.4,0.8,6,0.1
+Cei-Rigotti Optical,Automatic,299,38,28,50,62,65x52mm,700,0.0025,10,1,4.7666666,0,0,3,0.4,0.8,3,0.1
+Cei-Rigotti Trench,Automatic,299,38,28,50,62,65x52mm,700,0.0025,10,1,4.7666666,0,0,3,0.4,0.8,3,0.05
+Chauchat Low Weight,Automatic,359,38,28,18,35,8mm,720,0.0025,20,1,3.55,0,0,10.002,0.22,0.55,27,0.225
+Chauchat Telescopic,Automatic,359,38,28,18,35,8mm,720,0.0025,20,1,3.55,0,0,6,0.22,0.55,9,0.18
+FN1903 Extended,Semi-Automatic,359,30,13.5,12.29,37.33,9x20mm,350,0.0025,11,1,2.8,0,0,4,0.15,1,4.5,0.15
+Farquhar-Hill Optical,Semi-Automatic,257,42,30,46.33,59,British303,740,0.0025,20,1,3.2,0,0,3,0.3,0.9,3,0.1
+Farquhar-Hill Storm,Semi-Automatic,257,42,30,46.33,59,British303,740,0.0025,20,1,3.2,0,0,3,0.18,0.54,3,0.1
+Fedorov Avtomat Optical,Automatic,449,28,19,28,40,65_Arisaka,570,0.002,26,1,3.8,0,0,4,0.2,0.45,3,0.1
+Fedorov Avtomat Trench,Automatic,449,28,19,28,40,65_Arisaka,570,0.002,26,1,3.8,0,0,4,0.2,0.45,3,0.05
+Frommer Stop,Semi-Automatic,449,26.5,13.5,6,31.33,32ACP,320,0.0025,8,1,2,0,0,5,0.4,1,4.5,0.15
+Frommer Stop Auto,Automatic,900,23,12,6,42.16,32ACP,350,0.0025,16,1,2.1,0,0,12,0.6,0.5,2.7,0.045
+Gasser M1870,Semi-Automatic,179,53,21,14,38.11,112x295,230,0.0025,6,1,2.6,0,0,5,1,6,9,0.3
+General Liu Rifle Factory,Semi-Automatic,299,40,35,40,80,792x57mm,800,0.0025,6,1,3.583,0,0,5.25,0.5,1.3,6,0.1
+General Liu Rifle Storm,Semi-Automatic,299,40,35,40,80,792x57mm,800,0.0025,6,1,3.583,0,0,3,0.3,0.78,3,0.1
+Gewehr 98 Infantry,Single-Action,50,80,80,0,165,792x57mm,880,0.0025,5,1,3.4666666,0,0,4.5,1,5,10.05,1
+Gewehr 98 Marksman,Single-Action,50,80,80,0,165,792x57mm,880,0.0025,5,1,3.4666666,0,0,3,1,5,6.7,1
+Gewehr 98 Sniper,Single-Action,50,80,80,0,165,792x57mm,880,0.0025,5,1,3.4666666,0,0,3,1,5,6.7,1
+Gewehr M.95 Carbine,Single-Action,66,90,79,20,125,8x50mm,620,0.0025,5,1,3,0,0,3,1,5,6.7,1
+Gewehr M.95 Infantry,Single-Action,66,90,79,20,125,8x50mm,620,0.0025,5,1,3,0,0,4.5,1,5,10.05,1
+Gewehr M.95 Marksman,Single-Action,66,90,79,20,125,8x50mm,620,0.0025,5,1,3,0,0,3,1,5,6.7,1
+Hellriegel 1915 Defensive,Automatic,650,26.5,15,11,37,9x23mm,380,0.0025,120,1,4.5,0,0,8,0.475,0.48,2.7,0.045
+Hellriegel 1915 Factory,Automatic,650,26.5,15,11,37,9x23mm,380,0.0025,60,1,4.5,0,0,8,0.38,0.384,2.7,0.045
+Howdah Pistol,Semi-Automatic,257,53,15,6,38.76,455WebleyMkII,230,0.0025,4,1,3.3,0,0,5,1.5,5,9,0.3
+Howell Automatic Factory,Semi-Automatic,257,42,30,46.33,59,British303,740,0.0025,21,1,3.8,0,0,5.25,0.24,1,6,0.1
+Howell Automatic Sniper,Semi-Automatic,257,42,30,46.33,59,British303,740,0.0025,21,1,3.8,0,0,3,0.24,1,3,0.1
+Huot Automatic Low Weight,Automatic,475,26.5,20,11,50,British303,740,0.0025,26,1,4.25,0,0,10.002,0.14,0.28,27,0.225
+Huot Automatic Optical,Automatic,475,26.5,20,11,50,British303,740,0.0025,26,1,4.25,0,0,6,0.1232,0.28,9,0.18
+IMG 08-18 Low Weight,Automatic,600,28,21,11,35,792x57mm,870,0.0025,100,1,8.433,0,0,10.002,0.575,0.42,18.9,0.216
+IMG 08-18 Suppressive,Automatic,600,28,21,11,35,792x57mm,870,0.0025,100,1,8.433,0,0,6,0.575,0.42,6.3,0.18
+Lebel Model 1886 Infantry,Single-Action,56,80,80,0,127.5,8mm,720,0.0025,8,1,4.596666683,0,0,4.5,1,5,10.05,1
+Lebel Model 1886 Sniper,Single-Action,56,80,80,0,127.5,8mm,720,0.0025,8,1,4.596666683,0,0,3,1,5,6.7,1
+Lewis Gun Low Weight,Automatic,480,26.5,20,11,50,British303,740,0.0025,47,1,4.2,0,0,10.002,0.24,0.25,32.4,0.216
+Lewis Gun Optical,Automatic,480,26.5,20,11,50,British303,740,0.0025,47,1,4.2,0,0,6,0.2112,0.25,10.8,0.18
+Lewis Gun Suppressive,Automatic,480,26.5,20,11,50,British303,740,0.0025,97,1,4.2,0,0,6,0.24,0.25,10.8,0.18
+M1903 Experimental,Semi-Automatic,359,34.73,15,11,33,30-18_Auto,400,0.0025,41,1,3,0,0,5,0.1,0.28,2.1,0.07
+M1903 Marksman,Single-Action,53,80,80,0,190,30-06,820,0.002,5,1,3.6999667,0,0,3,1,5,6.7,1
+M1903 Sniper,Single-Action,53,80,80,0,190,30-06,820,0.002,5,1,3.6999667,0,0,3,1,5,6.7,1
+M1907 SL Factory,Semi-Automatic,299,42,23,21,60,351Winchester,570,0.0025,21,1,3.5,0,0,5.25,0.6,0.9,6,0.1
+M1907 SL Sweeper,Automatic,299,42,23,21,60,351Winchester,570,0.0025,21,1,3.5,0,0,3,0.6,0.72,3,0.05
+M1907 SL Trench,Semi-Automatic,299,42,23,21,60,351Winchester,570,0.0025,21,1,3.5,0,0,3,0.6,0.9,3,0.05
+M1909 Benet-Mercie Optical,Automatic,450,26.5,23,11,35,30-06,820,0.002,30,1,3.9,0,0,6,0.1056,0.35,10.8,0.18
+M1909 Benet-Mercie Storm,Automatic,450,26.5,23,11,35,30-06,820,0.002,30,1,3.9,0,0,6,0.096,0.28,10.8,0.18
+M1909 Benet-Mercie Telescopic,Automatic,450,26.5,23,11,35,30-06,820,0.002,30,1,3.9,0,0,6,0.12,0.35,10.8,0.18
+M1911,Semi-Automatic,299,35,15,6,32.76,45cal,250,0.0025,8,1,1.7,0,0,5,0.7,2.3,6,0.2
+M1911 Extended,Semi-Automatic,299,35,15,6,32.76,45cal,250,0.0025,15,1,2.6,0,0,5,0.5,1.7,6,0.2
+M1917 Enfield Infantry,Single-Action,60,80,80,0,190,30-06,820,0.002,6,1,4.82663,0,0,4.5,1,5,10.05,1
+M1917 Enfield Silenced,Single-Action,60,80,80,0,190,30-06,820,0.002,6,1,4.82663,0,0,3,1,5,6.7,1
+M1917 Low Weight,Automatic,450,26.5,23,11,35,30-06,820,0.002,250,1,8.33333,0,0,10.002,0.17,0.26,18.9,0.209999988
+M1917 Patrol Carbine,Automatic,359,34.73,15,11,33,9x19mm,460,0.0025,41,1,3.5,0,0,5,0.12,0.36,2.1,0.07
+M1917 Telescopic,Automatic,450,26.5,23,11,35,30-06,820,0.002,250,1,8.33333,0,0,6,0.17,0.26,6.3,0.18
+M97 Trench Gun Backbored,Automatic,138,10,5,12,19,12g_Buckshot,333,0.007,5,12,3.37,1.8,1.8,4.5,0.9,7.2,4.5,0.3
+M97 Trench Gun Hunter,Automatic,138,10,5,14,21,12g_Buckshot,333,0.007,5,12,3.37,1.8,1.8,3,1.5,9,4.5,0.3
+M97 Trench Gun Sweeper,Automatic,138,12.5,4.2,10,16,12g_Buckshot,333,0.007,5,12,3.37,2.7,0.45,3,1.5,9,4.5,0.3
+MG 08-15,Automatic,430,28,21,11,35,792x57mm,870,0.0025,200,1,5.8,0,0,6,0.15,0.28,3.6,0.45
+MG15 N.A. Low Weight,Automatic,500,28,21,11,35,792x57mm,870,0.0025,100,1,4.45,0,0,10.002,0.35,0.4125,18.9,0.209999988
+MG15 N.A. Storm,Automatic,500,28,21,11,35,792x57mm,870,0.0025,100,1,4.45,0,0,6,0.28,0.33,6.3,0.18
+MG15 N.A. Suppressive,Automatic,500,28,21,11,35,792x57mm,870,0.0025,200,1,4.45,0,0,6,0.35,0.4125,6.3,0.18
+MP 18 Experimental,Semi-Automatic,550,28,15,11,37,9x19mm,420,0.0025,30,1,3.3,0,0,8,0.138,0.42,2.7,0.045
+MP 18 Optical,Automatic,550,28,15,11,37,9x19mm,420,0.0025,32,1,2.96,0,0,8,0.23,0.42,2.7,0.045
+MP 18 Trench,Automatic,550,28,15,11,37,9x19mm,420,0.0025,32,1,2.96,0,0,8,0.23,0.42,2.7,0.045
+Madsen MG Low Weight,Automatic,540,28,21,11,35,792x57mm,800,0.0025,30,1,4.2,0,0,10.002,0.275,0.38,13.5,0.225
+Madsen MG Storm,Automatic,540,28,21,11,35,792x57mm,800,0.0025,30,1,4.2,0,0,6,0.22,0.304,4.5,0.18
+Madsen MG Trench,Automatic,540,28,21,11,35,792x57mm,800,0.0025,30,1,4.2,0,0,6,0.275,0.38,4.5,0.09
+Mars Automatic Pistol,Semi-Automatic,199,40,23,14,30.06,8.5mm,530,0.0025,11,1,2.93,0,0,5,0.8,4,6,0.2
+Martini-Henry Infantry,Single-Action,25,90,70,0,140,MartiniHenry577_450,440,0.0025,1,1,2.3,0,0,4.5,1,10,10.05,1
+Martini-Henry Sniper,Single-Action,25,90,70,0,140,MartiniHenry577_450,440,0.0025,1,1,2.3,0,0,3,1,10,6.7,1
+Maschinenpistole M1912,Automatic,900,26.5,15,11,37,9x23mm,350,0.0025,16,1,4.1,0,0,8,0.48,0.63,2.7,0.045
+Maschinenpistole M1912 Experimental,Semi-Automatic,450,26.5,15,11,37,9x23mm,350,0.0025,16,1,4.1,0,0,8,0.36,0.7875,2.7,0.045
+Mauser C96,Semi-Automatic,299,28,15,13.66,32.76,763x25mm,440,0.0025,10,1,2.7,0,0,5,0.35,1.5,4.5,0.15
+Mle M1903,Semi-Automatic,359,30,13.5,12.29,37.33,9x20mm,350,0.0025,8,1,2.7,0,0,5,0.3,1.1,4.5,0.15
+Model 10-A Factory,Single-Action,78,12.5,6.25,14,21,12g_Buckshot,333,0.007,6,12,3.87,2.25,2.25,4.5,1,11,24,1.6
+Model 10-A Hunter,Single-Action,78,12.5,6.25,14,21,12g_Buckshot,333,0.007,6,12,3.87,1.8,1.8,3,1,11,6,1.6
+Model 10-A Slug,Single-Action,78,112,45,8,60,12g_Slug,420,0.002,6,1,3.87,0,0,4.5,1,11,9,0.3
+Model 1900 Factory,Semi-Automatic,299,12.5,6.25,14,21,12g_Buckshot,333,0.007,2,12,2.4,2.25,2.25,9,2,8,18,0.3
+Model 1900 Slug,Single-Action,299,112,45,8,60,12g_Slug,420,0.002,2,1,2.4,0,0,9,2,8,9,0.3
+Mondragon Optical,Semi-Automatic,257,40,35,40,80,792x57mm,800,0.0025,10,1,3.83336,0,0,3,0.45,1.1,3,0.1
+Mondragon Sniper,Semi-Automatic,257,40,35,40,80,792x57mm,800,0.0025,10,1,3.83336,0,0,3,0.45,1.1,3,0.1
+Mondragon Storm,Semi-Automatic,257,40,35,40,80,792x57mm,800,0.0025,10,1,3.83336,0,0,3,0.27,0.66,3,0.1
+Mosin-Nagant M91 Infantry,Single-Action,56,80,80,0,140,762x54mm,820,0.0025,5,1,3.9,0,0,4.5,1,5,10.05,1
+Mosin-Nagant M91 Marksman,Single-Action,56,80,80,0,140,762x54mm,820,0.0025,5,1,3.9,0,0,3,1,5,6.7,1
+Nagant Revolver,Single-Action,199,40,23,14,30.06,762x38mm,335,0.0025,7,1,6.8,0,0,5,0.8,3,9,0.3
+No. 3 Revolver,Single-Action,163,53,13.5,6,43.33,44_American,210,0.0025,6,1,2.3,0,0,5,1.2,4,9,0.3
+Obrez Pistol,Single-Action,38,100,45,10,35,762x54mm,390,0.0025,5,1,4.8,0,0,5,0.8,7,9,0.3
+P08 Artillery,Semi-Automatic,299,30,15,14,38.76,9x19mm,370,0.0025,33,1,2.6,0,0,4,0.4,1.4,4.5,0.15
+P08 Pistol,Semi-Automatic,299,30,15,12.29,32.76,9x19mm,350,0.0025,9,1,2.05,0,0,5,0.5,1.5,4.5,0.15
+Parabellum MG14 Low Weight,Automatic,700,28,21,11,35,792x57mm,870,0.0025,100,1,6.9,0,0,10.002,0.8,0.38,16.2,0.209999988
+Parabellum MG14 Suppressive,Automatic,700,28,21,11,35,792x57mm,870,0.0025,100,1,6.9,0,0,6,0.8,0.38,5.4,0.18
+Perino Model 1908 Defensive,Automatic,450,26.5,20,11,50,65x52mm,700,0.0025,120,1,8.7598,0,0,6,0.15,0.2,6.3,0.18
+Perino Model 1908 Low Weight,Automatic,450,26.5,20,11,50,65x52mm,700,0.0025,120,1,8.7598,0,0,10.002,0.15,0.2,18.9,0.216
+Pieper M1893,Semi-Automatic,224,40,21,13,40,8mm,420,0.0025,9,1,4,0,0,3,0.1,1.2,6,0.2
+RSC 1917 Factory,Semi-Automatic,179,53,38,66,89,8mm,720,0.0025,6,1,3.3,0,0,5.25,0.9,1.5,6,0.1
+RSC 1917 Optical,Semi-Automatic,179,53,38,66,89,8mm,720,0.0025,6,1,3.3,0,0,3,0.9,1.5,3,0.1
+RSC SMG Factory,Automatic,449,38,21.5,10,47,8mm,570,0.0025,9,1,3.9,0,0,16,0.4,0.75,4.05,0.045
+RSC SMG Optical,Automatic,449,38,21.5,10,47,8mm,570,0.0025,9,1,3.9,0,0,8,0.4,0.75,2.7,0.045
+Revolver MkVI,Semi-Automatic,199,53,15,6,38.76,455WebleyMkII,230,0.0025,6,1,2.85,0,0,5,0.8,5,9,0.3
+Ribeyrolles 1918 Factory,Automatic,550,28,17.5,11,37,8mm,520,0.0025,25,1,2.766,0,0,16,0.33,0.504,4.05,0.045
+Ribeyrolles 1918 Optical,Automatic,550,28,17.5,11,37,8mm,520,0.0025,25,1,2.766,0,0,8,0.33,0.504,2.7,0.045
+Ross MkIII,Single-Action,62,80,80,0,115,British303,740,0.0025,5,1,3.8,0,0,3,1,5,6.7,1
+Ross MkIII Infantry,Single-Action,62,80,80,0,115,British303,740,0.0025,5,1,3.8,0,0,4.5,1,5,10.05,1
+Russian 1895 Cavalry,Single-Action,124,79,40,61,100,30-40,610,0.0025,5,1,3.8766667,0,0,4.5,1,5,10.05,1
+Russian 1895 Infantry,Single-Action,56,80,80,0,140,762x54mm,820,0.0025,5,1,3.8766667,0,0,4.5,1,5,10.05,1
+Russian 1895 Sniper,Single-Action,56,80,80,0,140,762x54mm,820,0.0025,5,1,3.8766667,0,0,3,1,5,6.7,1
+Russian 1895 Trench,Single-Action,124,79,40,41,80,30-40,580,0.0025,5,1,3.8766667,0,0,3,1,5,10.05,1
+SMG 08-18 Factory,Automatic,770,28,15,11,37,9x19mm,380,0.0025,81,1,4.5,0,0,16,0.6,0.47,4.05,0.045
+SMG 08-18 Optical,Automatic,770,28,15,11,37,9x19mm,380,0.0025,81,1,4.5,0,0,8,0.6,0.47,2.7,0.045
+SMLE MKIII Carbine,Single-Action,52,80,80,0,115,British303,740,0.0025,10,1,5.3999334,0,0,3,1,5,6.7,1
+SMLE MKIII Infantry,Single-Action,52,80,80,0,115,British303,740,0.0025,10,1,5.3999334,0,0,4.5,1,5,10.05,1
+SMLE MKIII Marksman,Single-Action,52,80,80,0,115,British303,740,0.0025,10,1,5.3999334,0,0,3,1,5,6.7,1
+Sawed Off Shotgun,Single-Action,299,12.5,6.25,14,21,12g_Buckshot,333,0.007,2,12,5.3333334,2.7,2.7,6,1.2,11,4.5,0.3
+Selbstlader 1906 Factory,Semi-Automatic,299,40,35,40,80,792x57mm,800,0.0025,5,1,3.0667,0,0,3,0.1,0.95,3,0.1
+Selbstlader 1906 Sniper,Semi-Automatic,299,40,35,40,80,792x57mm,800,0.0025,5,1,3.0667,0,0,3,0.1,0.95,3,0.1
+Selbstlader M1916 Factory,Semi-Automatic,224,40,35,40,80,792x57mm,800,0.0025,26,1,3.47,0,0,5.25,0.53,1.1,6,0.1
+Selbstlader M1916 Marksman,Semi-Automatic,224,40,35,40,80,792x57mm,800,0.0025,26,1,3.47,0,0,3,0.53,1.1,3,0.1
+Selbstlader M1916 Optical,Semi-Automatic,224,40,35,40,80,792x57mm,800,0.0025,26,1,3.47,0,0,3,0.53,1.1,3,0.1
+Sjögren Inertial Factory,Semi-Automatic,163,9.1,4.55,14,21,12g_Buckshot,333,0.007,5,12,3.6166668,1.6,1.6,4.5,0.5,6,9,0.3
+Sjögren Inertial Slug,Semi-Automatic,163,75,34,23.5,60,12g_Slug,420,0.002,5,1,3.6166668,0,0,4.5,0.5,6,9,0.3
+Steyr M1912,Semi-Automatic,359,30,15,12.29,32.76,9x23mm,350,0.0025,8,1,2.6,0,0,5,0.25,1.5,4.5,0.15
+Taschenpistole M1914,Semi-Automatic,449,26.5,13.5,6,31.33,32ACP,320,0.0025,9,1,1.4,0,0,5,0.4,1,4.5,0.15
+Type 38 Arisaka,Single-Action,57,80,80,0,102.5,65_Arisaka,770,0.002,5,1,3.9,0,0,4.5,1,5,10.05,1
+Type 38 Arisaka Patrol,Single-Action,57,80,80,0,102.5,65_Arisaka,770,0.002,5,1,3.9,0,0,3,1,5,6.7,1
+Vetterli-Vitali M1870 Carbine,Single-Action,46,90,70,0,110,104x47mm,440,0.0025,4,1,3.8,0,0,3,1,5,6.7,1
+Vetterli-Vitali M1870 Infantry,Single-Action,46,90,70,0,110,104x47mm,440,0.0025,4,1,3.8,0,0,4.5,1,5,10.05,1
+Villar Perosa,Automatic,900,23,13.5,6,37,9x19mm,380,0.0025,25,2,5,0.5,0,10,0.4,0.38,3,0.05
