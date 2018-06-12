@@ -206,30 +206,18 @@ class DataSet:
             idx += 1
         return result, unstandardized_tensor
 
-    def add_new_weapon(self, processed_tensor):
-        self._data = np.append(self.data, [processed_tensor], axis=0)
-        #self._data = np.concatenate((self.data[0, self._num_examples], processed_tensor), axis=0)
+    def add_new_weapons_and_restandardize_data(self, processed_tensors):
+        unstandardized = [self.__un_standardize_columns(tensor, self._data_original) for tensor in processed_tensors]
+        self._data_original = np.append(self._data_original, unstandardized, axis=0)
+        self._data = self.__standardize_columns(self._data_original)
+
         self._num_examples = self._data.shape[0]
         if self._show_debug:
             print("Added new weapon/s! New number of examples in dataset = %i" %self._num_examples)
 
-    def __getCsvHeader(self, filename):
-        with open(filename, mode='r') as f:
-            reader = csv.reader(f)
-            header = next(reader)
-            return header
-
-    def __getCsvAsDict(self, filename):
-        header = self.__getCsvHeader(filename)
-        result = { h: [] for h in header }
-        with open(filename, mode='r') as file:
-            for row in csv.DictReader(file):
-                for h in header:
-                    result[h].append(row[h])
-
-        return result
-
-    def __encodeFeatures(self, features):
+    def encode_features_dict(self, features):
+        '''Encodes a features dict which represents the training data or any other dataset
+            and returns the encoded data and a dictionary which columns belongs to which value'''
         #convert all numerical data to float so they can be used as 'tf.feature_column.numeric_column'
         for key, values in features.items():
             if key in self._numerical_params:
@@ -281,18 +269,47 @@ class DataSet:
             sess.run((var_init, table_init))
             weapon_data = sess.run(inputs)
 
-        self._data_original = np.array(weapon_data)
+        original_data = np.array(weapon_data)
+        return original_data, cols_to_vars_dict
+
+    def standardize_encoded_data(self, data):
+        '''Standardizes the data based on the mean and standard deviation of the original data of this class'''
+        std = self._data_original.std(dtype=np.float64, axis=0)
+        mean = self._data_original.mean(dtype=np.float64, axis=0)
+        data_standardized = (data - mean) / std
+        return data_standardized
+
+    def prepare_decoded_tensor_dict_for_encoding(self, decoded_tensor_dict):
+        '''Cleans up the encoded features in the dictionary'''
+
+        type_check_count = 0
+        firemode_check_count = 0
+        key_type = "type"
+        key_firemode = "firemode"
+        prepared_for_encoding = {}
+
+        for key,value in decoded_tensor_dict.items():
+            if key_type in key:
+                if float(value) >= 0.8:
+                    prepared_for_encoding[key_type] = [WEAPON_TYPES[type_check_count]]
+                type_check_count += 1
+            elif key_firemode in key:
+                if float(value) >= 0.8:
+                    prepared_for_encoding[key_firemode] = [WEAPON_FIREMODES[firemode_check_count]]
+                firemode_check_count += 1
+            else:
+                prepared_for_encoding[key] = [value]
+
+        if key_type not in prepared_for_encoding:
+            prepared_for_encoding[key_type] = [WEAPON_TYPES[type_check_count]]
+        if key_firemode not in prepared_for_encoding:
+            prepared_for_encoding[key_firemode] = [WEAPON_FIREMODES[firemode_check_count]]
+
+        return prepared_for_encoding
+
+    def __encodeFeatures(self, features):
+        self._data_original, cols_to_vars_dict = self.encode_features_dict(features)
         return self.__standardize_columns(self._data_original), cols_to_vars_dict
-
-
-    #standardizes the values
-    def __standardize_matrix(self, x_original):
-        std = x_original.std(dtype=np.float64)
-        mean = x_original.mean(dtype=np.float64)
-        x_standardized = (x_original - mean) / std
-        self._standardized_max_values = np.amax(x_standardized)
-        self._standardized_min_values = np.amin(x_standardized)
-        return x_standardized
 
     #standardizes the values
     def __standardize_columns(self, x_original):
@@ -304,13 +321,23 @@ class DataSet:
         return x_standardized
 
     #reverts the standardization
-    def __un_standardize_matrix(self, x_standardized, x_original):
-        std = x_original.std(dtype=np.float64)
-        mean = x_original.mean(dtype=np.float64)
-        return mean + (x_standardized*std)
-
-    #reverts the standardization
     def __un_standardize_columns(self, x_standardized, x_original):
         std = x_original.std(dtype=np.float64, axis=0)
         mean = x_original.mean(dtype=np.float64, axis=0)
         return mean + (x_standardized*std)
+
+    def __getCsvHeader(self, filename):
+        with open(filename, mode='r') as f:
+            reader = csv.reader(f)
+            header = next(reader)
+            return header
+
+    def __getCsvAsDict(self, filename):
+        header = self.__getCsvHeader(filename)
+        result = { h: [] for h in header }
+        with open(filename, mode='r') as file:
+            for row in csv.DictReader(file):
+                for h in header:
+                    result[h].append(row[h])
+
+        return result
