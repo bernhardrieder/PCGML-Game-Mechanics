@@ -172,7 +172,7 @@ class DataSet:
             return self._data[start:end]
 
     def decode_processed_tensor(self, tensor):
-        '''Decodes a processed tensor and returns a dict'''
+        '''Decodes a processed tensor and returns a dict and the unstandardized tensor'''
 
         unstandardized_tensor = self.__un_standardize_columns(tensor, self._data_original)
 

@@ -104,7 +104,7 @@ def train_model(train_data, test_data, network_architecture, optimizer, transfer
     num_samples = test_data.num_examples
 
     for i in range(num_samples):
-        batch = test_data.next_batch(1)
+        batch = test_data.next_batch(batch_size)
 
         x_reconstructed = network.encode_and_decode(batch)
         cost = network.calculate_loss(batch)
@@ -117,11 +117,11 @@ def train_model(train_data, test_data, network_architecture, optimizer, transfer
 
         distance_unnorm, distance_norm = sess.run((distance_unnorm, distance_norm))
 
-        sample = np.random.uniform(low=test_data.standardized_min_values, high=test_data.standardized_max_values, size=(1,network_architecture["n_input"]))
+        sample = np.random.uniform(low=test_data.standardized_min_values, high=test_data.standardized_max_values, size=(batch_size,network_architecture["n_input"]))
         cost_rand = network.calculate_loss(sample)
 
         #compute average loss/cost
-        avg_cost_rand += min(cost_rand,1000) / num_samples
+        avg_cost_rand += cost_rand / num_samples
         avg_cost += cost / num_samples
         avg_distance_unnorm += distance_unnorm / num_samples
         avg_distance_norm += distance_norm / num_samples
@@ -176,13 +176,11 @@ def run_constellations_test(hyperparams, dry_run=False):
         print("Calculated %i different constellations" %total_iterations)
         printProgressBar(0, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
 
-    for i in range(0,100):
+    for i in range(0,10):
         for learning_rate in hyperparams['learning_rate']:
             for n_hidden_1 in hyperparams['n_hidden_1']:
                 for n_hidden_2 in hyperparams['n_hidden_2']:
                     for n_z in hyperparams['n_z']:
-                        #if n_z >= n_hidden_1:
-                            #continue
                         for batch_size in hyperparams['batch_size']:
                             for n_categorical in hyperparams['n_categorical']:
                                 for n_numerical in hyperparams['n_numerical']:
