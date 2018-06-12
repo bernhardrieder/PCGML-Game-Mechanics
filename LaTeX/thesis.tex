@@ -250,7 +250,7 @@ As already indicated, a game mechanic is a main concept with many underlying sub
 \end{itemize}
 
 \section{Types of Mechanics}
-It is evident that one tries to divide possible mechanics into concrete types since of their various possibilities and shared base ideas. For this purpose, \citep{gameDesign::gameMechanicsAdvancedGameDesign} summarized different types of game mechanics which are mainly used in games nowadays. \citep{gameDesign::gameMechanicsAdvancedGameDesign} first categorized them into the following five types which are listed below with some related mechanics:
+It is evident that one tries to divide possible mechanics into concrete types since of their various possibilities and shared base ideas. For this purpose, \citep{gameDesign::gameMechanicsAdvancedGameDesign} summarized different types of game mechanics which are mainly used in games nowadays. \citename{gameDesign::gameMechanicsAdvancedGameDesign} first categorized them into the following five types which are listed below with some related mechanics:
 \begin{itemize}
 	\item \textbf{Physics}: Motion and forces like gravity, shooting, fighting, jumping, moving, driving or any other kind of position change. \cite{gameDesign::gameMechanicsAdvancedGameDesign}
 	\item \textbf{Internal Economy}: In general, all game elements which involve transaction like collecting, consuming, harvesting, buying, building, upgrading, risking or customizing of resources like currency, ammunition, portions, power-ups or other kinds of items. Also the use of energy, health, lives, power, points, popularity or experience and management actions for team, resources or inventory. \cite{gameDesign::gameMechanicsAdvancedGameDesign}
@@ -709,7 +709,7 @@ In this case, working configurations of the game provide the training set of the
 %$ \dfrac{N!}{n!(N-n)!} = \dfrac{25!}{10!15!} = 3.268.760 $
 
 \subsection{Changing Weapons} \label{idea::changingWeapons}
-Game mechanics often share a connection with some interactable objects. In the case of a \ac{FPS} game, different weapons like guns, rifles or shotguns represent these interactable objects. Moreover, different weapons often result in other mechanics such as particular tactics. With this in mind, another idea of using PCGML as a game mechanic is its use as any weapon generator. In specific, an FPS game with generated weapons where providing different weapons at the training time results in different ways to play the game. A virtually created weapon can have different properties, such as weight, blowback power, firing rate, ammunition and others which form the base to generate new weapons procedurally. Furthermore, as weapons need ammunition, the generation of new bullets and projectiles can also be part of the PCGML system. \\
+Game mechanics often share a connection with some interactable objects. In the case of a \ac{FPS} game, different weapons like guns, rifles or shotguns represent these interactable objects. Moreover, different weapons often result in other mechanics such as particular tactics. With this in mind, another idea of using PCGML as a game mechanic is its use as any weapon generator. In specific, an FPS game with generated weapons where providing different weapons at the training time results in different ways to play the game. A virtually created weapon can have different properties, such as weight, recoil, firing rate, ammunition and others which form the base to generate new weapons procedurally. Furthermore, as weapons need ammunition, the generation of new bullets and projectiles can also be part of the PCGML system. \\
 For example, a game could be an FPS game with generated weapons from a pre-trained PCGML system whereby the model will be fed with the new generated weapons during runtime and furthermore specializes in a specific direction. After a bunch of time, the system only generates a specific weapon, and that is where the game or session would end.
 
 \subsection{Changing Powers} \label{idea::changingPowers}
@@ -943,7 +943,7 @@ The environment is a mountain-forest-like environment. The player spawns anywher
 \end{figure}
 
 \subsubsection{Training Session}
-However, first of all, the player needs to fight against NPC enemies on the way to the arena to specialize and get used to the weapons. Even though this is a training session, the player has a specific amount of lives and need to take care of them. If the player loses all of the lives during this session, then the game is lost, and it ends.
+However, first of all, the player needs to fight against NPC enemies on the way to the arena to specialize and get used to the weapons. Even though this is a training session, the player has a specific amount of lives and need to take care of them. If the player loses all of the lives during this session, then the game is lost, and it ends. Specific spawnpoints provide the player with health, ammunition, and armor packages.
 
 \subsubsection{Battle of the Changing Guns}
 Initialization of the battle happens as soon as the player is in a specific range to the AI in the arena. As soon as the player initiated the battle, the training session ends and recovers the player's lives for an epic final battle. The player can now move everywhere on the map and needs to defeat the AI with his weapons to win the game. Ammunition, health, and armor packages are randomly, but in player's range, spawned during the battle, so that the player needs to walk around in the map to give the battle more energy.
@@ -956,7 +956,7 @@ The next weapon will be generated with some noise added to the old weapon. noise
 
 \subsection{Player and Enemies}
 The player is a third-person character with a specific amount of health, armor, and lives with no customization options. Synchronization of the values of these mentioned properties with the properties of the generated weapons is necessary.\\
-A simple AI controls all enemies to act as a training enemy for the battle. Enemies come in three different types of ascending power and health. They spawn in fixed locations throughout the training path. The enemies desire is to eliminate the player in a straightforward way rather than in a complex and sophisticated way. Killed enemies will drop ammunition, health, and armor which players can gather to refill their ammunition, health, and armor.\\
+A simple AI controls all enemies to act as a training enemy for the battle. Enemies come in three different types of ascending power and health. They spawn in fixed locations throughout the training path. The enemies desire is to eliminate the player in a straightforward way rather than in a complex and sophisticated way. \\
 The design of the boss AI enemy defines specific base health, armor and damage. The base values increase with the time of the training session and regenerate during the battle.
 
 %\section{TODO: Development Considerations}
@@ -1149,20 +1149,13 @@ Classes, Diagrams, ..\\
 Santi said: just use 1 Hidden Layer if you have a dataset with small amount of data\\
 Santi said: around 3 neurons (hidden layer? idk)\\
 how to measure the accuracy in unsupervised learning / geneartive models?
+\subsection{Model Accuracy}
 
 \section{TODO: Game}
-read over game mechanics chapter again to focus on the dev considerations
-\begin{itemize}
-	\item tutorial!
-	\item uses a feedback loop -> player shoots AI or player and they should die or similar
-	\item easy to learn -> FPS games in general are pretty straight forward
-	\item natural interaction
-	\item playability	
-\end{itemize}
-\section{TODO: Performance Measurements}
-\subsection{TODO: Improvement Iterations}
-\section{Result}
+
 show the game and the mechanics!
+
+\section{TODO: Performance Measurements}
 
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
@@ -1173,6 +1166,9 @@ The meaning of the use of PCGML as a game mechanic for the future of games and g
 \section{TODO: Summary}
 \section{TODO: Research Result}
 \section{TODO: Future Work}
+implementation of a C++ machine learning plugin to get rid of external sources
+further implementations
+
 %
 % Hier beginnen die Verzeichnisse.
 %
