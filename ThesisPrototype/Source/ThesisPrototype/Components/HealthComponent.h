@@ -65,6 +65,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Health Component")
 	void SetHandleDamageEnabled(bool val);
 
+	void SetTeamNumber(uint8 teamNumber);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

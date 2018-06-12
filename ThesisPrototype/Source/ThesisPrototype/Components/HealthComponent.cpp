@@ -68,6 +68,11 @@ void UHealthComponent::SetHandleDamageEnabled(bool val)
 	bHandleDamageEnabled = val;
 }
 
+void UHealthComponent::SetTeamNumber(uint8 teamNumber)
+{
+	TeamNumber = teamNumber;
+}
+
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();

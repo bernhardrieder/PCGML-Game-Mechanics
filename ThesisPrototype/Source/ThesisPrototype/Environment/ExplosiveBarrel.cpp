@@ -8,6 +8,7 @@
 #include "Engine/World.h"
 #include "UnrealNetwork.h"
 #include "Sound/SoundCue.h"
+#include "ChangingGuns.h"
 
 // Sets default values
 AExplosiveBarrel::AExplosiveBarrel()
@@ -18,6 +19,7 @@ AExplosiveBarrel::AExplosiveBarrel()
 	RootComponent = MeshComp;
 
 	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
+	HealthComp->SetTeamNumber(TEAMNUMBER_ENVIRONMENT);
 
 	RadialForceComp = CreateDefaultSubobject<URadialForceComponent>(TEXT("RadialForceComp"));
 	RadialForceComp->SetupAttachment(RootComponent);
@@ -28,6 +30,8 @@ AExplosiveBarrel::AExplosiveBarrel()
 	ExplosionImpulse = 400;
 	BaseDamage = 150;
 	DamageRadius = 250.f;
+
+
 }
 
 void AExplosiveBarrel::BeginPlay()
@@ -51,12 +55,12 @@ void AExplosiveBarrel::onHealthChanged(const UHealthComponent* HealthComponent, 
 		MeshComp->SetMaterial(0, ExplodeMaterial);
 		UGameplayStatics::PlaySoundAtLocation(this, ExplosionSound, GetActorLocation());
 
+		TArray<AActor*> ignoreDamageActors{ this };
+		UGameplayStatics::ApplyRadialDamage(GetWorld(), BaseDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
+
 		FVector boostIntensity = FVector::UpVector * ExplosionImpulse;
 		MeshComp->AddImpulse(boostIntensity, NAME_None, true);
 
 		RadialForceComp->FireImpulse();
-
-		TArray<AActor*> ignoreDamageActors{ this };
-		UGameplayStatics::ApplyRadialDamage(GetWorld(), BaseDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
 	}
 }

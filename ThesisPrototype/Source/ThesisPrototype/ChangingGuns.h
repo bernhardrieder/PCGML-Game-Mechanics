@@ -10,3 +10,6 @@
 #define SURFACE_FLESHHEAD					SurfaceType4
 
 #define COLLISION_WEAPON			ECC_GameTraceChannel1
+
+#define TEAMNUMBER_BOT					255
+#define TEAMNUMBER_ENVIRONMENT			254
