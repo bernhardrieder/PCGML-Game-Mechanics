@@ -121,7 +121,7 @@ def train_model(train_data, test_data, network_architecture, optimizer, transfer
         cost_rand = network.calculate_loss(sample)
 
         #compute average loss/cost
-        avg_cost_rand += cost_rand / num_samples
+        avg_cost_rand += min(cost_rand, 1000) / num_samples
         avg_cost += cost / num_samples
         avg_distance_unnorm += distance_unnorm / num_samples
         avg_distance_norm += distance_norm / num_samples
