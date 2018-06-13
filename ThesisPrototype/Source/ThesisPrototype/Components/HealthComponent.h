@@ -57,6 +57,7 @@ public:
 	void RestoreExtraLife(int32 amount);
 
 
+	FORCEINLINE uint8 GetTeamNumber() const { return TeamNumber; }
 	FORCEINLINE float GetHealth() const { return Health; }
 	FORCEINLINE float GetArmor() const { return Armor; }
 
@@ -86,6 +87,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Health Component")
 	static bool IsFriendly(AActor* actorA, AActor* actorB);
+		
+	UFUNCTION(BlueprintPure, Category = "Health Component")
+	static bool IsBot(AActor* actor);
 
 protected:
 	bool bIsDead = false;

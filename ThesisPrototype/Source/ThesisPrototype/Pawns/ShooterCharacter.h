@@ -15,6 +15,14 @@ class UHealthComponent;
 class UDamageType;
 class AController;
 
+UENUM(BlueprintType)
+enum class EActorType : uint8
+{
+	Player,
+	Bot,
+	BotBoss
+};
+
 UCLASS()
 class THESISPROTOTYPE_API AShooterCharacter : public ACharacter
 {

@@ -17,6 +17,7 @@
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "ChangingGuns.h"
 
 static int32 DebugTrackerBotDrawing = 0;
 FAutoConsoleVariableRef CVARDebugTackerBotDrawing(
@@ -39,6 +40,7 @@ AShooterTrackerBot::AShooterTrackerBot()
 	RootComponent = MeshComp;	
 
 	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
+	HealthComp->SetTeamNumber(TEAMNUMBER_BOT);
 
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	SphereComp->SetSphereRadius(200);

@@ -5,6 +5,7 @@
 #include "UnrealNetwork.h"
 #include "ChangingGunsGameMode.h"
 #include "Engine/World.h"
+#include "ChangingGuns.h"
 
 static int32 DebugHealthComponents = 1;
 FAutoConsoleVariableRef CVARDebuHealthComponents(
@@ -159,6 +160,24 @@ bool UHealthComponent::IsFriendly(AActor* actorA, AActor* actorB)
 	{
 		return true;
 	}
+	
+	return healthCompA->TeamNumber == healthCompB->TeamNumber || IsBot(actorA) == IsBot(actorB);
+}
 
-	return healthCompA->TeamNumber == healthCompB->TeamNumber;
+
+bool UHealthComponent::IsBot(AActor* actor)
+{
+	if (!actor)
+	{
+		return false;
+	}
+
+	UHealthComponent* healthComp = Cast<UHealthComponent>(actor->GetComponentByClass(StaticClass()));
+
+	if (!healthComp)
+	{
+		return false;
+	}
+
+	return healthComp->TeamNumber >= TEAMNUMBER_BOT_RANGE_MIN && healthComp->TeamNumber <= TEAMNUMBER_BOT_RANGE_MAX;
 }
