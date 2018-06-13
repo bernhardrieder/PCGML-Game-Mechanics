@@ -199,7 +199,7 @@ hyperparams = dict( \
                     n_categorical = [2],
                     n_numerical = [14],
                     n_ammo_features = [0],
-                    n_epochs = [70],
+                    n_epochs = [400],
                     #all possible nonlinear activation functions
                     transfer_fct = [
                                     #tf.tanh, #stick with that one
