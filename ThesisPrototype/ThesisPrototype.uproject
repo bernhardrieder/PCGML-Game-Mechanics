@@ -12,19 +12,5 @@
 				"Engine"
 			]
 		}
-	],
-	"Plugins": [
-		{
-			"Name": "TensorFlow",
-			"Enabled": false
-		},
-		{
-			"Name": "UnrealEnginePython",
-			"Enabled": false
-		},
-		{
-			"Name": "SocketIOClient",
-			"Enabled": false
-		}
 	]
 }
