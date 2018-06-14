@@ -8,8 +8,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentWeaponChangedEvent, class AShooterWeapon*, newCurrentWeapon);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStartedWeaponGeneratorEvent);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnNewGeneratedWeaponAvailableEvent);
+
 
 class UCameraComponent;
 class USpringArmComponent;
@@ -84,12 +83,6 @@ public:
 	bool IsAiming() const { return bWantsToZoom; }
 
 	FORCEINLINE AShooterWeapon* GetEquippedWeapon() const { return m_equippedWeapon; }
-
-	UPROPERTY(BlueprintAssignable, Category = "Player|Weapons")
-	FOnStartedWeaponGeneratorEvent OnStartedWeaponGeneratorEvent;
-
-	UPROPERTY(BlueprintAssignable, Category="Player|Weapons")
-	FOnNewGeneratedWeaponAvailableEvent OnNewGeneratedWeaponAvailableEvent;
 
 protected:
 	// Called when the game starts or when spawned

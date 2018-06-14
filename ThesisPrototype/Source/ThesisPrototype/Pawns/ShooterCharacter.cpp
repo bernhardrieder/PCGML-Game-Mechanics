@@ -70,7 +70,7 @@ void AShooterCharacter::BeginPlay()
 	{
 		m_weaponGenerator = GetWorld()->SpawnActor<AWeaponGenerator>(BP_WeaponGenerator, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
 		m_weaponGenerator->SetOwner(this);
-		m_weaponGenerator->OnWeaponGenerationReadyEvent.AddDynamic(this, &AShooterCharacter::onNewWeaponGenerated);
+		m_weaponGenerator->OnWeaponGenerationFinishedEvent.AddDynamic(this, &AShooterCharacter::onNewWeaponGenerated);
 	}
 	
 	//(that'd be an axis input actually)
@@ -272,8 +272,6 @@ void AShooterCharacter::dismantleEquippedWeaponAndGenerateNew()
 	if (m_weaponGenerator->IsGenerating() || !m_weaponGenerator->IsReadyToUse())
 		return;
 
-	OnStartedWeaponGeneratorEvent.Broadcast();
-
 	AShooterWeapon* dismantle = m_equippedWeapon;
 	switchWeapon(1.f);
 	m_lastEquippedWeapon = nullptr;
@@ -287,8 +285,6 @@ void AShooterCharacter::onNewWeaponGenerated(AShooterWeapon* weapon)
 {
 	if (!weapon)
 		return;
-
-	OnNewGeneratedWeaponAvailableEvent.Broadcast();
 
 	addWeapon(weapon);
 	//equipWeapon(weapon);

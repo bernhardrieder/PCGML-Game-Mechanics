@@ -6,7 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "WeaponGenerator.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponGenerationReadyEvent, class AShooterWeapon*, generatedWeapon);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStartedWeaponGeneratorEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGeneratorIsReadyEvent, bool, isReady);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponGenerationFinishedEvent, class AShooterWeapon*, generatedWeapon);
+
 
 class AShooterWeapon;
 enum class EWeaponType : uint8;
@@ -132,15 +135,21 @@ class THESISPROTOTYPE_API AWeaponGenerator : public AActor
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")
 	float OffsetPerMinuteUsed;
 
-
-
 public:
 	AWeaponGenerator();
 
-	//don't forget to subscribe to OnWeaponGenerationReadyEvent to get notified when the new weapon is generated
+	//don't forget to subscribe to OnWeaponGenerationFinishedEvent to get notified when the new weapon is generated
 	void DismantleWeapon(AShooterWeapon* weapon);
 
-	FOnWeaponGenerationReadyEvent OnWeaponGenerationReadyEvent;
+	UPROPERTY(BlueprintAssignable, Category = "Weapon Generator|Events")
+	FOnGeneratorIsReadyEvent OnGeneratorIsReadyEvent;
+
+	UPROPERTY(BlueprintAssignable, Category = "Weapon Generator|Events")
+	FOnStartedWeaponGeneratorEvent OnStartedWeaponGeneratorEvent;
+
+	UPROPERTY(BlueprintAssignable, Category = "Weapon Generator|Events")
+	FOnWeaponGenerationFinishedEvent OnWeaponGenerationFinishedEvent;
+
 
 	FORCEINLINE bool IsGenerating() const {	return m_bIsGenerating;	}
 	FORCEINLINE bool IsReadyToUse() const { return m_IsReadyToUse; }
@@ -155,7 +164,7 @@ protected:
 	void receiveNewWeaponFromGenerator(const FWeaponGeneratorAPIJsonData& jsonData);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon Generator")
-	void setReadyToUse(bool isReady) { m_IsReadyToUse = isReady; }
+	void setReadyToUse(bool isReady);
 
 	FWeaponGeneratorAPIJsonData convertWeaponToJsonData(AShooterWeapon* weapon);
 	AShooterWeapon* constructWeaponFromJsonData(const FWeaponGeneratorAPIJsonData& jsonData) const;

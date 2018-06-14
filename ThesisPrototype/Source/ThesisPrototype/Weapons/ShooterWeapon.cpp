@@ -391,7 +391,6 @@ void AShooterWeapon::Fire()
 					if(healtComp->GetHealth() <= 0)
 					{
 						++m_statistics.Kills;
-						UE_LOG(LogTemp, Log, TEXT("%s kills: %i"), *this->GetName(), m_statistics.Kills);
 					}
 				}
 

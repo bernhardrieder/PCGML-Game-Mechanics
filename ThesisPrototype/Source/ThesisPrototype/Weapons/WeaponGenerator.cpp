@@ -90,6 +90,7 @@ void AWeaponGenerator::BeginPlay()
 void AWeaponGenerator::DismantleWeapon(AShooterWeapon* weapon)
 {
 	m_bIsGenerating = true;
+	OnStartedWeaponGeneratorEvent.Broadcast();
 	sendDismantledWeaponToGenerator(convertWeaponToJsonData(weapon));
 }
 
@@ -104,9 +105,15 @@ void AWeaponGenerator::receiveNewWeaponFromGenerator(const FWeaponGeneratorAPIJs
 	AShooterWeapon* weapon = constructWeaponFromJsonData(jsonData);
 	if(weapon)
 	{
-		OnWeaponGenerationReadyEvent.Broadcast(weapon);
+		OnWeaponGenerationFinishedEvent.Broadcast(weapon);
 	}
 	m_bIsGenerating = false;
+}
+
+void AWeaponGenerator::setReadyToUse(bool isReady)
+{
+	m_IsReadyToUse = isReady;
+	OnGeneratorIsReadyEvent.Broadcast(isReady);
 }
 
 FWeaponGeneratorAPIJsonData AWeaponGenerator::convertWeaponToJsonData(AShooterWeapon* weapon)
