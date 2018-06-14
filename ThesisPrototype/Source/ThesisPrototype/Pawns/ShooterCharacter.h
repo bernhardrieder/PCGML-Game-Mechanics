@@ -8,12 +8,16 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentWeaponChangedEvent, class AShooterWeapon*, newCurrentWeapon);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStartedWeaponGeneratorEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnNewGeneratedWeaponAvailableEvent);
+
 class UCameraComponent;
 class USpringArmComponent;
 class AShooterWeapon;
 class UHealthComponent;
 class UDamageType;
 class AController;
+class AWeaponGenerator;
 
 UENUM(BlueprintType)
 enum class EActorType : uint8
@@ -44,6 +48,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	TArray<TSubclassOf<AShooterWeapon>> StarterWeaponClasses;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	TSubclassOf<AWeaponGenerator> BP_WeaponGenerator;
+
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
 	UHealthComponent* HealthComp;
 
@@ -55,6 +62,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Player|Weapon", meta = (DisplayName = "Equipped Weapon"))
 	AShooterWeapon* m_equippedWeapon;
+
 
 public:
 	// Sets default values for this character's properties
@@ -75,6 +83,12 @@ public:
 	bool IsAiming() const { return bWantsToZoom; }
 
 	FORCEINLINE AShooterWeapon* GetEquippedWeapon() const { return m_equippedWeapon; }
+
+	UPROPERTY(BlueprintAssignable, Category = "Player|Weapons")
+	FOnStartedWeaponGeneratorEvent OnStartedWeaponGeneratorEvent;
+
+	UPROPERTY(BlueprintAssignable, Category="Player|Weapons")
+	FOnNewGeneratedWeaponAvailableEvent OnNewGeneratedWeaponAvailableEvent;
 
 protected:
 	// Called when the game starts or when spawned
@@ -98,6 +112,9 @@ protected:
 	void removeWeapon(AShooterWeapon* weapon);
 	void dismantleEquippedWeaponAndGenerateNew();
 
+	//this is the callback for the weapon generator
+	UFUNCTION()
+	void onNewWeaponGenerated(AShooterWeapon* weapon);
 
 	UFUNCTION()
 	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
@@ -118,6 +135,7 @@ protected:
 
 	AShooterWeapon* m_lastEquippedWeapon;
 	TArray<AShooterWeapon*> m_availableWeapons;
+	AWeaponGenerator* m_weaponGenerator;
 
 	float m_maxWalkSpeedDefault;
 	float m_maxWalkSpeedCrouchedDefault;

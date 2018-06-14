@@ -81,6 +81,7 @@ void AWeaponGenerator::BeginPlay()
 
 void AWeaponGenerator::DismantleWeapon(AShooterWeapon* weapon)
 {
+	m_bIsGenerating = true;
 	sendDismantledWeaponToGenerator(convertWeaponToJsonData(weapon));
 }
 
@@ -96,6 +97,7 @@ void AWeaponGenerator::receiveNewWeaponFromGenerator(const FWeaponGeneratorAPIJs
 	if(weapon)
 	{
 		OnWeaponGenerationReadyEvent.Broadcast(weapon);
+		m_bIsGenerating = false;
 	}
 }
 
@@ -113,6 +115,8 @@ FWeaponGeneratorAPIJsonData AWeaponGenerator::convertWeaponToJsonData(AShooterWe
 	const int32 bulletsPerMagazine = weapon->GetBulletsPerMagazine();
 	const float reloadTimeEmptyMagazine = weapon->GetReloadTimeEmptyMagazine();
 	const int32 bulletsInOneShot = weapon->GetBulletsInOneShot();
+
+	//todo: apply statistics to get other/better/worse weapons
 
 	return FWeaponGeneratorAPIJsonData(maxDamageWithDistance, minDamageWithDistance, weaponType,
 		fireMode, recoilIncreasePerShot, recoilDecrease, bulletSpreadIncrease, bulletSpreadDecrease, rateOfFire,

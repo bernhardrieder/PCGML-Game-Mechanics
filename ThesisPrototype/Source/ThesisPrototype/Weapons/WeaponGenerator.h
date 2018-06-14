@@ -122,6 +122,8 @@ public:
 
 	FOnWeaponGenerationReadyEvent OnWeaponGenerationReadyEvent;
 
+	FORCEINLINE bool IsGenerating() const {	return m_bIsGenerating;	}
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -138,4 +140,5 @@ protected:
 
 private:
 	FRandomStream m_randomNumberGenerator;
+	bool m_bIsGenerating = false;
 };

@@ -13,6 +13,7 @@
 #include "Net/UnrealNetwork.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "ChangingGunsPlayerState.h"
+#include "Weapons/WeaponGenerator.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -64,7 +65,12 @@ void AShooterCharacter::BeginPlay()
 		AShooterWeapon* starterWeapon = GetWorld()->SpawnActor<AShooterWeapon>(weaponClass, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
 		addWeapon(starterWeapon);
 	}
-	//(actually, that'd be an axis input)
+	
+	m_weaponGenerator = GetWorld()->SpawnActor<AWeaponGenerator>(BP_WeaponGenerator, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
+	m_weaponGenerator->SetOwner(this);
+	m_weaponGenerator->OnWeaponGenerationReadyEvent.AddDynamic(this, &AShooterCharacter::onNewWeaponGenerated);
+
+	//(that'd be an axis input actually)
 	switchWeapon(1.0f);
 
 }
@@ -261,25 +267,33 @@ void AShooterCharacter::removeWeapon(AShooterWeapon* weapon)
 
 void AShooterCharacter::dismantleEquippedWeaponAndGenerateNew()
 {
-	disarmWeapon(m_equippedWeapon);
+	if (m_weaponGenerator->IsGenerating())
+		return;
+
+	OnStartedWeaponGeneratorEvent.Broadcast();
+
 	AShooterWeapon* dismantle = m_equippedWeapon;
-	m_equippedWeapon = nullptr;
-	removeWeapon(dismantle);
-	if(AChangingGunsPlayerState* state = Cast<AChangingGunsPlayerState>(PlayerState))
+	switchWeapon(1.f);
+	if (AChangingGunsPlayerState* state = Cast<AChangingGunsPlayerState>(PlayerState))
 	{
 		state->RemoveWeaponFromStatistics(dismantle);
 	}
+	removeWeapon(dismantle);
+	dismantle = nullptr;
 
-	//todo: change the code to use one of a weapon factory class or something similar
-	FActorSpawnParameters spawnParams;
-	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	//assume we have more than 0 defined classes because thats just a stub
-	AShooterWeapon* weapon = GetWorld()->SpawnActor<AShooterWeapon>(StarterWeaponClasses[0], FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
+	m_weaponGenerator->DismantleWeapon(m_equippedWeapon);
+}
+
+void AShooterCharacter::onNewWeaponGenerated(AShooterWeapon* weapon)
+{
+	if (!weapon)
+		return;
+
+	OnNewGeneratedWeaponAvailableEvent.Broadcast();
+
 	addWeapon(weapon);
 	equipWeapon(weapon);
 }
-
-
 
 void AShooterCharacter::onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
