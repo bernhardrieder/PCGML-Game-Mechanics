@@ -16,8 +16,7 @@ DEFAULT_TEST_DATA = ue.get_content_dir() + "/Scripts/test_data.csv"
 CATEGORICAL_PARAMS  = ['type', 'firemode'] #exclude ammo because I'm not interested in decoding its values
 #this numerical params are ordered by priority to omit less important ones in 'get_data()'
 NUMERICAL_PARAMS = ['damages_first', 'damages_last', 'distances_last', 'rof', 'magsize', 'reloadempty', 'shotspershell', 'hiprecoilright',
-                    'hiprecoilup', 'distances_first', 'initialspeed', 'hiprecoildec', 'hipstandbasespreaddec', 'hipstandbasespreadinc',
-                    'hordispersion', 'verdispersion' ]
+                    'hiprecoilup', 'distances_first', 'initialspeed', 'hiprecoildec', 'hipstandbasespreaddec', 'hipstandbasespreadinc']
 WEAPON_TYPES = ['Shotgun', 'Pistol', 'Rifle', 'SMG', 'Sniper', 'MG']
 WEAPON_FIREMODES = ['Automatic', 'Semi', 'Single']
 NUM_OF_AMMO_TYPES = 31
