@@ -65,11 +65,14 @@ void AShooterCharacter::BeginPlay()
 		AShooterWeapon* starterWeapon = GetWorld()->SpawnActor<AShooterWeapon>(weaponClass, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
 		addWeapon(starterWeapon);
 	}
-	
-	m_weaponGenerator = GetWorld()->SpawnActor<AWeaponGenerator>(BP_WeaponGenerator, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
-	m_weaponGenerator->SetOwner(this);
-	m_weaponGenerator->OnWeaponGenerationReadyEvent.AddDynamic(this, &AShooterCharacter::onNewWeaponGenerated);
 
+	if(BP_WeaponGenerator.GetDefaultObject())
+	{
+		m_weaponGenerator = GetWorld()->SpawnActor<AWeaponGenerator>(BP_WeaponGenerator, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
+		m_weaponGenerator->SetOwner(this);
+		m_weaponGenerator->OnWeaponGenerationReadyEvent.AddDynamic(this, &AShooterCharacter::onNewWeaponGenerated);
+	}
+	
 	//(that'd be an axis input actually)
 	switchWeapon(1.0f);
 
@@ -267,7 +270,7 @@ void AShooterCharacter::removeWeapon(AShooterWeapon* weapon)
 
 void AShooterCharacter::dismantleEquippedWeaponAndGenerateNew()
 {
-	if (m_weaponGenerator->IsGenerating())
+	if (m_weaponGenerator->IsGenerating() || !m_weaponGenerator->IsReadyToUse())
 		return;
 
 	OnStartedWeaponGeneratorEvent.Broadcast();

@@ -97,8 +97,8 @@ void AWeaponGenerator::receiveNewWeaponFromGenerator(const FWeaponGeneratorAPIJs
 	if(weapon)
 	{
 		OnWeaponGenerationReadyEvent.Broadcast(weapon);
-		m_bIsGenerating = false;
 	}
+	m_bIsGenerating = false;
 }
 
 FWeaponGeneratorAPIJsonData AWeaponGenerator::convertWeaponToJsonData(AShooterWeapon* weapon)
@@ -126,6 +126,9 @@ FWeaponGeneratorAPIJsonData AWeaponGenerator::convertWeaponToJsonData(AShooterWe
 
 AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGeneratorAPIJsonData& jsonData) const
 {
+	if (!jsonData.success.Equals("true"))
+		return nullptr;
+
 	TSubclassOf<AShooterWeapon> weaponClass;
 	switch(determineWeaponType(jsonData))
 	{

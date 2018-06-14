@@ -77,8 +77,10 @@ struct FWeaponGeneratorAPIJsonData
 	UPROPERTY(BlueprintReadWrite)
 	FString type_SMG;
 
+	UPROPERTY(BlueprintReadWrite)
+	FString success;
 
-	FWeaponGeneratorAPIJsonData() {};
+	FWeaponGeneratorAPIJsonData(){}
 	FWeaponGeneratorAPIJsonData(FVector2D maxDamageWithDistance, FVector2D minDamageWithDistance, EWeaponType weaponType, EFireMode fireMode,
 		FVector2D recoilIncreasePerShot, float recoilDecrease, float bulletSpreadIncrease, float bulletSpreadDecrease, int32 rateOfFire, int32 bulletsPerMagazine,
 		float reloadTimeEmptyMagazine, int32 bulletsInOneShot);
@@ -123,6 +125,7 @@ public:
 	FOnWeaponGenerationReadyEvent OnWeaponGenerationReadyEvent;
 
 	FORCEINLINE bool IsGenerating() const {	return m_bIsGenerating;	}
+	FORCEINLINE bool IsReadyToUse() const { return m_IsReadyToUse; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -133,6 +136,9 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Weapon Generator")
 	void receiveNewWeaponFromGenerator(const FWeaponGeneratorAPIJsonData& jsonData);
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon Generator")
+	void setReadyToUse(bool isReady) { m_IsReadyToUse = isReady; }
+
 	static FWeaponGeneratorAPIJsonData convertWeaponToJsonData(AShooterWeapon* weapon);
 	AShooterWeapon* constructWeaponFromJsonData(const FWeaponGeneratorAPIJsonData& jsonData) const;
 	EWeaponType determineWeaponType(const FWeaponGeneratorAPIJsonData& jsonData) const;
@@ -141,4 +147,5 @@ protected:
 private:
 	FRandomStream m_randomNumberGenerator;
 	bool m_bIsGenerating = false;
+	bool m_IsReadyToUse = false;
 };

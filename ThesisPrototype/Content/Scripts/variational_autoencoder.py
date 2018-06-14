@@ -4,7 +4,7 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
-import weapon_data
+from training_data import weapon_data
 
 DEFAULT_MODEL_PATH = "./trained_vae/"
 

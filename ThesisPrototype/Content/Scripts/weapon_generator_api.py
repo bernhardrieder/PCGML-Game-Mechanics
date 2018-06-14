@@ -50,11 +50,14 @@ class WeaponGeneratorAPI(TFPluginAPI):
 
         if self._vae == None:
             ue.log("ERROR: there is no trained model?!")
-            return {}
+            return { 'success' : 'false'}
 
         if not bool(jsonInput):
             ue.log("ERROR: empty input!")
-            return {}
+            return { 'success' : 'false'}
+
+        #clear the input data
+        del jsonInput['success']
 
         generated_weapon = []
 
@@ -77,12 +80,13 @@ class WeaponGeneratorAPI(TFPluginAPI):
 
         if len(generated_weapon) <= 0:
             ue.log("ERROR: no generated weapon?!")
-            return {}
+            return {'success' : 'false'}
 
         #do it afterwards so that crazy weapons don't destroy the model
         self.__add_received_dismantled_weapon(encoded_json_input[0])
 
         result, _ = self._train_data.decode_processed_tensor(generated_weapon[0])
+        result['success'] = 'true'
         return result
 
     def onBeginTraining(self):
