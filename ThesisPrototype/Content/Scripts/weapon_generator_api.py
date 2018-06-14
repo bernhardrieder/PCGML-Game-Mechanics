@@ -5,11 +5,16 @@ import unreal_engine as ue
 import numpy as np
 import tensorflow as tf
 import variational_autoencoder as vae
-from training_data import weapon_data as weapons
+import weapon_data as weapons
+from TFPluginAPI import TFPluginAPI
 
 from tensorflow.python.framework import random_seed
 
 class WeaponGeneratorAPI(TFPluginAPI):
+    def __init__(self):
+        self._sess = None
+        self._vae = None
+
     def onSetup(self):
         self._random_seed = 19071991
         seed, _ = random_seed.get_seed(self._random_seed)
