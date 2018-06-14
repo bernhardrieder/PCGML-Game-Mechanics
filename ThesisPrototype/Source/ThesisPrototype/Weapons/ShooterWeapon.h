@@ -40,6 +40,24 @@ enum class EFireMode : uint8
 };
 
 USTRUCT(BlueprintType)
+struct FWeaponStatistics
+{
+	GENERATED_BODY()
+
+	FWeaponStatistics()
+	{
+		Kills = 0;
+		SecondsUsed = 0;
+	}
+
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon Statistics")
+	int32 Kills;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon Statistics")
+	float SecondsUsed;
+};
+
+USTRUCT(BlueprintType)
 struct FOwnerBasedModifier
 {
 	GENERATED_BODY()
@@ -200,6 +218,7 @@ public:
 	FORCEINLINE int32 GetBulletsPerMagazine() const { return BulletsPerMagazine; }
 	FORCEINLINE int32 GetBulletsInOneShot() const { return BulletsInOneShot; }
 	FORCEINLINE float GetReloadTimeEmptyMagazine() const { return ReloadTimeEmptyMagazine; }
+	FORCEINLINE FWeaponStatistics GetWeaponStatistics() const { return m_statistics; }
 
 	FORCEINLINE void SetType(EWeaponType type) {  Type = type; }
 	FORCEINLINE void SetFireMode(EFireMode firemode) {  FireMode = firemode; }
@@ -213,7 +232,7 @@ public:
 	FORCEINLINE void SetRecoilDecrease(float decrease) {  RecoilDecrease = decrease; }
 	void SetBulletsPerMagazine(int32 bullets);
 	FORCEINLINE void SetBulletsInOneShot(int32 bullets) {  BulletsInOneShot = bullets; }
-	FORCEINLINE void SetReloadTimeEmptyMagazine(float time) {  ReloadTimeEmptyMagazine = time; }
+	FORCEINLINE void SetReloadTimeEmptyMagazine(float time);
 
 protected:
 	virtual void BeginPlay() override;
@@ -233,6 +252,7 @@ protected:
 
 	float getDamageMultiplierFor(EPhysicalSurface surfaceType);
 	void buildDamageCurve();
+	void updateSingleBulletReloadTime();
 
 protected:
 	AShooterCharacter* m_owningCharacter;
@@ -257,4 +277,6 @@ protected:
 	FVector2D m_currentRecoil;
 	FRuntimeFloatCurve m_damageCurve;
 	float m_timeEquipped = 0;
+
+	FWeaponStatistics m_statistics;
 };

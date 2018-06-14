@@ -11,6 +11,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponGenerationReadyEvent, class
 class AShooterWeapon;
 enum class EWeaponType : uint8;
 enum class EFireMode : uint8;
+struct FWeaponStatistics;
 
 USTRUCT(BlueprintType)
 struct FWeaponGeneratorAPIJsonData

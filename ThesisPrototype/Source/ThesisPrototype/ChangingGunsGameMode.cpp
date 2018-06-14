@@ -24,7 +24,6 @@ AChangingGunsGameMode::AChangingGunsGameMode() : Super()
 void AChangingGunsGameMode::StartPlay()
 {
 	Super::StartPlay();
-	OnActorKilledEvent.AddDynamic(this, &AChangingGunsGameMode::onActorKilled);
 	m_gameState = GetGameState<AChangingGunsGameState>();
 	prepareForNextWave();
 }
@@ -131,26 +130,10 @@ void AChangingGunsGameMode::checkAnyPlayerAlive()
 void AChangingGunsGameMode::gameOver()
 {
 	endWave();
-
 	setWaveState(EWaveState::GameOver);
-	UE_LOG(LogTemp, Log, TEXT("Game over! Player is dead!"));
 }
 
 void AChangingGunsGameMode::setWaveState(EWaveState newState)
 {
 	m_gameState->SetWaveState(newState);
-}
-
-void AChangingGunsGameMode::onActorKilled(AActor* victimActor, AActor* killerActor, AController* killerController)
-{
-	if(killerController && killerController->GetCharacter())
-	{
-		if (AShooterCharacter* character = Cast<AShooterCharacter>(killerController->GetCharacter()))
-		{
-			if(auto playerState = Cast<AChangingGunsPlayerState>(killerController->PlayerState))
-			{
-				playerState->AddKill(character->GetEquippedWeapon());
-			}
-		}
-	}
 }

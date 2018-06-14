@@ -17,7 +17,7 @@
 #include "Pawns/ShooterCharacter.h"
 #include "ChangingGunsPlayerState.h"
 #include "Sound/SoundCue.h"
-
+#include "Components/HealthComponent.h"
 
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVARDebugWeaponDrawing (
@@ -58,8 +58,6 @@ AShooterWeapon::AShooterWeapon()
 
 	MaxDamageWithDistance = FVector2D(20.f, 1000.f); // 10m
 	MinDamageWithDistance = FVector2D(5.f, 10000.f); // 5m
-
-	m_singleBulletReloadTime = ReloadTimeEmptyMagazine / BulletsPerMagazine;
 
 	Type = EWeaponType::Rifle;
 
@@ -102,6 +100,14 @@ void AShooterWeapon::SetBulletsPerMagazine(int32 bullets)
 	BulletsPerMagazine = bullets;
 	m_currentBulletsInMagazine = BulletsPerMagazine;
 	m_availableBulletsLeft = AvailableMagazines * BulletsPerMagazine;
+	updateSingleBulletReloadTime();
+	OnAmmoChangedEvent.Broadcast(m_availableBulletsLeft, m_currentBulletsInMagazine);
+}
+
+void AShooterWeapon::SetReloadTimeEmptyMagazine(float time)
+{
+	ReloadTimeEmptyMagazine = time;
+	updateSingleBulletReloadTime();
 }
 
 void AShooterWeapon::BeginPlay()
@@ -111,6 +117,7 @@ void AShooterWeapon::BeginPlay()
 	SetRateOfFire(RateOfFire);
 	SetBulletsPerMagazine(BulletsPerMagazine);
 	buildDamageCurve();
+	updateSingleBulletReloadTime();
 }
 
 void AShooterWeapon::Tick(float deltaTime)
@@ -164,13 +171,10 @@ void AShooterWeapon::Disarm()
 	m_bIsReloading = false;
 	m_currentBulletSpread = 0.f;
 	m_currentRecoil = FVector2D::ZeroVector;
-	
-	if (m_owningCharacter && m_timeEquipped > 0.f)
+
+	if(!FMath::IsNearlyZero(m_timeEquipped,0.5f))
 	{
-		if (auto playerState = Cast<AChangingGunsPlayerState>(m_owningCharacter->PlayerState))
-		{
-			playerState->AddUsageTime(m_owningCharacter->GetEquippedWeapon(), GetWorld()->TimeSeconds - m_timeEquipped);
-		}
+		m_statistics.SecondsUsed += GetWorld()->TimeSeconds - m_timeEquipped;
 	}
 
 	m_owningCharacter = nullptr;
@@ -296,6 +300,11 @@ void AShooterWeapon::buildDamageCurve()
 	m_damageCurve.GetRichCurve()->AddKey(MinDamageWithDistance.Y, MinDamageWithDistance.X);
 }
 
+void AShooterWeapon::updateSingleBulletReloadTime()
+{
+	m_singleBulletReloadTime = ReloadTimeEmptyMagazine / BulletsPerMagazine;
+}
+
 FVector2D AShooterWeapon::calculateBulletSpreadDispersion(float randomPower, float currentSpread)
 {
 	const float random = FMath::FRandRange(0.f, 1.f);
@@ -375,7 +384,15 @@ void AShooterWeapon::Fire()
 				surfaceType = UPhysicalMaterial::DetermineSurfaceType(hitResult.PhysMaterial.Get());
 
 				actualDamage *= getDamageMultiplierFor(surfaceType);
-				UGameplayStatics::ApplyPointDamage(hitActor, actualDamage, shotDirection, hitResult, m_owningCharacter->GetInstigatorController(), m_owningCharacter, DamageType);
+
+				if(UHealthComponent* healtComp = Cast<UHealthComponent>(hitActor->GetComponentByClass(UHealthComponent::StaticClass())))
+				{
+					UGameplayStatics::ApplyPointDamage(hitActor, actualDamage, shotDirection, hitResult, m_owningCharacter->GetInstigatorController(), m_owningCharacter, DamageType);
+					if(healtComp->GetHealth() <= 0)
+					{
+						++m_statistics.Kills;
+					}
+				}
 
 				PlayImpactEffects(surfaceType, hitResult.ImpactPoint);
 

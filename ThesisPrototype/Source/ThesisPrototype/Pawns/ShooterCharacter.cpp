@@ -75,7 +75,6 @@ void AShooterCharacter::BeginPlay()
 	
 	//(that'd be an axis input actually)
 	switchWeapon(1.0f);
-
 }
 
 FName AShooterCharacter::getSocketNameFor(const AShooterWeapon* weapon) const
@@ -277,15 +276,11 @@ void AShooterCharacter::dismantleEquippedWeaponAndGenerateNew()
 
 	AShooterWeapon* dismantle = m_equippedWeapon;
 	switchWeapon(1.f);
-	if (AChangingGunsPlayerState* state = Cast<AChangingGunsPlayerState>(PlayerState))
-	{
-		state->RemoveWeaponFromStatistics(dismantle);
-	}
-	removeWeapon(dismantle);
-	dismantle = nullptr;
 	m_lastEquippedWeapon = nullptr;
 
-	m_weaponGenerator->DismantleWeapon(m_equippedWeapon);
+	m_weaponGenerator->DismantleWeapon(dismantle);
+	removeWeapon(dismantle);
+	dismantle = nullptr;
 }
 
 void AShooterCharacter::onNewWeaponGenerated(AShooterWeapon* weapon)
@@ -296,7 +291,7 @@ void AShooterCharacter::onNewWeaponGenerated(AShooterWeapon* weapon)
 	OnNewGeneratedWeaponAvailableEvent.Broadcast();
 
 	addWeapon(weapon);
-	equipWeapon(weapon);
+	//equipWeapon(weapon);
 }
 
 void AShooterCharacter::onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)

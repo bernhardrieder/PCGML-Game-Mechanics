@@ -18,6 +18,7 @@ class UHealthComponent;
 class UDamageType;
 class AController;
 class AWeaponGenerator;
+class AChangingGunsPlayerState;
 
 UENUM(BlueprintType)
 enum class EActorType : uint8
@@ -131,7 +132,6 @@ public:
 protected:
 	bool bWantsToZoom;
 	float DefaultFOV;
-
 
 	AShooterWeapon* m_lastEquippedWeapon;
 	TArray<AShooterWeapon*> m_availableWeapons;

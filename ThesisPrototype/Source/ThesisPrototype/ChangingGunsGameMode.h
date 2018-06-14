@@ -56,9 +56,6 @@ protected:
 
 	void setWaveState(EWaveState newState);
 
-	UFUNCTION()
-	void onActorKilled(AActor* victimActor, AActor* killerActor, AController* killerController);
-
 public:
 	UPROPERTY(BlueprintAssignable, Category = "Game Mode")
 	FOnActorKilledEvent OnActorKilledEvent;

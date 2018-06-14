@@ -18,3 +18,5 @@
 
 
 #define TEAMNUMBER_ENVIRONMENT			253
+
+#define PROJECT_MEASURING_UNIT_FACTOR_TO_M		100 //the project uses CM as measuring unit

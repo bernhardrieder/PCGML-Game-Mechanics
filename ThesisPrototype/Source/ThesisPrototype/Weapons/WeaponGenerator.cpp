@@ -3,15 +3,17 @@
 #include "WeaponGenerator.h"
 #include "ShooterWeapon.h"
 #include "Engine/World.h"
+#include "ChangingGuns.h"
+#include "ChangingGunsPlayerState.h"
 
 FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D maxDamageWithDistance, FVector2D minDamageWithDistance, EWeaponType weaponType,
 	EFireMode fireMode, FVector2D recoilIncreasePerShot, float recoilDecrease, float bulletSpreadIncrease, float bulletSpreadDecrease, int32 rateOfFire,
 	int32 bulletsPerMagazine, float reloadTimeEmptyMagazine, int32 bulletsInOneShot, int32 muzzleVelocity)
 {
 	damages_first = FString::SanitizeFloat(maxDamageWithDistance.X, 4);
-	damages_last = FString::SanitizeFloat(minDamageWithDistance.X, 4);
-	distances_first = FString::SanitizeFloat(maxDamageWithDistance.Y, 4);
-	distances_last = FString::SanitizeFloat(minDamageWithDistance.Y, 4);
+	damages_last = FString::SanitizeFloat(minDamageWithDistance.X, 4) ;
+	distances_first = FString::SanitizeFloat(maxDamageWithDistance.Y / PROJECT_MEASURING_UNIT_FACTOR_TO_M, 4);
+	distances_last = FString::SanitizeFloat(minDamageWithDistance.Y / PROJECT_MEASURING_UNIT_FACTOR_TO_M, 4);
 
 	hiprecoildec = FString::SanitizeFloat(recoilDecrease, 4);
 	hiprecoilright = FString::SanitizeFloat(recoilIncreasePerShot.X, 4);
@@ -120,6 +122,7 @@ FWeaponGeneratorAPIJsonData AWeaponGenerator::convertWeaponToJsonData(AShooterWe
 	const int32 muzzleVelocity = weapon->GetMuzzleVelocity();
 
 	//todo: apply statistics to get other/better/worse weapons
+	FWeaponStatistics statistics = weapon->GetWeaponStatistics();
 
 	return FWeaponGeneratorAPIJsonData(maxDamageWithDistance, minDamageWithDistance, weaponType,
 		fireMode, recoilIncreasePerShot, recoilDecrease, bulletSpreadIncrease, bulletSpreadDecrease, rateOfFire,
@@ -143,6 +146,9 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 	case EWeaponType::HeavyMachineGun: weaponClass = MachineGunClass;  break;
 	}
 
+	if (!weaponClass.GetDefaultObject())
+		return nullptr;
+
 	FActorSpawnParameters spawnParams;
 	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	AShooterWeapon* weapon = GetWorld()->SpawnActor<AShooterWeapon>(weaponClass, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
@@ -153,12 +159,12 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 	weapon->SetMaxDamageWithDistance(
 		FVector2D(
 			FCString::Atof(*jsonData.damages_first),
-			FCString::Atof(*jsonData.distances_first) *100 //so it uses the correct units
+			FCString::Atof(*jsonData.distances_first) * PROJECT_MEASURING_UNIT_FACTOR_TO_M
 		));
 	weapon->SetMinDamageWithDistance(
 		FVector2D(
 			FCString::Atof(*jsonData.damages_last),
-			FCString::Atof(*jsonData.distances_last) *100 //so it uses the correct units
+			FCString::Atof(*jsonData.distances_last) * PROJECT_MEASURING_UNIT_FACTOR_TO_M
 		));
 	weapon->SetRecoilIncreasePerShot(
 		FVector2D(
