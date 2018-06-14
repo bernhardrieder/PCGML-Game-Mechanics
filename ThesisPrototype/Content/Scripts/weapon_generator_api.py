@@ -131,7 +131,7 @@ class WeaponGeneratorAPI(TFPluginAPI):
 
                 if self.shouldStop:
                     break;
-
+            ue.log("Training Finised!")
             self._trained_model_path = network.save_trained_model("./vae_model/")
             self._trained_model_available = True
         return {}
