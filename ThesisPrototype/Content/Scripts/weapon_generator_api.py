@@ -7,6 +7,7 @@ import tensorflow as tf
 import variational_autoencoder as vae
 import weapon_data as weapons
 from TFPluginAPI import TFPluginAPI
+import upythread as ut
 
 from tensorflow.python.framework import random_seed
 
@@ -48,6 +49,8 @@ class WeaponGeneratorAPI(TFPluginAPI):
 
         self._trained_model_available = False
         self._trained_model_path = ""
+
+        self._is_training = False
 
     def onJsonInput(self, jsonInput):
         if self._trained_model_available:
@@ -134,6 +137,7 @@ class WeaponGeneratorAPI(TFPluginAPI):
             ue.log("Training Finised!")
             self._trained_model_path = network.save_trained_model("./vae_model/")
             self._trained_model_available = True
+            self._is_training = False
         return {}
 
 
@@ -162,8 +166,10 @@ class WeaponGeneratorAPI(TFPluginAPI):
         self._dismantled_weapons.append(weapon)
 
         if len(self._dismantled_weapons) >= self._dismantled_weapons_needed_to_retrain:
-            self.shouldRetrain = True
             ue.log("Should retrain!")
+            if not self._is_training:
+                self.tf_component.train()
+                self._is_training = True
 
     def __generate_random_weapons(self, num):
         generated_weapons = []
