@@ -104,7 +104,7 @@ class WeaponGeneratorAPI(TFPluginAPI):
             if len(self._dismantled_weapons) > 0:
                 self._train_data.add_new_weapons_and_restandardize_data(self._dismantled_weapons)
                 self._dismantled_weapons = []
-                self._num_training_epochs += 10
+                self._num_training_epochs += int(self._dismantled_weapons_needed_to_retrain/2)
 
             network = vae.get_untrained(sess, self._network_architecture, self._optimizer,
                                       self._transfer_fct, self._batch_size)

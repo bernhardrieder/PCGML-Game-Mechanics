@@ -192,6 +192,9 @@ void AShooterWeapon::RefillAmmunition(int amountOfBullets)
 
 void AShooterWeapon::applyRecoil()
 {
+	if (FMath::IsNearlyZero(RecoilIncreasePerShot.Y) && FMath::IsNearlyZero(RecoilIncreasePerShot.X))
+		return;
+
 	FVector2D recoil;
 	
 	recoil.Y = -RecoilIncreasePerShot.Y;

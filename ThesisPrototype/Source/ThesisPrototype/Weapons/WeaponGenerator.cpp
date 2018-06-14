@@ -177,18 +177,20 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 			FCString::Atof(*jsonData.damages_last),
 			FCString::Atof(*jsonData.distances_last) * PROJECT_MEASURING_UNIT_FACTOR_TO_M
 		));
-	const float recoilIncrease = FMath::Max(0.f, FCString::Atof(*jsonData.hiprecoilright));
+
+	//the clamping should fix the recoil bugs
+	const float recoilIncreaseRight = FMath::Clamp(FCString::Atof(*jsonData.hiprecoilright), 0.f, 20.f);
+	const float recoilIncreaseUp = FMath::Clamp(FCString::Atof(*jsonData.hiprecoilup), 0.f, 20.f);
 	weapon->SetRecoilIncreasePerShot(
 		FVector2D(
-			recoilIncrease,
-			FMath::Max(0.f, FCString::Atof(*jsonData.hiprecoilup))
+			recoilIncreaseRight,
+			recoilIncreaseUp
 		));
-	//otherwise causes crazy compensation bugs
-	weapon->SetRecoilDecrease(FMath::Min(recoilIncrease*10.f, FCString::Atof(*jsonData.hiprecoildec)));
+	weapon->SetRecoilDecrease(FMath::Clamp(FCString::Atof(*jsonData.hiprecoildec), 0.f, 7.5f));
 
 	const float bulletSpreadIncrease = FMath::Max(0.f, FCString::Atof(*jsonData.hipstandbasespreadinc));
 	weapon->SetBulletSpreadIncrease(bulletSpreadIncrease);
-	weapon->SetBulletSpreadDecrease(FMath::Min(bulletSpreadIncrease*10.f, FCString::Atof(*jsonData.hipstandbasespreaddec)));
+	weapon->SetBulletSpreadDecrease(FMath::Clamp(FCString::Atof(*jsonData.hipstandbasespreaddec), 0.f, bulletSpreadIncrease*10.f));
 	
 	int32 magSize = FCString::Atoi(*jsonData.magsize);
 	magSize *= magSize < 0 ? -1 : 1;
