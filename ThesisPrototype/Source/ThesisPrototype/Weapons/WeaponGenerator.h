@@ -77,6 +77,8 @@ struct FWeaponGeneratorAPIJsonData
 	UPROPERTY(BlueprintReadWrite)
 	FString type_SMG;
 
+
+	FWeaponGeneratorAPIJsonData() {};
 	FWeaponGeneratorAPIJsonData(FVector2D maxDamageWithDistance, FVector2D minDamageWithDistance, EWeaponType weaponType, EFireMode fireMode,
 		FVector2D recoilIncreasePerShot, float recoilDecrease, float bulletSpreadIncrease, float bulletSpreadDecrease, int32 rateOfFire, int32 bulletsPerMagazine,
 		float reloadTimeEmptyMagazine, int32 bulletsInOneShot);

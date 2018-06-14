@@ -23,8 +23,11 @@ FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D maxDamageWith
 	rof = FString::FromInt(rateOfFire);
 	shotspershell = FString::FromInt(bulletsInOneShot);
 
+
+	//categorical one hot encoding
 	const FString zero = "0";
 	const FString one = "1";
+
 	firemode_Automatic = zero;
 	firemode_Semi = zero;
 	switch(fireMode) 
