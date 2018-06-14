@@ -79,17 +79,38 @@ AShooterWeapon::AShooterWeapon()
 	RecoilDecrease = 3.f;
 }
 
+void AShooterWeapon::SetMaxDamageWithDistance(const FVector2D& maxDamageWithDistance)
+{
+	MaxDamageWithDistance = maxDamageWithDistance;
+	buildDamageCurve();
+}
+
+void AShooterWeapon::SetMinDamageWithDistance(const FVector2D& minDamageWithDistance)
+{
+	MinDamageWithDistance = minDamageWithDistance;
+	buildDamageCurve();
+}
+
+void AShooterWeapon::SetRateOfFire(int32 rof)
+{
+	RateOfFire = rof;
+	timeBetweenShots = 60.f / RateOfFire;
+}
+
+void AShooterWeapon::SetBulletsPerMagazine(int32 bullets)
+{
+	BulletsPerMagazine = bullets;
+	m_currentBulletsInMagazine = BulletsPerMagazine;
+	m_availableBulletsLeft = AvailableMagazines * BulletsPerMagazine;
+}
+
 void AShooterWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	timeBetweenShots = 60.f / RateOfFire;
-	m_currentBulletsInMagazine = BulletsPerMagazine;
-	m_availableBulletsLeft = AvailableMagazines * BulletsPerMagazine;
-
-	m_damageCurve.GetRichCurve()->AddKey(0.f, MaxDamageWithDistance.X);
-	m_damageCurve.GetRichCurve()->AddKey(MaxDamageWithDistance.Y, MaxDamageWithDistance.X);
-	m_damageCurve.GetRichCurve()->AddKey(MinDamageWithDistance.Y, MinDamageWithDistance.X);
+	SetRateOfFire(RateOfFire);
+	SetBulletsPerMagazine(BulletsPerMagazine);
+	buildDamageCurve();
 }
 
 void AShooterWeapon::Tick(float deltaTime)
@@ -265,6 +286,14 @@ float AShooterWeapon::getDamageMultiplierFor(EPhysicalSurface surfaceType)
 		case SURFACE_FLESHDEFAULT:
 		default: return 1.f;
 	}
+}
+
+void AShooterWeapon::buildDamageCurve()
+{
+	m_damageCurve.GetRichCurve()->Reset();
+	m_damageCurve.GetRichCurve()->AddKey(0.f, MaxDamageWithDistance.X);
+	m_damageCurve.GetRichCurve()->AddKey(MaxDamageWithDistance.Y, MaxDamageWithDistance.X);
+	m_damageCurve.GetRichCurve()->AddKey(MinDamageWithDistance.Y, MinDamageWithDistance.X);
 }
 
 FVector2D AShooterWeapon::calculateBulletSpreadDispersion(float randomPower, float currentSpread)

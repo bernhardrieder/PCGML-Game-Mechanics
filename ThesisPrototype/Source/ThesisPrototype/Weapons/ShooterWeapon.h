@@ -99,7 +99,7 @@ protected:
 
 	// bullets per minute fired
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	float RateOfFire;
+	int32 RateOfFire;
 
 	// increase of spread per fired bullet
 	UPROPERTY(EditDefaultsOnly, Category="Weapon|Bullet Spread")
@@ -110,14 +110,14 @@ protected:
 	float BulletSpreadDecrease;
 
 	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category="Weapon|Ammo")
-	int BulletsPerMagazine;
+	int32 BulletsPerMagazine;
 
 	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category = "Weapon|Ammo")
-	int AvailableMagazines;
+	int32 AvailableMagazines;
 
 	// amount of bullets which are fired in one shot. e.g. a shotgun has 12
 	UPROPERTY(EditDefaultsOnly, Category="Weapon|Ammo")
-	int BulletsInOneShot;
+	int32 BulletsInOneShot;
 
 	// reload time of an empty magazine in seconds
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon|Ammo")
@@ -144,10 +144,10 @@ protected:
 	FOnReloadStateChangedEvent OnReloadStateChangedEvent;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon|Ammo", meta=(DisplayName="Bullets in Magazine"))
-	int m_currentBulletsInMagazine = 0;
+	int32 m_currentBulletsInMagazine = 0;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon|Ammo", meta=(DisplayName="Available Bullets Left to Shoot"))
-	int m_availableBulletsLeft = 0;
+	int32 m_availableBulletsLeft = 0;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	EWeaponType Type;
@@ -182,7 +182,32 @@ public:
 	virtual void RefillAmmunition(int amountOfBullets);
 
 	FORCEINLINE float GetWalkinSpeedModifier() const { return m_walkinSpeedModifier; }
+
 	FORCEINLINE EWeaponType GetType() const { return Type; }
+	FORCEINLINE EFireMode GetFireMode() const { return FireMode; }
+	FORCEINLINE FVector2D GetMaxDamageWithDistance() const { return MaxDamageWithDistance;}
+	FORCEINLINE FVector2D GetMinDamageWithDistance() const { return MinDamageWithDistance; }
+	FORCEINLINE int32 GetRateOfFire() const { return RateOfFire; }
+	FORCEINLINE float GetBulletSpreadIncrease() const { return BulletSpreadIncrease; }
+	FORCEINLINE float GetBulletSpreadDecrease() const { return BulletSpreadDecrease; }
+	FORCEINLINE FVector2D GetRecoilIncreasePerShot() const { return RecoilIncreasePerShot; }
+	FORCEINLINE float GetRecoilDecrease() const { return RecoilDecrease; }
+	FORCEINLINE int32 GetBulletsPerMagazine() const { return BulletsPerMagazine; }
+	FORCEINLINE int32 GetBulletsInOneShot() const { return BulletsInOneShot; }
+	FORCEINLINE float GetReloadTimeEmptyMagazine() const { return ReloadTimeEmptyMagazine; }
+
+	FORCEINLINE void SetType(EWeaponType type) {  Type = type; }
+	FORCEINLINE void SetFireMode(EFireMode firemode) {  FireMode = firemode; }
+	void SetMaxDamageWithDistance(const FVector2D& maxDamageWithDistance);
+	void SetMinDamageWithDistance(const FVector2D& minDamageWithDistance);
+	void SetRateOfFire(int32 rof);
+	FORCEINLINE void SetBulletSpreadIncrease(float increase) {  BulletSpreadIncrease = increase; }
+	FORCEINLINE void SetBulletSpreadDecrease(float decrease) {  BulletSpreadDecrease = decrease; }
+	FORCEINLINE void SetRecoilIncreasePerShot(const FVector2D& increase) {  RecoilIncreasePerShot = increase; }
+	FORCEINLINE void SetRecoilDecrease(float decrease) {  RecoilDecrease = decrease; }
+	void SetBulletsPerMagazine(int32 bullets);
+	FORCEINLINE void SetBulletsInOneShot(int32 bullets) {  BulletsInOneShot = bullets; }
+	FORCEINLINE void SetReloadTimeEmptyMagazine(float time) {  ReloadTimeEmptyMagazine = time; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -201,6 +226,7 @@ protected:
 	float calculateRecoilCompensationDelta(float deltaTime, float currentRecoil);
 
 	float getDamageMultiplierFor(EPhysicalSurface surfaceType);
+	void buildDamageCurve();
 
 protected:
 	AShooterCharacter* m_owningCharacter;
