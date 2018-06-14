@@ -33,32 +33,32 @@ AShooterTrackerBot::AShooterTrackerBot()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	MeshComp->SetCanEverAffectNavigation(false);
-	MeshComp->SetSimulatePhysics(true);
-	MeshComp->SetCollisionObjectType(ECC_PhysicsBody);
-	RootComponent = MeshComp;	
+	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
+	meshComp->SetCanEverAffectNavigation(false);
+	meshComp->SetSimulatePhysics(true);
+	meshComp->SetCollisionObjectType(ECC_PhysicsBody);
+	RootComponent = meshComp;
 
-	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
-	HealthComp->SetTeamNumber(TEAMNUMBER_BOT);
+	healthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
+	healthComp->SetTeamNumber(TEAMNUMBER_BOT);
 
-	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	SphereComp->SetSphereRadius(200);
-	SphereComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	SphereComp->SetCollisionResponseToAllChannels(ECR_Ignore);
-	SphereComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-	SphereComp->SetupAttachment(RootComponent);
+	sphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	sphereComp->SetSphereRadius(200);
+	sphereComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	sphereComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+	sphereComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	sphereComp->SetupAttachment(RootComponent);
 
-	MovementAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("MovementAudioComp"));
-	MovementAudioComponent->SetupAttachment(RootComponent);
+	movementAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("MovementAudioComp"));
+	movementAudioComponent->SetupAttachment(RootComponent);
 
-	MovementForce = 1000.f;
+	movementForce = 1000.f;
 	bUseVelocityChange = false;
-	RequiredDistanceToTarget = 100.f;
-	ExplosionDamage = 60.f;
-	DamageRadius = 350.f;
-	SelfDamageInterval = 0.25f;
-	MaxPowerLevel = 4;
+	requiredDistanceToTarget = 100.f;
+	explosionDamage = 60.f;
+	damageRadius = 350.f;
+	selfDamageInterval = 0.25f;
+	maxPowerLevel = 4;
 }
 
 // Called when the game starts or when spawned
@@ -67,20 +67,20 @@ void AShooterTrackerBot::BeginPlay()
 	Super::BeginPlay();
 
 	// find initial move to
-	nextPathPoint = GetNextPathPoint();
+	nextPathPoint = getNextPathPoint();
 
 	FTimerHandle timerHandle_CheckPowerLevel;
 	GetWorldTimerManager().SetTimer(timerHandle_CheckPowerLevel, this, &AShooterTrackerBot::onCheckNearbyBots, 1.f, true);
 
 	if (!materialInstance)
 	{
-		materialInstance = MeshComp->CreateAndSetMaterialInstanceDynamicFromMaterial(0, MeshComp->GetMaterial(0));
+		materialInstance = meshComp->CreateAndSetMaterialInstanceDynamicFromMaterial(0, meshComp->GetMaterial(0));
 	}
 
-	HealthComp->OnHealthChangedEvent.AddDynamic(this, &AShooterTrackerBot::onHealthChanged);
+	healthComp->OnHealthChangedEvent.AddDynamic(this, &AShooterTrackerBot::onHealthChanged);
 }
 
-FVector AShooterTrackerBot::GetNextPathPoint()
+FVector AShooterTrackerBot::getNextPathPoint()
 {
 	//hack to get player location
 	AActor* bestTarget = nullptr;
@@ -109,8 +109,8 @@ FVector AShooterTrackerBot::GetNextPathPoint()
 	{
 		UNavigationPath* navPath = UNavigationSystem::FindPathToActorSynchronously(this, GetActorLocation(), bestTarget);
 
-		GetWorldTimerManager().ClearTimer(timerHandle_RefreshPath);
-		GetWorldTimerManager().SetTimer(timerHandle_RefreshPath, this, &AShooterTrackerBot::refreshPath, 2.5f, false);
+		GetWorldTimerManager().ClearTimer(timerHandle_refreshPath);
+		GetWorldTimerManager().SetTimer(timerHandle_refreshPath, this, &AShooterTrackerBot::refreshPath, 2.5f, false);
 
 		if (navPath && navPath->PathPoints.Num() > 1)
 		{
@@ -143,22 +143,22 @@ void AShooterTrackerBot::selfDestruct()
 	}
 
 	bExploded = true;
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
-	UGameplayStatics::PlaySoundAtLocation(this, ExplosionSound, GetActorLocation());
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionEffect, GetActorLocation());
+	UGameplayStatics::PlaySoundAtLocation(this, explosionSound, GetActorLocation());
 
-	MeshComp->SetVisibility(false, true);
-	MeshComp->SetSimulatePhysics(false);
-	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	meshComp->SetVisibility(false, true);
+	meshComp->SetSimulatePhysics(false);
+	meshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	TArray<AActor*> ignoreDamageActors{ this };
 
-	const float actualDamage = ExplosionDamage + (ExplosionDamage * currentPowerLevel);
+	const float actualDamage = explosionDamage + (explosionDamage * currentPowerLevel);
 
-	UGameplayStatics::ApplyRadialDamage(GetWorld(), actualDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
+	UGameplayStatics::ApplyRadialDamage(GetWorld(), actualDamage, GetActorLocation(), damageRadius, damageType, ignoreDamageActors, this, GetInstigatorController(), true);
 
 	if (DebugTrackerBotDrawing > 0)
 	{
-		DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 12, FColor::Red, false, 2.f, 0, 2.f);
+		DrawDebugSphere(GetWorld(), GetActorLocation(), damageRadius, 12, FColor::Red, false, 2.f, 0, 2.f);
 	}
 
 	SetLifeSpan(2.0f);
@@ -198,11 +198,11 @@ void AShooterTrackerBot::onCheckNearbyBots()
 		}
 	}
 
-	currentPowerLevel = FMath::Clamp(numOfNearbyBots, 0, MaxPowerLevel);
+	currentPowerLevel = FMath::Clamp(numOfNearbyBots, 0, maxPowerLevel);
 
 	if (materialInstance)
 	{
-		float alpha = currentPowerLevel / (float)MaxPowerLevel;
+		float alpha = currentPowerLevel / static_cast<float>(maxPowerLevel);
 		materialInstance->SetScalarParameterValue("PowerLevelAlpha", alpha);
 	}
 
@@ -214,7 +214,7 @@ void AShooterTrackerBot::onCheckNearbyBots()
 
 void AShooterTrackerBot::refreshPath()
 {
-	nextPathPoint = GetNextPathPoint();
+	nextPathPoint = getNextPathPoint();
 }
 
 // Called every frame
@@ -225,18 +225,18 @@ void AShooterTrackerBot::Tick(float DeltaTime)
 	if(!bExploded)
 	{
 		float distanceToTarget = (GetActorLocation() - nextPathPoint).Size();
-		if (distanceToTarget <= RequiredDistanceToTarget)
+		if (distanceToTarget <= requiredDistanceToTarget)
 		{
-			nextPathPoint = GetNextPathPoint();
+			nextPathPoint = getNextPathPoint();
 		}
 		else
 		{
 			//keep moving towards target
 			FVector forceDirection = nextPathPoint - GetActorLocation();
 			forceDirection.Normalize();
-			forceDirection *= MovementForce;
+			forceDirection *= movementForce;
 
-			MeshComp->AddForce(forceDirection, NAME_None, bUseVelocityChange);
+			meshComp->AddForce(forceDirection, NAME_None, bUseVelocityChange);
 
 			if (DebugTrackerBotDrawing > 0)
 			{
@@ -253,7 +253,7 @@ void AShooterTrackerBot::Tick(float DeltaTime)
 	// movement sound
 	float velocity = GetVelocity().Size();
 	float volumeMultiplier = UKismetMathLibrary::MapRangeClamped(velocity, 10, 1000, 0.1, 2);
-	MovementAudioComponent->SetVolumeMultiplier(volumeMultiplier);
+	movementAudioComponent->SetVolumeMultiplier(volumeMultiplier);
 }
 
 void AShooterTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -266,11 +266,11 @@ void AShooterTrackerBot::NotifyActorBeginOverlap(AActor* OtherActor)
 		if (shooterChar && !UHealthComponent::IsFriendly(OtherActor, this))
 		{
 			//Start self destruction sequence
-			GetWorldTimerManager().SetTimer(timerHandle_SelfDamage, this, &AShooterTrackerBot::damageSelf, SelfDamageInterval, true, 0.0f);
+			GetWorldTimerManager().SetTimer(timerHandle_selfDamage, this, &AShooterTrackerBot::damageSelf, selfDamageInterval, true, 0.0f);
 
 			bStartedSelfDestruction = true;
 
-			UGameplayStatics::SpawnSoundAttached(SelfDestructSound, RootComponent);
+			UGameplayStatics::SpawnSoundAttached(selfDestructSound, RootComponent);
 		}
 	}
 }

@@ -18,83 +18,77 @@ class THESISPROTOTYPE_API AShooterTrackerBot : public APawn
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent* MeshComp;
+	UStaticMeshComponent* meshComp;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	UHealthComponent* HealthComp;
+	UHealthComponent* healthComp;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	USphereComponent* SphereComp;
+	USphereComponent* sphereComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "FX")
-	UParticleSystem* ExplosionEffect;
+	UParticleSystem* explosionEffect;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
-	UAudioComponent* MovementAudioComponent;
+	UAudioComponent* movementAudioComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tracker Bot")
-	float MovementForce;
+	float movementForce;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tracker Bot")
 	bool bUseVelocityChange;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tracker Bot")
-	float RequiredDistanceToTarget;
+	float requiredDistanceToTarget;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
-	float ExplosionDamage;
+	float explosionDamage;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
-	TSubclassOf<UDamageType> DamageType;
+	TSubclassOf<UDamageType> damageType;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
-	float DamageRadius;
+	float damageRadius;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
-	float SelfDamageInterval;
+	float selfDamageInterval;
 
 	UPROPERTY()
 	bool bExploded = false;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SFX")
-	USoundCue* SelfDestructSound;
+	USoundCue* selfDestructSound;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SFX")
-	USoundCue* ExplosionSound;
+	USoundCue* explosionSound;
 
 	//power level increases with same bots nearby
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tracker Bot")
-	int32 MaxPowerLevel;
+	int32 maxPowerLevel;
 
 public:
 	// Sets default values for this pawn's properties
 	AShooterTrackerBot();
+	void Tick(float DeltaTime) override;
+	void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	void BeginPlay() override;
 
-	FVector GetNextPathPoint();
-
-	UFUNCTION()
-	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* healthDamageType, AController* InstigatedBy, AActor* DamageCauser);
-
+	FVector getNextPathPoint();
 	void selfDestruct();
 	void damageSelf();
 	void onCheckNearbyBots();
 	void refreshPath();
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	UFUNCTION()
+	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* healthDamageType, AController* InstigatedBy, AActor* DamageCauser);
 
 protected:
 	FVector nextPathPoint;
 	UMaterialInstanceDynamic* materialInstance = nullptr;
-	FTimerHandle timerHandle_SelfDamage;
-	FTimerHandle timerHandle_RefreshPath;
+	FTimerHandle timerHandle_selfDamage;
+	FTimerHandle timerHandle_refreshPath;
 	bool bStartedSelfDestruction = false;
 
 	//current power level of the bot based on nearby located bots -> this boosts the explosion damage
