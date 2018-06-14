@@ -156,6 +156,8 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 	if (!weapon)
 		return nullptr;
 
+	weapon->SetFireMode(determineWeaponFireMode(jsonData));
+
 	weapon->SetMaxDamageWithDistance(
 		FVector2D(
 			FCString::Atof(*jsonData.damages_first),
@@ -174,11 +176,22 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 	weapon->SetRecoilDecrease(FCString::Atof(*jsonData.hiprecoildec));
 	weapon->SetBulletSpreadIncrease(FCString::Atof(*jsonData.hipstandbasespreadinc));
 	weapon->SetBulletSpreadDecrease(FCString::Atof(*jsonData.hipstandbasespreaddec));
-	weapon->SetBulletsPerMagazine(FCString::Atoi(*jsonData.magsize));
-	weapon->SetReloadTimeEmptyMagazine(FCString::Atof(*jsonData.reloadempty));
+	
+	int32 magSize = FCString::Atoi(*jsonData.magsize);
+	magSize *= magSize < 0 ? -1 : 1;
+	weapon->SetBulletsPerMagazine(magSize);
+	
+
+	float reloadTime = FCString::Atof(*jsonData.reloadempty);
+	reloadTime = reloadTime < 0 ? 0 : reloadTime;
+	weapon->SetReloadTimeEmptyMagazine(reloadTime);
+
 	weapon->SetRateOfFire(FCString::Atoi(*jsonData.rof));
-	weapon->SetBulletsInOneShot(FCString::Atoi(*jsonData.shotspershell));
-	weapon->SetFireMode(determineWeaponFireMode(jsonData));
+
+	int32 bulletsInOneShot = FCString::Atoi(*jsonData.shotspershell);
+	bulletsInOneShot = FMath::Max(1, bulletsInOneShot);
+	weapon->SetBulletsInOneShot(bulletsInOneShot);
+
 	weapon->SetMuzzleVelocity(FCString::Atoi(*jsonData.initialspeed));
 
 	return weapon;

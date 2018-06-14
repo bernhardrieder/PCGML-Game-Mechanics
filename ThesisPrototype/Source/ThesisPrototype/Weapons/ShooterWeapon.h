@@ -138,7 +138,7 @@ protected:
 	int32 AvailableMagazines;
 
 	// amount of bullets which are fired in one shot. e.g. a shotgun has 12
-	UPROPERTY(EditDefaultsOnly, Category="Weapon|Ammo")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon|Ammo")
 	int32 BulletsInOneShot;
 
 	// reload time of an empty magazine in seconds
