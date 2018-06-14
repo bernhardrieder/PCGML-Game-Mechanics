@@ -75,6 +75,10 @@ AWeaponGenerator::AWeaponGenerator()
 	PrimaryActorTick.bCanEverTick = false;
 	CategoricalDataThreshold = 0.5;
 	RandomSeed = 19071991;
+
+	RandomModificationStartRange = FVector2D(0.8f, 1.2f);
+	OffsetPerKill = 0.05f;
+	OffsetPerMinuteUsed = 0.1f;
 }
 
 void AWeaponGenerator::BeginPlay()
@@ -272,12 +276,12 @@ EFireMode AWeaponGenerator::determineWeaponFireMode(const FWeaponGeneratorAPIJso
 void AWeaponGenerator::applySomeModifications(AShooterWeapon* weapon, FVector2D& maxDamageWithDistance, FVector2D& minDamageWithDistance, FVector2D& recoilIncreasePerShot, float& recoilDecrease, 
 	float& bulletSpreadIncrease, float& bulletSpreadDecrease, int32& rateOfFire, int32& bulletsPerMagazine, float& reloadTimeEmptyMagazine, int32& bulletsInOneShot, int32& muzzleVelocity)
 {
-	FVector2D increaseRandomRange = FVector2D(0.8f, 1.2f);
-	FVector2D decreaseRandomRange = FVector2D(0.8f, 1.2f);
+	FVector2D increaseRandomRange = RandomModificationStartRange;
+	FVector2D decreaseRandomRange = RandomModificationStartRange;
 
-	//todo: check weapon stats and modify the ranges!
-	FWeaponStatistics statistics = weapon->GetWeaponStatistics();
-	float offset = statistics.Kills * 0.05;
+	//offset the range regarding the stats
+	const FWeaponStatistics statistics = weapon->GetWeaponStatistics();
+	const float offset = (statistics.Kills * OffsetPerKill) + (FMath::FloorToInt(statistics.SecondsUsed/60.f)*OffsetPerMinuteUsed);
 	increaseRandomRange += FVector2D(offset, offset);
 	decreaseRandomRange -= FVector2D(offset, offset);
 

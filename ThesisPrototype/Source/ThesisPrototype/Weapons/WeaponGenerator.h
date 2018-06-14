@@ -120,6 +120,20 @@ class THESISPROTOTYPE_API AWeaponGenerator : public AActor
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
 	int32 RandomSeed;
 
+	//distmantled weapon multiplier applied for generating a new weapon
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")
+	FVector2D RandomModificationStartRange;
+
+	//how much the range will be offset per kill
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")
+	float OffsetPerKill;
+
+	//how much the range will be offset per minute used
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")
+	float OffsetPerMinuteUsed;
+
+
+
 public:
 	AWeaponGenerator();
 
