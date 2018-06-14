@@ -143,10 +143,12 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Weapon Generator")
 	void setReadyToUse(bool isReady) { m_IsReadyToUse = isReady; }
 
-	static FWeaponGeneratorAPIJsonData convertWeaponToJsonData(AShooterWeapon* weapon);
+	FWeaponGeneratorAPIJsonData convertWeaponToJsonData(AShooterWeapon* weapon);
 	AShooterWeapon* constructWeaponFromJsonData(const FWeaponGeneratorAPIJsonData& jsonData) const;
 	EWeaponType determineWeaponType(const FWeaponGeneratorAPIJsonData& jsonData) const;
 	EFireMode determineWeaponFireMode(const FWeaponGeneratorAPIJsonData& jsonData) const;
+	void applySomeModifications(AShooterWeapon* weapon, FVector2D& maxDamageWithDistance, FVector2D& minDamageWithDistance, FVector2D& recoilIncreasePerShot, float& recoilDecrease,
+		float& bulletSpreadIncrease, float& bulletSpreadDecrease, int32& rateOfFire, int32& bulletsPerMagazine, float& reloadTimeEmptyMagazine,	int32& bulletsInOneShot, int32& muzzleVelocity);
 
 private:
 	FRandomStream m_randomNumberGenerator;

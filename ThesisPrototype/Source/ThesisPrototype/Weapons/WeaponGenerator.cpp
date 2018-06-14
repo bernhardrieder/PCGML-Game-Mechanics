@@ -107,22 +107,22 @@ void AWeaponGenerator::receiveNewWeaponFromGenerator(const FWeaponGeneratorAPIJs
 
 FWeaponGeneratorAPIJsonData AWeaponGenerator::convertWeaponToJsonData(AShooterWeapon* weapon)
 {
-	const FVector2D maxDamageWithDistance = weapon->GetMaxDamageWithDistance();
-	const FVector2D minDamageWithDistance = weapon->GetMinDamageWithDistance();
+	FVector2D maxDamageWithDistance = weapon->GetMaxDamageWithDistance();
+	FVector2D minDamageWithDistance = weapon->GetMinDamageWithDistance();
 	const EWeaponType weaponType = weapon->GetType();
 	const EFireMode fireMode = weapon->GetFireMode();
-	const FVector2D recoilIncreasePerShot = weapon->GetRecoilIncreasePerShot();
-	const float recoilDecrease = weapon->GetRecoilDecrease();
-	const float bulletSpreadIncrease = weapon->GetBulletSpreadIncrease();
-	const float bulletSpreadDecrease = weapon->GetBulletSpreadDecrease();
-	const int32 rateOfFire = weapon->GetRateOfFire();
-	const int32 bulletsPerMagazine = weapon->GetBulletsPerMagazine();
-	const float reloadTimeEmptyMagazine = weapon->GetReloadTimeEmptyMagazine();
-	const int32 bulletsInOneShot = weapon->GetBulletsInOneShot();
-	const int32 muzzleVelocity = weapon->GetMuzzleVelocity();
+	FVector2D recoilIncreasePerShot = weapon->GetRecoilIncreasePerShot();
+	float recoilDecrease = weapon->GetRecoilDecrease();
+	float bulletSpreadIncrease = weapon->GetBulletSpreadIncrease();
+	float bulletSpreadDecrease = weapon->GetBulletSpreadDecrease();
+	int32 rateOfFire = weapon->GetRateOfFire();
+	int32 bulletsPerMagazine = weapon->GetBulletsPerMagazine();
+	float reloadTimeEmptyMagazine = weapon->GetReloadTimeEmptyMagazine();
+	int32 bulletsInOneShot = weapon->GetBulletsInOneShot();
+	int32 muzzleVelocity = weapon->GetMuzzleVelocity();
 
-	//todo: apply statistics to get other/better/worse weapons
-	FWeaponStatistics statistics = weapon->GetWeaponStatistics();
+	applySomeModifications(weapon, maxDamageWithDistance, minDamageWithDistance, recoilIncreasePerShot, recoilDecrease, bulletSpreadIncrease, bulletSpreadDecrease, rateOfFire,
+		bulletsPerMagazine, reloadTimeEmptyMagazine, bulletsInOneShot, muzzleVelocity);
 
 	return FWeaponGeneratorAPIJsonData(maxDamageWithDistance, minDamageWithDistance, weaponType,
 		fireMode, recoilIncreasePerShot, recoilDecrease, bulletSpreadIncrease, bulletSpreadDecrease, rateOfFire,
@@ -267,4 +267,44 @@ EFireMode AWeaponGenerator::determineWeaponFireMode(const FWeaponGeneratorAPIJso
 	}
 
 	return firemode;
+}
+
+void AWeaponGenerator::applySomeModifications(AShooterWeapon* weapon, FVector2D& maxDamageWithDistance, FVector2D& minDamageWithDistance, FVector2D& recoilIncreasePerShot, float& recoilDecrease, 
+	float& bulletSpreadIncrease, float& bulletSpreadDecrease, int32& rateOfFire, int32& bulletsPerMagazine, float& reloadTimeEmptyMagazine, int32& bulletsInOneShot, int32& muzzleVelocity)
+{
+	FVector2D increaseRandomRange = FVector2D(0.8f, 1.2f);
+	FVector2D decreaseRandomRange = FVector2D(0.8f, 1.2f);
+
+	//todo: check weapon stats and modify the ranges!
+	FWeaponStatistics statistics = weapon->GetWeaponStatistics();
+	float offset = statistics.Kills * 0.05;
+	increaseRandomRange += FVector2D(offset, offset);
+	decreaseRandomRange -= FVector2D(offset, offset);
+
+	//damage
+	maxDamageWithDistance.X *= m_randomNumberGenerator.FRandRange(increaseRandomRange.X, increaseRandomRange.Y);
+	minDamageWithDistance.X *= m_randomNumberGenerator.FRandRange(increaseRandomRange.X, increaseRandomRange.Y);
+
+	//distance
+	maxDamageWithDistance.Y *= m_randomNumberGenerator.FRandRange(decreaseRandomRange.X, decreaseRandomRange.Y); 
+	minDamageWithDistance.Y *= m_randomNumberGenerator.FRandRange(increaseRandomRange.X, increaseRandomRange.Y);
+
+	recoilIncreasePerShot.X *= m_randomNumberGenerator.FRandRange(decreaseRandomRange.X, decreaseRandomRange.Y);
+	recoilIncreasePerShot.Y *= m_randomNumberGenerator.FRandRange(decreaseRandomRange.X, decreaseRandomRange.Y);
+
+	recoilDecrease *= m_randomNumberGenerator.FRandRange(increaseRandomRange.X, increaseRandomRange.Y);
+
+	bulletSpreadIncrease *= m_randomNumberGenerator.FRandRange(decreaseRandomRange.X, decreaseRandomRange.Y);
+
+	bulletSpreadDecrease *= m_randomNumberGenerator.FRandRange(increaseRandomRange.X, increaseRandomRange.Y);
+
+	rateOfFire *= m_randomNumberGenerator.FRandRange(increaseRandomRange.X, increaseRandomRange.Y);
+
+	bulletsPerMagazine *= m_randomNumberGenerator.FRandRange(increaseRandomRange.X, increaseRandomRange.Y);
+
+	reloadTimeEmptyMagazine *= m_randomNumberGenerator.FRandRange(increaseRandomRange.X, increaseRandomRange.Y);
+
+	bulletsInOneShot *= 1;
+
+	muzzleVelocity *= m_randomNumberGenerator.FRandRange(increaseRandomRange.X, increaseRandomRange.Y);
 }
