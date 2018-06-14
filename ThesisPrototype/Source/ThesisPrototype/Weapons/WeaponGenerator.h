@@ -24,10 +24,10 @@ struct FWeaponGeneratorAPIJsonData
 	FString damages_last;
 
 	UPROPERTY(BlueprintReadWrite)
-	FString dmg_distances_first;
+	FString distances_first;
 
 	UPROPERTY(BlueprintReadWrite)
-	FString dmg_distances_last;
+	FString distances_last;
 
 	UPROPERTY(BlueprintReadWrite)
 	FString firemode_Automatic;
@@ -78,12 +78,15 @@ struct FWeaponGeneratorAPIJsonData
 	FString type_SMG;
 
 	UPROPERTY(BlueprintReadWrite)
+	FString initialspeed;
+
+	UPROPERTY(BlueprintReadWrite)
 	FString success;
 
 	FWeaponGeneratorAPIJsonData(){}
 	FWeaponGeneratorAPIJsonData(FVector2D maxDamageWithDistance, FVector2D minDamageWithDistance, EWeaponType weaponType, EFireMode fireMode,
 		FVector2D recoilIncreasePerShot, float recoilDecrease, float bulletSpreadIncrease, float bulletSpreadDecrease, int32 rateOfFire, int32 bulletsPerMagazine,
-		float reloadTimeEmptyMagazine, int32 bulletsInOneShot);
+		float reloadTimeEmptyMagazine, int32 bulletsInOneShot, int32 muzzleVelocity);
 };
 
 UCLASS()

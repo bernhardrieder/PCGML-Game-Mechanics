@@ -101,6 +101,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	int32 RateOfFire;
 
+	//this value hast absolutely no effect. this is just needed for feeding into the generator!
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	int32 MuzzleVelocity;
+
 	// increase of spread per fired bullet
 	UPROPERTY(EditDefaultsOnly, Category="Weapon|Bullet Spread")
 	float BulletSpreadIncrease;
@@ -127,7 +131,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Recoil")
 	FVector2D RecoilIncreasePerShot;
 
-	// recoil decrease 
+	// recoil decrease
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Recoil")
 	float RecoilDecrease;
 
@@ -188,6 +192,7 @@ public:
 	FORCEINLINE FVector2D GetMaxDamageWithDistance() const { return MaxDamageWithDistance;}
 	FORCEINLINE FVector2D GetMinDamageWithDistance() const { return MinDamageWithDistance; }
 	FORCEINLINE int32 GetRateOfFire() const { return RateOfFire; }
+	FORCEINLINE int32 GetMuzzleVelocity() const { return MuzzleVelocity; }
 	FORCEINLINE float GetBulletSpreadIncrease() const { return BulletSpreadIncrease; }
 	FORCEINLINE float GetBulletSpreadDecrease() const { return BulletSpreadDecrease; }
 	FORCEINLINE FVector2D GetRecoilIncreasePerShot() const { return RecoilIncreasePerShot; }
@@ -201,6 +206,7 @@ public:
 	void SetMaxDamageWithDistance(const FVector2D& maxDamageWithDistance);
 	void SetMinDamageWithDistance(const FVector2D& minDamageWithDistance);
 	void SetRateOfFire(int32 rof);
+	FORCEINLINE void SetMuzzleVelocity(int32 muzzleVelocity) { MuzzleVelocity = muzzleVelocity; } 
 	FORCEINLINE void SetBulletSpreadIncrease(float increase) {  BulletSpreadIncrease = increase; }
 	FORCEINLINE void SetBulletSpreadDecrease(float decrease) {  BulletSpreadDecrease = decrease; }
 	FORCEINLINE void SetRecoilIncreasePerShot(const FVector2D& increase) {  RecoilIncreasePerShot = increase; }
@@ -230,7 +236,7 @@ protected:
 
 protected:
 	AShooterCharacter* m_owningCharacter;
-	
+
 	bool m_bIsAmmoLeftInMagazine = true;
 	bool m_bIsReloading = false;
 

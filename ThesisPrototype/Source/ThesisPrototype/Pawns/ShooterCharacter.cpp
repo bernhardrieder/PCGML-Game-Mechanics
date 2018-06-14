@@ -283,6 +283,7 @@ void AShooterCharacter::dismantleEquippedWeaponAndGenerateNew()
 	}
 	removeWeapon(dismantle);
 	dismantle = nullptr;
+	m_lastEquippedWeapon = nullptr;
 
 	m_weaponGenerator->DismantleWeapon(m_equippedWeapon);
 }

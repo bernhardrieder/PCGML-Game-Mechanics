@@ -4,24 +4,25 @@
 #include "ShooterWeapon.h"
 #include "Engine/World.h"
 
-FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D maxDamageWithDistance, FVector2D minDamageWithDistance, EWeaponType weaponType, 
-	EFireMode fireMode, FVector2D recoilIncreasePerShot, float recoilDecrease, float bulletSpreadIncrease, float bulletSpreadDecrease, int32 rateOfFire, 
-	int32 bulletsPerMagazine, float reloadTimeEmptyMagazine, int32 bulletsInOneShot)
+FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D maxDamageWithDistance, FVector2D minDamageWithDistance, EWeaponType weaponType,
+	EFireMode fireMode, FVector2D recoilIncreasePerShot, float recoilDecrease, float bulletSpreadIncrease, float bulletSpreadDecrease, int32 rateOfFire,
+	int32 bulletsPerMagazine, float reloadTimeEmptyMagazine, int32 bulletsInOneShot, int32 muzzleVelocity)
 {
-	damages_first = FString::SanitizeFloat(maxDamageWithDistance.X, 2);
-	damages_last = FString::SanitizeFloat(minDamageWithDistance.X, 2);
-	dmg_distances_first = FString::SanitizeFloat(maxDamageWithDistance.Y, 2);
-	dmg_distances_last = FString::SanitizeFloat(minDamageWithDistance.Y, 2);
+	damages_first = FString::SanitizeFloat(maxDamageWithDistance.X, 4);
+	damages_last = FString::SanitizeFloat(minDamageWithDistance.X, 4);
+	distances_first = FString::SanitizeFloat(maxDamageWithDistance.Y, 4);
+	distances_last = FString::SanitizeFloat(minDamageWithDistance.Y, 4);
 
-	hiprecoildec = FString::SanitizeFloat(recoilDecrease, 2);
-	hiprecoilright = FString::SanitizeFloat(recoilIncreasePerShot.X, 2);
-	hiprecoilup = FString::SanitizeFloat(recoilIncreasePerShot.Y, 2);
-	hipstandbasespreaddec = FString::SanitizeFloat(bulletSpreadDecrease, 2);
-	hipstandbasespreadinc = FString::SanitizeFloat(bulletSpreadIncrease, 2);
+	hiprecoildec = FString::SanitizeFloat(recoilDecrease, 4);
+	hiprecoilright = FString::SanitizeFloat(recoilIncreasePerShot.X, 4);
+	hiprecoilup = FString::SanitizeFloat(recoilIncreasePerShot.Y, 4);
+	hipstandbasespreaddec = FString::SanitizeFloat(bulletSpreadDecrease, 4);
+	hipstandbasespreadinc = FString::SanitizeFloat(bulletSpreadIncrease, 4);
 	magsize = FString::FromInt(bulletsPerMagazine);
-	reloadempty = FString::SanitizeFloat(reloadTimeEmptyMagazine, 2);
+	reloadempty = FString::SanitizeFloat(reloadTimeEmptyMagazine, 4);
 	rof = FString::FromInt(rateOfFire);
 	shotspershell = FString::FromInt(bulletsInOneShot);
+	initialspeed = FString::FromInt(muzzleVelocity);
 
 
 	//categorical one hot encoding
@@ -30,12 +31,12 @@ FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D maxDamageWith
 
 	firemode_Automatic = zero;
 	firemode_Semi = zero;
-	switch(fireMode) 
-	{ 
-		case EFireMode::SingleFire: 
+	switch(fireMode)
+	{
+		case EFireMode::SingleFire:
 			firemode_Automatic = one;
 			break;
-		case EFireMode::SemiAutomatic: 
+		case EFireMode::SemiAutomatic:
 			firemode_Semi = one;
 			break;
 	}
@@ -48,22 +49,23 @@ FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D maxDamageWith
 
 	switch(weaponType)
 	{
-		case EWeaponType::Pistol: 
+		case EWeaponType::Pistol:
 			type_Pistol = one;
 			break;
-		case EWeaponType::Shotgun: 
+		case EWeaponType::Shotgun:
 			type_Shotgun = one;
 			break;
-		case EWeaponType::SubMachineGun: 
+		case EWeaponType::SubMachineGun:
 			type_SMG = one;
 			break;
-		case EWeaponType::Rifle: 
-			type_Rifle = one; 
+		case EWeaponType::Rifle:
+			type_Rifle = one;
 			break;
-		case EWeaponType::SniperRifle: 
+		case EWeaponType::SniperRifle:
 			type_Sniper = one;
 			break;
 	}
+	success = "hopefully :P";
 }
 
 AWeaponGenerator::AWeaponGenerator()
@@ -115,12 +117,13 @@ FWeaponGeneratorAPIJsonData AWeaponGenerator::convertWeaponToJsonData(AShooterWe
 	const int32 bulletsPerMagazine = weapon->GetBulletsPerMagazine();
 	const float reloadTimeEmptyMagazine = weapon->GetReloadTimeEmptyMagazine();
 	const int32 bulletsInOneShot = weapon->GetBulletsInOneShot();
+	const int32 muzzleVelocity = weapon->GetMuzzleVelocity();
 
 	//todo: apply statistics to get other/better/worse weapons
 
 	return FWeaponGeneratorAPIJsonData(maxDamageWithDistance, minDamageWithDistance, weaponType,
 		fireMode, recoilIncreasePerShot, recoilDecrease, bulletSpreadIncrease, bulletSpreadDecrease, rateOfFire,
-		bulletsPerMagazine, reloadTimeEmptyMagazine, bulletsInOneShot);
+		bulletsPerMagazine, reloadTimeEmptyMagazine, bulletsInOneShot, muzzleVelocity);
 
 }
 
@@ -146,16 +149,16 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 
 	if (!weapon)
 		return nullptr;
-	
+
 	weapon->SetMaxDamageWithDistance(
 		FVector2D(
-			FCString::Atof(*jsonData.damages_first), 
-			FCString::Atof(*jsonData.dmg_distances_first)
+			FCString::Atof(*jsonData.damages_first),
+			FCString::Atof(*jsonData.distances_first) *100 //so it uses the correct units
 		));
 	weapon->SetMinDamageWithDistance(
 		FVector2D(
 			FCString::Atof(*jsonData.damages_last),
-			FCString::Atof(*jsonData.dmg_distances_last)
+			FCString::Atof(*jsonData.distances_last) *100 //so it uses the correct units
 		));
 	weapon->SetRecoilIncreasePerShot(
 		FVector2D(
@@ -170,6 +173,7 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 	weapon->SetRateOfFire(FCString::Atoi(*jsonData.rof));
 	weapon->SetBulletsInOneShot(FCString::Atoi(*jsonData.shotspershell));
 	weapon->SetFireMode(determineWeaponFireMode(jsonData));
+	weapon->SetMuzzleVelocity(FCString::Atoi(*jsonData.initialspeed));
 
 	return weapon;
 }
@@ -188,7 +192,7 @@ EWeaponType AWeaponGenerator::determineWeaponType(const FWeaponGeneratorAPIJsonD
 
 	//just set it to rifle as default
 	EWeaponType winnerType = EWeaponType::Rifle;
-	
+
 	if (FMath::IsNearlyEqual(typePistol, winner))
 	{
 		winnerType = EWeaponType::Pistol;
