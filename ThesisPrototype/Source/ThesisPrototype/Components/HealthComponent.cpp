@@ -7,7 +7,7 @@
 #include "Engine/World.h"
 #include "ChangingGuns.h"
 
-static int32 DebugHealthComponents = 1;
+static int32 DebugHealthComponents = 0;
 FAutoConsoleVariableRef CVARDebuHealthComponents(
 	TEXT("Game.DebugHealth"),
 	DebugHealthComponents,

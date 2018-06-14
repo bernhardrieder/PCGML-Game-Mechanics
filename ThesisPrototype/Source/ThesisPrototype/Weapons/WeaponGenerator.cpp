@@ -4,7 +4,6 @@
 #include "ShooterWeapon.h"
 #include "Engine/World.h"
 #include "ChangingGuns.h"
-#include "ChangingGunsPlayerState.h"
 
 FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D maxDamageWithDistance, FVector2D minDamageWithDistance, EWeaponType weaponType,
 	EFireMode fireMode, FVector2D recoilIncreasePerShot, float recoilDecrease, float bulletSpreadIncrease, float bulletSpreadDecrease, int32 rateOfFire,
