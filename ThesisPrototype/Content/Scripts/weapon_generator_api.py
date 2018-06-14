@@ -129,7 +129,8 @@ class WeaponGeneratorAPI(TFPluginAPI):
                     avg_cost += cost / num_samples * self._batch_size
 
                 # Display logs per epoch step
-                if epoch % 10 == 0:
+                display_step = 10
+                if epoch % display_step == 0:
                     ue.log("Epoch:"+ '%04d' % (epoch) + " - Cost:" + "{:.2f}".format(avg_cost))
 
                 if self.shouldStop:

@@ -118,10 +118,7 @@ class THESISPROTOTYPE_API AWeaponGenerator : public AActor
 
 	//this is the threshold which is checked for categorical data. if the value is above the threshold then it determines its firemode or type otherwise its randomized
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
-	float CategoricalDataThreshold;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
-	int32 RandomSeed;
+	float MinCategoricalDataThreshold;
 
 	//distmantled weapon multiplier applied for generating a new weapon
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")
@@ -167,11 +164,12 @@ protected:
 	void setReadyToUse(bool isReady);
 
 	FWeaponGeneratorAPIJsonData convertWeaponToJsonData(AShooterWeapon* weapon);
-	AShooterWeapon* constructWeaponFromJsonData(const FWeaponGeneratorAPIJsonData& jsonData) const;
-	EWeaponType determineWeaponType(const FWeaponGeneratorAPIJsonData& jsonData) const;
-	EFireMode determineWeaponFireMode(const FWeaponGeneratorAPIJsonData& jsonData) const;
+	AShooterWeapon* constructWeaponFromJsonData(const FWeaponGeneratorAPIJsonData& jsonData);
+	EWeaponType determineWeaponType(const FWeaponGeneratorAPIJsonData& jsonData);
+	EFireMode determineWeaponFireMode(const FWeaponGeneratorAPIJsonData& jsonData);
 	void applySomeModifications(AShooterWeapon* weapon, FVector2D& maxDamageWithDistance, FVector2D& minDamageWithDistance, FVector2D& recoilIncreasePerShot, float& recoilDecrease,
 		float& bulletSpreadIncrease, float& bulletSpreadDecrease, int32& rateOfFire, int32& bulletsPerMagazine, float& reloadTimeEmptyMagazine,	int32& bulletsInOneShot, int32& muzzleVelocity);
+	float preventNegativeNumbers(float& val);
 
 private:
 	FRandomStream m_randomNumberGenerator;

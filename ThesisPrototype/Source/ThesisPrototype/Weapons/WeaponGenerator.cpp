@@ -72,8 +72,7 @@ FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D maxDamageWith
 AWeaponGenerator::AWeaponGenerator()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	CategoricalDataThreshold = 0.5;
-	RandomSeed = 19071991;
+	MinCategoricalDataThreshold = 0.5;
 
 	RandomModificationStartRange = FVector2D(0.8f, 1.2f);
 	OffsetPerKill = 0.05f;
@@ -83,7 +82,7 @@ AWeaponGenerator::AWeaponGenerator()
 void AWeaponGenerator::BeginPlay()
 {
 	Super::BeginPlay();
-	m_randomNumberGenerator.Initialize(RandomSeed);
+
 }
 
 void AWeaponGenerator::DismantleWeapon(AShooterWeapon* weapon)
@@ -140,7 +139,7 @@ FWeaponGeneratorAPIJsonData AWeaponGenerator::convertWeaponToJsonData(AShooterWe
 
 }
 
-AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGeneratorAPIJsonData& jsonData) const
+AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGeneratorAPIJsonData& jsonData)
 {
 	if (!jsonData.success.Equals("true"))
 		return nullptr;
@@ -171,7 +170,7 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 	weapon->SetMaxDamageWithDistance(
 		FVector2D(
 			FCString::Atof(*jsonData.damages_first),
-			FCString::Atof(*jsonData.distances_first) * PROJECT_MEASURING_UNIT_FACTOR_TO_M
+			FMath::Max(0.f, FCString::Atof(*jsonData.distances_first) * PROJECT_MEASURING_UNIT_FACTOR_TO_M)
 		));
 	weapon->SetMinDamageWithDistance(
 		FVector2D(
@@ -180,34 +179,29 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 		));
 	weapon->SetRecoilIncreasePerShot(
 		FVector2D(
-			FCString::Atof(*jsonData.hiprecoilright),
-			FCString::Atof(*jsonData.hiprecoilup)
+			FMath::Max(0.f, FCString::Atof(*jsonData.hiprecoilright)),
+			FMath::Max(0.f, FCString::Atof(*jsonData.hiprecoilup))
 		));
 	weapon->SetRecoilDecrease(FCString::Atof(*jsonData.hiprecoildec));
-	weapon->SetBulletSpreadIncrease(FCString::Atof(*jsonData.hipstandbasespreadinc));
+
+
+	weapon->SetBulletSpreadIncrease(FMath::Max(0.f, FCString::Atof(*jsonData.hipstandbasespreadinc)));
 	weapon->SetBulletSpreadDecrease(FCString::Atof(*jsonData.hipstandbasespreaddec));
 	
 	int32 magSize = FCString::Atoi(*jsonData.magsize);
 	magSize *= magSize < 0 ? -1 : 1;
 	weapon->SetBulletsPerMagazine(magSize);
 	
-
-	float reloadTime = FCString::Atof(*jsonData.reloadempty);
-	reloadTime = reloadTime < 0 ? 0 : reloadTime;
-	weapon->SetReloadTimeEmptyMagazine(reloadTime);
+	weapon->SetReloadTimeEmptyMagazine(FMath::Max(0.f, FCString::Atof(*jsonData.reloadempty)));
+	weapon->SetBulletsInOneShot(FMath::Max(1, FCString::Atoi(*jsonData.shotspershell)));
 
 	weapon->SetRateOfFire(FCString::Atoi(*jsonData.rof));
-
-	int32 bulletsInOneShot = FCString::Atoi(*jsonData.shotspershell);
-	bulletsInOneShot = FMath::Max(1, bulletsInOneShot);
-	weapon->SetBulletsInOneShot(bulletsInOneShot);
-
 	weapon->SetMuzzleVelocity(FCString::Atoi(*jsonData.initialspeed));
 
 	return weapon;
 }
 
-EWeaponType AWeaponGenerator::determineWeaponType(const FWeaponGeneratorAPIJsonData& jsonData) const
+EWeaponType AWeaponGenerator::determineWeaponType(const FWeaponGeneratorAPIJsonData& jsonData)
 {
 	//determine the type first and then generate the weapon based on a base class
 	float typePistol = FCString::Atof(*jsonData.type_Pistol);
@@ -222,37 +216,39 @@ EWeaponType AWeaponGenerator::determineWeaponType(const FWeaponGeneratorAPIJsonD
 	//just set it to rifle as default
 	EWeaponType winnerType = EWeaponType::Rifle;
 
-	if (FMath::IsNearlyEqual(typePistol, winner))
+	float tolerance = 0.01f;
+	if (FMath::IsNearlyEqual(typePistol, winner, tolerance))
 	{
 		winnerType = EWeaponType::Pistol;
 	}
-	else if (FMath::IsNearlyEqual(typeSniper, winner))
+	else if (FMath::IsNearlyEqual(typeSniper, winner, tolerance))
 	{
 		winnerType = EWeaponType::SniperRifle;
 	}
-	else if(FMath::IsNearlyEqual(typeRifle, winner))
+	else if(FMath::IsNearlyEqual(typeRifle, winner, tolerance))
 	{
 		winnerType = EWeaponType::Rifle;
 	}
-	else if (FMath::IsNearlyEqual(typeSmg, winner))
+	else if (FMath::IsNearlyEqual(typeSmg, winner, tolerance))
 	{
 		winnerType = EWeaponType::SubMachineGun;
 	}
-	else if (FMath::IsNearlyEqual(typeShotgun, winner))
+	else if (FMath::IsNearlyEqual(typeShotgun, winner, tolerance))
 	{
 		winnerType = EWeaponType::Shotgun;
 	}
 
 	EWeaponType type = winnerType;
-	if(winner <= CategoricalDataThreshold)
+	if(winner <= MinCategoricalDataThreshold)
 	{
-		type = m_randomNumberGenerator.FRandRange(0.0f, 1.0f) >= 0.5f ? winnerType : EWeaponType::HeavyMachineGun;
+		m_randomNumberGenerator.GenerateNewSeed();
+		type = m_randomNumberGenerator.FRandRange(0.0f, 100.0f) >= 60.f ? winnerType : EWeaponType::HeavyMachineGun;
 	}
 
 	return type;
 }
 
-EFireMode AWeaponGenerator::determineWeaponFireMode(const FWeaponGeneratorAPIJsonData& jsonData) const
+EFireMode AWeaponGenerator::determineWeaponFireMode(const FWeaponGeneratorAPIJsonData& jsonData)
 {
 	float fireModeAutomatic = FCString::Atof(*jsonData.firemode_Automatic);
 	float fireModeSemi = FCString::Atof(*jsonData.firemode_Semi);
@@ -261,19 +257,21 @@ EFireMode AWeaponGenerator::determineWeaponFireMode(const FWeaponGeneratorAPIJso
 
 	//just set it to automatic as default
 	EFireMode winnerFireMode = EFireMode::Automatic;
-	if (FMath::IsNearlyEqual(fireModeAutomatic, winner))
+	float tolerance = 0.01f;
+	if (FMath::IsNearlyEqual(fireModeAutomatic, winner, tolerance))
 	{
 		winnerFireMode = EFireMode::Automatic;
 	}
-	else if (FMath::IsNearlyEqual(fireModeSemi, winner))
+	else if (FMath::IsNearlyEqual(fireModeSemi, winner, tolerance))
 	{
 		winnerFireMode = EFireMode::SemiAutomatic;
 	}
 
 	EFireMode firemode = winnerFireMode;
-	if (winner <= CategoricalDataThreshold)
+	if (winner <= MinCategoricalDataThreshold)
 	{
-		firemode = m_randomNumberGenerator.FRandRange(0.0f, 1.0f) >= 0.5f ? winnerFireMode : EFireMode::SingleFire;
+		m_randomNumberGenerator.GenerateNewSeed();
+		firemode = m_randomNumberGenerator.FRandRange(0.0f, 100.0f) >= 60.f ? winnerFireMode : EFireMode::SingleFire;
 	}
 
 	return firemode;
@@ -282,6 +280,7 @@ EFireMode AWeaponGenerator::determineWeaponFireMode(const FWeaponGeneratorAPIJso
 void AWeaponGenerator::applySomeModifications(AShooterWeapon* weapon, FVector2D& maxDamageWithDistance, FVector2D& minDamageWithDistance, FVector2D& recoilIncreasePerShot, float& recoilDecrease, 
 	float& bulletSpreadIncrease, float& bulletSpreadDecrease, int32& rateOfFire, int32& bulletsPerMagazine, float& reloadTimeEmptyMagazine, int32& bulletsInOneShot, int32& muzzleVelocity)
 {
+	m_randomNumberGenerator.GenerateNewSeed();
 	FVector2D increaseRandomRange = RandomModificationStartRange;
 	FVector2D decreaseRandomRange = RandomModificationStartRange;
 
