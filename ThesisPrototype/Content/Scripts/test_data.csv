@@ -1,4 +1,4 @@
-weapshowname,type,firemode,rof,damages_first,damages_last,dmg_distances_first,dmg_distances_last,ammo,initialspeed,drag,magsize,shotspershell,reloadempty,hordispersion,verdispersion,hiprecoildec,hiprecoilright,hiprecoilup,hipstandbasespreaddec,hipstandbasespreadinc
+weapshowname,type,firemode,rof,damages_first,damages_last,distances_first,distances_last,ammo,initialspeed,drag,magsize,shotspershell,reloadempty,hordispersion,verdispersion,hiprecoildec,hiprecoilright,hiprecoilup,hipstandbasespreaddec,hipstandbasespreadinc
 Perino Model 1908 Low Weight,MG,Automatic,450,26.5,20,11,50,65x52mm,700,0.0025,120,1,8.7598,0,0,10.002,0.15,0.2,18.9,0.216
 M1917 Telescopic,MG,Automatic,450,26.5,23,11,35,30-06,820,0.002,250,1,8.33333,0,0,6,0.17,0.26,6.3,0.18
 M1909 Benet-Mercie Storm,MG,Automatic,450,26.5,23,11,35,30-06,820,0.002,30,1,3.9,0,0,6,0.096,0.28,10.8,0.18

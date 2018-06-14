@@ -1,4 +1,4 @@
-weapshowname,type,firemode,rof,damages_first,damages_last,dmg_distances_first,dmg_distances_last,ammo,initialspeed,drag,magsize,shotspershell,reloadempty,hordispersion,verdispersion,hiprecoildec,hiprecoilright,hiprecoilup,hipstandbasespreaddec,hipstandbasespreadinc
+weapshowname,type,firemode,rof,damages_first,damages_last,distances_first,distances_last,ammo,initialspeed,drag,magsize,shotspershell,reloadempty,hordispersion,verdispersion,hiprecoildec,hiprecoilright,hiprecoilup,hipstandbasespreaddec,hipstandbasespreadinc
 Huot Automatic Low Weight,MG,Automatic,475,26.5,20,11,50,British303,740,0.0025,26,1,4.25,0,0,10.002,0.14,0.28,27,0.225
 Huot Automatic Optical,MG,Automatic,475,26.5,20,11,50,British303,740,0.0025,26,1,4.25,0,0,6,0.1232,0.28,9,0.18
 Lewis Gun Low Weight,MG,Automatic,480,26.5,20,11,50,British303,740,0.0025,47,1,4.2,0,0,10.002,0.24,0.25,32.4,0.216

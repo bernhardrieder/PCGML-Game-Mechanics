@@ -6,16 +6,17 @@ from __future__ import print_function
 import numpy as np
 import tensorflow as tf
 import csv
+import unreal_engine as ue
 
 from tensorflow.python.framework import random_seed
 
-DEFAULT_TRAINING_DATA = 'train_data.csv'
-DEFAULT_TEST_DATA = 'test_data.csv'
+DEFAULT_TRAINING_DATA = ue.get_content_dir() + "/Scripts/training_data.csv"
+DEFAULT_TEST_DATA = ue.get_content_dir() + "/Scripts/test_data.csv"
 #define constants for data processing
 CATEGORICAL_PARAMS  = ['type', 'firemode'] #exclude ammo because I'm not interested in decoding its values
 #this numerical params are ordered by priority to omit less important ones in 'get_data()'
-NUMERICAL_PARAMS = ['damages_first', 'damages_last', 'dmg_distances_last', 'rof', 'magsize', 'reloadempty', 'shotspershell', 'hiprecoilright',
-                    'hiprecoilup', 'dmg_distances_first', 'initialspeed', 'hiprecoildec', 'hipstandbasespreaddec', 'hipstandbasespreadinc',
+NUMERICAL_PARAMS = ['damages_first', 'damages_last', 'distances_last', 'rof', 'magsize', 'reloadempty', 'shotspershell', 'hiprecoilright',
+                    'hiprecoilup', 'distances_first', 'initialspeed', 'hiprecoildec', 'hipstandbasespreaddec', 'hipstandbasespreadinc',
                     'hordispersion', 'verdispersion' ]
 WEAPON_TYPES = ['Shotgun', 'Pistol', 'Rifle', 'SMG', 'Sniper', 'MG']
 WEAPON_FIREMODES = ['Automatic', 'Semi', 'Single']

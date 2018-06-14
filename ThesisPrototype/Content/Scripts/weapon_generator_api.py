@@ -134,6 +134,7 @@ class WeaponGeneratorAPI(TFPluginAPI):
 
             self._trained_model_path = network.save_trained_model("./vae_model/")
             self._trained_model_available = True
+        return {}
 
 
     def onStopTraining(self):
