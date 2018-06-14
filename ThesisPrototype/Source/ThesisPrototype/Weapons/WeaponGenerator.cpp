@@ -177,16 +177,18 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 			FCString::Atof(*jsonData.damages_last),
 			FCString::Atof(*jsonData.distances_last) * PROJECT_MEASURING_UNIT_FACTOR_TO_M
 		));
+	const float recoilIncrease = FMath::Max(0.f, FCString::Atof(*jsonData.hiprecoilright));
 	weapon->SetRecoilIncreasePerShot(
 		FVector2D(
-			FMath::Max(0.f, FCString::Atof(*jsonData.hiprecoilright)),
+			recoilIncrease,
 			FMath::Max(0.f, FCString::Atof(*jsonData.hiprecoilup))
 		));
-	weapon->SetRecoilDecrease(FCString::Atof(*jsonData.hiprecoildec));
+	//otherwise causes crazy compensation bugs
+	weapon->SetRecoilDecrease(FMath::Min(recoilIncrease*10.f, FCString::Atof(*jsonData.hiprecoildec)));
 
-
-	weapon->SetBulletSpreadIncrease(FMath::Max(0.f, FCString::Atof(*jsonData.hipstandbasespreadinc)));
-	weapon->SetBulletSpreadDecrease(FCString::Atof(*jsonData.hipstandbasespreaddec));
+	const float bulletSpreadIncrease = FMath::Max(0.f, FCString::Atof(*jsonData.hipstandbasespreadinc));
+	weapon->SetBulletSpreadIncrease(bulletSpreadIncrease);
+	weapon->SetBulletSpreadDecrease(FMath::Min(bulletSpreadIncrease*10.f, FCString::Atof(*jsonData.hipstandbasespreaddec)));
 	
 	int32 magSize = FCString::Atoi(*jsonData.magsize);
 	magSize *= magSize < 0 ? -1 : 1;
@@ -242,7 +244,7 @@ EWeaponType AWeaponGenerator::determineWeaponType(const FWeaponGeneratorAPIJsonD
 	if(winner <= MinCategoricalDataThreshold)
 	{
 		m_randomNumberGenerator.GenerateNewSeed();
-		type = m_randomNumberGenerator.FRandRange(0.0f, 100.0f) >= 60.f ? winnerType : EWeaponType::HeavyMachineGun;
+		type = m_randomNumberGenerator.FRandRange(0.0f, 100.0f) >= 50.f ? winnerType : EWeaponType::HeavyMachineGun;
 	}
 
 	return type;
@@ -271,7 +273,7 @@ EFireMode AWeaponGenerator::determineWeaponFireMode(const FWeaponGeneratorAPIJso
 	if (winner <= MinCategoricalDataThreshold)
 	{
 		m_randomNumberGenerator.GenerateNewSeed();
-		firemode = m_randomNumberGenerator.FRandRange(0.0f, 100.0f) >= 60.f ? winnerFireMode : EFireMode::SingleFire;
+		firemode = m_randomNumberGenerator.FRandRange(0.0f, 100.0f) >= 50.f ? winnerFireMode : EFireMode::SingleFire;
 	}
 
 	return firemode;
