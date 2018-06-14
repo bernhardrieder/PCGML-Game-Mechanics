@@ -7,6 +7,7 @@
 #include "ShooterCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentWeaponChangedEvent, class AShooterWeapon*, newCurrentWeapon);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponGeneratorAvailableEvent, class AWeaponGenerator*, weaponGenerator);
 
 
 
@@ -63,6 +64,11 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Player|Weapon", meta = (DisplayName = "Equipped Weapon"))
 	AShooterWeapon* m_equippedWeapon;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Player|Weapon Generator", meta = (DisplayName = "Weapon Generator"))
+	AWeaponGenerator* m_weaponGenerator;
+
+	UPROPERTY(BlueprintAssignable, Category = "Player|Weapon Generator")
+	FOnWeaponGeneratorAvailableEvent OnWeaponGeneratorAvailableEvent;
 
 public:
 	// Sets default values for this character's properties
@@ -128,7 +134,6 @@ protected:
 
 	AShooterWeapon* m_lastEquippedWeapon;
 	TArray<AShooterWeapon*> m_availableWeapons;
-	AWeaponGenerator* m_weaponGenerator;
 
 	float m_maxWalkSpeedDefault;
 	float m_maxWalkSpeedCrouchedDefault;

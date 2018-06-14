@@ -71,6 +71,7 @@ void AShooterCharacter::BeginPlay()
 		m_weaponGenerator = GetWorld()->SpawnActor<AWeaponGenerator>(BP_WeaponGenerator, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
 		m_weaponGenerator->SetOwner(this);
 		m_weaponGenerator->OnWeaponGenerationFinishedEvent.AddDynamic(this, &AShooterCharacter::onNewWeaponGenerated);
+		OnWeaponGeneratorAvailableEvent.Broadcast(m_weaponGenerator);
 	}
 	
 	//(that'd be an axis input actually)
