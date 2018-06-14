@@ -1,3 +1,5 @@
+*.pdf
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
@@ -232,3 +234,25 @@ TSWLatexianTemp*
 
 # standalone packages
 *.sta
+
+
+### microsoft word
+*.tmp
+
+# Word temporary
+~$*.doc*
+
+# Excel temporary
+~$*.xls*
+
+# Excel Backup File
+*.xlk
+
+# PowerPoint temporary
+~$*.ppt*
+
+# Visio autosave temporary files
+*.~vsd*
+
+# word files
+*.doc*
