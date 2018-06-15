@@ -228,7 +228,7 @@ However, as necessary as a well-prepared agenda are some methodological question
 {\color{blue}Finish and write this section afterwards the thesis is finished!}
 
 \section{Target Audience}
-Advanced game developers who are interested in using PCGML game mechanics in their game are the core focus of this thesis. The theoretical part assumes knowledge of game design and mechanics, PCG, \ac{AI}, and ML since it will not be explained everything in detail. In particular, specific topics of PCG and ML which contribute to the use of PCGML as a game mechanic will be discussed and handled in more detail.\\
+Advanced game developers who are interested in using PCGML game mechanics in their game are the core focus of this thesis. The theoretical part assumes knowledge of game design and mechanics, PCG, \ac{AI}, and ML since it will not be explained everything in detail. {\color{blue}The reader should be familiar with \acp{NN} and there workflow. } In particular, specific topics of PCG and ML which contribute to the use of PCGML as a game mechanic will be discussed and handled in more detail.\\
 The practical part concentrates primarily on the design and implementation of a game and game mechanics which makes it necessary for the reader to be familiar with these subjects. Particular algorithms used throughout the chapters will be covered in detail whereas basic algorithm knowledge is assumed. Furthermore, it does not require exceptional game development back-end skills since it addresses the use of the technique in game engines.
 
 %
@@ -1048,7 +1048,15 @@ GANs would also be a possible solution to this problem but there are difficult t
 In contrast, VAEs are easy to train, generating blurry results which is perfect, have nice probabilistic, and are easy to introduce.
 
 }
-LSTM, RNN are focused on timeline and sequenced data -> not suitable for the weapon problem
+LSTM, RNN are focused on timeline and sequenced data -> not suitable for the weapon problem\\
+\\
+Density Estimation: Learns relations among the attributes in the data and attempts to learn the underlying probability distribution of the data.\\
+\\
+Example: Data D = {D1, D2, ..., Dn} ... Di = xi - a vector of attribute values
+Objective: estimate the underlying probability distribution over variables X, p(X) using examples in D
+Assumption: samples are independent of each other and come from the same (identical) distribution (fixed p(X))
+THEN:
+true distribution p(X) -> n samples D -> estimated distribution $\hat{p}(X)$
 
 \subsection{TODO: Suitable Models}
 generative models in specific, like GAN, VAE 
@@ -1056,9 +1064,24 @@ generative models in specific, like GAN, VAE
 
 
 \section{TODO: Learning Method Background}
-\subsection{TODO: \acl{ANN}}
-just if i'd implement the supervised approach
+
 \begin{comment} 
+\subsection{Short \acl{ANN} Primer}
+\subsubsection{Neurons and Feed Forward Networks}
+Feed forward networks are the simples networks used in neural networks. there just 
+\subsubsection{Backpropagation}
+is how neural networks learn. they apply different optimizer to detect the delta of the weights and biases. there is for example, gradient descent or stochastic gradient descent.
+\subsubsection{Workflow}
+\begin{enumerate}
+	\item Randomly initialize weights to small numbers close to 0
+	\item input data X
+	\item feed forward until predicted result y
+	\item compare predicted result to real result and measure error
+	\item back propagate error and update weights and biases
+	\item repeat steps 2 - 5 after each batch
+	\item whole trainning set passed through -> epoch complete and restart of 2 until all epochs are finished
+\end{enumerate}
+
 
 \subsection{Neural Networks}
 used for regression \cite{ml:2}\\
@@ -1073,21 +1096,22 @@ core applications: pattern recogintion, robot and agent control, game-playing, d
 pro: compared to other supervised learning approaches is their capacity to approximate any continuous real-valued function given sufficiently large ANN architectures and computational resources. This capacity characterizes ANNs as universal approximators \cite{ai::book}\\
 
 \end{comment}
-\subsection{TODO: \acl{VAE}}
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=0.3\linewidth]{PICs/autoencoder}
-	\caption{Schematic representation of an autoencoder neural network.}
-\end{figure}
--) generates a probability distribution of the input which is similar to the real distribution\\
--) can get noisy input data and outputs values based on the real distribution\\
-\\
+\subsection{TODO: Autoencoder}
 What is/For what is a normal Autoencoder used/good? \\
 -) just encodes and decodes the same structure\\
 -) feature extraction\\
 -) data compression\\
 -) dimension reduction
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.3\linewidth]{PICs/autoencoder}
+	\caption{Schematic representation of an autoencoder neural network.}
+\end{figure}
+\subsection{TODO: \acl{VAE}}
+-) generates a probability distribution of the input which is similar to the real distribution\\
+-) can get noisy input data and outputs values based on the real distribution\\
 \\
+watch Arxiv video for more differences to normal AE\\
 --> tutorial on variational autoencoder
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
@@ -1095,11 +1119,17 @@ What is/For what is a normal Autoencoder used/good? \\
 \clearpage
 \chapter{TODO: Prototype Development}
 \textbf{previous considerations}\\
-mind all previous described considerations into the implementation!!
+mind all previous described considerations into the implementation!! 
+the order of the chapters reflect the development workflow steps 
 \section{Data Pre-Processing}
 \subsection{TODO: Dump Extraction}
 \todo[inline]{add dump weapon data example to appendix}
 \subsection{TODO: Manual Dimension Reduction}
+manually added weapon type (pistol, rifle, etc), firemode (semi, automatic, etc); unified ammo types (used http://battlefield.wikia.com, http://www.ign.com/wikis/battlefield-1/Weapons, symthic.com\\
+simplified bolt-action, pump-action, single-barrel fire and lever-action to "single-action" because it has actually the same kind of reload mechanic\\
+needed to remove ammo from the features because I'd need to apply a one hot encoder to use the data and it would blow up my data and cause curse of dimensionality.
+
+show the used parameter 
 \begin{table}[!htbp]
 	\centering
 	\begin{tabular}{|l|l|}
@@ -1128,10 +1158,6 @@ mind all previous described considerations into the implementation!!
 	\label{battlefield::weaponStats}
 \end{table}
 
-manually added weapon type (pistol, rifle, etc), firemode (semi, automatic, etc); unified ammo types (used http://battlefield.wikia.com, http://www.ign.com/wikis/battlefield-1/Weapons, symthic.com\\
-simplified bolt-action, pump-action, single-barrel fire and lever-action to "single-action" because it has actually the same kind of reload mechanic\\
-needed to remove ammo from the features because I'd need to apply a one hot encoder to use the data and it would blow up my data and cause curse of dimensionality.
-
 \subsection{TODO: Encoding and Feature Scaling}
 firemode and weapon type encoded with tensorflow\\
 what is with the other params? is there a best practice? is it really necessary for a AE? 
@@ -1142,18 +1168,47 @@ what is with the other params? is there a best practice? is it really necessary 
 
 
 
-\section{TODO: Weapon Generation Process Design}
-
-\section{TODO: Technical Approach}
+\section{VAE Implementation}
 Classes, Diagrams, ..\\
 Santi said: just use 1 Hidden Layer if you have a dataset with small amount of data\\
 Santi said: around 3 neurons (hidden layer? idk)\\
 how to measure the accuracy in unsupervised learning / geneartive models?
-\subsection{Model Accuracy}
+
+-) Sigmoid activation can cause vanishing gradient problem (outputs 0 - 1)
+-) Hyperbolic tangent activation, can also cause the vanishing gradient problem (outputs -1 - 1)
+-) RELU -> can cause dead of neurons
+-) Leaky Relu avoids this because it doesn't clamp to 0
+
+\subsection{Model Accuracy Measurement}
+following method was used: 
+the training data was split into a training set of 127 entries and a test set of 21 entries. 
+Then the model reconstruction accuracy was measured by calculating the average cost/loss caused by the test set which was input in the encoder -> check if its as small as possible
+and also a random input was generated which was in range of the normalized values of the test (check if thats right) data and put into the encoder. -> make sure it is as big as possible
+if the random input loss is very high then it means that the model has learned the internal structure and dependencies of the training data because it cannot classify the input data regarding the training data
+random input is the same size as the test set (21 entries)
+
+--> show the latent space plot and show how you can identify clusters of weapons in the model
 
 \section{TODO: Game}
+show the map from above
+explain the possible input
+what was implemented, etc
 
+\subsection{HUD}
+show the player current weapon status, etc
 show the game and the mechanics!
+
+\section{TODO: Weapon Generation Process}
+show a flowchart or sudo code
+class diagram of the classes and how the player to generator workflow works
+the workflow of the generator class from the input to the TF comp, back to the generator and to the player
+\subsection{Adjustable Paramter}
+random range can be adjusted so that different weapons emerge
+the threshold, etc
+
+\section{Development Issues}
+There was a game freeze during the JSON input processing in the TF plugin. so i needed to change the code so that it runs on a background thread
+
 
 \section{TODO: Performance Measurements}
 
@@ -1165,6 +1220,7 @@ show the game and the mechanics!
 The meaning of the use of PCGML as a game mechanic for the future of games and gaming. 
 \section{TODO: Summary}
 \section{TODO: Research Result}
+Weapons during the game emerge in different directions everytime the game is played due to the initialization of the weights and biases and therefore the model always trains in anther way. That could be avoided with pretraining. Also the weapons in the training set bias the model in a specific direction, for e.g., shotguns are very limited in the dataset and therefore aren't often generated. refer to the dataset firemodes and types amount that this is biasing the model if random input is generated
 \section{TODO: Future Work}
 implementation of a C++ machine learning plugin to get rid of external sources
 further implementations
