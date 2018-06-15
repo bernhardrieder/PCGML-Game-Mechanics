@@ -7,8 +7,8 @@
 #include "WeaponGenerator.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStartedWeaponGeneratorEvent);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGeneratorIsReadyEvent, bool, isReady);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponGenerationFinishedEvent, class AShooterWeapon*, generatedWeapon);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGeneratorIsReadyEvent, bool, IsReady);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponGenerationFinishedEvent, class AShooterWeapon*, GeneratedWeapon);
 
 
 class AShooterWeapon;
@@ -88,9 +88,9 @@ struct FWeaponGeneratorAPIJsonData
 	FString success;
 
 	FWeaponGeneratorAPIJsonData(){}
-	FWeaponGeneratorAPIJsonData(FVector2D maxDamageWithDistance, FVector2D minDamageWithDistance, EWeaponType weaponType, EFireMode fireMode,
-		FVector2D recoilIncreasePerShot, float recoilDecrease, float bulletSpreadIncrease, float bulletSpreadDecrease, int32 rateOfFire, int32 bulletsPerMagazine,
-		float reloadTimeEmptyMagazine, int32 bulletsInOneShot, int32 muzzleVelocity);
+	FWeaponGeneratorAPIJsonData(FVector2D MaxDamageWithDistance, FVector2D MinDamageWithDistance, EWeaponType WeaponType, EFireMode FireMode,
+		FVector2D RecoilIncreasePerShot, float RecoilDecrease, float BulletSpreadIncrease, float BulletSpreadDecrease, int32 RateOfFire, int32 BulletsPerMagazine,
+		float ReloadTimeEmptyMagazine, int32 BulletsInOneShot, int32 MuzzleVelocity);
 };
 
 UCLASS()
@@ -99,44 +99,44 @@ class THESISPROTOTYPE_API AWeaponGenerator : public AActor
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
-	TSubclassOf<AShooterWeapon>	PistolClass;
+	TSubclassOf<AShooterWeapon>	pistolClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
-	TSubclassOf<AShooterWeapon>	SniperClass;
+	TSubclassOf<AShooterWeapon>	sniperClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
-	TSubclassOf<AShooterWeapon>	MachineGunClass;
+	TSubclassOf<AShooterWeapon>	machineGunClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
-	TSubclassOf<AShooterWeapon>	RifleClass;
+	TSubclassOf<AShooterWeapon>	rifleClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
-	TSubclassOf<AShooterWeapon>	SmgClass;
+	TSubclassOf<AShooterWeapon>	smgClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
-	TSubclassOf<AShooterWeapon>	ShotgunClass;
+	TSubclassOf<AShooterWeapon>	shotgunClass;
 
 	//this is the threshold which is checked for categorical data. if the value is above the threshold then it determines its firemode or type otherwise its randomized
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
-	float MinCategoricalDataThreshold;
+	float minCategoricalDataThreshold;
 
 	//distmantled weapon multiplier applied for generating a new weapon
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")
-	FVector2D RandomModificationStartRange;
+	FVector2D randomModificationStartRange;
 
 	//how much the range will be offset per kill
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")
-	float OffsetPerKill;
+	float offsetPerKill;
 
 	//how much the range will be offset per minute used
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")
-	float OffsetPerMinuteUsed;
+	float offsetPerMinuteUsed;
 
 public:
 	AWeaponGenerator();
 
 	//don't forget to subscribe to OnWeaponGenerationFinishedEvent to get notified when the new weapon is generated
-	void DismantleWeapon(AShooterWeapon* weapon);
+	void DismantleWeapon(AShooterWeapon* Weapon);
 
 	UPROPERTY(BlueprintAssignable, Category = "Weapon Generator|Events")
 	FOnGeneratorIsReadyEvent OnGeneratorIsReadyEvent;
@@ -147,32 +147,28 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Weapon Generator|Events")
 	FOnWeaponGenerationFinishedEvent OnWeaponGenerationFinishedEvent;
 
-
-	FORCEINLINE bool IsGenerating() const {	return m_bIsGenerating;	}
-	FORCEINLINE bool IsReadyToUse() const { return m_IsReadyToUse; }
+	FORCEINLINE bool IsGenerating() const {	return bIsGenerating; }
+	FORCEINLINE bool IsReadyToUse() const { return bIsReadyToUse; }
 
 protected:
-	virtual void BeginPlay() override;
-
 	UFUNCTION(BlueprintNativeEvent, Category = "Weapon Generator")
-	void sendDismantledWeaponToGenerator(const FWeaponGeneratorAPIJsonData& jsonData);
+	void sendDismantledWeaponToGenerator(const FWeaponGeneratorAPIJsonData& JsonData);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon Generator")
-	void receiveNewWeaponFromGenerator(const FWeaponGeneratorAPIJsonData& jsonData);
+	void receiveNewWeaponFromGenerator(const FWeaponGeneratorAPIJsonData& JsonData);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon Generator")
-	void setReadyToUse(bool isReady);
+	void setReadyToUse(bool IsReady);
 
-	FWeaponGeneratorAPIJsonData convertWeaponToJsonData(AShooterWeapon* weapon);
-	AShooterWeapon* constructWeaponFromJsonData(const FWeaponGeneratorAPIJsonData& jsonData);
-	EWeaponType determineWeaponType(const FWeaponGeneratorAPIJsonData& jsonData);
-	EFireMode determineWeaponFireMode(const FWeaponGeneratorAPIJsonData& jsonData);
-	void applySomeModifications(AShooterWeapon* weapon, FVector2D& maxDamageWithDistance, FVector2D& minDamageWithDistance, FVector2D& recoilIncreasePerShot, float& recoilDecrease,
-		float& bulletSpreadIncrease, float& bulletSpreadDecrease, int32& rateOfFire, int32& bulletsPerMagazine, float& reloadTimeEmptyMagazine,	int32& bulletsInOneShot, int32& muzzleVelocity);
-	float preventNegativeNumbers(float& val);
+	FWeaponGeneratorAPIJsonData convertWeaponToJsonData(AShooterWeapon* Weapon);
+	AShooterWeapon* constructWeaponFromJsonData(const FWeaponGeneratorAPIJsonData& JsonData);
+	EWeaponType determineWeaponType(const FWeaponGeneratorAPIJsonData& JsonData);
+	EFireMode determineWeaponFireMode(const FWeaponGeneratorAPIJsonData& JsonData);
+	void applySomeModifications(AShooterWeapon* Weapon, FVector2D& MaxDamageWithDistance, FVector2D& MinDamageWithDistance, FVector2D& RecoilIncreasePerShot, float& RecoilDecrease,
+		float& BulletSpreadIncrease, float& BulletSpreadDecrease, int32& RateOfFire, int32& BulletsPerMagazine, float& ReloadTimeEmptyMagazine,	int32& BulletsInOneShot, int32& MuzzleVelocity);
 
 private:
-	FRandomStream m_randomNumberGenerator;
-	bool m_bIsGenerating = false;
-	bool m_IsReadyToUse = false;
+	FRandomStream randomNumberGenerator;
+	bool bIsGenerating = false;
+	bool bIsReadyToUse = false;
 };

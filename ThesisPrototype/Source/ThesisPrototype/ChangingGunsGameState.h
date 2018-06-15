@@ -32,15 +32,15 @@ class THESISPROTOTYPE_API AChangingGunsGameState : public AGameStateBase
 	
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Game State")
-	EWaveState WaveState;
+	EWaveState waveState;
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Game State")
-	void SetWaveState(EWaveState newState);
+	void SetWaveState(EWaveState NewState);
 
-	FORCEINLINE EWaveState GetWaveState() const { return WaveState; };
+	FORCEINLINE EWaveState GetWaveState() const { return waveState; }
 
 protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Game State")
-	void waveStateChanged(EWaveState newState, EWaveState oldState);
+	void waveStateChanged(EWaveState NewState, EWaveState OldState);
 };
