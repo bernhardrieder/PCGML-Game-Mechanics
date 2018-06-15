@@ -1177,7 +1177,6 @@ what is with the other params? is there a best practice? is it really necessary 
 \section{VAE Implementation}
 Classes, Diagrams, ..\\
 Santi said: just use 1 Hidden Layer if you have a dataset with small amount of data\\
-Santi said: around 3 neurons (hidden layer? idk)\\
 how to measure the accuracy in unsupervised learning / geneartive models?
 
 -) Sigmoid activation can cause vanishing gradient problem (outputs 0 - 1)
@@ -1208,6 +1207,20 @@ show the game and the mechanics!
 show a flowchart or sudo code
 class diagram of the classes and how the player to generator workflow works
 the workflow of the generator class from the input to the TF comp, back to the generator and to the player
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.5\linewidth]{PICs/WeaponGeneratorWorkflow_Setup_Training}
+	\caption{Weapon generator setup and training workflow.}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.5\linewidth]{PICs/WeaponGeneratorWorkflow_Generation}
+	\caption{Weapon generator generation workflow.}
+\end{figure}
+
+
 \subsection{Adjustable Paramter}
 random range can be adjusted so that different weapons emerge
 the threshold, etc
