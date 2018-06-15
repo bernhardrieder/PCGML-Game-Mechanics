@@ -1113,6 +1113,12 @@ What is/For what is a normal Autoencoder used/good? \\
 \\
 watch Arxiv video for more differences to normal AE\\
 --> tutorial on variational autoencoder
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.7\linewidth]{PICs/variational_autoencoder}
+	\caption{Schematic representation of an variational autoencoder neural network.}
+\end{figure}
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
 %
@@ -1206,8 +1212,9 @@ the workflow of the generator class from the input to the TF comp, back to the g
 random range can be adjusted so that different weapons emerge
 the threshold, etc
 
-\section{Development Issues}
+\subsection{\ac{TF} Plugin Changes}
 There was a game freeze during the JSON input processing in the TF plugin. so i needed to change the code so that it runs on a background thread
+the default TF version the plugin comes with has tensorflow 1.6.0 enabled -> i switched to 1.8.0
 
 
 \section{TODO: Performance Measurements}
