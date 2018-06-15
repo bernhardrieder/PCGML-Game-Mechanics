@@ -81,111 +81,105 @@ class THESISPROTOTYPE_API AShooterWeapon : public AActor
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USkeletalMeshComponent* MeshComp;
+	USkeletalMeshComponent* meshComp;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	FName MuzzleSocketName;
+	FName muzzleSocketName;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	FName TracerTargetName;
+	FName tracerTargetName;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|FX")
-	UParticleSystem* MuzzleEffect;
+	UParticleSystem* muzzleEffect;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|FX")
-	UParticleSystem* DefaultImpactEffect;
+	UParticleSystem* defaultImpactEffect;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|FX")
-	UParticleSystem* FleshImpactEffect;
+	UParticleSystem* fleshImpactEffect;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|FX")
-	UParticleSystem* TracerEffect;
+	UParticleSystem* tracerEffect;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	TSubclassOf<UCameraShake> FireCamShake;
+	TSubclassOf<UCameraShake> fireCamShake;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
-	TSubclassOf<UDamageType> DamageType;
-
-	//x = damage, y = distance
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
-	FVector2D MaxDamageWithDistance;
+	TSubclassOf<UDamageType> damageType;
 
 	//x = damage, y = distance
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
-	FVector2D MinDamageWithDistance;
+	FVector2D maxDamageWithDistance;
+
+	//x = damage, y = distance
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Damage")
+	FVector2D minDamageWithDistance;
 
 	// bullets per minute fired
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	int32 RateOfFire;
+	int32 rateOfFire;
 
 	//this value hast absolutely no effect. this is just needed for feeding into the generator!
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	int32 MuzzleVelocity;
+	int32 muzzleVelocity;
 
 	// increase of spread per fired bullet
 	UPROPERTY(EditDefaultsOnly, Category="Weapon|Bullet Spread")
-	float BulletSpreadIncrease;
+	float bulletSpreadIncrease;
 
 	// bullet spread decrease in degree, applied per second
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Bullet Spread")
-	float BulletSpreadDecrease;
+	float bulletSpreadDecrease;
 
 	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category="Weapon|Ammo")
-	int32 BulletsPerMagazine;
+	int32 bulletsPerMagazine;
 
 	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category = "Weapon|Ammo")
-	int32 AvailableMagazines;
+	int32 availableMagazines;
 
 	// amount of bullets which are fired in one shot. e.g. a shotgun has 12
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon|Ammo")
-	int32 BulletsInOneShot;
+	int32 bulletsInOneShot;
 
 	// reload time of an empty magazine in seconds
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon|Ammo")
-	float ReloadTimeEmptyMagazine;
+	float reloadTimeEmptyMagazine;
 
 	// random recoil in degree (x = horizontal, y = vertical)
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Recoil")
-	FVector2D RecoilIncreasePerShot;
+	FVector2D recoilIncreasePerShot;
 
 	// recoil decrease
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Recoil")
-	float RecoilDecrease;
+	float recoilDecrease;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	EFireMode FireMode;
+	EFireMode fireMode;
 
 	UPROPERTY(EditAnywhere, Category="Weapon|Ammo")
 	bool bUnlimitiedBullets;
 
-	UPROPERTY(BlueprintAssignable, Category="Weapon|Events")
-	FOnAmmoChangedEvent OnAmmoChangedEvent;
-
-	UPROPERTY(BlueprintAssignable, Category = "Weapon|Events")
-	FOnReloadStateChangedEvent OnReloadStateChangedEvent;
-
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon|Ammo", meta=(DisplayName="Bullets in Magazine"))
-	int32 m_currentBulletsInMagazine = 0;
+	int32 currentBulletsInMagazine = 0;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon|Ammo", meta=(DisplayName="Available Bullets Left to Shoot"))
-	int32 m_availableBulletsLeft = 0;
+	int32 availableBulletsLeft = 0;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	EWeaponType Type;
+	EWeaponType type;
 
 	//character walking speed modifier in percent/100, e.g., 0.8
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Modifier", meta = (DisplayName = "Walking Speed Modifier", ClampMin = 0.0, ClampMax = 1.0))
-	float m_walkinSpeedModifier;
+	float walkinSpeedModifier;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Modifier", meta = (DisplayName = "Owner-based Spread Modifier"))
-	FOwnerBasedModifier m_spreadModifier;
+	FOwnerBasedModifier spreadModifier;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon|Modifier", meta = (DisplayName = "Owner-based Recoil Modifier"))
-	FOwnerBasedModifier m_recoilModifier;
+	FOwnerBasedModifier recoilModifier;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|SFX")
-	USoundCue* FireSound;
+	USoundCue* fireSound;
 
 public:
 	// Sets default values for this actor's properties
@@ -196,87 +190,89 @@ public:
 	virtual void StartMagazineReloading();
 
 	//call when the weapon is currently used as main weapon
-	virtual void Equip(AShooterCharacter* euqippedBy);
+	virtual void Equip(AShooterCharacter* EuqippedBy);
+
 	//call when the weapon is stored inventory
 	virtual void Disarm();
 
 	UFUNCTION(BlueprintCallable, Category="Weapon|Ammo")
-	virtual void RefillAmmunition(int amountOfBullets);
+	virtual void RefillAmmunition(int AmountOfBullets);
 
-	FORCEINLINE float GetWalkinSpeedModifier() const { return m_walkinSpeedModifier; }
+	FORCEINLINE float GetWalkinSpeedModifier() const { return walkinSpeedModifier; }
+	FORCEINLINE EWeaponType GetType() const { return type; }
+	FORCEINLINE EFireMode GetFireMode() const { return fireMode; }
+	FORCEINLINE FVector2D GetMaxDamageWithDistance() const { return maxDamageWithDistance;}
+	FORCEINLINE FVector2D GetMinDamageWithDistance() const { return minDamageWithDistance; }
+	FORCEINLINE int32 GetRateOfFire() const { return rateOfFire; }
+	FORCEINLINE int32 GetMuzzleVelocity() const { return muzzleVelocity; }
+	FORCEINLINE float GetBulletSpreadIncrease() const { return bulletSpreadIncrease; }
+	FORCEINLINE float GetBulletSpreadDecrease() const { return bulletSpreadDecrease; }
+	FORCEINLINE FVector2D GetRecoilIncreasePerShot() const { return recoilIncreasePerShot; }
+	FORCEINLINE float GetRecoilDecrease() const { return recoilDecrease; }
+	FORCEINLINE int32 GetBulletsPerMagazine() const { return bulletsPerMagazine; }
+	FORCEINLINE int32 GetBulletsInOneShot() const { return bulletsInOneShot; }
+	FORCEINLINE float GetReloadTimeEmptyMagazine() const { return reloadTimeEmptyMagazine; }
+	FORCEINLINE FWeaponStatistics GetWeaponStatistics() const { return statistics; }
 
-	FORCEINLINE EWeaponType GetType() const { return Type; }
-	FORCEINLINE EFireMode GetFireMode() const { return FireMode; }
-	FORCEINLINE FVector2D GetMaxDamageWithDistance() const { return MaxDamageWithDistance;}
-	FORCEINLINE FVector2D GetMinDamageWithDistance() const { return MinDamageWithDistance; }
-	FORCEINLINE int32 GetRateOfFire() const { return RateOfFire; }
-	FORCEINLINE int32 GetMuzzleVelocity() const { return MuzzleVelocity; }
-	FORCEINLINE float GetBulletSpreadIncrease() const { return BulletSpreadIncrease; }
-	FORCEINLINE float GetBulletSpreadDecrease() const { return BulletSpreadDecrease; }
-	FORCEINLINE FVector2D GetRecoilIncreasePerShot() const { return RecoilIncreasePerShot; }
-	FORCEINLINE float GetRecoilDecrease() const { return RecoilDecrease; }
-	FORCEINLINE int32 GetBulletsPerMagazine() const { return BulletsPerMagazine; }
-	FORCEINLINE int32 GetBulletsInOneShot() const { return BulletsInOneShot; }
-	FORCEINLINE float GetReloadTimeEmptyMagazine() const { return ReloadTimeEmptyMagazine; }
-	FORCEINLINE FWeaponStatistics GetWeaponStatistics() const { return m_statistics; }
-
-	FORCEINLINE void SetType(EWeaponType type) {  Type = type; }
-	FORCEINLINE void SetFireMode(EFireMode firemode) {  FireMode = firemode; }
-	void SetMaxDamageWithDistance(const FVector2D& maxDamageWithDistance);
-	void SetMinDamageWithDistance(const FVector2D& minDamageWithDistance);
-	void SetRateOfFire(int32 rof);
-	FORCEINLINE void SetMuzzleVelocity(int32 muzzleVelocity) { MuzzleVelocity = muzzleVelocity; } 
-	FORCEINLINE void SetBulletSpreadIncrease(float increase) {  BulletSpreadIncrease = increase; }
-	FORCEINLINE void SetBulletSpreadDecrease(float decrease) {  BulletSpreadDecrease = decrease; }
-	FORCEINLINE void SetRecoilIncreasePerShot(const FVector2D& increase) {  RecoilIncreasePerShot = increase; }
-	FORCEINLINE void SetRecoilDecrease(float decrease) {  RecoilDecrease = decrease; }
-	void SetBulletsPerMagazine(int32 bullets);
-	FORCEINLINE void SetBulletsInOneShot(int32 bullets) {  BulletsInOneShot = bullets; }
-	FORCEINLINE void SetReloadTimeEmptyMagazine(float time);
+	FORCEINLINE void SetType(EWeaponType Type) { type = Type; }
+	FORCEINLINE void SetFireMode(EFireMode Firemode) {  fireMode = Firemode; }
+	void SetMaxDamageWithDistance(const FVector2D& MaxDamageWithDistance);
+	void SetMinDamageWithDistance(const FVector2D& MinDamageWithDistance);
+	void SetRateOfFire(int32 RateOfFire);
+	FORCEINLINE void SetMuzzleVelocity(int32 MuzzleVelocity) { muzzleVelocity = MuzzleVelocity; }
+	FORCEINLINE void SetBulletSpreadIncrease(float Increase) {  bulletSpreadIncrease = Increase; }
+	FORCEINLINE void SetBulletSpreadDecrease(float Decrease) {  bulletSpreadDecrease = Decrease; }
+	FORCEINLINE void SetRecoilIncreasePerShot(const FVector2D& Increase) {  recoilIncreasePerShot = Increase; }
+	FORCEINLINE void SetRecoilDecrease(float Decrease) {  recoilDecrease = Decrease; }
+	void SetBulletsPerMagazine(int32 Bullets);
+	FORCEINLINE void SetBulletsInOneShot(int32 Bullets) {  bulletsInOneShot = Bullets; }
+	FORCEINLINE void SetReloadTimeEmptyMagazine(float Time);
 
 protected:
-	virtual void BeginPlay() override;
-	virtual void Tick(float deltaTime) override;
-	virtual void PlayFireEffects(const FVector& FireImpactPoint);
-	virtual void PlayImpactEffects(EPhysicalSurface surfaceType, const FVector& impactPoint);
-	virtual void Fire();
-	virtual void reloadMagazine();
-	virtual void startStockReloading();
-	virtual void reloadStock();
+	void BeginPlay() override;
+	void Tick(float DeltaTime) override;
+	
+	void playFireEffects(const FVector& FireImpactPoint);
+	void playImpactEffects(EPhysicalSurface SurfaceType, const FVector& ImpactPoint);
+	void fire();
+	void reloadMagazine();
+	void startStockReloading();
+	void reloadStock();
 	//calculates bullet spread dispersion (x = horizontal, y = vertical)
-	FVector2D calculateBulletSpreadDispersion(float randomPower, float currentSpread);
+	FVector2D calculateBulletSpreadDispersion(float RandomPower, float CurrentSpread);
 	void decreaseBulletSpread();
 	void applyRecoil();
-	void compensateRecoil(float deltaTime);
-	float calculateRecoilCompensationDelta(float deltaTime, float currentRecoil);
-
-	float getDamageMultiplierFor(EPhysicalSurface surfaceType);
+	void compensateRecoil(float DeltaTime);
+	float calculateRecoilCompensationDelta(float DeltaTime, float CurrentRecoil);
+	float getDamageMultiplierFor(EPhysicalSurface SurfaceType);
 	void buildDamageCurve();
 	void updateSingleBulletReloadTime();
 
+public:
+	UPROPERTY(BlueprintAssignable, Category = "Weapon|Events")
+	FOnAmmoChangedEvent OnAmmoChangedEvent;
+
+	UPROPERTY(BlueprintAssignable, Category = "Weapon|Events")
+	FOnReloadStateChangedEvent OnReloadStateChangedEvent;
+
 protected:
-	AShooterCharacter* m_owningCharacter;
+	//derived
+	float timeBetweenShots = 0;
+	float singleBulletReloadTime = 0;
+	FRuntimeFloatCurve damageCurve;
 
-	bool m_bIsAmmoLeftInMagazine = true;
-	bool m_bIsReloading = false;
+	AShooterCharacter* owningCharacter;
+	bool bIsAmmoLeftInMagazine = true;
+	bool bIsReloading = false;
+	FVector2D currentRecoil;
+	float currentBulletSpread = 0;
+	float lastFireTime = 0;
+	float timeEquipped = 0;
 
-	FTimerHandle TimerHandle_AutomaticFire;
-	FTimerHandle TimerHandle_ReloadMagazine;
-	FTimerHandle TimerHandle_ReloadStock;
-	FTimerHandle TimerHandle_SpreadDecrease;
+	FTimerHandle timerHandle_AutomaticFire;
+	FTimerHandle timerHandle_ReloadMagazine;
+	FTimerHandle timerHandle_ReloadStock;
+	FTimerHandle timerHandle_SpreadDecrease;
 
-
-	float m_currentBulletSpread = 0;
-
-	float lastFireTime;
-	//derived from rate of fire
-	float timeBetweenShots;
-
-	float m_singleBulletReloadTime;
-
-	FVector2D m_currentRecoil;
-	FRuntimeFloatCurve m_damageCurve;
-	float m_timeEquipped = 0;
-
-	FWeaponStatistics m_statistics;
+	FWeaponStatistics statistics;
 };
