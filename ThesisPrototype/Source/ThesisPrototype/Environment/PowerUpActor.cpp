@@ -2,12 +2,11 @@
 
 #include "PowerUpActor.h"
 #include "TimerManager.h"
-#include "UnrealNetwork.h"
 
 APowerUpActor::APowerUpActor()
 {
-	PowerUpInterval = 0.f;
-	TotalNumOfTicks = 0;
+	powerUpInterval = 0.f;
+	totalNumOfTicks = 0;
 	bIsPowerUpActive = false;
 }
 
@@ -17,7 +16,7 @@ void APowerUpActor::onTickPowerUp()
 
 	OnPowerUpTicked();
 
-	if(ticksProcessed >= TotalNumOfTicks)
+	if(ticksProcessed >= totalNumOfTicks)
 	{
 		setPowerUpState(false);
 
@@ -27,10 +26,10 @@ void APowerUpActor::onTickPowerUp()
 	}
 }
 
-void APowerUpActor::setPowerUpState(bool val)
+void APowerUpActor::setPowerUpState(bool Val)
 {
-	bIsPowerUpActive = val;
-	OnPowerUpStateChanged(val);
+	bIsPowerUpActive = Val;
+	onPowerUpStateChanged(Val);
 }
 
 void APowerUpActor::ActivatePowerUp(AActor* ActivatedFor)
@@ -39,9 +38,9 @@ void APowerUpActor::ActivatePowerUp(AActor* ActivatedFor)
 
 	setPowerUpState(true);
 
-	if (PowerUpInterval > 0.f)
+	if (powerUpInterval > 0.f)
 	{
-		GetWorldTimerManager().SetTimer(timerHandle_PowerUpTick, this, &APowerUpActor::onTickPowerUp, PowerUpInterval, true);
+		GetWorldTimerManager().SetTimer(timerHandle_PowerUpTick, this, &APowerUpActor::onTickPowerUp, powerUpInterval, true);
 	}
 	else
 	{

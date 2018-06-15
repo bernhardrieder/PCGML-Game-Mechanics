@@ -17,27 +17,25 @@ class THESISPROTOTYPE_API APickupActor : public AActor
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	USphereComponent* SphereComp;
+	USphereComponent* sphereComp;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UDecalComponent* DecalComp;
+	UDecalComponent* decalComp;
 
 	UPROPERTY(EditInstanceOnly, Category = "Pickup Actor")
-	TSubclassOf<APowerUpActor> PowerUpClass;
+	TSubclassOf<APowerUpActor> powerUpClass;
 
 	UPROPERTY(EditInstanceOnly, Category = "Pickup Actor")
-	float CoolDownDuration;
+	float coolDownDuration;
 
 public:
 	APickupActor();
+	virtual void Tick(float DeltaTime) override;
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 protected:
 	virtual void BeginPlay() override;
 	void respawnPowerUp();
-
-public:
-	virtual void Tick(float DeltaTime) override;
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 protected:
 	APowerUpActor* spawnedPowerUp;

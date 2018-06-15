@@ -20,35 +20,34 @@ class THESISPROTOTYPE_API AExplosiveBarrel : public AActor
 
 protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UHealthComponent* HealthComp;
+	UHealthComponent* healthComp;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent* MeshComp;
+	UStaticMeshComponent* meshComp;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	URadialForceComponent* RadialForceComp;
+	URadialForceComponent* radialForceComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "FX")
-	float ExplosionImpulse;
+	float explosionImpulse;
 
 	UPROPERTY(EditDefaultsOnly, Category = "FX")
-	UParticleSystem* ExplosionEffect;
+	UParticleSystem* explosionEffect;
 
 	UPROPERTY(EditDefaultsOnly, Category = "FX")
-	UMaterialInterface* ExplodeMaterial;
+	UMaterialInterface* explodeMaterial;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Explosive Barrel")
-	float BaseDamage;
+	float baseDamage;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Explosive Barrel")
-	TSubclassOf<UDamageType> DamageType;
+	TSubclassOf<UDamageType> damageType;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Explosive Barrel")
-	float DamageRadius;
-
+	float damageRadius;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SFX")
-	USoundCue* ExplosionSound;
+	USoundCue* explosionSound;
 
 public:
 	AExplosiveBarrel();
