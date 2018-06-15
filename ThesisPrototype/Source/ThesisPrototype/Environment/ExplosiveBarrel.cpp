@@ -13,32 +13,30 @@
 // Sets default values
 AExplosiveBarrel::AExplosiveBarrel()
 {
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	MeshComp->SetSimulatePhysics(true);
-	MeshComp->SetCollisionObjectType(ECC_PhysicsBody);
-	RootComponent = MeshComp;
+	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
+	meshComp->SetSimulatePhysics(true);
+	meshComp->SetCollisionObjectType(ECC_PhysicsBody);
+	RootComponent = meshComp;
 
-	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
-	HealthComp->SetTeamNumber(TEAMNUMBER_ENVIRONMENT);
+	healthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
+	healthComp->SetTeamNumber(TEAMNUMBER_ENVIRONMENT);
 
-	RadialForceComp = CreateDefaultSubobject<URadialForceComponent>(TEXT("RadialForceComp"));
-	RadialForceComp->SetupAttachment(RootComponent);
-	RadialForceComp->bImpulseVelChange = true;
-	RadialForceComp->bAutoActivate = false;
-	RadialForceComp->bIgnoreOwningActor = true;
+	radialForceComp = CreateDefaultSubobject<URadialForceComponent>(TEXT("RadialForceComp"));
+	radialForceComp->SetupAttachment(RootComponent);
+	radialForceComp->bImpulseVelChange = true;
+	radialForceComp->bAutoActivate = false;
+	radialForceComp->bIgnoreOwningActor = true;
 
-	ExplosionImpulse = 400;
-	BaseDamage = 150;
-	DamageRadius = 250.f;
-
-
+	explosionImpulse = 400;
+	baseDamage = 150;
+	damageRadius = 250.f;
 }
 
 void AExplosiveBarrel::BeginPlay()
 {
 	Super::BeginPlay();
-	HealthComp->OnHealthChangedEvent.AddDynamic(this, &AExplosiveBarrel::onHealthChanged);
-	RadialForceComp->Radius = DamageRadius;
+	healthComp->OnHealthChangedEvent.AddDynamic(this, &AExplosiveBarrel::onHealthChanged);
+	radialForceComp->Radius = damageRadius;
 }
 
 void AExplosiveBarrel::onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* healthDamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -51,16 +49,16 @@ void AExplosiveBarrel::onHealthChanged(const UHealthComponent* HealthComponent, 
 	if(Health <= 0.f)
 	{
 		bExploded = true;
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
-		MeshComp->SetMaterial(0, ExplodeMaterial);
-		UGameplayStatics::PlaySoundAtLocation(this, ExplosionSound, GetActorLocation());
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionEffect, GetActorLocation());
+		meshComp->SetMaterial(0, explodeMaterial);
+		UGameplayStatics::PlaySoundAtLocation(this, explosionSound, GetActorLocation());
 
 		TArray<AActor*> ignoreDamageActors{ this };
-		UGameplayStatics::ApplyRadialDamage(GetWorld(), BaseDamage, GetActorLocation(), DamageRadius, DamageType, ignoreDamageActors, this, GetInstigatorController(), true);
+		UGameplayStatics::ApplyRadialDamage(GetWorld(), baseDamage, GetActorLocation(), damageRadius, damageType, ignoreDamageActors, this, GetInstigatorController(), true);
 
-		FVector boostIntensity = FVector::UpVector * ExplosionImpulse;
-		MeshComp->AddImpulse(boostIntensity, NAME_None, true);
+		FVector boostIntensity = FVector::UpVector * explosionImpulse;
+		meshComp->AddImpulse(boostIntensity, NAME_None, true);
 
-		RadialForceComp->FireImpulse();
+		radialForceComp->FireImpulse();
 	}
 }

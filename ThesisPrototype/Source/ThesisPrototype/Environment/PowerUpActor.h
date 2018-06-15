@@ -14,28 +14,18 @@ class THESISPROTOTYPE_API APowerUpActor : public AActor
 protected:
 	//time in seconds between power up ticks
 	UPROPERTY(EditDefaultsOnly, Category = "Power Ups")
-	float PowerUpInterval;
+	float powerUpInterval;
 
 	//total times the power up effect ticks and applies any effect
 	UPROPERTY(EditDefaultsOnly, Category = "Power Ups")
-	int32 TotalNumOfTicks;
+	int32 totalNumOfTicks;
 
 	UPROPERTY()
 	bool bIsPowerUpActive;
 
 public:
-	// Sets default values for this actor's properties
 	APowerUpActor();
 
-protected:
-	void onTickPowerUp();
-
-	UFUNCTION(BlueprintImplementableEvent, Category = "Power Ups")
-	void OnPowerUpStateChanged(bool bNewIsActive);
-
-	void setPowerUpState(bool val);
-
-public:
 	void ActivatePowerUp(AActor* ActivatedFor);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Power Ups")
@@ -47,6 +37,13 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Power Ups")
 	void OnExpired();
 
+protected:
+	void onTickPowerUp();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Power Ups")
+	void onPowerUpStateChanged(bool bNewIsActive);
+
+	void setPowerUpState(bool Val);
 
 protected:
 	FTimerHandle timerHandle_PowerUpTick;

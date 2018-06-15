@@ -6,10 +6,8 @@
 #include "GameFramework/Character.h"
 #include "ShooterCharacter.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentWeaponChangedEvent, class AShooterWeapon*, newCurrentWeapon);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponGeneratorAvailableEvent, class AWeaponGenerator*, weaponGenerator);
-
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentWeaponChangedEvent, class AShooterWeapon*, NewCurrentWeapon);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponGeneratorAvailableEvent, class AWeaponGenerator*, WeaponGenerator);
 
 class UCameraComponent;
 class USpringArmComponent;
@@ -35,43 +33,33 @@ class THESISPROTOTYPE_API AShooterCharacter : public ACharacter
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UCameraComponent* CameraComp;
+	UCameraComponent* cameraComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USpringArmComponent* SpringArmComp;
+	USpringArmComponent* springArmComp;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
-	float ZoomedFOV;
+	float zoomedFOV;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player", meta = (ClampMin = 0.1, ClampMax = 100.0))
-	float ZoomInterpSpeed;
+	float zoomInterpSpeed;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
-	TArray<TSubclassOf<AShooterWeapon>> StarterWeaponClasses;
+	TArray<TSubclassOf<AShooterWeapon>> starterWeaponClasses;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
-	TSubclassOf<AWeaponGenerator> BP_WeaponGenerator;
+	TSubclassOf<AWeaponGenerator> bp_weaponGenerator;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Player")
-	UHealthComponent* HealthComp;
+	UHealthComponent* healthComp;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Player")
 	bool bDied;
 
-	UPROPERTY(BlueprintAssignable, Category = "Player")
-	FOnCurrentWeaponChangedEvent OnCurrentWeaponChangedEvent;
-
 	UPROPERTY(BlueprintReadOnly, Category = "Player|Weapon", meta = (DisplayName = "Equipped Weapon"))
-	AShooterWeapon* m_equippedWeapon;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Player|Weapon Generator", meta = (DisplayName = "Weapon Generator"))
-	AWeaponGenerator* m_weaponGenerator;
-
-	UPROPERTY(BlueprintAssignable, Category = "Player|Weapon Generator")
-	FOnWeaponGeneratorAvailableEvent OnWeaponGeneratorAvailableEvent;
+	AShooterWeapon* equippedWeapon;
 
 public:
-	// Sets default values for this character's properties
 	AShooterCharacter();
 
 	virtual FVector GetPawnViewLocation() const override;
@@ -80,61 +68,61 @@ public:
 	void StartFire();
 	UFUNCTION(BlueprintCallable, Category = "Player")
 	void StopFire();
-
-	UFUNCTION(BlueprintCallable, Category="Player")
+	UFUNCTION(BlueprintCallable, Category = "Player")
 	bool IsMoving() const;
 	UFUNCTION(BlueprintCallable, Category = "Player")
 	bool IsCrouching() const;
 	UFUNCTION(BlueprintCallable, Category = "Player")
 	bool IsAiming() const { return bWantsToZoom; }
 
-	FORCEINLINE AShooterWeapon* GetEquippedWeapon() const { return m_equippedWeapon; }
+	FORCEINLINE AShooterWeapon* GetEquippedWeapon() const { return equippedWeapon; }
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void MoveForward(float Value);
-	void MoveRight(float Value);
-	void BeginCrouch();
-	void EndCrouch();
-	void BeginZoom();
-	void EndZoom();
+	void moveForward(float Value);
+	void moveRight(float Value);
+	void beginCrouch();
+	void endCrouch();
+	void beginZoom();
+	void endZoom();
 	void beginRun();
 	void endRun();
 	void reloadWeapon();
-	void addWeapon(AShooterWeapon* weapon);
-	void equipWeapon(AShooterWeapon* weapon);
-	void disarmWeapon(AShooterWeapon* weapon);
+	void addWeapon(AShooterWeapon* Weapon);
+	void equipWeapon(AShooterWeapon* Weapon);
+	void disarmWeapon(AShooterWeapon* Weapon);
 	//switches to next weapon if val is positive otherwise to the previous weapon
-	void switchWeapon(float val);
+	void switchWeapon(float Value);
 	void switchToLastEquipedWeapon();
-	void removeWeapon(AShooterWeapon* weapon);
+	void removeWeapon(AShooterWeapon* Weapon);
 	void dismantleEquippedWeaponAndGenerateNew();
 
 	//this is the callback for the weapon generator
 	UFUNCTION()
-	void onNewWeaponGenerated(AShooterWeapon* weapon);
+	void onNewWeaponGenerated(AShooterWeapon* Weapon);
 
 	UFUNCTION()
 	void onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
-	FName getSocketNameFor(const AShooterWeapon* weapon) const;
+	FName getSocketNameFor(const AShooterWeapon* Weapon) const;
 
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(BlueprintAssignable, Category = "Player")
+	FOnCurrentWeaponChangedEvent OnCurrentWeaponChangedEvent;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(BlueprintAssignable, Category = "Player|Weapon Generator")
+	FOnWeaponGeneratorAvailableEvent OnWeaponGeneratorAvailableEvent;
 
 protected:
-	bool bWantsToZoom;
-	float DefaultFOV;
+	bool bWantsToZoom = false;
+	float defaultFOV = 90;
+	float maxWalkSpeedDefault = 0;
+	float maxWalkSpeedCrouchedDefault = 0;
 
-	AShooterWeapon* m_lastEquippedWeapon;
-	TArray<AShooterWeapon*> m_availableWeapons;
-
-	float m_maxWalkSpeedDefault;
-	float m_maxWalkSpeedCrouchedDefault;
+	AShooterWeapon* lastEquippedWeapon;
+	TArray<AShooterWeapon*> availableWeapons;
+	AWeaponGenerator* weaponGenerator;
 };

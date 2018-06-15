@@ -21,11 +21,11 @@ class THESISPROTOTYPE_API AChangingGunsGameMode : public AGameModeBase
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Game Mode")
-	float TimeBetweenWaves;
+	float timeBetweenWaves;
 
 	// e.g. 2 -> bots = multiplier * wavecount
 	UPROPERTY(EditDefaultsOnly, Category = "Game Mode")
-	int32 BotsPerWaveMultiplier;
+	int32 botsPerWaveMultiplier;
 
 public:
 	AChangingGunsGameMode();
@@ -36,35 +36,26 @@ protected:
 	//hook for BP to spawn a single bot
 	UFUNCTION(BlueprintImplementableEvent, Category = "Game Mode")
 	void spawnNewBot();
-
 	void spawnBotTimerElapsed();
-
 	//start spawning bots
 	void startWave();
-
 	//Stop spawning bots
 	void endWave();
-	
 	//set timer for next wave start
 	void prepareForNextWave();
-
 	void checkWaveState();
-
 	void checkAnyPlayerAlive();
-
 	void gameOver();
-
-	void setWaveState(EWaveState newState);
+	void setWaveState(EWaveState NewState);
 
 public:
 	UPROPERTY(BlueprintAssignable, Category = "Game Mode")
 	FOnActorKilledEvent OnActorKilledEvent;
 
 protected:
-	AChangingGunsGameState* m_gameState;
-	FTimerHandle timerHandle_BotSpawner;
-	int32 NumOfBotsToSpawn;
-	int32 WaveCount;
+	AChangingGunsGameState* gameState;
+	int32 numOfBotsToSpawn;
+	int32 waveCount;
 	FTimerHandle timerHandle_NextWaveStart;
-
+	FTimerHandle timerHandle_BotSpawner;
 };

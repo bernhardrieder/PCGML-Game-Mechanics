@@ -17,14 +17,14 @@ AChangingGunsGameMode::AChangingGunsGameMode() : Super()
 	GameStateClass = AChangingGunsGameState::StaticClass();
 	PlayerStateClass = AChangingGunsPlayerState::StaticClass();
 
-	TimeBetweenWaves = 2.f;
-	BotsPerWaveMultiplier = 2;
+	timeBetweenWaves = 2.f;
+	botsPerWaveMultiplier = 2;
 }
 
 void AChangingGunsGameMode::StartPlay()
 {
 	Super::StartPlay();
-	m_gameState = GetGameState<AChangingGunsGameState>();
+	gameState = GetGameState<AChangingGunsGameState>();
 	prepareForNextWave();
 }
 
@@ -39,8 +39,8 @@ void AChangingGunsGameMode::spawnBotTimerElapsed()
 {
 	spawnNewBot();
 
-	--NumOfBotsToSpawn;
-	if(NumOfBotsToSpawn <= 0)
+	--numOfBotsToSpawn;
+	if(numOfBotsToSpawn <= 0)
 	{
 		endWave();
 	}
@@ -48,8 +48,8 @@ void AChangingGunsGameMode::spawnBotTimerElapsed()
 
 void AChangingGunsGameMode::startWave()
 {
-	++WaveCount;
-	NumOfBotsToSpawn = BotsPerWaveMultiplier * WaveCount;
+	++waveCount;
+	numOfBotsToSpawn = botsPerWaveMultiplier * waveCount;
 	GetWorldTimerManager().SetTimer(timerHandle_BotSpawner, this, &AChangingGunsGameMode::spawnBotTimerElapsed, 1.f, true, 0.f);
 
 	setWaveState(EWaveState::WaveInProgress);
@@ -64,14 +64,14 @@ void AChangingGunsGameMode::endWave()
 
 void AChangingGunsGameMode::prepareForNextWave()
 {
-	GetWorldTimerManager().SetTimer(timerHandle_NextWaveStart, this, &AChangingGunsGameMode::startWave, TimeBetweenWaves, false);
+	GetWorldTimerManager().SetTimer(timerHandle_NextWaveStart, this, &AChangingGunsGameMode::startWave, timeBetweenWaves, false);
 
 	setWaveState(EWaveState::WaitingToStart);
 }
 
 void AChangingGunsGameMode::checkWaveState()
 {
-	if(m_gameState->GetWaveState() == EWaveState::BossFight)
+	if(gameState->GetWaveState() == EWaveState::BossFight)
 	{
 		GetWorldTimerManager().ClearTimer(timerHandle_BotSpawner);
 		GetWorldTimerManager().ClearTimer(timerHandle_NextWaveStart);
@@ -80,7 +80,7 @@ void AChangingGunsGameMode::checkWaveState()
 
 	const bool bIsPreparingForWave = GetWorldTimerManager().IsTimerActive(timerHandle_NextWaveStart);
 
-	if(NumOfBotsToSpawn > 0 || bIsPreparingForWave)
+	if(numOfBotsToSpawn > 0 || bIsPreparingForWave)
 	{
 		return;
 	}
@@ -133,7 +133,7 @@ void AChangingGunsGameMode::gameOver()
 	setWaveState(EWaveState::GameOver);
 }
 
-void AChangingGunsGameMode::setWaveState(EWaveState newState)
+void AChangingGunsGameMode::setWaveState(EWaveState NewState)
 {
-	m_gameState->SetWaveState(newState);
+	gameState->SetWaveState(NewState);
 }

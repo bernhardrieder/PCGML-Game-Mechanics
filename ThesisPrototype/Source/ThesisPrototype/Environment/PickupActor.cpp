@@ -13,17 +13,17 @@ APickupActor::APickupActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	SphereComp->SetSphereRadius(75.f);
-	RootComponent = SphereComp;
+	sphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	sphereComp->SetSphereRadius(75.f);
+	RootComponent = sphereComp;
 
-	DecalComp = CreateDefaultSubobject<UDecalComponent>(TEXT("DecalComp"));
-	DecalComp->SetRelativeRotation(FRotator(90, 0, 0));
-	DecalComp->DecalSize = FVector(64.f, 75.f, 75.f);
+	decalComp = CreateDefaultSubobject<UDecalComponent>(TEXT("DecalComp"));
+	decalComp->SetRelativeRotation(FRotator(90, 0, 0));
+	decalComp->DecalSize = FVector(64.f, 75.f, 75.f);
 
-	DecalComp->SetupAttachment(RootComponent);
+	decalComp->SetupAttachment(RootComponent);
 
-	CoolDownDuration = 10.f;
+	coolDownDuration = 10.f;
 }
 
 // Called when the game starts or when spawned
@@ -36,7 +36,7 @@ void APickupActor::BeginPlay()
 
 void APickupActor::respawnPowerUp()
 {
-	if(!PowerUpClass)
+	if(!powerUpClass)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No PowerUp class specified in %s!"), *GetName());
 		return;
@@ -45,7 +45,7 @@ void APickupActor::respawnPowerUp()
 	FActorSpawnParameters spawnParams;
 	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
-	spawnedPowerUp = GetWorld()->SpawnActor<APowerUpActor>(PowerUpClass, GetTransform(), spawnParams);
+	spawnedPowerUp = GetWorld()->SpawnActor<APowerUpActor>(powerUpClass, GetTransform(), spawnParams);
 }
 
 // Called every frame
@@ -69,7 +69,7 @@ void APickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 		spawnedPowerUp->ActivatePowerUp(OtherActor);
 		spawnedPowerUp = nullptr;
 
-		GetWorldTimerManager().SetTimer(timerHandle_RespawnTimer, this, &APickupActor::respawnPowerUp, CoolDownDuration);
+		GetWorldTimerManager().SetTimer(timerHandle_RespawnTimer, this, &APickupActor::respawnPowerUp, coolDownDuration);
 	}
 }
 

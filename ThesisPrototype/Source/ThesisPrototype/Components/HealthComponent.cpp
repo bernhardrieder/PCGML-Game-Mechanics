@@ -17,28 +17,28 @@ FAutoConsoleVariableRef CVARDebuHealthComponents(
 
 UHealthComponent::UHealthComponent()
 {
-	DefaultHealth = 100;
-	TeamNumber = 255;
-	DefaultArmor = 0;
-	DefaultExtraLives = 0;
+	defaultHealth = 100;
+	teamNumber = 255;
+	defaultArmor = 0;
+	defaultExtraLives = 0;
 	bHandleDamageEnabled = true;
 }
 
 void UHealthComponent::Heal(float HealAmount)
 {
-	if(HealAmount < 0.f || Health <= 0.f)
+	if(HealAmount < 0.f || health <= 0.f)
 	{
 		return;
 	}
 
-	Health = FMath::Clamp(Health + HealAmount, 0.f, DefaultHealth);
+	health = FMath::Clamp(health + HealAmount, 0.f, defaultHealth);
 
 	if (DebugHealthComponents > 0 && GetOwner())
 	{
-		UE_LOG(LogTemp, Log, TEXT("%s - Health changed to %s (+%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(Health), *FString::SanitizeFloat(HealAmount));
+		UE_LOG(LogTemp, Log, TEXT("%s - Health changed to %s (+%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(health), *FString::SanitizeFloat(HealAmount));
 	}
 
-	OnHealthChangedEvent.Broadcast(this, Health, -HealAmount, nullptr, nullptr, nullptr);
+	OnHealthChangedEvent.Broadcast(this, health, -HealAmount, nullptr, nullptr, nullptr);
 }
 
 void UHealthComponent::RepairArmor(float RepairAmount)
@@ -47,31 +47,31 @@ void UHealthComponent::RepairArmor(float RepairAmount)
 	{
 		return;
 	}
-	Armor = FMath::Clamp(Armor + RepairAmount, 0.f, DefaultArmor);
+	armor = FMath::Clamp(armor + RepairAmount, 0.f, defaultArmor);
 
 	if (DebugHealthComponents > 0 && GetOwner())
 	{
-		UE_LOG(LogTemp, Log, TEXT("%s - Armor changed to %s (+%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(Armor), *FString::SanitizeFloat(RepairAmount));
+		UE_LOG(LogTemp, Log, TEXT("%s - Armor changed to %s (+%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(armor), *FString::SanitizeFloat(RepairAmount));
 	}
 
-	OnArmorChangedEvent.Broadcast(this, Armor, -RepairAmount, nullptr, nullptr, nullptr);
+	OnArmorChangedEvent.Broadcast(this, armor, -RepairAmount, nullptr, nullptr, nullptr);
 }
 
-void UHealthComponent::RestoreExtraLife(int32 amount)
+void UHealthComponent::RestoreExtraLife(int32 Lives)
 {
-	ExtraLives = FMath::Clamp(ExtraLives + amount, 0, DefaultExtraLives);
+	extraLives = FMath::Clamp(extraLives + Lives, 0, defaultExtraLives);
 
-	OnExtraLivesChangedEvent.Broadcast(this, ExtraLives);
+	OnExtraLivesChangedEvent.Broadcast(this, extraLives);
 }
 
-void UHealthComponent::SetHandleDamageEnabled(bool val)
+void UHealthComponent::SetHandleDamageEnabled(bool HandleDamage)
 {
-	bHandleDamageEnabled = val;
+	bHandleDamageEnabled = HandleDamage;
 }
 
-void UHealthComponent::SetTeamNumber(uint8 teamNumber)
+void UHealthComponent::SetTeamNumber(uint8 TeamNumber)
 {
-	TeamNumber = teamNumber;
+	teamNumber = TeamNumber;
 }
 
 void UHealthComponent::BeginPlay()
@@ -83,9 +83,9 @@ void UHealthComponent::BeginPlay()
 	{
 		owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::handleTakeAnyDamage);
 	}
-	Health = DefaultHealth;
-	Armor = DefaultArmor;
-	ExtraLives = DefaultExtraLives;
+	health = defaultHealth;
+	armor = defaultArmor;
+	extraLives = defaultExtraLives;
 }
 
 void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -100,42 +100,42 @@ void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, c
 		return;
 	}
 
-	if(Armor > 0.f)
+	if(armor > 0.f)
 	{
-		Armor = FMath::Clamp(Armor - Damage, 0.f, DefaultArmor);
+		armor = FMath::Clamp(armor - Damage, 0.f, defaultArmor);
 		if (DebugHealthComponents > 0 && GetOwner())
 		{
-			UE_LOG(LogTemp, Log, TEXT("%s - Armor changed to %s (-%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(Armor), *FString::SanitizeFloat(Damage));
+			UE_LOG(LogTemp, Log, TEXT("%s - Armor changed to %s (-%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(armor), *FString::SanitizeFloat(Damage));
 		}
-		OnArmorChangedEvent.Broadcast(this, Armor, Damage, nullptr, nullptr, nullptr);
+		OnArmorChangedEvent.Broadcast(this, armor, Damage, nullptr, nullptr, nullptr);
 		return;
 	}
-	Health = FMath::Clamp(Health - Damage, 0.f, DefaultHealth);
+	health = FMath::Clamp(health - Damage, 0.f, defaultHealth);
 
-	if(Health <= 0.f && ExtraLives > 0)
+	if(health <= 0.f && extraLives > 0)
 	{
-		--ExtraLives;
+		--extraLives;
 		if (DebugHealthComponents > 0 && GetOwner())
 		{
-			UE_LOG(LogTemp, Log, TEXT("%s - Lifes changed to %s (-%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(ExtraLives), *FString::SanitizeFloat(-1));
+			UE_LOG(LogTemp, Log, TEXT("%s - Lifes changed to %s (-%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(extraLives), *FString::SanitizeFloat(-1));
 		}
-		OnExtraLivesChangedEvent.Broadcast(this, ExtraLives);
-		Health = DefaultHealth;
-		OnHealthChangedEvent.Broadcast(this, Health, DefaultHealth, DamageType, InstigatedBy, DamageCauser);
+		OnExtraLivesChangedEvent.Broadcast(this, extraLives);
+		health = defaultHealth;
+		OnHealthChangedEvent.Broadcast(this, health, defaultHealth, DamageType, InstigatedBy, DamageCauser);
 		if (DebugHealthComponents > 0 && GetOwner())
 		{
-			UE_LOG(LogTemp, Log, TEXT("%s - Health changed to %s (-%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(Health), *FString::SanitizeFloat(DefaultHealth));
+			UE_LOG(LogTemp, Log, TEXT("%s - Health changed to %s (-%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(health), *FString::SanitizeFloat(defaultHealth));
 		}
 		return;
 	}
-	bIsDead = Health <= 0.f;
+	bIsDead = health <= 0.f;
 
 	if(DebugHealthComponents > 0 && GetOwner())
 	{
-		UE_LOG(LogTemp, Log, TEXT("%s - Health changed to %s (-%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(Health), *FString::SanitizeFloat(Damage));
+		UE_LOG(LogTemp, Log, TEXT("%s - Health changed to %s (-%s)"), *GetOwner()->GetName(), *FString::SanitizeFloat(health), *FString::SanitizeFloat(Damage));
 	}
 
-	OnHealthChangedEvent.Broadcast(this, Health, Damage, DamageType, InstigatedBy, DamageCauser);
+	OnHealthChangedEvent.Broadcast(this, health, Damage, DamageType, InstigatedBy, DamageCauser);
 
 	if(bIsDead)
 	{
@@ -146,38 +146,38 @@ void UHealthComponent::handleTakeAnyDamage(AActor* DamagedActor, float Damage, c
 	}
 }
 
-bool UHealthComponent::IsFriendly(AActor* actorA, AActor* actorB)
+bool UHealthComponent::IsFriendly(AActor* ActorA, AActor* ActorB)
 {
-	if (!actorA || !actorB)
+	if (!ActorA || !ActorB)
 	{
 		return true;
 	}
 
-	UHealthComponent* healthCompA = Cast<UHealthComponent>(actorA->GetComponentByClass(StaticClass()));
-	UHealthComponent* healthCompB = Cast<UHealthComponent>(actorB->GetComponentByClass(StaticClass()));
+	UHealthComponent* healthCompA = Cast<UHealthComponent>(ActorA->GetComponentByClass(StaticClass()));
+	UHealthComponent* healthCompB = Cast<UHealthComponent>(ActorB->GetComponentByClass(StaticClass()));
 
 	if(!healthCompA || !healthCompB)
 	{
 		return true;
 	}
 	
-	return healthCompA->TeamNumber == healthCompB->TeamNumber || IsBot(actorA) == IsBot(actorB);
+	return healthCompA->teamNumber == healthCompB->teamNumber || IsBot(ActorA) == IsBot(ActorB);
 }
 
 
-bool UHealthComponent::IsBot(AActor* actor)
+bool UHealthComponent::IsBot(AActor* Actor)
 {
-	if (!actor)
+	if (!Actor)
 	{
 		return false;
 	}
 
-	UHealthComponent* healthComp = Cast<UHealthComponent>(actor->GetComponentByClass(StaticClass()));
+	UHealthComponent* healthComp = Cast<UHealthComponent>(Actor->GetComponentByClass(StaticClass()));
 
 	if (!healthComp)
 	{
 		return false;
 	}
 
-	return healthComp->TeamNumber >= TEAMNUMBER_BOT_RANGE_MIN && healthComp->TeamNumber <= TEAMNUMBER_BOT_RANGE_MAX;
+	return healthComp->teamNumber >= TEAMNUMBER_BOT_RANGE_MIN && healthComp->teamNumber <= TEAMNUMBER_BOT_RANGE_MAX;
 }

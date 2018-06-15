@@ -10,9 +10,7 @@
 #include "Components/CapsuleComponent.h"
 #include "ChangingGuns.h"
 #include "Components/HealthComponent.h"
-#include "Net/UnrealNetwork.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "ChangingGunsPlayerState.h"
 #include "Weapons/WeaponGenerator.h"
 
 // Sets default values
@@ -21,28 +19,28 @@ AShooterCharacter::AShooterCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
-	SpringArmComp->bUsePawnControlRotation = true;
-	SpringArmComp->SetupAttachment(RootComponent);
+	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
+	springArmComp->bUsePawnControlRotation = true;
+	springArmComp->SetupAttachment(RootComponent);
 
-	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
+	healthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComp"));
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
 
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 
-	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
-	CameraComp->SetupAttachment(SpringArmComp);
+	cameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
+	cameraComp->SetupAttachment(springArmComp);
 
-	ZoomedFOV = 65.0;
-	ZoomInterpSpeed = 20.0f;
+	zoomedFOV = 65.0;
+	zoomInterpSpeed = 20.0f;
 }
 
 FVector AShooterCharacter::GetPawnViewLocation() const
 {
-	if(CameraComp)
+	if(cameraComp)
 	{
-		return CameraComp->GetComponentLocation();
+		return cameraComp->GetComponentLocation();
 	}
 	return Super::GetPawnViewLocation();
 }
@@ -52,39 +50,39 @@ void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	m_maxWalkSpeedDefault = GetCharacterMovement()->MaxWalkSpeed;
-	m_maxWalkSpeedCrouchedDefault = GetCharacterMovement()->MaxWalkSpeedCrouched;
+	maxWalkSpeedDefault = GetCharacterMovement()->MaxWalkSpeed;
+	maxWalkSpeedCrouchedDefault = GetCharacterMovement()->MaxWalkSpeedCrouched;
 
-	DefaultFOV = CameraComp->FieldOfView;
-	HealthComp->OnHealthChangedEvent.AddDynamic(this, &AShooterCharacter::onHealthChanged);
+	defaultFOV = cameraComp->FieldOfView;
+	healthComp->OnHealthChangedEvent.AddDynamic(this, &AShooterCharacter::onHealthChanged);
 
 	FActorSpawnParameters spawnParams;
 	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	for(const TSubclassOf<AShooterWeapon> weaponClass : StarterWeaponClasses)
+	for(const TSubclassOf<AShooterWeapon> weaponClass : starterWeaponClasses)
 	{
 		AShooterWeapon* starterWeapon = GetWorld()->SpawnActor<AShooterWeapon>(weaponClass, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
 		addWeapon(starterWeapon);
 	}
 
-	if(BP_WeaponGenerator.GetDefaultObject())
+	if(bp_weaponGenerator.GetDefaultObject())
 	{
-		m_weaponGenerator = GetWorld()->SpawnActor<AWeaponGenerator>(BP_WeaponGenerator, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
-		m_weaponGenerator->SetOwner(this);
-		m_weaponGenerator->OnWeaponGenerationFinishedEvent.AddDynamic(this, &AShooterCharacter::onNewWeaponGenerated);
-		OnWeaponGeneratorAvailableEvent.Broadcast(m_weaponGenerator);
+		weaponGenerator = GetWorld()->SpawnActor<AWeaponGenerator>(bp_weaponGenerator, FVector::ZeroVector, FRotator::ZeroRotator, spawnParams);
+		weaponGenerator->SetOwner(this);
+		weaponGenerator->OnWeaponGenerationFinishedEvent.AddDynamic(this, &AShooterCharacter::onNewWeaponGenerated);
+		OnWeaponGeneratorAvailableEvent.Broadcast(weaponGenerator);
 	}
 	
 	//(that'd be an axis input actually)
 	switchWeapon(1.0f);
 }
 
-FName AShooterCharacter::getSocketNameFor(const AShooterWeapon* weapon) const
+FName AShooterCharacter::getSocketNameFor(const AShooterWeapon* Weapon) const
 {
-	if (!weapon)
+	if (!Weapon)
 		return FName("");
 
 	//do it like that because I don't like to fiddle around with all of those 3d models 
-	switch(weapon->GetType())
+	switch(Weapon->GetType())
 	{
 		case EWeaponType::Pistol: return FName("PistolSocket");
 		case EWeaponType::SubMachineGun: return FName("SMGSocket");
@@ -97,32 +95,32 @@ FName AShooterCharacter::getSocketNameFor(const AShooterWeapon* weapon) const
 }
 
 
-void AShooterCharacter::MoveForward(float Value)
+void AShooterCharacter::moveForward(float Value)
 {
 	AddMovementInput(GetActorForwardVector()*Value);
 }
 
-void AShooterCharacter::MoveRight(float Value)
+void AShooterCharacter::moveRight(float Value)
 {
 	AddMovementInput(GetActorRightVector()*Value);
 }
 
-void AShooterCharacter::BeginCrouch()
+void AShooterCharacter::beginCrouch()
 {
 	Crouch();
 }
 
-void AShooterCharacter::EndCrouch()
+void AShooterCharacter::endCrouch()
 {
 	UnCrouch();
 }
 
-void AShooterCharacter::BeginZoom()
+void AShooterCharacter::beginZoom()
 {
 	bWantsToZoom = true;
 }
 
-void AShooterCharacter::EndZoom()
+void AShooterCharacter::endZoom()
 {
 	bWantsToZoom = false;
 }
@@ -145,92 +143,92 @@ void AShooterCharacter::endRun()
 
 void AShooterCharacter::reloadWeapon()
 {
-	if(m_equippedWeapon)
+	if(equippedWeapon)
 	{
-		m_equippedWeapon->StartMagazineReloading();
+		equippedWeapon->StartMagazineReloading();
 	}
 }
 
-void AShooterCharacter::equipWeapon(AShooterWeapon* weapon)
+void AShooterCharacter::equipWeapon(AShooterWeapon* Weapon)
 {
-	if (weapon)
+	if (Weapon)
 	{
-		if(m_equippedWeapon && m_lastEquippedWeapon != m_equippedWeapon)
+		if(equippedWeapon && lastEquippedWeapon != equippedWeapon)
 		{
-			m_lastEquippedWeapon = m_equippedWeapon;
+			lastEquippedWeapon = equippedWeapon;
 		}
-		m_equippedWeapon = weapon;
-		m_equippedWeapon->Equip(this);
-		m_equippedWeapon->SetActorHiddenInGame(false);
-		m_equippedWeapon->SetActorEnableCollision(true);
-		OnCurrentWeaponChangedEvent.Broadcast(m_equippedWeapon);
-		GetCharacterMovement()->MaxWalkSpeed = m_maxWalkSpeedDefault * weapon->GetWalkinSpeedModifier();
-		GetCharacterMovement()->MaxWalkSpeedCrouched = m_maxWalkSpeedCrouchedDefault * weapon->GetWalkinSpeedModifier();
+		equippedWeapon = Weapon;
+		equippedWeapon->Equip(this);
+		equippedWeapon->SetActorHiddenInGame(false);
+		equippedWeapon->SetActorEnableCollision(true);
+		OnCurrentWeaponChangedEvent.Broadcast(equippedWeapon);
+		GetCharacterMovement()->MaxWalkSpeed = maxWalkSpeedDefault * Weapon->GetWalkinSpeedModifier();
+		GetCharacterMovement()->MaxWalkSpeedCrouched = maxWalkSpeedCrouchedDefault * Weapon->GetWalkinSpeedModifier();
 	}
 }
 
-void AShooterCharacter::disarmWeapon(AShooterWeapon* weapon)
+void AShooterCharacter::disarmWeapon(AShooterWeapon* Weapon)
 {
-	if (weapon)
+	if (Weapon)
 	{
-		weapon->Disarm();
-		weapon->SetActorHiddenInGame(true);
-		weapon->SetActorEnableCollision(false);
+		Weapon->Disarm();
+		Weapon->SetActorHiddenInGame(true);
+		Weapon->SetActorEnableCollision(false);
 	}
 }
 
-void AShooterCharacter::switchWeapon(float val)
+void AShooterCharacter::switchWeapon(float Value)
 {
-	if (!FMath::IsNearlyZero(val) && m_availableWeapons.Num() > 0)
+	if (!FMath::IsNearlyZero(Value) && availableWeapons.Num() > 0)
 	{
 		int32 nextIdx = 0;
-		if (m_equippedWeapon)
+		if (equippedWeapon)
 		{
-			bool nextWeapon = val >= 0.f;
-			int32 idx = m_availableWeapons.Find(m_equippedWeapon);
+			bool nextWeapon = Value >= 0.f;
+			int32 idx = availableWeapons.Find(equippedWeapon);
 			if(nextWeapon)
 			{
 				++idx;
-				nextIdx = idx >= m_availableWeapons.Num() ? 0 : idx;
+				nextIdx = idx >= availableWeapons.Num() ? 0 : idx;
 			}
 			else
 			{
 				--idx;
-				nextIdx = idx < 0 ? m_availableWeapons.Num() - 1 : idx;
+				nextIdx = idx < 0 ? availableWeapons.Num() - 1 : idx;
 			}
-			if(m_equippedWeapon == m_availableWeapons[nextIdx])
+			if(equippedWeapon == availableWeapons[nextIdx])
 			{
 				//do nothing!
 				return;
 			}
-			disarmWeapon(m_equippedWeapon);
+			disarmWeapon(equippedWeapon);
 		}
-		equipWeapon(m_availableWeapons[nextIdx]);
+		equipWeapon(availableWeapons[nextIdx]);
 	}
 }
 
 void AShooterCharacter::switchToLastEquipedWeapon()
 {
-	if(m_lastEquippedWeapon && m_lastEquippedWeapon != m_equippedWeapon)
+	if(lastEquippedWeapon && lastEquippedWeapon != equippedWeapon)
 	{
-		disarmWeapon(m_equippedWeapon);
-		equipWeapon(m_lastEquippedWeapon);
+		disarmWeapon(equippedWeapon);
+		equipWeapon(lastEquippedWeapon);
 	}
 }
 
 void AShooterCharacter::StartFire()
 {
-	if(m_equippedWeapon)
+	if(equippedWeapon)
 	{
-		m_equippedWeapon->StartFire();
+		equippedWeapon->StartFire();
 	}
 }
 
 void AShooterCharacter::StopFire()
 {
-	if (m_equippedWeapon)
+	if (equippedWeapon)
 	{
-		m_equippedWeapon->StopFire();
+		equippedWeapon->StopFire();
 	}
 }
 
@@ -244,51 +242,50 @@ bool AShooterCharacter::IsCrouching() const
 	return GetCharacterMovement()->IsCrouching();
 }
 
-void AShooterCharacter::addWeapon(AShooterWeapon* weapon)
+void AShooterCharacter::addWeapon(AShooterWeapon* Weapon)
 {
-	if(weapon)
+	if(Weapon)
 	{
-		weapon->SetOwner(this);
-		weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, getSocketNameFor(weapon));
-		disarmWeapon(weapon);
-		m_availableWeapons.Add(weapon);
+		Weapon->SetOwner(this);
+		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, getSocketNameFor(Weapon));
+		disarmWeapon(Weapon);
+		availableWeapons.Add(Weapon);
 	}
 
 }
 
-void AShooterCharacter::removeWeapon(AShooterWeapon* weapon)
+void AShooterCharacter::removeWeapon(AShooterWeapon* Weapon)
 {
-	if(weapon && weapon != m_equippedWeapon)
+	if(Weapon && Weapon != equippedWeapon)
 	{
-		m_availableWeapons.Remove(weapon);
-		if(!weapon->IsPendingKill())
+		availableWeapons.Remove(Weapon);
+		if(!Weapon->IsPendingKill())
 		{
-			weapon->Destroy();
+			Weapon->Destroy();
 		}
 	}
 }
 
 void AShooterCharacter::dismantleEquippedWeaponAndGenerateNew()
 {
-	if (m_weaponGenerator->IsGenerating() || !m_weaponGenerator->IsReadyToUse())
+	if (weaponGenerator->IsGenerating() || !weaponGenerator->IsReadyToUse())
 		return;
 
-	AShooterWeapon* dismantle = m_equippedWeapon;
+	AShooterWeapon* dismantle = equippedWeapon;
 	switchWeapon(1.f);
-	m_lastEquippedWeapon = nullptr;
+	lastEquippedWeapon = nullptr;
 
-	m_weaponGenerator->DismantleWeapon(dismantle);
+	weaponGenerator->DismantleWeapon(dismantle);
 	removeWeapon(dismantle);
 	dismantle = nullptr;
 }
 
-void AShooterCharacter::onNewWeaponGenerated(AShooterWeapon* weapon)
+void AShooterCharacter::onNewWeaponGenerated(AShooterWeapon* Weapon)
 {
-	if (!weapon)
+	if (!Weapon)
 		return;
 
-	addWeapon(weapon);
-	//equipWeapon(weapon);
+	addWeapon(Weapon);
 }
 
 void AShooterCharacter::onHealthChanged(const UHealthComponent* HealthComponent, float Health, float HealthDelta, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -304,7 +301,7 @@ void AShooterCharacter::onHealthChanged(const UHealthComponent* HealthComponent,
 		DetachFromControllerPendingDestroy();
 		SetLifeSpan(10.f);
 
-		for(AShooterWeapon* weapon : m_availableWeapons)
+		for(AShooterWeapon* weapon : availableWeapons)
 		{
 			weapon->SetLifeSpan(10.f);
 		}
@@ -316,9 +313,9 @@ void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	float targetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
-	float newFOV = FMath::FInterpTo(CameraComp->FieldOfView, targetFOV, DeltaTime, ZoomInterpSpeed);
-	CameraComp->SetFieldOfView(newFOV);
+	float targetFOV = bWantsToZoom ? zoomedFOV : defaultFOV;
+	float newFOV = FMath::FInterpTo(cameraComp->FieldOfView, targetFOV, DeltaTime, zoomInterpSpeed);
+	cameraComp->SetFieldOfView(newFOV);
 }
 
 // Called to bind functionality to input
@@ -326,18 +323,18 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("MoveForward", this, &AShooterCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &AShooterCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("MoveForward", this, &AShooterCharacter::moveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AShooterCharacter::moveRight);
 	PlayerInputComponent->BindAxis("LookUp", this, &AShooterCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Turn", this, &AShooterCharacter::AddControllerYawInput);
 
-	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AShooterCharacter::BeginCrouch);
-	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AShooterCharacter::EndCrouch);
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AShooterCharacter::beginCrouch);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AShooterCharacter::endCrouch);
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 
-	PlayerInputComponent->BindAction("Zoom", IE_Pressed, this, &AShooterCharacter::BeginZoom);
-	PlayerInputComponent->BindAction("Zoom", IE_Released, this, &AShooterCharacter::EndZoom);
+	PlayerInputComponent->BindAction("Zoom", IE_Pressed, this, &AShooterCharacter::beginZoom);
+	PlayerInputComponent->BindAction("Zoom", IE_Released, this, &AShooterCharacter::endZoom);
 
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AShooterCharacter::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AShooterCharacter::StopFire);
