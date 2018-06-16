@@ -455,11 +455,9 @@ In short, \ac{RL} is a goal-oriented approach where an AI tries to reach a goal 
 In general, RL makes use of a bit of supervision in the form of feedback for an action executed by an agent \cite{ml::book::statistics}. Among experts, this feedback exists as the reward for actions in RL algorithms \cite{ml::book::statistics}.  The tricky part is that RL usually consists of following decisions and every chosen action — chosen out of a set of actions — by an agent is changing the environment which usually makes it difficult to train a model \cite{ml::book::statistics}. Hence, an agent executes different decisions in a loop and is looking for the highest total reward for its sequence of actions since it will always want to increase its total reward. \cite{ai::book} With this strategy, an RL algorithm is getting better and better over time in solving a specific problem until it found the best solution.\\
 During the last years, RL algorithms have been used to learn an AI how to play classical games, find the best strategy to win a game, learn an AI how to walk and many other applications \cite{ml::book::algorithms}. Algorithms include neural networks, deep neural networks, Q-Learning or Markov decision process. \cite{ml::book::statistics}
 
-\subsection{TODO: Generative versus Discriminative Models}
-{\color{blue}\todo[inline]{WRITE ABOUT IT!}}
-\cite{ml::book::nnProgrammingTF}
-
-
+\subsection{Generative versus Discriminative Models}
+Another viewpoint to differ ML models is to group them into generative and discriminative models. Both of them have different applications and advantages. As the name of generative models suggests, they are used for data generation problems instead of simple label predictions problems \cite{ml::book::nnProgrammingTF}. This fact infers that there is a difference in their underlying learning approach which is the key point of the distinction \cite{ml::book::nnProgrammingTF}. Discrimative models include \acp{NN}, decision trees, random forests or \acp{SVM} whereas generative models include \acp{GAN}, Autoencoders such as \acp{VAE}, \acp{LSTM} or \acp{RNN} \cite{ml::book::nnProgrammingTF}. \\
+In particular, the main distinction feature between the models is their approach how to learn the relationships of the training attributes to either the labels or all the other attributes as a whole. With this said, distriminative models try to learn the conditional relationship between the features and the labels whereas generative models try to learn the joint probability distribution of the whole data and then infer the conditional relationship \cite{ml::book::nnProgrammingTF}.
 
 \section{Development} \label{mlDevelopment}
 Developing an easy to use AI needs to be a well-structured and planned process. Especially, when using ML as a focus of interaction, it is even more important to be well-prepared. For this reason, this reason addresses some design considerations about developing user-friendly AI systems in games, as well as standard pitfalls to keep in mind, standard procedures for data preprocessing and possibilities of how to use ML algorithms in two commonly used game engines.
@@ -491,7 +489,7 @@ Therefore, a right amount of information for the training of a machine learning 
 \subsubsection{Curse of Dimensionality}
 This problem often occurs when the training set is smaller than the number of feature variables, or also called the dimensions of a set, which are used to train a model \cite{ml::book::algorithms}. In this case, if the number of features increases then the performance of the model gets dramatically reduced \cite{ml::book::algorithms}. Possible ways to prevent and solve this problem are, e.g., a decrease of dimensions or providing more training data \cite{ml::book::algorithms}.
 
-\subsection{Data Preprocessing} \label{ML::dataPreprocessing}
+\subsection{TODO: Data Preprocessing} \label{ML::dataPreprocessing}
 A standard procedure in ML is the technique of data preprocessing so that data values are consistent with each other. Table \ref{table::PCGML::devExample::data} shows a simple example data table which could be usable for the systems training. The table’s data can contain any discrete or continuous values which could originate from any decoded non-numerical data.
 \begin{table}[!htbp]
 	\centering
@@ -665,19 +663,19 @@ First of all, it is necessary to come up with efficient and sufficient data for 
 After provision and preprocessing of the dataset follows training. Training can happen with different training models as described in chapter \ref{PCGML::devConsiderations}. For example, the use of an ANN or Gaussian Mixture Model could be a suitable training model for a given example dataset. In the scenario of the given sequence data, the \ac{NN} would be trained for each pair of values to output the next value in the sequence. Figure \ref{fig::PCGML::devExample::NNbasic} shows an example for an \ac{NN} where the start value and the first variable are used to predict the second variable.
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=0.25\linewidth]{PICs/neurons_legend.jpg}
+	\includegraphics[width=0.25\linewidth]{PICs/NNs/neurons_legend.jpg}
 	\caption{Neuron legend for all neural networks in this thesis.}\label{fig::neuron_legend}
 \end{figure}
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=0.3\linewidth]{PICs/PCGML_development_example_NN_basic}
+	\includegraphics[width=0.3\linewidth]{PICs/NNs/PCGML_development_example_NN_basic}
 	\caption{Basic neural network to output a variable based on given input variables.}\label{fig::PCGML::devExample::NNbasic}
 \end{figure}
 In specific, the training of several \acp{NN} for every following variable of the data sequence is necessary. Another possibility to use \acp{NN} would be to make use of the so-called "Softmax" function which outputs the categorical distribution or probability distribution of a variable. With this probability, it can generate and train the following variables. Figure \ref{fig::PCGML::devExample::NNwithSoftmax} shows this kind of NN with an example probability distribution in the output layer.
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=0.3\linewidth]{PICs/PCGML_development_example_NN_categorical_distributions}
-	\caption{Neural network with an example probability distribution in the output layer.}\label{fig::PCGML::devExample::NNwithSoftmax}
+	\includegraphics[width=0.3\linewidth]{PICs/NNs/PCGML_development_example_NN_categorical_distributions}
+	\caption{Neural network with an probability distribution example in the output layer.}\label{fig::PCGML::devExample::NNwithSoftmax}
 \end{figure}
 
 
@@ -946,7 +944,7 @@ The environment is a mountain-forest-like environment. The player spawns anywher
 However, first of all, the player needs to fight against NPC enemies on the way to the arena to specialize and get used to the weapons. Even though this is a training session, the player has a specific amount of lives and need to take care of them. If the player loses all of the lives during this session, then the game is lost, and it ends. Specific spawnpoints provide the player with health, ammunition, and armor packages.
 
 \subsubsection{Battle of the Changing Guns}
-Initialization of the battle happens as soon as the player is in a specific range to the AI in the arena. As soon as the player initiated the battle, the training session ends and recovers the player's lives for an epic final battle. The player can now move everywhere on the map and needs to defeat the AI with his weapons to win the game. Ammunition, health, and armor packages are randomly, but in player's range, spawned during the battle, so that the player needs to walk around in the map to give the battle more energy.
+Initialization of the battle happens as soon as the player is in a specific range to the AI in the arena. As soon as the player initiated the battle, the training session ends and recovers the player's lives for an epic final battle. The player can now move everywhere on the map and needs to defeat the AI with his weapons to win the game. Ammunition, health, and armor packages are randomly, but in player's range, spawned during the battle, so that the player needs to walk around in the map to give the battle more energy. Furthermore, the endboss is very strong which forces the player to use the weapon generator very often. 
 
 \subsection{TODO: Weapon and Ammunition}
 The Player can hold two generated weapons at a time but can use one at a time. Generated weapons come with a specific ammunition pack at generation time with the possibility to refill ammunition during the game. The player can either use a weapon as long as ammunition is available or dismantle it at any time to generate a new weapon.\\
@@ -1065,37 +1063,6 @@ generative models in specific, like GAN, VAE
 
 \section{TODO: Learning Method Background}
 
-\begin{comment} 
-\subsection{Short \acl{ANN} Primer}
-\subsubsection{Neurons and Feed Forward Networks}
-Feed forward networks are the simples networks used in neural networks. there just 
-\subsubsection{Backpropagation}
-is how neural networks learn. they apply different optimizer to detect the delta of the weights and biases. there is for example, gradient descent or stochastic gradient descent.
-\subsubsection{Workflow}
-\begin{enumerate}
-	\item Randomly initialize weights to small numbers close to 0
-	\item input data X
-	\item feed forward until predicted result y
-	\item compare predicted result to real result and measure error
-	\item back propagate error and update weights and biases
-	\item repeat steps 2 - 5 after each batch
-	\item whole trainning set passed through -> epoch complete and restart of 2 until all epochs are finished
-\end{enumerate}
-
-
-\subsection{Neural Networks}
-used for regression \cite{ml:2}\\
-\cite{ml::book::developer} page >131
-
-\subsubsection{\acl{ANN}}
-\cite{ml::book::algorithms} page 289\\
-\cite{ml::book::statistics} page 241 - 267\\
-supervised, can be used for either classification, prediction or preference learning tasks. but also unsupervised \cite{ai::book}\\
-Artificial Neural Networks (ANNs) are a bio-inspired approach for computational intelligence and machine learning. An ANN is a set of interconnected processing units (named neurons) which was originally designed to model the way a biological brain—containing over $10^{11}$ neurons—processes information, operates, learns and performs in several tasks. Biological neurons have a cell body, a number of dendrites which bring information into the neuron and an axon which transmits electrochemical information outside the neuron. The artificial neuron (see Fig. 2.12) resembles the biological neuron as it has a number of inputs x (corresponding to the neuron dendrites) each with an associated weight parameter w (corresponding to the synaptic strength). It also has a processing unit that combines inputs with their corresponding weights via an inner product (weighted sum) and adds a bias (or threshold) weight b to the weighted sum as follows: $x*w+b$. This value is then fed to an activation function g (cell body) that yields the output of the neuron (corresponding to an axon terminal). ANNs are essentially simple mathematical models defining a function $f : x \rightarrow y$. \cite{ai::book}\\
-core applications: pattern recogintion, robot and agent control, game-playing, decision making, gesture, speech and text recognition, medical and financial applications, affective modeling, and image recognition \cite{ai::book}\\
-pro: compared to other supervised learning approaches is their capacity to approximate any continuous real-valued function given sufficiently large ANN architectures and computational resources. This capacity characterizes ANNs as universal approximators \cite{ai::book}\\
-
-\end{comment}
 \subsection{TODO: Autoencoder}
 What is/For what is a normal Autoencoder used/good? \\
 -) just encodes and decodes the same structure\\
@@ -1104,7 +1071,7 @@ What is/For what is a normal Autoencoder used/good? \\
 -) dimension reduction
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=0.3\linewidth]{PICs/autoencoder}
+	\includegraphics[width=0.3\linewidth]{PICs/NNs/autoencoder}
 	\caption{Schematic representation of an autoencoder neural network.}
 \end{figure}
 \subsection{TODO: \acl{VAE}}
@@ -1116,7 +1083,7 @@ watch Arxiv video for more differences to normal AE\\
 
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=0.7\linewidth]{PICs/variational_autoencoder}
+	\includegraphics[width=0.7\linewidth]{PICs/NNs/variational_autoencoder}
 	\caption{Schematic representation of an variational autoencoder neural network.}
 \end{figure}
 %
@@ -1201,7 +1168,7 @@ what was implemented, etc
 
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=1.0\linewidth]{PICs/ingame_screenshot}
+	\includegraphics[width=1.0\linewidth]{PICs/Prototype/ingame_screenshot}
 	\caption{Prototype scenario in-game screenshot.}
 \end{figure}
 
@@ -1320,12 +1287,13 @@ further implementations
 	\acro{CPU}{Central Processing Unit}
 	\acro{CS:GO}{Counter-Strike: Global Offensive}
 	\acro{FPS}{First Person Shooter}
+	\acro{GAN}{Generative Adversarial Network}
 	\acro{GB}{Gigabyte}
 	\acro{GPU}{Graphics Processing Unit}
 	\acro{HMM}{Hidden Markov Model}
 	\acro{JSON}{JavaScript Object Notation}
 	\acro{MDA}{Mechanics-Dynamics-Aesthetics}
-	\acro{LSTM}{Long Short-Term Memory}
+	\acro{LSTM}{Long Short-Term Memory Network}
 	\acro{ML}{Machine Learning}
 	\acro{MMORPG}{Massively Multiplayer Online Roleplay Game}
 	\acro{NLP}{Natural Language Processing}
@@ -1340,6 +1308,7 @@ further implementations
     \acro{RPG}{Roleplay Game}
     \acro{RL}{Reinforcement Learning}
     \acro{RNG}{Random Number Generator}
+    \acro{RNN}{Recurrent Neural Network}
     \acro{SVM}{Support Vector Machine}
     \acro{TF}{TensorFlow}
     \acro{UE4}{Unreal Engine 4}
