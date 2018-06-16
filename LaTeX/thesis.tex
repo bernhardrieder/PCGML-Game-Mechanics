@@ -1237,7 +1237,42 @@ There was a game freeze during the JSON input processing in the TF plugin. so i 
 the default TF version the plugin comes with has tensorflow 1.6.0 enabled -> i switched to 1.8.0
 
 
-\section{TODO: Performance Measurements}
+\section{TODO: Performance and Profiling}
+Profiling was done in the Unreal Engine 4 Editor in development configuration with following test device specifications:
+\begin{itemize}
+	\item \textbf{Product}: MSI GS60 2PE Ghost Pro
+	\item \textbf{OS}: Windows 10 64-bit
+	\item \textbf{CPU}: Intel Core i7-4710HQ CPU @ 2.50GHz
+	\item \textbf{GPU}: NVIDIA GeForce GTX 870M
+	\item \textbf{\ac{RAM}}: 16GB
+\end{itemize}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=1.0\linewidth]{PICs/Profiling/deactivated_plugin}
+	\caption{Profiling chart with the deactivated TensorFlow Plugin.}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=1.0\linewidth]{PICs/Profiling/activated_plugin_no_tf_used}
+	\caption{Profiling chart with the activated but not actively used TensorFlow Plugin for CPU.}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=1.0\linewidth]{PICs/Profiling/tf_cpu}
+	\caption{Profiling chart with the actively used TensorFlow Plugin for CPU.}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=1.0\linewidth]{PICs/Profiling/tf_gpu}
+	\caption{Profiling chart with the actively usedTensorFlow Plugin for GPU.}
+\end{figure}
+
+
+
 
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
@@ -1301,6 +1336,7 @@ further implementations
     \acro{PCG}{Procedural Content Generation}
     \acro{PCGML}{Procedural Content Generation via Machine Learning}
     \acro{PvE}{Player versus Environment}
+    \acro{RAM}{Random Access Memory}
     \acro{RPG}{Roleplay Game}
     \acro{RL}{Reinforcement Learning}
     \acro{RNG}{Random Number Generator}
