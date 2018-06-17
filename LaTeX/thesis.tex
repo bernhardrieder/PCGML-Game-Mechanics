@@ -885,7 +885,7 @@ As already mentioned, all the introduced ideas differ in their development compl
 % ------------------------------- NEW CHAPTER ------------------------------- %
 %
 \clearpage
-\chapter{Prototype Preparations} \label{chapter::gamePrototype}
+\chapter{TODO: Prototype Preparations} \label{chapter::gamePrototype}
 Dedication of this chapter is the development preparations of a game prototype which uses the PCGML game mechanic chosen in the last chapter. Every section in this chapter is in direct relation with this PCGML game mechanic which does not mean that the process is not applicable for other PCGML game mechanics. Most of the described processes are transferable and follow a fundamental principle suitable for every other kind of PCGML game mechanic. \\
 The next sections contain every conceivable necessary topic of implementing the PCGML game mechanic "\nameref{idea::changingWeapons}" in a game prototype. From an initial game idea to the most useful game engine to the training model. Note that the game idea functions as an idea of which a prototype with a PCGML game mechanic emerges rather than being a thoroughly sophisticated game. This and the next chapter functions as a proof-of-concept and shows how a PCGML game mechanic can be implemented and used in a game.
 
@@ -946,16 +946,16 @@ These reasons of a basic \ac{TF} framework to implement ML algorithms on top of 
 UE4 itself does not require particular hardware to run. They support many different OS and hardware. This support leads the requirements examination of this chapter on the UE4 \ac{TF} plugin.
 
 \subsection{\acl{TF} Plugin}
-The UE4 \ac{TF} plugin currently only supports the Windows OS \cite{ue4::tensorFlowPlugin}. To get started with the plugin, it needs the installation of \ac{TF} on the executing system. \ac{TF} supports 64-bit and x86 desktops or laptops with Windows 7 or later \cite{api::tensorFlow}. There are two installation options for enabling different types of \ac{TF} on the PC:
+The UE4 \ac{TF} plugin currently only supports the Windows OS \cite{ue4::tensorFlowPlugin}. To get started with the plugin, it needs the installation of \ac{TF} on the executing system or in this case in the UE project. \ac{TF} supports 64-bit and x86 desktops or laptops with Windows 7 or later \cite{api::tensorFlow}. There are two installation options for enabling different types of \ac{TF} on the PC:
 \begin{itemize}
-	\item \textbf{\ac{CPU}}: \ac{TF} with CPU support is the standard alternative which works for most of the standard PCs in use nowadays. The only significant drawback of using the CPU variant of \ac{TF} are longer training1 computation times.
+	\item \textbf{\ac{CPU}}: \ac{TF} with CPU support is the standard alternative which works for most of the standard PCs in use nowadays. The only significant drawback of using the CPU variant of \ac{TF} are longer training computation times.
 	\item \textbf{\ac{GPU}}: The GPU alternative of \ac{TF} offers faster computation of ML algorithms and significantly reduces training time. The only requirement for using the GPU variant is that the user needs to use a GPU which is eligible for NVIDIA's CUDA toolkit \cite{nvidia::cudaToolkit} to run the GPU variant of \ac{TF}. Nevertheless, modern PCs with an integrated NVIDIA graphic card are usually eligible to support the CUDA toolkit. 
 \end{itemize}
-As already mentioned before, the only fundamental difference between the installations is their result in different computation times. Notably, this is getting an important role when the game uses online training and requires suitable computation times for the model's training. For this reason and to avoid initial delays, it is advisable to use a pre-trained model and apply changes to a copy of the model during runtime so that players are not concerned about the computation time.
+As already mentioned before, the only fundamental difference between the installations is their result in different computation times. Notably, this is getting an important role when the game uses online training, trains a very big model and requires suitable computation times for the model's training. For this reason and to avoid initial delays, it is advisable to use a pre-trained model and apply changes to a copy of the model during runtime so that players are not concerned about the computation time.
 
 \section{Data Acquisition}
-The most important part of the prototype is about the data to train the ML model. To get a well-trained model, it is most likely that it needs a rather big dataset. For the sake of simplicity of the data search, this dataset size is defined to contain at least 100 entries. However, the right amount of data entries depends on the available variables to train the model, and there is no simple formula for this problem as described in chapter \ref{chapter::machineLearning}. \\
-The search for appropriate data starts with the sample and template projects provided in UE4 since its the engine used for the prototype. The templates can offer a significant advantage because they could provide usable data and implementation for the prototype. Unfortunately, these template projects are not eligible, and the search ends with the conclusion of either using real-world data or a games data. The next chapters are going into the detail of all evaluated data sources.
+The most important part of the prototype is about the data to train the ML model. To get a well-trained model, it is most likely that it needs a rather big dataset. For the sake of simplicity of the data search, this dataset size is defined to contain at least 100 entries. However, the right amount of data entries depends on the available features to train the model, and there is no simple formula for this problem as described in chapter \ref{chapter::machineLearning}. \\
+The search for appropriate data starts with the sample and template projects provided in UE4 since its the engine used for the prototype. The templates can offer a significant advantage because they could provide usable data and implementation for the prototype. Unfortunately, these template projects are not eligible, and the search ends with the conclusion of either using real-world data or a games data. The next chapters are going into the detail of all found and thus evaluated data sources.
 
 \subsection{Unreal Tournament and Template Project}
 Epic Games provide the source code for Unreal Tournament for registered users on their GitHub account \cite{epicGames::unrealTournamentSourceCode}. After following their installation instructions, the project is ready to go and ready for inspection.\\
@@ -966,16 +966,41 @@ The other starting point for finding appropriate data is the so-called "Shooter 
 The next point of an initial reference is the favorite eSports game \ac{CS:GO}. Websites about community-driven analysis on the game's central mechanic is the perfect base for finding data appropriate to train an ML model and use the data for weapon generation. Unfortunately, CS:GO does not use many weapons and specializes in 32 weapons for the game \cite{counterstrike::wikiWeapons}. Nevertheless, the provided analysis data provides an excellent base to work with and to extend the available and balanced game data with, e.g., real-world data.
 
 \subsection{Real-World Data}
-Plenty of websites about weapons are findable on the \ac{WWW}. However, most of them do not provide much data about the weapon itself. The search leads to, e.g., Army and manufacturer websites to find the appropriate weapon data for specific weapons. Nevertheless, the procedure for finding and obtaining real-world weapon data is a lengthy process. Besides, it shows that weapon manufacturer does not always provide all data, and it would take real-world tests to obtain particular weapon data. In particular, all found weapon data have about 7 to 8 similar variables which are usable for training the model. These parameters are the type of weapon, average weight, overall length, barrel length, bullet caliber, magazine size, muzzle velocity, and the rate of fire.\\
-For sure, this data is used to train a model and generate weapons even if this takes more time to implement and balance. However, it would be easier to use already balanced game data to train the model and generate new weapons. For this reason, the search leads to the most valuable data source which is usable for the implementation.
+Plenty of websites about weapons are findable on the \ac{WWW}. However, most of them do not provide much data about the weapon itself. The search leads to, e.g., army and manufacturer websites to find the appropriate weapon data for specific weapons. Nevertheless, the procedure for finding and obtaining real-world weapon data is a lengthy process. Besides, it shows that weapon manufacturer does not always provide all data, and it would take real-world tests to obtain particular weapon data. In particular, all found weapon data have about 7 to 8 similar variables which are usable for training the model. These parameters are the type of weapon, average weight, overall length, barrel length, bullet caliber, magazine size, muzzle velocity, and the rate of fire.\\
+For sure, this data is usable to train a model and generate weapons even if this takes more time to implement and balance. However, it would be easier to use already balanced game data to train the model and generate new weapons. For this reason, the search leads to the most valuable data source which is usable for the implementation.
 
-\subsection{TODO: Battlefield 1}
-{\color{blue}Investigation showed that the game Battlefield 1, released in 2016, uses more than 100 different weapons in the game. The setting of the game takes place in the World War One and therefore uses weapons of this period. Fortunately, gamers gathered all possible weapon statistics for Battlefield games on the community website "http://symthic.com" \cite{symthic::bf1stats}. They provide a list of all 140 weapons used in the game with very detailed description and statistics \cite{symthic::bf1stats}. In fact, they provide 40 parameters which describe every weapon \cite{symthic::bf1stats}. Further evaluation specializes these parameters to 18 most suitable variables for a weapon implementation. Nevertheless, one can use even more, less or other parameters to generate weapons and train the model and not all of them are always useful. Table \ref{battlefield::weaponStats} shows these most useful parameters for the weapon class and model training. As already indicated, the number of the variables is a subject to change during the implementation.}
+\subsection{Battlefield 1}
+Investigation showed that the game Battlefield 1, released in 2016, uses more than 100 different weapons constellations in the game. The setting of the game takes place in the World War One and therefore uses weapons of this period. Fortunately, gamers gathered all possible weapon statistics for Battlefield games on the community website "http://symthic.com" \cite{symthic::bf1stats}. They provide a list of 148 weapons constellations used in the game with very detailed description and statistics \cite{symthic::bf1stats}. In fact, they provide more than 70 parameters which describe every weapon \cite{symthic::bf1stats}. Further evaluation specializes these parameters to 18 most suitable variables for a weapon implementation. Nevertheless, one can use even more, less or other parameters to generate weapons and train the model and not all of them are always useful. Table \ref{battlefield::weaponStats} shows these most useful parameters for the weapon class and model training. As already indicated, the number of the variables is a subject to change during the implementation.
+\begin{table}[!htbp]
+	\centering
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Name}         & \textbf{Description}                         \\ \hline\hline
+		Damage Points         & Damage points per hit.                       \\ \hline
+		Firerate              & Fired rounds per minute.                     \\ \hline
+		Num of Pellets        & Number of pellets in one shot.               \\ \hline
+		Muzzle Velocity       & Bullet velocity when exiting the muzzle.     \\ \hline
+		Bullet Drop           & Gravitational bullet drop.                   \\ \hline
+		Magazine Size         & Amount of bullets in a magazine.             \\ \hline
+		Projectile            & Type of projectile used.                     \\ \hline
+		Horizontal Dispersion & Horizontal pellet dispersion.                \\ \hline
+		Vertical Dispersion   & Vertical pellet dispersion.                  \\ \hline
+		Reload Empty          & Reload time with an empty magazine.          \\ \hline
+		Reload Ammo           & Reload time with an magazine with ammo left. \\ \hline
+		Reload Single Bullet  & Reload time for a single bullet.             \\ \hline
+		Recoil Up             & Recoil in up direction.                      \\ \hline
+		Recoil Left           & Recoil in left direction.                    \\ \hline
+		Recoil Right          & Recoil in right direction.                   \\ \hline
+		Recoil Decrease       & Recoil decrease after a specific time.       \\ \hline
+		Spread Increase       & Spread increase per shot.                    \\ \hline
+		Spread Decrease       & Spread decrease after a specific time.       \\ \hline
+	\end{tabular}
+	\caption{Eligible weapon statistic for the prototype provided by \protect\cite{symthic::bf1stats}.}
+	\label{battlefield::weaponStats}
+\end{table}
 
-\section{TODO: Learning Methods}
+\section{TODO: Learning Problem}
 
-
-\subsection{The Problem}
 {\color{blue}
 WHAT IS THE PROBLEM? DESCRIBE IT AND COME UP WITH POSSIBLE LEARNING METHODS!\\
 some notes with santi: its not a regression problem. data is provided which is used to generate new but similar data -> its a continuous predicition of connected values and not just 1 prediction value! -> $\vec{x}$ \sout{$(\rightarrow y)$} \\
@@ -1057,33 +1082,6 @@ simplified bolt-action, pump-action, single-barrel fire and lever-action to "sin
 needed to remove ammo from the features because I'd need to apply a one hot encoder to use the data and it would blow up my data and cause curse of dimensionality.
 
 show the used parameter 
-\begin{table}[!htbp]
-	\centering
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Name}         & \textbf{Description}                         \\ \hline\hline
-		Damage Points         & Damage points per hit.                       \\ \hline
-		Firerate              & Fired rounds per minute.                     \\ \hline
-		Num of Pellets        & Number of pellets in one shot.               \\ \hline
-		Muzzle Velocity       & Bullet velocity when exiting the muzzle.     \\ \hline
-		Bullet Drop           & Gravitational bullet drop.                   \\ \hline
-		Magazine Size         & Amount of bullets in a magazine.             \\ \hline
-		Projectile            & Type of projectile used.                     \\ \hline
-		Horizontal Dispersion & Horizontal pellet dispersion.                \\ \hline
-		Vertical Dispersion   & Vertical pellet dispersion.                  \\ \hline
-		Reload Empty          & Reload time with an empty magazine.          \\ \hline
-		Reload Ammo           & Reload time with an magazine with ammo left. \\ \hline
-		Reload Single Bullet  & Reload time for a single bullet.             \\ \hline
-		Recoil Up             & Recoil in up direction.                      \\ \hline
-		Recoil Left           & Recoil in left direction.                    \\ \hline
-		Recoil Right          & Recoil in right direction.                   \\ \hline
-		Recoil Decrease       & Recoil decrease after a specific time.       \\ \hline
-		Spread Increase       & Spread increase per shot.                    \\ \hline
-		Spread Decrease       & Spread decrease after a specific time.       \\ \hline
-	\end{tabular}
-	\caption{Eligible weapon statistic for the prototype provided by \protect\cite{symthic::bf1stats}.}
-	\label{battlefield::weaponStats}
-\end{table}
 
 \subsection{TODO: Encoding and Feature Scaling}
 firemode and weapon type encoded with tensorflow\\
