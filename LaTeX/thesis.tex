@@ -442,7 +442,7 @@ Some use cases where concepts of regression algorithms can be applied are, e.g.,
 Addresses problems where classification transition of independent values into specific values is needed \cite{ai::book}. The famous problem of classifying and distinguish apples and pears from each other falls into this section.\\
 Like regression algorithms, classification algorithms are applicable for imitation and prediction of a player's behavior, such as prediction of completion time \cite{ai::book}. However, in this case, the possible outputs are specific values or classes like slow, average or fast instead of continuous values \cite{ai::book}. Some popularly used algorithm for classification are, e.g., \ac{ANN}, decision tree, random forests, \ac{SVM}, \ac{KNN} or ensemble learning \cite{ai::book}.
 
-\subsection{Unsupervised Learning}
+\subsection{Unsupervised Learning} \label{ML::unsupervisedLearning}
 In contrast to supervised learning, the base of unsupervised learning is a data-driven approach where the algorithm has no information about the meaning or value of any sample and needs to infer it automatically \cite{ml::book::developer}. Hence, an unsupervised learning algorithm gets so-called unlabeled data without having a specific relationship to the target output and finds unknown structures and pattern in that set \cite{ai::book}. Thinking about the apples and pears example, then an algorithm would try to detect that there are two different types or classes in the dataset instead of predicting if its an apple or a pear.\\
 Typical applications for unsupervised learning are object segmentation, similarity or pattern detection, automatic labeling, pre-training of supervised algorithms or preprocessing data such as data compression, noise smoothing or outlier detection \cite{ml::book::algorithms} \cite{ai::book}.
 
@@ -639,7 +639,7 @@ There are some unique development considerations to take when someone wants to m
 Because PCGML generates new content based on existing content, it seems reasonable that the models which fit best for most of the PCGML tasks are generative ML models.\\
 This is confirmed by the fact that the primarily used training models in \citename{pcgml::paper}'s research of using PCGML for, e.g., level generation, were based on the paradigm of \ac{NN} and are models such as \acp{CNN}, \acp{LSTM}, Markov models like N-grams or multi-dimensional Markov chains, Bayes models, Autoencoders, Clustering or Matrix factorization. Nevertheless, not all of them are pure generative models which means that discriminative models can be a better fit sometimes.
 
-\section{Development Example}
+\section{Development Example} \label{PCGML::devExample}
 There is no right or wrong proceeding in the generation process for PCGML. PCGML is a very new paradigm in the content generation community, and its research results drive the right or wrong approaches. With this in mind, the PCGML generation process can take shape in any form, and someone should do what fits best for the problem.\\
 This section explains a development example of a generation process for data with depending attributes realized with discriminative models as ML backend. However, chapter \ref{chapter::gamePrototype} provides the detailed development walk-through of a PCGML system. For this example, a data’s structure example for a PCGML system provides the figure \ref{fig::PCGML::devExample::sequenceBase}. As it is a sequence of data, there is a connection between all variables. In the figure, the node "S" represents a start value, and all other nodes represent independent attributes or features. 
 \begin{figure}[!htbp]
@@ -1000,43 +1000,24 @@ Investigation showed that the game Battlefield 1, released in 2016, uses more th
 \end{table}
 
 \section{TODO: Learning Problem}
-
-{\color{blue}
-WHAT IS THE PROBLEM? DESCRIBE IT AND COME UP WITH POSSIBLE LEARNING METHODS!\\
-some notes with santi: its not a regression problem. data is provided which is used to generate new but similar data -> its a continuous predicition of connected values and not just 1 prediction value! -> $\vec{x}$ \sout{$(\rightarrow y)$} \\
-x = values\\
-y = prediction result\\
-\\
-D -> M -> \boxed{M} -> d\\
-Data -> Model -> generated Model -> Density estimation\\
-	\\
---> it is about \textbf{density estimation} so that the probability distribution is found for the values/parameters and weapons.\\
---> it is an unsupervised learning problem which should be solvable with generative models.we do have input X but no labels Y.\\
---> generative models are the applicable model for this problem but a discriminative model could also work out\\
- why use what - eg. why use neural network over other and stuff like that!\\
- its a classification and regression problem. use softmax to get probabilities\\
- \\	
-As seen throughout the previous chapters, there are no distinctive right or wrong methods to train a model. PCGML is a relatively new approach and many different methods are suitable to reach a certain goal. As the research of \cite{pcgml::paper} shows, methods like \ac{NN}, \ac{LSTM}, autoencoders, deep convolutional networks, markov models or markov chains are applicable for a model's training to generate, e.g., levels of \ac{2D} games. It is worth nothing, that all these mentioned methods are made with the help or resemble \acp{NN} \cite{neuralNetworkZoo}. \\
-This common feature is the reason why the implementation decision for the prototype's PCGML training method focuses on a simplified supervised and discriminative method approach with an \ac{ANN} and an unsupervised and generative method approach with a \ac{VAE}. \todo{describe the ideas, how would both of them work?}\\
-
-A simple ANN which is trained on each parameter to predict another one and so forth\\
-GANs would also be a possible solution to this problem but there are difficult to train, are generating with a high quality, and the adversarial training probably increase training time.\\
-In contrast, VAEs are easy to train, generating blurry results which is perfect, have nice probabilistic, and are easy to introduce.
-
-}
-LSTM, RNN are focused on timeline and sequenced data -> not suitable for the weapon problem\\
-\\
-Density Estimation: Learns relations among the attributes in the data and attempts to learn the underlying probability distribution of the data.\\
-\\
-Example: Data D = {D1, D2, ..., Dn} ... Di = xi - a vector of attribute values
-Objective: estimate the underlying probability distribution over variables X, p(X) using examples in D
-Assumption: samples are independent of each other and come from the same (identical) distribution (fixed p(X))
-THEN:
-true distribution p(X) -> n samples D -> estimated distribution $\hat{p}(X)$
+Lets recap the game mechanic real quick: it is about generating new weapons based on existing weapons or more specifically weapons from Battlefield 1. This means we have a training data set $X$ without any useful labels $Y$. In more specific, this fact let the problem seems to be an unsupervised learning and a clustering problem which were described in chapter \ref{ML::unsupervisedLearning}. That means it should be able to learn relations among the attributes in the data. This is also known as density estimation which attempts to learn the underlying probability distribution of all the data features. In other words: the given weapons $X$ share a real distribution $p(X)$ and the model should estimate this distribution $\hat{p}(X)$ by learning its underlying relationships. This is nothing else than clustering and is easily visualizable at best case. But the main problem of generating the features of a weapon could also be solved in another way. The next section describes all possible methods and approaches which are possible to solve the problem of generation new weapons.
 
 \subsection{TODO: Suitable Models}
-generative models in specific, like GAN, VAE 
+The PCGML system infers that the model should be able to generate content and leads the logical answer to generative models. The model should be able to cluster all the weapons to furthermore generate new ones out of the existing. Despite the fact that it is evidently a generative model problem, discriminative models might also be a possible solution to the problem.\\ 
+Especially, as seen throughout the previous chapters, there are no distinctive right or wrong methods to train a model. PCGML is a relatively new approach and many different methods are suitable to reach a certain goal. For example, the same proceeding like showed in the PCGML development example in chapter \ref{PCGML::devExample} is usable for this problem but is most likely not the most useful and fastest. For this reason, this sections focuses on generative models instead of discriminative models.\\
+As the research of \cite{pcgml::paper} shows, methods like \ac{NN}, \ac{LSTM}, autoencoders, deep convolutional networks, markov models or markov chains are applicable for a model's training to generate, e.g., levels of \ac{2D} games. It is worth nothing, that all these mentioned methods are made with the help or resemble \acp{NN} \cite{neuralNetworkZoo}. This common feature and the reason that \ac{TF} is a framework for developing deep \acp{NN}, the suitable models for this problem and the PCGML system implementation focus on \ac{NN} models.
 
+\subsubsection{\acl{GAN}}
+would also be a possible solution to this problem but there are difficult to train, are generating with a high quality, and the adversarial training probably increase training time.
+\subsubsection{\acl{LSTM}}
+are focused on timeline and sequenced data
+\subsubsection{\acl{RNN}}
+are focused on timeline and sequenced data
+\subsubsection{\acl{VAE}}
+
+\subsection{Conclusion}
+VAE easy to train, generating blurry results which is perfect, have nice probabilistic, and are easy to introduce.
+GAN would also be a possible solution to this problem but there are difficult to train, are generating with a high quality, and the adversarial training probably increase training time.
 
 
 \section{TODO: \acl{ML} Models Introduction}
