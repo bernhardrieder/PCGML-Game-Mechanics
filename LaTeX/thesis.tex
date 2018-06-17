@@ -926,19 +926,14 @@ As already mentioned, all the introduced ideas differ in their development compl
 %
 \clearpage
 \chapter{Game Prototype Preparations} \label{chapter::gamePrototype}
-Dedication of this chapter is the development of a game prototype which uses the PCGML game mechanic chosen in the last chapter. Every section in this chapter is in direct relation with this PCGML game mechanic which does not mean that the process is not applicable for other PCGML game mechanics. Most of the described process is transferable and follows a fundamental principle suitable for every other kind of PCGML game mechanic. \\
-The next sections contain every conceivable necessary topic of implementing the PCGML game mechanic "\nameref{idea::changingWeapons}" in a game prototype. From an initial game idea to the most useful game engine to the training model and the working prototype. Note that the game idea functions as an idea of which a prototype with a PCGML game mechanic emerges rather than being a thoroughly sophisticated game. This chapter functions as a proof-of-concept and shows how a PCGML game mechanic can be implemented and used in a game.
+Dedication of this chapter is the development preparations of a game prototype which uses the PCGML game mechanic chosen in the last chapter. Every section in this chapter is in direct relation with this PCGML game mechanic which does not mean that the process is not applicable for other PCGML game mechanics. Most of the described processes are transferable and follow a fundamental principle suitable for every other kind of PCGML game mechanic. \\
+The next sections contain every conceivable necessary topic of implementing the PCGML game mechanic "\nameref{idea::changingWeapons}" in a game prototype. From an initial game idea to the most useful game engine to the training model. Note that the game idea functions as an idea of which a prototype with a PCGML game mechanic emerges rather than being a thoroughly sophisticated game. This and the next chapter functions as a proof-of-concept and shows how a PCGML game mechanic can be implemented and used in a game.
 
 \section{Test Scenario}
-A one player \ac{PvE} arena-like 3D game scenario in which the player is in control of a PCGML system which produces weapons such as pistols, machine guns and other kinds of guns to interact. Specific datasets of weapons can bias the system which leads the kind of game and its flow. The game forces the player consistently to make use of the weapons to win the game. 
+A one player \ac{PvE} arena-like 3D game scenario in which the player is in control of a PCGML system which produces weapons such as pistols, machine guns and other kinds of guns to interact. The weapon generator is of significant importance and the game forces the player consistently to make use of the generator to win the game. Specific datasets of weapons can bias the system which leads the kind of game and its flow. 
 
 \subsection{Environment and Objective}
-The environment is a mountain-forest-like environment. The player spawns anywhere on the map and needs to find the arena and the last AI opponent which then starts the battle of the changing guns which also represents the last fight of the scenario. Figure \ref{prototype::exampleMap} shows an example of the map with different player spawn locations and the arena in the middle. The player's primary objective is to defeat the end game boss AI in a battle at the end of the scenario. The player either wins or loses the battle but can retry after a loss.
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=0.8\linewidth]{PICs/Prototype/map_example}
-	\caption{Example of the prototype scenario map.}\label{prototype::exampleMap}
-\end{figure}
+The environment is a mountain-forest-like environment. The player spawns anywhere on the map and needs to find the arena and the last AI opponent which then starts the battle of the changing guns which also represents the last fight of the scenario. The player's primary objective is to defeat the end game boss AI in a battle at the end of the scenario. The player either wins or loses the battle but can retry after a loss.
 
 \subsubsection{Training Session}
 However, first of all, the player needs to fight against NPC enemies on the way to the arena to specialize and get used to the weapons. Even though this is a training session, the player has a specific amount of lives and need to take care of them. If the player loses all of the lives during this session, then the game is lost, and it ends. Specific spawnpoints provide the player with health, ammunition, and armor packages.
@@ -946,25 +941,23 @@ However, first of all, the player needs to fight against NPC enemies on the way 
 \subsubsection{Battle of the Changing Guns}
 Initialization of the battle happens as soon as the player is in a specific range to the AI in the arena. As soon as the player initiated the battle, the training session ends and recovers the player's lives for an epic final battle. The player can now move everywhere on the map and needs to defeat the AI with his weapons to win the game. Ammunition, health, and armor packages are randomly, but in player's range, spawned during the battle, so that the player needs to walk around in the map to give the battle more energy. Furthermore, the endboss is very strong which forces the player to use the weapon generator very often. 
 
-\subsection{TODO: Weapon and Ammunition}
-The Player can hold two generated weapons at a time but can use one at a time. Generated weapons come with a specific ammunition pack at generation time with the possibility to refill ammunition during the game. The player can either use a weapon as long as ammunition is available or dismantle it at any time to generate a new weapon.\\
-Every generated weapon is feed into the existing PCGML model to specialize the system’s model in a specific direction.
-{\color{blue} feedback to generated weapons so that the player know a little bit about them. e.g., heavy/light weapon, damage, ammo, etc.. show the advantage and disadvantage to provide feedback\\
-The next weapon will be generated with some noise added to the old weapon. noise strength is based on statistics how weapon was used (time, kills, etc)}
+\subsection{Weapon and Ammunition}
+The Player can hold a maximum of two generated weapons but can only use one at a time. Generated weapons come with a specific ammunition pack at generation time with the possibility to refill ammunition during the game. The player can either use a weapon as long as ammunition is available or dismantle it at any time to generate a new weapon.\\
+Every generated weapon is feed into the existing PCGML model to specialize the system’s model in a specific direction. Newly generated weapons are biased based on the kill count and time of usage of the dismantled weapon. A \ac{HUD} shows statistics about the generated weapon to provide the player with information about the current weapon. 
 
 \subsection{Player and Enemies}
 The player is a third-person character with a specific amount of health, armor, and lives with no customization options. Synchronization of the values of these mentioned properties with the properties of the generated weapons is necessary.\\
 A simple AI controls all enemies to act as a training enemy for the battle. Enemies come in three different types of ascending power and health. They spawn in fixed locations throughout the training path. The enemies desire is to eliminate the player in a straightforward way rather than in a complex and sophisticated way. \\
-The design of the boss AI enemy defines specific base health, armor and damage. The base values increase with the time of the training session and regenerate during the battle.
+The design of the boss AI enemy defines specific base health, armor and damage. The base values could increase with the time of the training session and regenerate during the battle.
 
 %\section{TODO: Development Considerations}
 
 \section{Which Game Engine?}
 The decision of the most applicable game engine is not only about how quickly the implementation for an FPS game could be done but also about their support for ML. The decision envisages the two most used free to use game engine nowadays but could also envisage others. Another reason to further examine this two particular engines is the writer's expertise for them.\\
-As described in chapter \ref{chapter::mlPluginsGameEngines}, both Unity and UE4 have available ML plugins for their engine. The development of Unity's ML plugin is boosted by Unity's developer them self whereas UE4's ML plugin is a community member created open source plugin. Nevertheless, both are using the same concepts of including ML functionality into the engine. In specific, they are using a Python interface to make use of the open source machine learning framework \ac{TF}. With this in mind, the next chapters concentrate on the workflow in each engine to find the most suitable game engine for implementing the PCGML game mechanic.
+As described in chapter \ref{chapter::mlPluginsGameEngines}, both Unity and UE4 have available ML plugins for their engine. The development of Unity's ML plugin is boosted by Unity's developer them self whereas UE4's ML plugin is a community member created open source plugin. Nevertheless, both are using the same concepts of including ML functionality into the engine. In specific, they are using a Python interface or plugin to make use of the open source ML framework \acf{TF}. With this in mind, the next chapters concentrate on the workflow in each engine to find the most suitable game engine for implementing the PCGML game mechanic.
 
 \subsection{Unity}
-Unity's plugin is actively in development, is mainly focused on the development of ML-agents or so-called \ac{NPC}s and supports multiple environments and \ac{OS} \cite{unity::mlGithub}. They are focusing the development of learning methods like RL, imitation learning and curriculum learning but also enable the application of other methods \cite{unity::mlGithub}. Moreover, their GitHub page offers an extensive introduction to ML and their plugin, some example projects on how to use the ML plugin and is a perfect starting point to dive in. \\
+Unity's plugin is actively in development, is mainly focused on the development of ML-agents or so-called \ac{NPC}s and supports multiple environments and \acp{OS} \cite{unity::mlGithub}. They are focusing the development of learning methods like RL, imitation learning and curriculum learning but also enable the application of other methods \cite{unity::mlGithub}. Moreover, their GitHub page offers an extensive introduction to ML and their plugin, some example projects on how to use the ML plugin and is a perfect starting point to dive in. \\
 With this said, in the beginning, and before any functionality of the plugin is usable, it needs an installation of a Python and \ac{TF} environment on the PC. This installation is a different procedure and can sometimes be a tricky thing dependent on the \ac{OS} and preferences for \ac{TF}.\\
 Once the installation process of all prerequisites is complete, nothing stands between the developer and a working ML environment. The first thing to do is a setup of a training environment to train a new model and to make use of it. This learning environment is a usual Unity Scene and consists of an academy, brain and the ML-agents itself, created and programmable in C\#:
 \begin{itemize}
@@ -1163,9 +1156,14 @@ random input is the same size as the test set (21 entries)
 
 \section{TODO: Game}
 show the map from above
+
 explain the possible input
 what was implemented, etc
-
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.6\linewidth]{PICs/Prototype/map_with_spawnpoints_and_boss}
+	\caption{Prototype scenario map with player spawnpoints in green and boss in red.}
+\end{figure}
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Prototype/ingame_screenshot}
@@ -1291,6 +1289,7 @@ further implementations
 	\acro{GB}{Gigabyte}
 	\acro{GPU}{Graphics Processing Unit}
 	\acro{HMM}{Hidden Markov Model}
+	\acro{HUD}{Head-up Display}
 	\acro{JSON}{JavaScript Object Notation}
 	\acro{KNN}{K-Nearest Neighbor}
 	\acro{LSTM}{Long Short-Term Memory Network}
