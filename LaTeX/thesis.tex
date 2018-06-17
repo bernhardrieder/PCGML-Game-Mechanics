@@ -700,7 +700,7 @@ The initial ideas on how to use PCGML as a game mechanic were created by \citep{
 These ideas were used to come up with more ideas on how to use PCGML as a game mechanic in modern video games.
 
 \section{Concepts and Development Evaluation}
-Each of the following chapters describe an idea of a PCGML mechanic followed directly with a development related evaluation. It is to say that in general, the main issue in the implementation of the PCGML system will be the training data for the ML model rather than the PCG output itself. Proper training for the ML model requires the right amount of training data to function as intended. The size of the right dataset can differ from application to application based on the given values as dependencies for an output. \\
+Each of the following chapters describes an idea of a PCGML mechanic followed directly with a development related evaluation. It is to say that in general, the central issue in the implementation of the PCGML system will be the training data for the ML model rather than the PCG output itself. Proper training for the ML model requires the right amount of training data to function as intended. The size of the right dataset can differ from application to application based on the given values as dependencies for an output. \\
 Moreover, each idea has the advantage of PCGML that it can generate similar elements as used during training time, the possibility of changing the training set and thus the output and also no need of finetuning to generate a broad range of elements in contrast to standard PCG algorithms. For this reason, as it is the implication of using PCGML, these described advantages are not mentioned in the evaluation. Also, the provision of playability is a necessary criterion which contributes equally to each game mechanic.
 
 \subsection{Rules and Behavior} \label{idea::rulesAndBehavior}
@@ -711,7 +711,7 @@ In this case, working configurations of the game provide the training set of the
 \begin{itemize}
 	\item A proper learned model can be saved to generate the same sessions again.
 	\item Providing more designed content in the training set offers more possibilities for the gameplay.
-	\item Needs a sophisticated game design with balanced dependencies between available elements.
+	\item It needs a sophisticated game design with balanced dependencies between available elements.
 	\item Possible complications in the training of the ML model because elements can consist of many values which create complex dependencies.
 	\item The game design must include a broad range of game elements with harmonization between each other and proper design and balancing.
 \end{itemize}
@@ -737,12 +737,12 @@ Often, the central mechanic provided in most \acp{RPG} is fighting with a sword,
 	\item Magic attacks and spells do not need to be generally effective against enemies because their tactical use forms their effectiveness in the game.
 	\item There are no general rules of what and how spells and magic attack appear in games, thus they can be anything.
 	\item Do not often consist of complex structures  which should make ML model training easy.
-	\item It needs a good design of balanced and tweaked spells.
+	\item It needs proper designs of balanced and tweaked spells.
 	\item Visuals should also be part of the generation process because there is no universal usable appearance for magic attacks.
 \end{itemize}
 
 \subsection{Solver Weapon} \label{idea::solverWeapon}
-The solver weapon is an idea based on the co-creator pattern described in chapter \ref{AI-basedMechanicsDesignPattern}. It is about a game mechanic of using a generation weapon to progress through the game. The weapon's purpose is to help the player in special conditions such as solving puzzles with a missing piece in it. The highlight of the game mechanic is the required drawing interaction to generate a missing piece. A player needs to draw the missing piece on a given "drawing panel" connected with the weapon which tries to replicate the figured piece. Drawings could consist of big solid circles indicating corners and lines representing edges. The detection of the drawing involves object detection via ML which forwards detected chunks to the PCGML system. For example, introductive gameplay could be to find or generate the missing key for a door whereas the player is aware of the lock's shape.\\
+The solver weapon is an idea based on the co-creator pattern described in chapter \ref{AI-basedMechanicsDesignPattern}. It is about a game mechanic of using a generation weapon to progress through the game. The weapon's purpose is to help the player in particular conditions such as solving puzzles with a missing piece in it. The highlight of the game mechanic is the required drawing interaction to generate a missing piece. A player needs to draw the missing piece on a given "drawing panel" connected with the weapon which tries to replicate the figured piece. Drawings could consist of big solid circles indicating corners and lines representing edges. The detection of the drawing involves object detection via ML which forwards detected chunks to the PCGML system. For example, introductive gameplay could be to find or generate the missing key for a door whereas the player is aware of the lock's shape.\\
 This idea could work as follows: 
 \begin{enumerate}
 	\item Different input with different drawings of puzzle elements or geometric shapes depending on the style train the ML model. The system is then able to detect essential points on the drawing and suggests what the drawing would be.
@@ -824,7 +824,7 @@ Another idea based on the co-creator pattern could be, e.g., a strategy game whe
 
 
 \subsection{Observe and Learn} \label{idea::observeAndLearn}
-A PCGML system which is trained to generate and modify terrains with a particular path within the terrain to reach a specific goal. The highlight is that the system does not always generate possible ways which demand the player to change properties of the system which changes a terrain, the level, map or world. In doing so, the player is forced to observe the interactive and smooth changes of the system to reach the current goal. The visualization and editable design pattern form the base for this idea.
+A PCGML system which is trained to generate and modify terrains with a particular path within the terrain to reach a specific goal. The highlight is that the system does not always generate possible ways which demand the player to change properties of the system which changes a terrain, the level, map or world. In doing so, the player is forced to observe the interactive and smooth changes in the system to reach the current goal. The visualization and editable design pattern form the base for this idea.
 
 \subsubsection{Pros and Cons}
 \begin{itemize}
@@ -859,16 +859,16 @@ A possible application in a multiplayer game could be a mechanic in which each p
 	\item Each PCGML system focuses on its piece of the puzzle element.
 	\item It needs training for each ML model and puzzle.
 	\item Each puzzle element needs own design and own PCGML system.
-	\item The connection between PCGML systems will be complicated; therefore it needs a good design of the system’s connection.
+	\item The connection between PCGML systems will be complicated; therefore it needs a proper design of the system’s connection.
 \end{itemize}
 
 
 \subsection{Novel Vehicles} \label{idea::novelCars}
-Another possible field of application for a PCGML system can be the generation of cars or vehicles as they also consist of many properties and parameters. The process of finetuning of these properties is usually a long process which is a perfect field of application for an ML trained PCG system.
+Another possible field of application for a PCGML system can be the generation of cars or vehicles as they also consist of many properties and parameters. The process of finetuning of these properties is usually a lengthy process which is a perfect field of application for an ML trained PCG system.
 
 \subsubsection{Pros and Cons}
 \begin{itemize}
-	\item The generated vehicles can decide the kind of game; therefore it does not matter what the system's output is as long it secures playability.
+	\item The generated vehicles can decide the kind of game; therefore it does not matter what the system's output is as long as it secures playability.
 	\item Vehicles are not limited to cars; therefore it can be any driveable vehicles.
 	\item The training set needs the designs of many vehicles so that the system can learn the complex dependencies of a vehicle.
 	\item The design of vehicles often involves a long process of balancing.
@@ -885,7 +885,7 @@ As already mentioned, all the introduced ideas differ in their development compl
 % ------------------------------- NEW CHAPTER ------------------------------- %
 %
 \clearpage
-\chapter{Game Prototype Preparations} \label{chapter::gamePrototype}
+\chapter{Prototype Preparations} \label{chapter::gamePrototype}
 Dedication of this chapter is the development preparations of a game prototype which uses the PCGML game mechanic chosen in the last chapter. Every section in this chapter is in direct relation with this PCGML game mechanic which does not mean that the process is not applicable for other PCGML game mechanics. Most of the described processes are transferable and follow a fundamental principle suitable for every other kind of PCGML game mechanic. \\
 The next sections contain every conceivable necessary topic of implementing the PCGML game mechanic "\nameref{idea::changingWeapons}" in a game prototype. From an initial game idea to the most useful game engine to the training model. Note that the game idea functions as an idea of which a prototype with a PCGML game mechanic emerges rather than being a thoroughly sophisticated game. This and the next chapter functions as a proof-of-concept and shows how a PCGML game mechanic can be implemented and used in a game.
 
