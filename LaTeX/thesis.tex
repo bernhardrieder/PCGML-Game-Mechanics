@@ -1005,7 +1005,7 @@ Lets recap the game mechanic real quick: it is about generating new weapons base
 \subsection{Suitable Models}
 The PCGML system infers that the model should be able to generate content and leads the logical answer of suitable models to generative models. The model should be able to cluster all the weapons to furthermore generate new ones out of the existing. Despite the fact that it is evidently a generative model problem, discriminative models might also be a possible solution to the problem.\\ 
 Especially, as seen throughout the previous chapters, there are no distinctive right or wrong methods to train a model. PCGML is a relatively new approach and many different methods are suitable to reach a certain goal. For example, the same proceeding like showed in the PCGML development example in chapter \ref{PCGML::devExample} is usable for this problem but is most likely not the most useful and fastest. For this reason, this sections focuses on generative models instead of discriminative models. Nevertheless, it would be interesting to see if that model would work better than a generative model. \\
-However, as the research of \cite{pcgml::paper} shows, methods like \ac{NN}, \ac{LSTM}, autoencoders, deep convolutional networks, markov models or markov chains are applicable for a model's training to generate, e.g., levels of \ac{2D} games. It is worth nothing, that all these mentioned methods are made with the help or resemble \acp{NN} \cite{neuralNetworkZoo}. This common feature and the reason that \ac{TF} is a framework for developing deep \acp{NN}, the suitable models for this problem and the PCGML system implementation focus on \ac{NN} models. Following sections describe two commonly used generative models for deep \acp{NN}. Nevertheless, it is to keep in mind that this does not mean that they are the only ones possible for the generation problem.
+However, as the research of \cite{pcgml::paper} shows, methods like \ac{NN}, \ac{LSTM}, autoencoders, deep convolutional networks, markov models or markov chains are applicable for a model's training to generate, e.g., levels of \ac{2D} games. It is worth nothing, that all these mentioned methods are made with the help or resemble \acp{NN} \cite{neuralNetworkZoo}. This common feature and the reason that \ac{TF} is a framework for developing deep \acp{NN}, the suitable models for this problem and the PCGML system implementation focus on \ac{NN} models. Following sections describe two very popular generative models for deep \acp{NN} \cite{ml::vae::tutorial}. Nevertheless, it is to keep in mind that this does not mean that they are the only ones possible for the generation problem.
 
 \subsubsection{\acl{GAN}}
 \acp{GAN} are a popular kind of network which are primarily used for generating high quality pictures \cite{ml::book::developer}. The uniqueness of \acp{GAN} are its two different kind of networks in it which secure a high quality. They are composed of an generative network for generating new data and a discriminative network which verifies the generated data. This synergy of both networks secures that the model is trained to output high quality data. \\
@@ -1020,25 +1020,38 @@ Both of the described models are promising and eligible for the PCGML model impl
 For this reason, the decision leads to the model of \acp{VAE} which produce admittedly blurry but still good-quality data. They are possibly easier and faster to train than \ac{GAN} and still can generate data which is similar to the trained data. Therefore, the rest of this thesis addresses a weapon generator game mechanic which uses \ac{VAE} as the ML backbone for the generation task.
 
 \section{TODO: Used Model Introduction}
-As already described in the previous chapter, autoencoders aim to reduce the features of the input to create a compressed feature vector. They are therefore also used for encoding and decoding the same structure, feature extraction and data compression \cite{ml::book::nnProgrammingTF}. Figure \ref{fig::autoencoder} shows a schematic representation of a autoencoder which gets a pistol as input and outputs a pistol with a little bit of inaccuracy or blur. The left side of the network is called the encoder, gets the input and encodes all features into the so-called "latent variables" or "latent space" whereas the right site is called the decoder and decodes the latent variables into the input data \cite{ml::book::nnProgrammingTF}.
+As already described in the previous chapter, autoencoders aim to reduce the features of the input to create a compressed feature vector. They are therefore also used for encoding and decoding the same structure, feature extraction and data compression \cite{ml::book::nnProgrammingTF}. Figure \ref{fig::autoencoder} shows a schematic representation of an autoencoder which gets a pistol as input and outputs a pistol with a little bit of inaccuracy or blur. The left side of the network is called the encoder which gets the input and encodes all features into the so-called "latent variables" or "latent space" whereas the right site is called the decoder and decodes the latent variables back into the input data \cite{ml::book::nnProgrammingTF}. 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.9\linewidth]{PICs/NNs/autoencoder}
 	\caption{Schematic representation of an autoencoder neural network with blurry output.} \label{fig::autoencoder}
 \end{figure}\\
-Now, the \ac{VAE} makes use of the same technique as the regular autoencoder but alters the latent space to map the input data distribution into the feature space onto a normal distribution.
-
-
-%-) generates a probability distribution of the input which is similar to the real distribution\\
-%-) can get noisy input data and outputs values based on the real distribution\\
-%watch Arxiv video for more differences to normal AE\\
-%--> tutorial on variational autoencoder
+The latent space got its name because someone do not necessarily know which features led to it \cite{ml::vae::tutorial}. It represents a transformed representation of the most valuable features in the input data. For example, someone could think of handwritten numbers and identify a latent variable in the number eight as the upper circle of the number. With this, the decoder would always reproduce this circle during decoding since it learned it as it would be a shared feature among all features. This would make sense if there are only the same numbers in the input data but not if there are many different. Furthermore, if the latent space has the same dimension as the input or hidden space then it could easily happen that all the information is fed straight forward through the network without any encoding, decoding and latent vector creation. This is the worst case, not intended in autoencoders and needs to be avoided.\\
+Now, the \ac{VAE} makes use of the same technique as the regular autoencoder but alters the latent space with new variables and a sampling process to map the input data latent space onto a normal distribution instead to a fixed vector \cite{ml::vae::tutorial}. Figure \ref{fig::vae} shows a schematic representation of a VAE network and furthermore shows the difference to regular autoencoders. 
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.65\linewidth]{PICs/NNs/variational_autoencoder}
+	\caption{Schematic representation of an variational autoencoder neural network.} \label{fig::vae}
+\end{figure}\\
+It should be noted that all of the mentioned introductory details of VAE are taken from the excellent tutorial on VAEs from \citep{ml::vae::tutorial} which shall serve as a further reading source if the reader is interested in the detailed mathematics and functioning of VAEs.\\
+Now, as seen in figure \ref{fig::vae}, the VAE adds two new variables to the latent space. The variables $\mu$ and $\sigma^{2}$ represent the mean and variance of a normal distribution and are trained and learned via backpropagation and the so-called "reparameterization trick". The variable $z$ is the actual latent vector which is a combination of $\mu$, $\sigma^{2}$ and a random number sample $\varepsilon$ from a normal distribution which further helps to map the estimated distribution onto a normal distribution. The sample $\varepsilon$ is applied to alter the latent vector and furthermore the output of the decoder network. However, the actual normal distribution mapping happens during the optimization part of the network which works as follows:
+\begin{enumerate}
+	\item Calculate the reconstruction loss of the decoded data compared to the real data.
+	\item The next step is to calculate the so-called "KL-divergence" which makes sure that the latent vector $z$ stays close to a normal distribution with a mean of zero and a standard deviation of one.
+	\item Combine the reconstruction loss and the KL-divergence to form the actual cost of the current training batch.
+	\item Take the calculated overall cost and use backpropagation to optimize the model.
+\end{enumerate}
+It is worth noting that only the variables $\mu$ and $\sigma^{2}$ are affected and adjusted by the backpropagation algorithm. The latent vector $z$ is omitted since it involves a sampling process. However, this is no problem due to the already mentioned reparameterization trick. In specific, because $z$ is a combination of $\mu$, $\sigma^{2}$ and the sample $\varepsilon$, which means that it gets indirectly adjusted.\\
+Furthermore, as the latent vector is always trained with a random normal distribution sample and is mapped to a normal distribution, it enables the decoder to decode from noise data. Figure \ref{fig::vae_noise_decoding} shows an example of this behavior where noise data is decoded back to the learned data. This possibility offers a great advantage for generating weapons from noise of a random normal distribution.
 
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=0.7\linewidth]{PICs/NNs/variational_autoencoder}
-	\caption{Schematic representation of an variational autoencoder neural network.}
+	\includegraphics[width=0.7\linewidth]{PICs/NNs/variational_autoencoder_noise_decoding}
+	\caption{Variational autoencoder latent space noise input decoding.} \label{fig::vae_noise_decoding}
 \end{figure}
+
+%-) generates a probability distribution of the input which is similar to the real distribution\\
+%-) can get noisy input data and outputs values based on the real distribution
 
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
