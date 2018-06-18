@@ -1063,13 +1063,15 @@ However, decoding from noise input is not the only advantage. Another advantage 
 %
 \clearpage
 \chapter{TODO: Prototype Development}
-\textbf{previous considerations}\\
-mind all previous described considerations into the implementation!! 
-the order of the chapters reflect the development workflow steps 
-unreal engine version, tensorflow version, python version
-\section{Data Pre-Processing}
-\subsection{TODO: Dump Extraction}
-\todo[inline]{add dump weapon data example to appendix}
+This chapter addresses every step of the development process of the weapon generator game mechanic. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. All of the following chapters reflect the actual workflow taken in the development. The whole code used in the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}. The prototype was implemented with UE 4.19.2, Python version 3.6.4 and TF 1.8.0. 
+
+\section{Data Preprocessing}
+First step of the development is the gathering and preprocessing of the Battlefield 1 weapon raw data. All the weapon data is accessable to everyone via \url{symthic.com}. However, the community of \citep{symthic::bf1stats} kindly provides a database dump on request which was extracted with a script by a community administrator. This database dump contains every data of the weapons in a readable and manageable data.
+
+\subsection{Dump Extraction}
+
+damage and distance for damages -> min max
+
 \subsection{TODO: Manual Dimension Reduction}
 manually added weapon type (pistol, rifle, etc), firemode (semi, automatic, etc); unified ammo types (used http://battlefield.wikia.com, http://www.ign.com/wikis/battlefield-1/Weapons, symthic.com\\
 simplified bolt-action, pump-action, single-barrel fire and lever-action to "single-action" because it has actually the same kind of reload mechanic\\
@@ -1077,6 +1079,7 @@ needed to remove ammo from the features because I'd need to apply a one hot enco
 
 show the used parameter 
 
+\subsection{Manual Normalization}
 
 \subsection{Convenience Class Pseudo Code}
 
@@ -1304,33 +1307,128 @@ further implementations
 %
 \clearpage
 \appendix
-\chapter{Appendix A} \label{gameMechanicIdeaSummary}
+\chapter{PCGML Game Mechanics Summary} \label{gameMechanicIdeaSummary}
+\begin{longtable}[c]{p{4cm}|p{5.5cm}|p{5.5cm}|}
+	\cline{2-3}
+	                               & \textbf{Output}                                               & \textbf{Training}                                                                              \\ \hline
 
-\begin{landscape}
-	\begin{table}[tp]
-		\centering
-		\resizebox{\textheight}{!}
-		{%
-			\begin{tabular}{c|c|c|}
-				\cline{2-3}
-				\textbf{}                                                                     & \multicolumn{2}{|c|}{\textbf{PCGML System}}                                                                                                   \\ \hline
-				\multicolumn{1}{|c||}{\textbf{Game Mechanic}}                                  & \textbf{Output}                                      & \textbf{Training}                                                                     \\ \hline\hline
-				\multicolumn{1}{|c||}{\nameref{idea::rulesAndBehavior}}       & Configuration of a game with all its game elements.  & Working configuration of a game.                                                      \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::changingWeapons}}        & New and novel weapons.                               & Existing balanced and unbalanced weapons.                                             \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::changingPowers}}         & New and novel powers.                                & Existing useful powers like magic spells.                                             \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::novelCars}}              & New and novel vehicles.                              & Existing balanced and useful vehicles for a specific environment.                     \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::solverWeapon}}           & E.g., elements of a puzzle.                          & Object detection and example drawings.                                                \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::defeatTheEnemy}}         & New and successful attack patterns.                  & Possible AI behavior such as attacks or movement for a specific environment.          \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::caughtInAThunderstorm}}  & Lightning diffusion pattern.                         & Example diffusion pattern based on real weather data.                                 \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::trainToProgress}}        & E.g., elements of a puzzle such as a key for a lock. & No need for training due to training with player.                                     \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::buildingWithAssistance}} & Incomplete elements which allow modification.        & Samples of incomplete elements for the game.                                          \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::exploringCoWorker}}      & Terrain generation or manipulation.                  & Example terrains based on player progress.                                            \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::observeAndLearn}}        & Terrain generation or manipulation.                  & Example terrains.                                                                     \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::expressYourself}}        & Storyline with events and choices connected to it.   & Configuration and story for possible games.                                           \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::bigBossHelper}}          & Terrain generation and modification.                 & Example terrains with obstacles based on a player behavior in a specific environment. \\ \hline
-				\multicolumn{1}{|c||}{\nameref{idea::figureItOut}}            & E.g., elements of a puzzle.                          & Example puzzle elements to progress in a game.                                        \\ \hline
-			\end{tabular}%
-		}
-	\end{table}
-\end{landscape}
+	%
+	\endhead
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::rulesAndBehavior}}}       & Configuration of a game with all its game elements.  & Working configuration of a game.                                                      \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::changingWeapons}}}        & New and novel weapons.                               & Existing balanced and unbalanced weapons.                                             \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::changingPowers}} }        & New and novel powers.                                & Existing useful powers like magic spells.                                             \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::novelCars}}     }         & New and novel vehicles.                              & Existing balanced and useful vehicles for a specific environment.                     \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::solverWeapon}}}           & E.g., elements of a puzzle.                          & Object detection and example drawings.                                                \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::defeatTheEnemy}} }        & New and successful attack patterns.                  & Possible AI behavior such as attacks or movement for a specific environment.          \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::caughtInAThunderstorm}}}  & Lightning diffusion pattern.                         & Example diffusion pattern based on real weather data.                                 \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::trainToProgress}} }       & E.g., elements of a puzzle such as a key for a lock. & No need for training due to training with player.                                     \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::buildingWithAssistance}}} & Incomplete elements which allow modification.        & Samples of incomplete elements for the game.                                          \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::exploringCoWorker}}}      & Terrain generation or manipulation.                  & Example terrains based on player progress.                                            \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::observeAndLearn}}}        & Terrain generation or manipulation.                  & Example terrains.                                                                     \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::expressYourself}} }       & Storyline with events and choices connected to it.   & Configuration and story for possible games.                                           \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::bigBossHelper}} }         & Terrain generation and modification.                 & Example terrains with obstacles based on a player behavior in a specific environment. \\ \hline
+		\multicolumn{1}{|p{4cm}|}{\textbf{\nameref{idea::figureItOut}} }           & E.g., elements of a puzzle.                          & Example puzzle elements to progress in a game.                                        \\ \hline
+
+	\caption{PCGML game mechanic training and output summary.}
+\end{longtable}
+
+\chapter{Battlefield 1 Community Weapon Analytic Dump Parameters}
+\begin{longtable}[c]{|l|p{10.5cm}|}
+	\hline
+	\textbf{Parameter}     & \textbf{Explanation}                                                                                                           \\ \hline
+	\endhead
+	%
+	ADSCrouchBaseMax       & Maximum shot spread if the character is crouching, not moving, and aiming down sight.                                          \\ \hline
+	ADSCrouchBaseMin       & Minimum shot spread if the character is crouching, not moving, and aiming down sight.                                          \\ \hline
+	ADSCrouchBaseSpreadDec & The decrease of shot spread if the character is crouching, not moving, and aiming down sight.                                  \\ \hline
+	ADSCrouchBaseSpreadInc & The increase of shot spread if the character is crouching, not moving, and aiming down sight.                                  \\ \hline
+	ADSCrouchMoveMax       & Maximum shot spread if the character is crouching, moving, and aiming down sight.                                              \\ \hline
+	ADSCrouchMoveMin       & Minimum shot spread if the character is crouching, moving, and aiming down sight.                                              \\ \hline
+	ADSCrouchMoveSpreadDec & The decrease of shot spread if the character is crouching, moving, and aiming down sight.                                      \\ \hline
+	ADSCrouchMoveSpreadInc & The increase of shot spread if the character is crouching, moving, and aiming down sight.                                      \\ \hline
+	ADSProneBaseMax        & Maximum shot spread if the character is lying, not moving, and aiming down sight.                                              \\ \hline
+	ADSProneBaseMin        & Minimum shot spread if the character is lying, not moving, and aiming down sight.                                              \\ \hline
+	ADSProneBaseSpreadDec  & The decrease of shot spread if the character is lying, not moving, and aiming down sight.                                      \\ \hline
+	ADSProneBaseSpreadInc  & The increase of shot spread if the character is lying, not moving, and aiming down sight.                                      \\ \hline
+	ADSProneMoveMax        & Maximum shot spread if the character is lying, moving, and aiming down sight.                                                  \\ \hline
+	ADSProneMoveMin        & Minimum shot spread if the character is lying, moving, and aiming down sight.                                                  \\ \hline
+	ADSProneMoveSpreadDec  & The decrease of shot spread if the character is lying, moving, and aiming down sight.                                          \\ \hline
+	ADSProneMoveSpreadInc  & The increase of shot spread if the character is lying, moving, and aiming down sight.                                          \\ \hline
+	ADSRecoilDec           & Weapon recoil decrease if the character is aiming down sight.                                                                  \\ \hline
+	ADSRecoilLeft          & Weapon recoil to the left if the character is aiming down sight.                                                               \\ \hline
+	ADSRecoilRight         & Weapon recoil to the right if the character is aiming down sight.                                                              \\ \hline
+	ADSRecoilUp            & Weapon recoil upwards if the character is aiming down sight.                                                                   \\ \hline
+	ADSStandBaseMax        & Maximum shot spread if the character is standing, not moving, and aiming down sight.                                           \\ \hline
+	ADSStandBaseMin        & Minimum shot spread if the character is standing, not moving, and aiming down sight.                                           \\ \hline
+	ADSStandBaseSpreadDec  & The decrease of shot spread if the character is standing, not moving, and aiming down sight.                                   \\ \hline
+	ADSStandBaseSpreadInc  & The increase of shot spread if the character is standing, not moving, and aiming down sight.                                   \\ \hline
+	ADSStandMoveMax        & Maximum shot spread if the character is standing, moving, and aiming down sight.                                               \\ \hline
+	ADSStandMoveMin        & Minimum shot spread if the character is standing, moving, and aiming down sight.                                               \\ \hline
+	ADSStandMoveSpreadDec  & The decrease of shot spread if the character is standing, moving, and aiming down sight.                                       \\ \hline
+	ADSStandMoveSpreadInc  & The increase of shot spread if the character is standing, moving, and aiming down sight.                                       \\ \hline
+	AltDeployTime          & Remnant parameter gathered by the script.                                                                                      \\ \hline
+	Ammo                   & Type of ammunition used in the weapon.                                                                                         \\ \hline
+	Bdrop                  & A bullet's drop due to gravity.                                                                                                \\ \hline
+	BRoF                   & The rate of fire in burst mode.                                                                                                \\ \hline
+	BridgeDelay            & Delay added to the first reloaded single bullet.                                                                               \\ \hline
+	Class                  & Defines which character class in Battlefield 1 uses this weapon.                                                               \\ \hline
+	Damages                & Damage points applied, listed based on distance.                                                                               \\ \hline
+	DeployTime             & Is the time it takes to weapon be able to fire after switching to said weapon.                                                 \\ \hline
+	Dmg\_distances         & The distances in correlation to each damage entry in the "Damages" parameter.                                                  \\ \hline
+	Drag                   & A bullet's drag.                                                                                                               \\ \hline
+	Edmg                   & Least applied damage points.                                                                                                   \\ \hline
+	FirstShotADSSpreadMul  & Spread multiplier applied on the first shot or the final shot in burst mode if the character is aiming down sight.             \\ \hline
+	FirstShotHIPSpreadMul  & Spread multiplier applied on the first shot or the final shot in burst mode if the character is not aiming down sight.         \\ \hline
+	FirstShotRecoilMul     & Recoil multiplier applied on the first shot or the final shot in burst mode.                                                   \\ \hline
+	FirstSingleBulletTime  & The time it takes to reload the first bullet if single bullet reloading is available.                                          \\ \hline
+	HIPCrouchBaseMax       & Maximum shot spread if the character is crouching, not moving, and not aiming down sight.                                      \\ \hline
+	HIPCrouchBaseMin       & Minimum shot spread if the character is crouching, not moving, and not aiming down sight.                                      \\ \hline
+	HIPCrouchBaseSpreadDec & The decrease of shot spread if the character is crouching, not moving, and not aiming down sight.                              \\ \hline
+	HIPCrouchBaseSpreadInc & The increase of shot spread if the character is crouching, not moving, and not aiming down sight.                              \\ \hline
+	HIPCrouchMoveMax       & Maximum shot spread if the character is crouching, moving, and not aiming down sight.                                          \\ \hline
+	HIPCrouchMoveMin       & Minimum shot spread if the character is crouching, moving, and not aiming down sight.                                          \\ \hline
+	HIPCrouchMoveSpreadDec & The decrease of shot spread if the character is crouching, moving, and not aiming down sight.                                  \\ \hline
+	HIPCrouchMoveSpreadInc & The increase of shot spread if the character is crouching, moving, and not aiming down sight.                                  \\ \hline
+	HIPProneBaseMax        & Maximum shot spread if the character is lying, not moving, and not aiming down sight.                                          \\ \hline
+	HIPProneBaseMin        & Minimum shot spread if the character is lying, not moving, and not aiming down sight.                                          \\ \hline
+	HIPProneBaseSpreadDec  & The decrease of shot spread if the character is lying, not moving, and not aiming down sight.                                  \\ \hline
+	HIPProneBaseSpreadInc  & The increase of shot spread if the character is lying, not moving, and not aiming down sight.                                  \\ \hline
+	HIPProneMoveMax        & Maximum shot spread if the character is lying, moving, and not aiming down sight.                                              \\ \hline
+	HIPProneMoveMin        & Minimum shot spread if the character is lying, moving, and not aiming down sight.                                              \\ \hline
+	HIPProneMoveSpreadDec  & The decrease of shot spread if the character is lying, moving, and not aiming down sight.                                      \\ \hline
+	HIPProneMoveSpreadInc  & The increase of shot spread if the character is lying, moving, and not aiming down sight.                                      \\ \hline
+	HIPRecoilDec           & Weapon recoil decrease if the character is not aiming down sight.                                                              \\ \hline
+	HIPRecoilLeft          & Weapon recoil lower bound of random recoil if the character is not aiming down sight.                                          \\ \hline
+	HIPRecoilRight         & Weapon recoil upper bound of random recoil if the character is not aiming down sight.                                          \\ \hline
+	HIPRecoilUp            & Weapon recoil upwards if the character is not aiming down sight.                                                               \\ \hline
+	HIPStandBaseMax        & Maximum shot spread if the character is standing, not moving, and not aiming down sight.                                       \\ \hline
+	HIPStandBaseMin        & Minimum shot spread if the character is standing, not moving, and not aiming down sight.                                       \\ \hline
+	HIPStandBaseSpreadDec  & The decrease of shot spread if the character is standing, not moving, and not aiming down sight.                               \\ \hline
+	HIPStandBaseSpreadInc  & The increase of shot spread if the character is standing, not moving, and not aiming down sight.                               \\ \hline
+	HIPStandMoveMax        & Maximum shot spread if the character is standing, moving, and not aiming down sight.                                           \\ \hline
+	HIPStandMoveMin        & Minimum shot spread if the character is standing, moving, and not aiming down sight.                                           \\ \hline
+	HIPStandMoveSpreadDec  & The decrease of shot spread if the character is standing, moving, and not aiming down sight.                                   \\ \hline
+	HIPStandMoveSpreadInc  & The increase of shot spread if the character is standing, moving, and not aiming down sight.                                   \\ \hline
+	HorDispersion          & Horizontal pellet dispersion (for shotguns).                                                                                   \\ \hline
+	InitialSpeed           & Muzzle velocity.                                                                                                               \\ \hline
+	MagSize                & Size of one magazine.                                                                                                          \\ \hline
+	NumBulletsReloaded     & The Number of bullets reloaded when using magazines or strip clips.                                                            \\ \hline
+	PostReloadDelay        & Post-reload delay after reloading mechanic ends.                                                                               \\ \hline
+	ReloadDelay            & Pre-reload delay before actual reloading mechanic begins. (Not strip clip reload or single bullet reload)                      \\ \hline
+	ReloadEmpty            & The time it takes if the magazine is empty.                                                                                    \\ \hline
+	ReloadLeft             & The time it takes if the magazine there is still some ammo left.                                                               \\ \hline
+	ReloadThrs             & The fraction of the reload time before someone can swap weapons and still receives fully reloaded ammo.                        \\ \hline
+	RoF                    & The rate of fire.                                                                                                              \\ \hline
+	SDmg                   & Maximum damage points without taking distance into account.                                                                    \\ \hline
+	ShotsPerBurst          & The number of pellets of one shot in burst mode.                                                                               \\ \hline
+	ShotsPerShell          & The number of pellets of one shot.                                                                                             \\ \hline
+	SingleBulletReloadTime & The time it takes to reload single bullets after "FirstSingleBulletTime" was applied. (Semi-automatic and bolt-action weapons) \\ \hline
+	StripClipSize          & The number of bullets reloaded by "strip" clips.                                                                               \\ \hline
+	StripReloadTime        & The time it takes to reload the stripper clip.                                                                                 \\ \hline
+	TimeToLive             & Seconds how long the bullet lives before despawning.                                                                           \\ \hline
+	VerDispersion          & Vertical pellet dispersion (for shotguns).                                                                                     \\ \hline
+	\_\_CustomReload\_\_   & This parameter only applies in super individual cases.                                                                         \\ \hline
+	\caption{Battlefield 1 community weapon analytic dump data parameter.}
+\end{longtable}
+
 \end{document}
