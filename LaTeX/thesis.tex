@@ -41,6 +41,7 @@
 \usepackage{fixltx2e}
 \usepackage{hhline}
 \usepackage{svg}
+\usepackage{afterpage}
 
 %
 % Bitte in der folgenden Zeile den Zitierstandard festlegen
@@ -1076,6 +1077,10 @@ needed to remove ammo from the features because I'd need to apply a one hot enco
 
 show the used parameter 
 
+
+\subsection{Convenience Class Pseudo Code}
+
+
 \subsection{TODO: Encoding and Feature Scaling}
 firemode and weapon type encoded with tensorflow\\
 what is with the other params? is there a best practice? is it really necessary for a AE? 
@@ -1084,7 +1089,7 @@ what is with the other params? is there a best practice? is it really necessary 
 -) get rid of pseudo categorical data \\
 -) full/semi weapons?
 
-
+\subsection{Weapon Data Type Distributions}
 
 \section{VAE Implementation}
 Classes, Diagrams, ..\\
@@ -1096,6 +1101,8 @@ how to measure the accuracy in unsupervised learning / geneartive models?
 -) RELU -> can cause dead of neurons
 -) Leaky Relu avoids this because it doesn't clamp to 0
 
+\subsection{Pseudo Code}
+
 \subsection{Model Accuracy Measurement}
 following method was used: 
 the training data was split into a training set of 127 entries and a test set of 21 entries. 
@@ -1106,39 +1113,62 @@ random input is the same size as the test set (21 entries)
 
 --> show the latent space plot and show how you can identify clusters of weapons in the model
 
+
+\subsection{Network Paramter Selection}
+\subsubsection{Training Epochs}
+show the diagrams cost per epochs and failure rate per epoch
+
+\subsection{Generation Example}
+show the diagram with the visible clustering 
+
+
+\subsection{Development Issues}
+tensorflow graph reset after model reloading. otherwise the graph was polluted with not used graphs and that mades things slower
+
 \section{TODO: Game}
 show the map from above
 
 explain the possible input
 what was implemented, etc
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=0.6\linewidth]{PICs/Prototype/map_with_spawnpoints_and_boss}
-	\caption{Prototype scenario map with player spawnpoints in green and boss in red.}
-\end{figure}
-\begin{figure}[!htbp]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Prototype/ingame_screenshot}
 	\caption{Prototype scenario in-game screenshot.}
 \end{figure}
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.6\linewidth]{PICs/Prototype/map_with_spawnpoints_and_boss}
+	\caption{Prototype scenario map with player spawnpoints in green and boss in red.}
+\end{figure}
+
+
+\subsection{Player Interactions}
 
 \subsection{HUD}
 show the player current weapon status, etc
 show the game and the mechanics!
+
+\subsection{Bots}
+
+\subsection{Weapons}
+
+
+
+
 
 \section{TODO: Weapon Generation Process}
 show a flowchart or sudo code
 class diagram of the classes and how the player to generator workflow works
 the workflow of the generator class from the input to the TF comp, back to the generator and to the player
 
-\begin{figure}[!htbp]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.5\linewidth]{PICs/WeaponGeneratorWorkflow_Setup_Training}
 	\caption{Weapon generator setup and training workflow.}
 \end{figure}
 
-\begin{figure}[!htbp]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.5\linewidth]{PICs/WeaponGeneratorWorkflow_Generation}
 	\caption{Weapon generator generation workflow.}
@@ -1149,7 +1179,7 @@ the workflow of the generator class from the input to the TF comp, back to the g
 random range can be adjusted so that different weapons emerge
 the threshold, etc
 
-\subsection{\ac{TF} Plugin Changes}
+\subsection{\acl{TF} Plugin Changes}
 There was a game freeze during the JSON input processing in the TF plugin. so i needed to change the code so that it runs on a background thread
 the default TF version the plugin comes with has tensorflow 1.6.0 enabled -> i switched to 1.8.0
 
@@ -1164,25 +1194,25 @@ Profiling was done in the Unreal Engine 4 Editor in development configuration wi
 	\item \textbf{\ac{RAM}}: 16GB
 \end{itemize}
 
-\begin{figure}[!htbp]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/deactivated_plugin}
 	\caption{Profiling chart with the deactivated TensorFlow Plugin.}
 \end{figure}
 
-\begin{figure}[!htbp]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/activated_plugin_no_tf_used}
 	\caption{Profiling chart with the activated but not actively used TensorFlow Plugin for CPU.}
 \end{figure}
 
-\begin{figure}[!htbp]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/tf_cpu}
 	\caption{Profiling chart with the actively used TensorFlow Plugin for CPU.}
 \end{figure}
 
-\begin{figure}[!htbp]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/tf_gpu}
 	\caption{Profiling chart with the actively usedTensorFlow Plugin for GPU.}
@@ -1275,6 +1305,7 @@ further implementations
 \clearpage
 \appendix
 \chapter{Appendix A} \label{gameMechanicIdeaSummary}
+
 \begin{landscape}
 	\begin{table}[tp]
 		\centering
