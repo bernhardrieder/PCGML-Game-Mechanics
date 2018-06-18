@@ -663,7 +663,7 @@ First of all, it is necessary to come up with efficient and sufficient data for 
 After provision and preprocessing of the dataset follows training. Training can happen with different training models as described in chapter \ref{PCGML::devConsiderations}. For example, the use of an ANN or could be a suitable training model for a given example dataset. In the scenario of the given training data, the \acp{NN} would be trained for each pair of values to output the next value in the sequence. Figure \ref{fig::PCGML::devExample::NNbasic} shows an example of a simple feed-forward \ac{NN} where the start value and the first variable are used to predict the second variable. The neurons in all \acp{NN} shown in this thesis will follow the color scheme introduced in figure \ref{fig::neuron_legend}. 
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=0.25\linewidth]{PICs/NNs/neurons_legend.jpg}
+	\includegraphics[width=0.3\linewidth]{PICs/NNs/neurons_legend.jpg}
 	\caption{Neuron legend for all neural networks in this thesis.}\label{fig::neuron_legend}
 \end{figure}
 \begin{figure}[!htbp]
@@ -1012,38 +1012,34 @@ However, as the research of \cite{pcgml::paper} shows, methods like \ac{NN}, \ac
 In particular, the generative part is the so-called "Generator" whereas the discriminative model is called the "Discriminator" \cite{ml::book::developer}. The generator takes a random sample from a random normal distribution and produces data which could be from the same distribution as the input data \cite{ml::book::developer}. The discriminator then takes the real input data, compares it to the generated data and tries to identify if it is from the real or a fake distribution and rejects it if it identified as fake \cite{ml::book::developer}. The network is completely trained as soon as the generator network can "beat" the discriminator network with fake data \cite{ml::book::developer}. This repeating counterplay is the reason why GAN got its adversarial part in the name. Specific models for the generator and discriminator can differ but a possible model for the generator would be a modificated \ac{VAE} which is described next.
 
 \subsubsection{\acl{VAE}}
-\acp{VAE} are an advancement of autoencoders with the same principal strategy. Autoencoders aim to reduce and compress the feature dimension of input data which enables the possibility of decompression and reconstruction of all features afterwards \cite{ml::book::nnProgrammingTF}. This means that, for example, an image can be compressed into a minimal amount of features and decompressed to the same image afterwards without losing its meaning. Nevertheless, a crucial difference to \acp{GAN} is that autoencoders and \acp{VAE} do not reproduce the same quality as before because they compress and decompress the data and often lose some information \cite{ml::book::nnProgrammingTF}. \\
+\acp{VAE} are an advancement of autoencoders with the same principal strategy. Autoencoders aim to reduce and compress the feature dimension of input data which enables the possibility of decompression and reconstruction of all features afterwards \cite{ml::book::nnProgrammingTF}. This means that, for example, an image can be compressed into a minimal amount of features and decompressed to the same image afterwards without losing its meaning. Nevertheless, a crucial difference to \acp{GAN} is that autoencoders and \acp{VAE} do not reproduce the same quality as before because they compress and decompress the data and often lose some detail \cite{ml::book::nnProgrammingTF}. \\
 Now, the special characteristics about \acp{VAE} is that they make use of the compressed state to transform the reduced features onto a normal distribution \cite{ml::vae::tutorial}. It achieves this by additionally sampling from a normal distribution right after the feature reduction which further enables the ability of being able to process random input and reconstruct new data in the same distribution as the training data distribution \cite{ml::vae::tutorial}.
 
 \subsection{Model Conclusion}
 Both of the described models are promising and eligible for the PCGML model implementation. Nevertheless, it feels like that \acp{GAN} would take longer to train due to the generator and discriminator interplay. Furthermore, it would overall require a bigger network and increase the computation times during training. Nevertheless, this would be a reasonable network if the mechanic would not require retraining.\\
 For this reason, the decision leads to the model of \acp{VAE} which produce admittedly blurry but still good-quality data. They are possibly easier and faster to train than \ac{GAN} and still can generate data which is similar to the trained data. Therefore, the rest of this thesis addresses a weapon generator game mechanic which uses \ac{VAE} as the ML backbone for the generation task.
 
-\section{TODO: \acl{ML} Models Introduction}
-
-\subsection{TODO: Autoencoder}
-What is/For what is a normal Autoencoder used/good? \\
--) just encodes and decodes the same structure\\
--) feature extraction\\
--) data compression\\
--) dimension reduction
+\section{TODO: Used Model Introduction}
+As already described in the previous chapter, autoencoders aim to reduce the features of the input to create a compressed feature vector. They are therefore also used for encoding and decoding the same structure, feature extraction and data compression \cite{ml::book::nnProgrammingTF}. Figure \ref{fig::autoencoder} shows a schematic representation of a autoencoder which gets a pistol as input and outputs a pistol with a little bit of inaccuracy or blur. The left side of the network is called the encoder, gets the input and encodes all features into the so-called "latent variables" or "latent space" whereas the right site is called the decoder and decodes the latent variables into the input data \cite{ml::book::nnProgrammingTF}.
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=0.3\linewidth]{PICs/NNs/autoencoder}
-	\caption{Schematic representation of an autoencoder neural network.}
-\end{figure}
-\subsection{TODO: \acl{VAE}}
--) generates a probability distribution of the input which is similar to the real distribution\\
--) can get noisy input data and outputs values based on the real distribution\\
-\\
-watch Arxiv video for more differences to normal AE\\
---> tutorial on variational autoencoder
+	\includegraphics[width=0.9\linewidth]{PICs/NNs/autoencoder}
+	\caption{Schematic representation of an autoencoder neural network with blurry output.} \label{fig::autoencoder}
+\end{figure}\\
+Now, the \ac{VAE} makes use of the same technique as the regular autoencoder but alters the latent space to map the input data distribution into the feature space onto a normal distribution.
+
+
+%-) generates a probability distribution of the input which is similar to the real distribution\\
+%-) can get noisy input data and outputs values based on the real distribution\\
+%watch Arxiv video for more differences to normal AE\\
+%--> tutorial on variational autoencoder
 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.7\linewidth]{PICs/NNs/variational_autoencoder}
 	\caption{Schematic representation of an variational autoencoder neural network.}
 \end{figure}
+
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
 %
