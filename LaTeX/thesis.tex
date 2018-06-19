@@ -1151,7 +1151,7 @@ class DataSet:
 		encode decoded tensor from TensorFlow
 \end{lstlisting}
 
-\section{\acl{VAE} Implementation}
+\section{\acl{VAE}}
 The implementation for the VAE was driven and inspired by an explanation of \citep{tutorial::vaeTF}. \citename{tutorial::vaeTF} used an high-level approach in his design which is similar to high-level ML APIs. These high-level APIs are easily modifiable and extensible which was the main reason why to follow the approach of \citename{tutorial::vaeTF}. An easy modification is necessary to test different network hyperparameters without major changes in the code and thus to find the most suitable network parameters. More to that is described in the chapter \ref{chapter::vae::network} about how the selection of the hyperparameters was done. Now, the next chapters show some pseude code of the VAE class, how the model accuracy was measured to obtain a proper trained model, addresses the already mentioned the network parameter selection, shows two weapon generation examples and lists development issues.
 
 \subsection{Pseudo Code}
@@ -1215,7 +1215,7 @@ However, after some test iterations later, it was clear which hyperparameters to
 	\item \textbf{Activation function after hidden layers}: The exponential linear unit activation function "elu" which leads to higher classification accuracies \cite{ml::activation::elu}.
 	\item \textbf{Optimizer function}: The optimizer function "RMSProp" \cite{ml::optimizer::overview}.
 	\item \textbf{Batch size}: 4.
-	\item \textbf{Number of training epochs}: A number of 400 emerges in the lowest costs.
+	\item \textbf{Number of training epochs}: A number of 400 shows the lowest costs. 
 \end{itemize}
 It was interesting to see that the activation function elu was able to detect the underlying structure of the data much better than tanh. This detection was then further boosted with a collaboration with the RMSProp optimizer. Why these particular activation function and optimizer works so good would be interesting to know but exceed the scope if this thesis which is the reason why it is not further addressed.
 
@@ -1233,16 +1233,55 @@ Now, a lucky coincidence of these hyperparamters is that the latent space has a 
 \end{figure}\\
 One can easily see that the model was able to learn an underlying structure of the provided weapon data. Furthermore, someone can easily assume and connect the 6 visible clusters in the plot to the available weapon types in the training data.
 
-\subsubsection{Training Epochs}
-show the diagrams cost per epochs and failure rate per epoch
+\subsubsection{Cost per Training Epoch}
+Another interesting chart to determine the right amount of training epochs shows figure \ref{fig::vae::costPerEpoch}. This chart shows that there is a minimum average cost at around 400 training epochs which will slightly rise with more and more epochs. 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/cost_per_epoch}
+	\caption{A chart of the average cost per training epoch.} \label{fig::vae::costPerEpoch}
+\end{figure}
 
-\subsubsection{Cost per Epoch Chart}
-\subsection{Generation Example}
-show the diagram with the visible clustering 
-\subsubsection{Altered Weapon}
+\subsubsection{Training Epochs Random Input Failure Rate}
+Another benchmark to determine the right amount of training epochs was to observe the failure rate of the model when testing the average cost of random input. Figure \ref{fig::vae::epochsFailureRate} shows a chart with the percent of failure rate in which the model was not able to properly learn the underlying structure or had a loss which was not observable. In other words, it is evaluated as a failure when the random input loss related to the test loss is not ten times bigger or when it is not a number and cannot be taken into account. The observation tested each number of training epochs 100 times in a row. 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/epoch_failure_rate}
+	\caption{A chart of the failure rate per training epoch.} \label{fig::vae::epochsFailureRate}
+\end{figure}\\
+The reason why it is a different outcome every new training is because the weights and biases are initialized in a random range which is near a normal distribution with zero mean and a standard deviation of one. For this reason, the decision for the training epochs in the weapon generation was set to 70 epochs in the beginning and will increase with every new added weapon to the dataset.
 
-\subsubsection{Random Input}
-
+\subsection{Random Input Generation Example}
+Table \ref{vae::randomInputGeneration} shows a comparison of a training weapon and a generated weapon which was generated with random noise input to prove that the VAE can generate useful weapon data. One can see that the VAE has issues with predicting and generating the correct category for a weapon. This is still an unsolved problem but is easily solvable by checking the highest value of all categories. In this case, it is most likely a sniper rifle with semi automatic fire mode. The missing fire mode and type can be compensated with a random factor in the weapon generator. Please note that the listed parameters are the same parameters which are outputted by the VAE.
+\begin{table}[!ht]
+	\centering
+	\begin{tabular}{|l|p{3.5cm}|p{3.5cm}|}
+		\hline
+		\textbf{Output Parameter}       & \textbf{Training Weapon} & \textbf{Generated Weapon} \\ \hline\hline
+		damages\_first           & 26.5                 & 38.441                    \\ \hline
+		damages\_last            & 6.25                 & 26.098                    \\ \hline
+		dmg\_distances\_first    & 14.0                 & 11.519                    \\ \hline
+		dmg\_distances\_last     & 21.0                 & 52.747                    \\ \hline
+		firemode\_Automatic      & 0.0                  & 0.221                     \\ \hline
+		firemode\_Semi-Automatic & 0.0                  & 0.250                     \\ \hline
+		hiprecoildec             & 6.0                  & 4.699                     \\ \hline
+		hiprecoilright           & 1.2                  & 0.487                     \\ \hline
+		hiprecoilup              & 11.0                 & 1.960                     \\ \hline
+		hipstandbasespreaddec    & 4.5                  & 5.637                     \\ \hline
+		hipstandbasespreadinc    & 0.3                  & 0.256                     \\ \hline
+		initialspeed             & 333                  & 524.230                   \\ \hline
+		magsize                  & 2                    & 14.143                    \\ \hline
+		reloadempty              & 5.333                & 3.489                     \\ \hline
+		rof                      & 299                  & 259.618                   \\ \hline
+		shotspershell            & 12                   & 1.044                     \\ \hline
+		type\_Pistol             & 0.0                  & 0.098                     \\ \hline
+		type\_Rifle              & 0.0                  & 0.117                     \\ \hline
+		type\_Shotgun            & 1.0                  & 0.017                     \\ \hline
+		type\_Sniper Rifle       & 0.0                  & 0.117                     \\ \hline
+		type\_Submachine Gun     & 0.0                  & 0.033                     \\ \hline
+	\end{tabular}
+	\caption{Comparation of a training weapon and a generated weapon with random noise as input.}
+	\label{vae::randomInputGeneration}
+\end{table}
 \subsection{Development Issues}
 tensorflow graph reset after model reloading. otherwise the graph was polluted with not used graphs and that mades things slower\\
 tensorflow works like that the creates nodes have a fixed shape after the training. for this reason, the batch size for encoding and decoding needs to be the same as the training batch size. that is because batch size is propagates thorugh every node in the network and trained on this shape. this means someone can either input a whole batch of random numbers or existing weapons and generate the whole batch. Or, i also implemented that it is possible to just input one simple input which is replicated to the size of the batch and outputs the mean of all generated weapons.
