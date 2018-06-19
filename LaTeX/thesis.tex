@@ -1290,37 +1290,33 @@ Two special issues occurred during the development with TF:
 	\item TF works with nodes which have a specific shape. If the node has no specific shape at creation time, then it will get one during training time and this shape will consist in the trained and saved model. Because of this reason, all of the network nodes will have a similar shape as the batch size because it is propagated thorught every node in the network during training. That means, that encoding and decoding and decoding from latent space is just possible with an input which has the same size as the training batch. Of course, this is not a big problem, but narrows the possiblities of using the VAE. This problem was solved with a simple replication of the input if its not the same size as the batch size and calculates the mean of the output since it generates the output batch size times.
 \end{enumerate}
 
-\section{TODO: Game}
-show the map from above
-
-explain the possible input
-what was implemented, etc
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=1.0\linewidth]{PICs/Prototype/ingame_screenshot}
-	\caption{Prototype scenario in-game screenshot.}
-\end{figure}
-
+\section{Game Scenario}
+The prototype scenario was implemented in UE4 version 4.19.2 and includes a simple map with all requested elements described in chapter \ref{chapter::gamePrototype}. Figure \ref{scenarioMap} shows the created map of the scenario from top-down view, the possible spawn points of the player and the location of the end boss AI. All 3D models and assets are either reused from UE4 template projects or freely downloaded from the internet and do not violate any copyright rights.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.6\linewidth]{PICs/Prototype/map_with_spawnpoints_and_boss}
-	\caption{Prototype scenario map with player spawnpoints in green and boss in red.}
+	\caption{Prototype scenario map with player spawn points in green and boss in red.} \label{scenarioMap}
+\end{figure}\\
+Furthermore, figure \ref{scenarioScreenshot} shows an in-game screenshot of the game with the HUD, an enemy AI with a health bar over the head and the waiting end boss AI.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1.0\linewidth]{PICs/Prototype/ingame_screenshot}
+	\caption{Prototype scenario in-game screenshot.} \label{scenarioScreenshot}
 \end{figure}
 
-
-\subsection{Player Interactions}
-
 \subsection{HUD}
-show the player current weapon status, etc
-show the game and the mechanics!
+As designed in chapter \ref{chapter::gamePrototype}, the HUD should provide the player with feedback to the mechanic and also the game. For this reason, it shows the most important parameters of the currently equipped weapon on the top left, as visible in figure \ref{scenarioScreenshot}. Furthermore, it shows the current status of the weapon generator which can be one from the range "Starting", "Waiting for Input" or "Generating". The status of the available ammo, current health and armor, and health is also shown in the HUD so that the player knows about his vitals.
+
+\subsection{Player}
+The player is able to do everything as in common FPS games and additionally has the possibility of using the weapon generator to generate a new weapon. If the player decides to dismantle the equipped weapon, then the currently equipped weapon will be removed from the player and the player is able to just use the remaining weapon until the generator is finished. Specific movement types increase or decrease weapon shooting behavior. In addition, the player can gather power ups which are placed randomly in the map and increase or refill movement speed, health, armor and ammo.
 
 \subsection{Bots}
+The bots are implemented as requested and come in 3 different types. The easiest one is a simple ball bot which moves towards the player and explodes after some time after reaching the player. The two other bots are from the same type  which is visible in figure \ref{scenarioScreenshot}, moves towards the player and shoots with different weapons onto the player in a straight forward way. The easy bot does not cause much damage but tries to heal itself if the health is low whereas the heavy bot causes more damage, has more health and does not heal itself.\\
+The end boss bot is even heavier than the heavy bot and has an own weapon which has a higher rate of fire than any other weapon of the bots. Furthermore, the end boss has many health points so that the player needs to use the weapon generator to win against the bot.
 
-\subsection{Weapons}
-which features? spread, recoil, magazine size, firemodes
-
-
-
+\subsection{Weapons and Generator}
+Almost every feature shown in table \ref{table::bf1::usedParams} is implemented in the weapon class. The only parameter which is not implemented is the initial speed or also known as muzzle velocity. For generator reasons, this parameter needs to be saved in the weapon class but has no effect on the weapon. For further simplicity in the prototype, all different weapons are implemented in one class which is able to function as every weapon type. Furthermore, to have a visible representation of the weapon, every weapon type has its own weapon model so that the player can distinguish between the weapons inside the game. \\
+Moreover, each weapon has specific modifier which are applied to either the weapons or the player. For example, machine guns are heavier than pistols and therefore lower the movement speed of a character. Or if a player aims down sight, then the shooting behavior regarding recoil and spread is improved. This improvements can be adjusted for each weapon class and are propagated to generated weapons of the same weapon type.
 
 \section{TODO: Weapon Generation Process}
 show a flowchart or sudo code
@@ -1331,13 +1327,13 @@ the workflow of the generator class from the input to the TF comp, back to the g
 class WeaponGeneratorAPI:
 	functions:
 		on setup:
-			inintializes variables
+			inintialize the network
 		on begin training:
-			trains the model
+			train the model
 		on json input:
-			processes input from UE4
-			returns a new weapon
-		on stop training
+			check if new trained model is available
+			add dismantled weapon to dataset and retrain if necessary
+			process input return a new generated weapon
 \end{lstlisting}
 
 
