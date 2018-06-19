@@ -1063,7 +1063,7 @@ However, decoding from noise input is not the only advantage. Another advantage 
 %
 \clearpage
 \chapter{TODO: Prototype Development}
-This chapter addresses every step of the development process of the weapon generator game mechanic whereas UE specific game development topics are not covered. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. The ordering of all following chapters reflect more or less the actual workflow taken in the development. The prototype was implemented with UE4 4.19.2, Python version 3.6.4 and TF 1.8.0; the source code developed for the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}\todo{show the url? yes or no?}. 
+This chapter addresses every step of the development process of the weapon generator game mechanic whereas UE specific game development topics are not covered. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. The ordering of all following chapters reflect more or less the actual workflow taken in the development. The prototype was implemented with Python version 3.6.4 and TF 1.8.0 in Jupyter Notebook and then integrated in UE4 4.19.2; the source code developed for the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}\todo{show the url? yes or no?}. 
 
 \section{Data Preprocessing} \label{dev::dataPreprocessing}
 First step of the development is the gathering and preprocessing of the \ac{BF1} community weapon analytic raw data. All of the weapon data is accessable to everyone via the community website of \citep{symthic::bf1stats}. However, the community of \citename{symthic::bf1stats} kindly provides a database dump on request which was extracted with a script by a community administrator. This database dump contains every parameter of the weapons in a readable and manageable data.
@@ -1256,7 +1256,7 @@ Table \ref{vae::randomInputGeneration} shows a comparison of a training weapon a
 	\centering
 	\begin{tabular}{|l|p{3.5cm}|p{3.5cm}|}
 		\hline
-		\textbf{Output Parameter}       & \textbf{Training Weapon} & \textbf{Generated Weapon} \\ \hline\hline
+		\textbf{Output Parameter}       & \textbf{Training Weapon} & \textbf{Random Generated Weapon} \\ \hline\hline
 		damages\_first           & 26.5                 & 38.441                    \\ \hline
 		damages\_last            & 6.25                 & 26.098                    \\ \hline
 		dmg\_distances\_first    & 14.0                 & 11.519                    \\ \hline
@@ -1279,12 +1279,16 @@ Table \ref{vae::randomInputGeneration} shows a comparison of a training weapon a
 		type\_Sniper Rifle       & 0.0                  & 0.117                     \\ \hline
 		type\_Submachine Gun     & 0.0                  & 0.033                     \\ \hline
 	\end{tabular}
-	\caption{Comparation of a training weapon and a generated weapon with random noise as input.}
+	\caption{Comparison of a training weapon and a generated weapon with random noise as input.}
 	\label{vae::randomInputGeneration}
 \end{table}
+
 \subsection{Development Issues}
-tensorflow graph reset after model reloading. otherwise the graph was polluted with not used graphs and that mades things slower\\
-tensorflow works like that the creates nodes have a fixed shape after the training. for this reason, the batch size for encoding and decoding needs to be the same as the training batch size. that is because batch size is propagates thorugh every node in the network and trained on this shape. this means someone can either input a whole batch of random numbers or existing weapons and generate the whole batch. Or, i also implemented that it is possible to just input one simple input which is replicated to the size of the batch and outputs the mean of all generated weapons.
+Two special issues occurred during the development with TF:
+\begin{enumerate}
+	\item TF creates all network nodes in so-called graphs which are not cleaned-up after a so-called TF session is closed. A session is needed to execute all network nodes and will be closed after a network is not used anymore. In case of the necessary retraining for this network, it created a pollution of the graph which slowed the execution bit by bit. This problem was solved with a simple reset of the graph after the session close and before the new trained model was loaded.
+	\item TF works with nodes which have a specific shape. If the node has no specific shape at creation time, then it will get one during training time and this shape will consist in the trained and saved model. Because of this reason, all of the network nodes will have a similar shape as the batch size because it is propagated thorught every node in the network during training. That means, that encoding and decoding and decoding from latent space is just possible with an input which has the same size as the training batch. Of course, this is not a big problem, but narrows the possiblities of using the VAE. This problem was solved with a simple replication of the input if its not the same size as the batch size and calculates the mean of the output since it generates the output batch size times.
+\end{enumerate}
 
 \section{TODO: Game}
 show the map from above
