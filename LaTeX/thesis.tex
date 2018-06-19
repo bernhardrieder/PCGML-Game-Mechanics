@@ -1063,9 +1063,9 @@ However, decoding from noise input is not the only advantage. Another advantage 
 %
 \clearpage
 \chapter{TODO: Prototype Development}
-This chapter addresses every step of the development process of the weapon generator game mechanic whereas UE specific game development topics are not covered. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. The ordering of all following chapters reflect more or less the actual workflow taken in the development. The prototype was implemented with UE 4.19.2, Python version 3.6.4 and TF 1.8.0; the source code developed for the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}\todo{show the url? yes or no?}. 
+This chapter addresses every step of the development process of the weapon generator game mechanic whereas UE specific game development topics are not covered. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. The ordering of all following chapters reflect more or less the actual workflow taken in the development. The prototype was implemented with UE4 4.19.2, Python version 3.6.4 and TF 1.8.0; the source code developed for the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}\todo{show the url? yes or no?}. 
 
-\section{Data Preprocessing}
+\section{Data Preprocessing} \label{dev::dataPreprocessing}
 First step of the development is the gathering and preprocessing of the \ac{BF1} community weapon analytic raw data. All of the weapon data is accessable to everyone via the community website of \citep{symthic::bf1stats}. However, the community of \citename{symthic::bf1stats} kindly provides a database dump on request which was extracted with a script by a community administrator. This database dump contains every parameter of the weapons in a readable and manageable data.
 
 \subsection{Dump Extraction} \label{chapter::dumpExtraction}
@@ -1151,39 +1151,101 @@ class DataSet:
 		encode decoded tensor from TensorFlow
 \end{lstlisting}
 
-\section{VAE Implementation}
-Classes, Diagrams, ..\\
-Santi said: just use 1 Hidden Layer if you have a dataset with small amount of data\\
-how to measure the accuracy in unsupervised learning / geneartive models?
-
--) Sigmoid activation can cause vanishing gradient problem (outputs 0 - 1)
--) Hyperbolic tangent activation, can also cause the vanishing gradient problem (outputs -1 - 1)
--) RELU -> can cause dead of neurons
--) Leaky Relu avoids this because it doesn't clamp to 0
+\section{\acl{VAE} Implementation}
+The implementation for the VAE was driven and inspired by an explanation of \citep{tutorial::vaeTF}. \citename{tutorial::vaeTF} used an high-level approach in his design which is similar to high-level ML APIs. These high-level APIs are easily modifiable and extensible which was the main reason why to follow the approach of \citename{tutorial::vaeTF}. An easy modification is necessary to test different network hyperparameters without major changes in the code and thus to find the most suitable network parameters. More to that is described in the chapter \ref{chapter::vae::network} about how the selection of the hyperparameters was done. Now, the next chapters show some pseude code of the VAE class, how the model accuracy was measured to obtain a proper trained model, addresses the already mentioned the network parameter selection, shows two weapon generation examples and lists development issues.
 
 \subsection{Pseudo Code}
+Listing \ref{pseudoCode::vae} shows the pseudo code with most of the available and necessary functions for the generation task. The actual code contains some more function but are not important to explain. As already introduced in the weapon convenience class, this class also has some global convenience functions to obtain different stages of a VAE. \\
+Two of the most important functions of the VAE class for the weapon generation tasks are the functions "decode from latent space" and "encoding and decoding" since they provide the functionality to generate data similar to the training data. It is to mention, that the VAE initializes itself on construction where it calls all the creation functions to maintain a working network. The last most important function to mention is the loss calculation function since it is necessary to secure a working generation during generation time so that the weapon is actually from the distribution of the network and that the network was able to recreate a weapon from that distribution.
+
+\begin{lstlisting}[language=,name={Pseudo code of the variational autoencoder class.},label={pseudoCode::vae}]
+global functions:
+	get untrained variational autoencoder
+	get trained variational autoencoder
+	
+class VariationalAutoencoder:
+	public functions:
+		train with batch
+		decode a batch from latent space
+		encode and decode a batch
+		load trained model from file
+		save trained model to file
+		calculate loss from a batch
+	private functions:
+		create encoder network
+		create z sampling operation
+		create decoder network
+		create hidden layer
+		create weights and biases
+		create loss optimizer
+		calculate reconstruction loss
+		calculate kl divergence
+\end{lstlisting}
 
 \subsection{Model Accuracy Measurement}
-following method was used: 
-the training data was split into a training set of 127 entries and a test set of 21 entries. 
-Then the model reconstruction accuracy was measured by calculating the average cost/loss caused by the test set which was input in the encoder -> check if its as small as possible
-and also a random input was generated which was in range of the normalized values of the test (check if thats right) data and put into the encoder. -> make sure it is as big as possible
-if the random input loss is very high then it means that the model has learned the internal structure and dependencies of the training data because it cannot classify the input data regarding the training data
-random input is the same size as the test set (21 entries)
+One of the most important parts of training the VAE is to secure a high model accuracy. This is secured by using two different measurements:
+\begin{itemize}
+	\item The test set reconstruction loss.
+	\item A random input reconstruction loss.
+\end{itemize} 
+Now, as already mentioned in the chapter \ref{dev::dataPreprocessing}, the data was split into 127 weapons of training data and 21 weapons of test data. Both of the inputs were inputted into the encoder side of the network and the test results manually examined afterward. Following steps were taken to ensure a high model accuracy:
+\begin{enumerate}
+	\item Measure the model reconstruction accuracy by calculating the average loss caused by the test set.
+	\item Generate a random input in range of the normalized values of the test set and size of the test set and measure the caused average loss.
+	\item Make sure that the reconstruction average loss of the test set is as small as possible and the loss of the random input is as big as possible.
+\end{enumerate}
+Now, if the random input loss is very high then it means that the model has learned the internal structure and dependencies of the training data because it cannot classify the input data regarding to the training data. In other words, a big loss with random input data means that the model has no idea which data that should be and cannot reconstruct anything useful. On the other hand, if the reconstruction loss of the test set would be very high, then it would not know what to reconstruct either. Therefore it is important to maintain a low loss with the test set and a high loss with the random input.
 
---> show the latent space plot and show how you can identify clusters of weapons in the model
+\subsection{Network Hyperparameter Selection} \label{chapter::vae::network}
+Finding the right network hyperparamters for a neural network seems to be one of the trickiest parts in designing a neural network. Different constellations of learning rate, optimizer function, hidden layer size, latent space size, number of training data features, activation functions after the hidden layers, batch size and training epochs can have similar, better or worse performance since the weights and biases in the neural network are randomly initialized, dynamically trained and can emerge in either the right or wrong way. For this reason, the development of a simple hyperparameter test script was the easiest way to tackle that problem and detect the most promising parameters. But before any of the test iterations were in progress, the assumptions for a properly working network were evaluated as follows:
+\begin{itemize}
+	\item \textbf{Learning rate}: Between 0.01 and 0.001 because the variables are standardized and bigger rates would not make sense.
+	\item \textbf{Size of the hidden layers}: Bigger than the latent space but smaller than the input layer size to prevent the straight forward passing on of the variables without any training of the weights.
+	\item \textbf{Size of the latent space}: Not smaller than two and not bigger than the hidden layer because of the same reason as mentioned in the hidden layer.
+	\item \textbf{Activation function after hidden layers}: The commonly used hyperbolic tangent activation function  "tanh" which outputs values between -1 and 1. 
+	\item \textbf{Optimizer function}: The common optimizer function "Adam" \cite{ml::optimizer::overview}.
+	\item \textbf{Batch size}: Not bigger than ten because of the small amount of training data.
+	\item \textbf{Number of training epochs}: Inestimable but probably not more than 500.
+\end{itemize}
+However, after some test iterations later, it was clear which hyperparameters to use in the network.
+\begin{itemize}
+	\item \textbf{Learning rate}: 0.01.
+	\item \textbf{Size of the hidden layers}: 26 neurons in the first hidden layer and 12 in the second hidden layer.
+	\item \textbf{Size of the latent space}: 2 neurons.
+	\item \textbf{Activation function after hidden layers}: The exponential linear unit activation function "elu" which leads to higher classification accuracies \cite{ml::activation::elu}.
+	\item \textbf{Optimizer function}: The optimizer function "RMSProp" \cite{ml::optimizer::overview}.
+	\item \textbf{Batch size}: 4.
+	\item \textbf{Number of training epochs}: A number of 400 emerges in the lowest costs.
+\end{itemize}
+It was interesting to see that the activation function elu was able to detect the underlying structure of the data much better than tanh. This detection was then further boosted with a collaboration with the RMSProp optimizer. Why these particular activation function and optimizer works so good would be interesting to know but exceed the scope if this thesis which is the reason why it is not further addressed.
 
+\subsubsection{Latent Space Visualization}
+Now, a lucky coincidence of these hyperparamters is that the latent space has a size of two which means that it is easy to illustrate the values in the latent space. For this reason, figure \ref{fig::vae::untrainedLatentSpace} shows the parameter $\mu$ of an untrained latent space and figure \ref{fig::vae::trainedLatentSpace} shows the parameter $\mu$ of a trained latent space after 70 epochs.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/untrained_latent_space}
+	\caption{A plot of the untrained latent space.} \label{fig::vae::untrainedLatentSpace}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/trained_latent_space}
+	\caption{A plot of the trained latent space after 70 training epochs.} \label{fig::vae::trainedLatentSpace}
+\end{figure}\\
+One can easily see that the model was able to learn an underlying structure of the provided weapon data. Furthermore, someone can easily assume and connect the 6 visible clusters in the plot to the available weapon types in the training data.
 
-\subsection{Network Paramter Selection}
 \subsubsection{Training Epochs}
 show the diagrams cost per epochs and failure rate per epoch
 
+\subsubsection{Cost per Epoch Chart}
 \subsection{Generation Example}
 show the diagram with the visible clustering 
+\subsubsection{Altered Weapon}
 
+\subsubsection{Random Input}
 
 \subsection{Development Issues}
-tensorflow graph reset after model reloading. otherwise the graph was polluted with not used graphs and that mades things slower
+tensorflow graph reset after model reloading. otherwise the graph was polluted with not used graphs and that mades things slower\\
+tensorflow works like that the creates nodes have a fixed shape after the training. for this reason, the batch size for encoding and decoding needs to be the same as the training batch size. that is because batch size is propagates thorugh every node in the network and trained on this shape. this means someone can either input a whole batch of random numbers or existing weapons and generate the whole batch. Or, i also implemented that it is possible to just input one simple input which is replicated to the size of the batch and outputs the mean of all generated weapons.
 
 \section{TODO: Game}
 show the map from above
@@ -1212,7 +1274,7 @@ show the game and the mechanics!
 \subsection{Bots}
 
 \subsection{Weapons}
-
+which features? spread, recoil, magazine size, firemodes
 
 
 
@@ -1221,6 +1283,20 @@ show the game and the mechanics!
 show a flowchart or sudo code
 class diagram of the classes and how the player to generator workflow works
 the workflow of the generator class from the input to the TF comp, back to the generator and to the player
+
+\begin{lstlisting}[language=,name={Pseudo code of the TensorFlow plugin weapon generator API class.},label={pseudoCode::weaponGeneratorAPI}]
+class WeaponGeneratorAPI:
+	functions:
+		on setup:
+			inintializes variables
+		on begin training:
+			trains the model
+		on json input:
+			processes input from UE4
+			returns a new weapon
+		on stop training
+\end{lstlisting}
+
 
 \begin{figure}[!ht]
 	\centering
