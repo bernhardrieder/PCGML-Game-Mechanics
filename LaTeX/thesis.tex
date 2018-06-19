@@ -968,7 +968,7 @@ The next point of an initial reference is the favorite eSports game \ac{CS:GO}. 
 Plenty of websites about weapons are findable on the \ac{WWW}. However, most of them do not provide much data about the weapon itself. The search leads to, e.g., army and manufacturer websites to find the appropriate weapon data for specific weapons. Nevertheless, the procedure for finding and obtaining real-world weapon data is a lengthy process. Besides, it shows that weapon manufacturer does not always provide all data, and it would take real-world tests to obtain particular weapon data. In particular, all found weapon data have about 7 to 8 similar variables which are usable for training the model. These parameters are the type of weapon, average weight, overall length, barrel length, bullet caliber, magazine size, muzzle velocity, and the rate of fire.\\
 For sure, this data is suitable for training a model and generating weapons even if this takes more time to implement and balance. However, it would be easier to use already balanced game data to train the model and generate new weapons. For this reason, the search leads to the most valuable data source which is usable for the implementation.
 
-\subsection{Battlefield 1}
+\subsection{Battlefield 1}\label{bf1::data}
 Investigation showed that the game Battlefield 1, released in 2016, uses more than 100 different weapons constellations in the game. The setting of the game takes place in the World War One and therefore uses weapons of this period. Fortunately, gamers gathered all possible weapon statistics for Battlefield games on the community website "http://symthic.com" \cite{symthic::bf1stats}. They provide a list of 148 weapons constellations used in the game with very detailed description and statistics \cite{symthic::bf1stats}. In fact, they provide more than 70 parameters which describe every weapon \cite{symthic::bf1stats}. \\
 Further evaluation specializes in these parameters to 18 most suitable variables for a weapon implementation. Nevertheless, one can use even more, less or other parameters to generate weapons and train the model and not all of them are always useful. Table \ref{battlefield::weaponStats} shows these most useful parameters for the weapon class and model training. As already indicated, the number of the variables is a subject to change during the implementation.
 \begin{table}[!ht]
@@ -1063,14 +1063,15 @@ However, decoding from noise input is not the only advantage. Another advantage 
 %
 \clearpage
 \chapter{TODO: Prototype Development}
-This chapter addresses every step of the development process of the weapon generator game mechanic. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. All of the following chapters reflect the actual workflow taken in the development. The whole code used in the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}. The prototype was implemented with UE 4.19.2, Python version 3.6.4 and TF 1.8.0. 
+This chapter addresses every step of the development process of the weapon generator game mechanic. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. All of the following chapters reflect the actual workflow taken in the development. The whole code used in the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}\todo{yes or no?}. The prototype was implemented with UE 4.19.2, Python version 3.6.4 and TF 1.8.0. 
 
 \section{Data Preprocessing}
-First step of the development is the gathering and preprocessing of the Battlefield 1 weapon raw data. All the weapon data is accessable to everyone via \url{symthic.com}. However, the community of \citep{symthic::bf1stats} kindly provides a database dump on request which was extracted with a script by a community administrator. This database dump contains every data of the weapons in a readable and manageable data.
+First step of the development is the gathering and preprocessing of the Battlefield 1 community weapon analytic raw data. All the weapon data is accessable to everyone via the community website of \citep{symthic::bf1stats}. However, the community of \citename{symthic::bf1stats} kindly provides a database dump on request which was extracted with a script by a community administrator. This database dump contains every data of the weapons in a readable and manageable data.
 
 \subsection{Dump Extraction}
-
-damage and distance for damages -> min max
+More specifically, the dump contains 148 weapons which each 90 parameters. Some of the parameters are stacked and contain a list of parameters in them. For example, the damage parameter consists of a collection of different damage values which are listed related to distances. For this reason, the damage and distance parameters were split into the first and last values to simplify the extraction and the weapon implementation. The full list of available parameters and their explanations is listed in the appendix \ref{bf1::dumpParams}.\\
+Now, it would be more than impracticable to manually extract the useful data out of the dump data file. The file has 13764 lines and it would probably cause dozens of errors and wrong extractions. Therefore, the development of a simple Python script to extract all the data into a ".csv" was the simplest way to achieve a consistent data extraction. The script reads a ".txt" file with specified header to extract in it as input and then extracts these specified header names from the dump file. As soon as all the data was gathered, it creates a new .csv file with a timestamp and adds the extracted data in an organized way so that someone can further process it by hand.\\
+The focus of the first iteration of the dump parameter extraction lies on the previously examined parameters, described in chapter \ref{bf1::data}. However, the parameters which are used in the final implementation differ from that examination and changed in some of the next steps.
 
 \subsection{TODO: Manual Dimension Reduction}
 manually added weapon type (pistol, rifle, etc), firemode (semi, automatic, etc); unified ammo types (used http://battlefield.wikia.com, http://www.ign.com/wikis/battlefield-1/Weapons, symthic.com\\
@@ -1332,7 +1333,7 @@ further implementations
 	\caption{PCGML game mechanic training and output summary.}
 \end{longtable}
 
-\chapter{Battlefield 1 Community Weapon Analytic Dump Parameters}
+\chapter{Battlefield 1 Community Weapon Analytic Dump Parameters} \label{bf1::dumpParams}
 \begin{longtable}[c]{|l|p{10.5cm}|}
 	\hline
 	\textbf{Parameter}     & \textbf{Explanation}                                                                                                           \\ \hline
