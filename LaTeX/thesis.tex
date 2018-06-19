@@ -51,7 +51,7 @@
 
 % Definition Code-Listings Formatierung:
 \usepackage[final]{listings}
-\lstset{captionpos=b, numberbychapter=false,caption=\lstname,frame=single, numbers=left, stepnumber=1, numbersep=2pt, xleftmargin=15pt, framexleftmargin=15pt, numberstyle=\tiny, tabsize=3, columns=fixed, basicstyle={\fontfamily{pcr}\selectfont\footnotesize}, keywordstyle=\bfseries, commentstyle={\color[gray]{0.33}\itshape}, stringstyle=\color[gray]{0.25}, breaklines, breakatwhitespace, breakautoindent}
+\lstset{captionpos=b, numberbychapter=false,caption=\lstname,frame=single, numbers=none, stepnumber=1, numbersep=2pt, xleftmargin=15pt, framexleftmargin=15pt, numberstyle=\tiny, tabsize=3, columns=fixed, basicstyle={\fontfamily{pcr}\selectfont\footnotesize}, keywordstyle=\bfseries, commentstyle={\color[gray]{0.33}\itshape}, stringstyle=\color[gray]{0.25}, breaklines, breakatwhitespace, breakautoindent}
 \lstloadlanguages{[ANSI]C, C++, [gnu]make, gnuplot, Matlab}
 
 %Formatieren des Quellcodeverzeichnisses
@@ -969,7 +969,7 @@ Plenty of websites about weapons are findable on the \ac{WWW}. However, most of 
 For sure, this data is suitable for training a model and generating weapons even if this takes more time to implement and balance. However, it would be easier to use already balanced game data to train the model and generate new weapons. For this reason, the search leads to the most valuable data source which is usable for the implementation.
 
 \subsection{Battlefield 1}\label{bf1::data}
-Investigation showed that the game Battlefield 1, released in 2016, uses more than 100 different weapons constellations in the game. The setting of the game takes place in the World War One and therefore uses weapons of this period. Fortunately, gamers gathered all possible weapon statistics for Battlefield games on the community website "http://symthic.com" \cite{symthic::bf1stats}. They provide a list of 148 weapons constellations used in the game with very detailed description and statistics \cite{symthic::bf1stats}. In fact, they provide more than 70 parameters which describe every weapon \cite{symthic::bf1stats}. \\
+Investigation showed that the game \ac{BF1}, released in 2016, uses more than 100 different weapons constellations in the game. The setting of the game takes place in the \ac{WW1} and therefore uses weapons of this period. Fortunately, gamers gathered all possible weapon statistics for Battlefield games on the community website "http://symthic.com" \cite{symthic::bf1stats}. They provide a list of 148 weapons constellations used in the game with very detailed description and statistics \cite{symthic::bf1stats}. In fact, they provide more than 70 parameters which describe every weapon \cite{symthic::bf1stats}. \\
 Further evaluation specializes in these parameters to 18 most suitable variables for a weapon implementation. Nevertheless, one can use even more, less or other parameters to generate weapons and train the model and not all of them are always useful. Table \ref{battlefield::weaponStats} shows these most useful parameters for the weapon class and model training. As already indicated, the number of the variables is a subject to change during the implementation.
 \begin{table}[!ht]
 	\centering
@@ -1000,7 +1000,7 @@ Further evaluation specializes in these parameters to 18 most suitable variables
 \end{table}
 
 \section{The Learning Problem}
-A quick recap of the game mechanic: it is about generating new weapons based on existing weapons or more specifically weapons from the game Battlefield 1. That means that there is a training data set $X$ without any useful labels $Y$ and it is desired to generate data which is similar to $X$. In more specific, this fact let the problem seems to be unsupervised learning and a clustering problem, earlier described in chapter \ref{ML::unsupervisedLearning}. That means the model should be able to learn relations among the attributes in the data. This procedure is also known as probability density estimation which attempts to learn the underlying probability distribution of all the data features \cite{ml::vae::tutorial}. In other words: the given weapons $X$ share a real and unknown distribution $p(X)$ and the model should approximate this distribution with a new distribution $\hat{p}(X)$ by learning its underlying relationships. This process is nothing else than clustering or maximum likelihood estimation. \\
+A quick recap of the game mechanic: it is about generating new weapons based on existing weapons or more specifically weapons from the game \ac{BF1}. That means that there is a training data set $X$ without any useful labels $Y$ and it is desired to generate data which is similar to $X$. In more specific, this fact let the problem seems to be unsupervised learning and a clustering problem, earlier described in chapter \ref{ML::unsupervisedLearning}. That means the model should be able to learn relations among the attributes in the data. This procedure is also known as probability density estimation which attempts to learn the underlying probability distribution of all the data features \cite{ml::vae::tutorial}. In other words: the given weapons $X$ share a real and unknown distribution $p(X)$ and the model should approximate this distribution with a new distribution $\hat{p}(X)$ by learning its underlying relationships. This process is nothing else than clustering or maximum likelihood estimation. \\
 However, there are also other solutions to this problem of generating similar features of a weapon than the identified way. Therefore, the next section describes all possible methods and approaches which are possible to solve the problem of generating new weapons.
 
 \subsection{Suitable Models}
@@ -1063,37 +1063,93 @@ However, decoding from noise input is not the only advantage. Another advantage 
 %
 \clearpage
 \chapter{TODO: Prototype Development}
-This chapter addresses every step of the development process of the weapon generator game mechanic. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. All of the following chapters reflect the actual workflow taken in the development. The whole code used in the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}\todo{yes or no?}. The prototype was implemented with UE 4.19.2, Python version 3.6.4 and TF 1.8.0. 
+This chapter addresses every step of the development process of the weapon generator game mechanic whereas UE specific game development topics are not covered. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. The ordering of all following chapters reflect more or less the actual workflow taken in the development. The prototype was implemented with UE 4.19.2, Python version 3.6.4 and TF 1.8.0; the source code developed for the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}\todo{show the url? yes or no?}. 
 
 \section{Data Preprocessing}
-First step of the development is the gathering and preprocessing of the Battlefield 1 community weapon analytic raw data. All the weapon data is accessable to everyone via the community website of \citep{symthic::bf1stats}. However, the community of \citename{symthic::bf1stats} kindly provides a database dump on request which was extracted with a script by a community administrator. This database dump contains every data of the weapons in a readable and manageable data.
+First step of the development is the gathering and preprocessing of the \ac{BF1} community weapon analytic raw data. All of the weapon data is accessable to everyone via the community website of \citep{symthic::bf1stats}. However, the community of \citename{symthic::bf1stats} kindly provides a database dump on request which was extracted with a script by a community administrator. This database dump contains every parameter of the weapons in a readable and manageable data.
 
-\subsection{Dump Extraction}
+\subsection{Dump Extraction} \label{chapter::dumpExtraction}
 More specifically, the dump contains 148 weapons which each 90 parameters. Some of the parameters are stacked and contain a list of parameters in them. For example, the damage parameter consists of a collection of different damage values which are listed related to distances. For this reason, the damage and distance parameters were split into the first and last values to simplify the extraction and the weapon implementation. The full list of available parameters and their explanations is listed in the appendix \ref{bf1::dumpParams}.\\
 Now, it would be more than impracticable to manually extract the useful data out of the dump data file. The file has 13764 lines and it would probably cause dozens of errors and wrong extractions. Therefore, the development of a simple Python script to extract all the data into a ".csv" was the simplest way to achieve a consistent data extraction. The script reads a ".txt" file with specified header to extract in it as input and then extracts these specified header names from the dump file. As soon as all the data was gathered, it creates a new .csv file with a timestamp and adds the extracted data in an organized way so that someone can further process it by hand.\\
 The focus of the first iteration of the dump parameter extraction lies on the previously examined parameters, described in chapter \ref{bf1::data}. However, the parameters which are used in the final implementation differ from that examination and changed in some of the next steps.
 
-\subsection{TODO: Manual Dimension Reduction}
-manually added weapon type (pistol, rifle, etc), firemode (semi, automatic, etc); unified ammo types (used http://battlefield.wikia.com, http://www.ign.com/wikis/battlefield-1/Weapons, symthic.com\\
-simplified bolt-action, pump-action, single-barrel fire and lever-action to "single-action" because it has actually the same kind of reload mechanic\\
-needed to remove ammo from the features because I'd need to apply a one hot encoder to use the data and it would blow up my data and cause curse of dimensionality.
+\subsection{Manual Dimension Reduction, Addenda and Unification}
+One of the biggest issues in the extracted data was the ammo which was listed as it would be a different one for some weapons even if it is the same. For this reason, a manual examination of all ammo types was necessary to unify the range of all ammo types. 
 
-show the used parameter 
+\subsubsection{Weapon Type and Fire Modes}
+It turned out that the dump does not include the specific types and fire modes of the weapons. Hence, it was necessary to examine that from the different game communities \citep{symthic::bf1stats}, \citep{bf1::community1}, and \citep{bf1::community2}. This proceeding added the unified weapon types of pistols, rifles, sniper rifles, shotguns, light-machine guns and sub-machine guns as well as the unified fire modes of single-action, semi-automatic and automatic. Some of the weapons in \ac{BF1} have more fire modes available which was further simplified by the highest available fire mode. For instance, if a weapon can shoot with semi-automatic and automatic, then automatic was chosen. Furthermore, the game specifies more fire modes than the ones used. For example, they are using bolt-action, pump-action, single-barrel fire, and lever action which were summarized as single-action weapons since they are using the same mechanic. Also double-action and double barrel fires was found in the weapons which was unified into semi-automatic. Charts about the distribution of this two categories in the dataset are available in the appendix \ref{bf1::data::distributionCharts}. 
 
-\subsection{Manual Normalization}
+\subsubsection{Reload Times}
+Another problem caused the reload times of the weapons because \ac{BF1} uses some special reload mechanics for some weapons. In particular, the weapons of BF1 are from the WW1 time and weapons of this time do not always have magazine as used in modern weapons nowadays. Some of them do have special strip clip magazines instead of closed magazines which introduced a special reload mechanic. However, the community of \citep{symthic::bf1stats} provides an explanation to this reload mechanic which made a manual calculation and unification of the reload times for an empty magazine possible so that there is no need of a distinction for the prototype implementation.
+
+\subsubsection{Omitted Parameters and Final Set}
+Table \ref{battlefield::weaponStats} shows some parameters which are highly overrated for the training of the VAE. This was not considered during that time which makes it necessary to further omit some of this variables. For example, following parameter were omitted for specific reasons:
+\begin{itemize}
+	\item The bullet drop is almost the same for each weapon.
+	\item The ammo types would need encoding which would probably cause the curse of dimension since there are about 30 different used ammo types in the dataset and are therefore omitted.
+	\item The reload time for ammo if some bullets are still left in the magazine is easier to handle if it is directly calculated from the reload time for an empty magazine.
+	\item And the last omitted parameter is the recoil in the left direction which showed that it always the same value as the recoil in the right direction.
+\end{itemize}
+This led the final set of parameters to the parameters shown in table \ref{table::bf1::usedParams}. Note that the names of the parameters, except type and fire mode, are the same names as in the dump file provided by the \citename{symthic::bf1stats} community. Moreover, the damages and distances are listed as two parameters but are actually four parameters, as described in chapter \ref{chapter::dumpExtraction}.
+\begin{table}[!ht]
+	\centering
+	\begin{tabular}{|l|p{10.8cm}|}
+		\hline
+		\textbf{Parameter} & \textbf{Explanation} \\ \hline
+		Type & The type of the weapon. \\ \hline
+		FireMode & The fire mode of the weapon. \\ \hline
+		Damages & Damage points applied, listed based on distance. \\ \hline
+		Dmg\_distances & The distances in correlation to each damage entry in the "Damages" parameter. \\ \hline
+		HIPRecoilDec & Weapon recoil decrease if the character is not aiming down sight. \\ \hline
+		HIPRecoilRight & Weapon recoil upper bound of random recoil if the character is not aiming down sight. \\ \hline
+		HIPRecoilUp & Weapon recoil upwards if the character is not aiming down sight. \\ \hline
+		HIPStandBaseSpreadDec & The decrease of shot spread if the character is standing, not moving, and not aiming down sight. \\ \hline
+		HIPStandBaseSpreadInc & The increase of shot spread if the character is standing, not moving, and not aiming down sight. \\ \hline
+		InitialSpeed & Muzzle velocity. \\ \hline
+		MagSize & Size of one magazine. \\ \hline
+		ReloadEmpty & The time it takes if the magazine is empty. \\ \hline
+		RoF & The rate of fire. \\ \hline
+		ShotsPerShell & The number of pellets of one shot. \\ \hline
+	\end{tabular}
+	\caption{Used weapon parameters for the training of the variational autoencoder.}
+	\label{table::bf1::usedParams}
+\end{table}
+
+\subsection{Encoding and Feature Scaling}
+The next part of the data preprocessing is the encoding and feature scaling task so that the VAE can easily process and train the network. 
+
+\subsubsection{Encoding}
+The first part is to encode the two only categorical parameters in the dataset. The encoding of the fire modes and weapon type is realized in TF. The encoding is the same as demonstrated in chapter \ref{ML::dataPreprocessing} and encodes the two categorical parameters into just seven parameters because TF omits one column of each parameter. This is because TF makes the assumption that if all parameters are predicted with a value of zero than it needs to be the omitted parameter. For example, if the VAE predicts the fire mode for single-action and semi-automatic with a value of zero, then the fire mode is automatic even it is not in the learned dataset. Therefore, the total number of features in the dataset after encoding is 21.
+
+\subsubsection{Feature Scaling}
+Now the last part is to normalize or standardize all features. In particular, this is a necessary procedure for this dataset because there are many different value ranges. For example, the rate of fire and muzzle velocity are large numbers whereas the values of the spread increase or decrease are very small. If there is no normalization or standardization, then this would cause significant extra expenses.\\
+The approach used for the dataset is the standardization process since it transforms the data in a way so that it has the properties of a standard distribution which may be useful during the VAE's training. 
+
+\subsection{Training and Test Dataset}
+The total dataset consists of 148 weapon constellations. A common split of the data would be 80\% training data and 20\% test data. For this reason, the dataset is split into a training set of 127 weapons and a test set with 21 weapons. The selection of the weapons for the test set was done randomly and took into account to include at least as much weapons as different fire modes and weapon types are available, as well as different weapons with values in low, middle and high range for damage, rate of fire, muzzle velocity, magazine size and reload time.
 
 \subsection{Convenience Class Pseudo Code}
+TF offers a lot of tutorials on how to use and develop with TF. A common dataset used in the tutorials is the MNIST dataset which is encapsulated into a convenience class. This class served as a base and inspiration for an own convenience class which encapsulates the weapon data. Following pseudo code presents the interesting functions and accessible members of this convenience class:
 
-
-\subsection{TODO: Encoding and Feature Scaling}
-firemode and weapon type encoded with tensorflow\\
-what is with the other params? is there a best practice? is it really necessary for a AE? 
-
--) normalize intervals\\
--) get rid of pseudo categorical data \\
--) full/semi weapons?
-
-\subsection{Weapon Data Type Distributions}
+\begin{lstlisting}[language=,name={Pseudo code of the weapon dataset convenience class.},label={pseudoCode::weponDataSet}]
+global functions:
+	get training and test data
+	
+class DataSet:
+	properties:
+		standardized and encoded data
+		number of features in data
+		number of data examples
+		standardized mininmum values
+		standardized maximum values 
+	functions:
+		get next batch for training either shuffled or not
+		add new weapons to the dataset
+		restandardize the whole data
+		encode and standardize features
+		decode a processed tensor from TensorFlow
+		encode decoded tensor from TensorFlow
+\end{lstlisting}
 
 \section{VAE Implementation}
 Classes, Diagrams, ..\\
@@ -1267,6 +1323,7 @@ further implementations
 	\acro{AI}{Artificial Intelligence}
 	\acro{ANN}{Artificial Neural Network}
 	\acro{API}{Application Programming Interface}
+	\acro{BF1}{Battlefield 1}
 	\acro{CNN}{Convolutional Neural Network}
 	\acro{CPU}{Central Processing Unit}
 	\acro{CS:GO}{Counter-Strike: Global Offensive}
@@ -1300,6 +1357,7 @@ further implementations
     \acro{UE4}{Unreal Engine 4}
     \acro{VAE}{Variational Autoencoder}
     \acro{VR}{Virtual Reality}
+    \acro{WW1}{World War One}
     \acro{WWW}{World Wide Web}
 \end{acronym}
 
@@ -1432,4 +1490,15 @@ further implementations
 	\caption{Battlefield 1 community weapon analytic dump data parameter.}
 \end{longtable}
 
+\chapter{Battlefield 1 Weapon Distribution Charts} \label{bf1::data::distributionCharts}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{PICs/weapon_type_distribution_chart}
+	\caption{Distribution of weapon types in the Battlefield 1 weapon dataset.}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{PICs/weapon_fire_mode_distribution_chart}
+	\caption{Distribution of weapon fire modes in the Battlefield 1 weapon dataset.}
+\end{figure}
 \end{document}
