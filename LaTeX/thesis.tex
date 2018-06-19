@@ -911,7 +911,7 @@ The player is a third-person character with a specific amount of health, armor, 
 A simple AI controls all enemies to act as a training enemy for the battle. Enemies come in three different types of ascending power and health. They spawn in fixed locations throughout the training path. The enemies desire is to eliminate the player in a straightforward way rather than in a complex and sophisticated way. \\
 The design of the boss AI enemy defines specific base health, armor and damage. The base values could increase with the time of the training session and regenerate during the battle.
 
-\section{Which Game Engine?}
+\section{Which Game Engine?} \label{whichGameEngine}
 The decision of the most applicable game engine is not only about how quickly the implementation for an FPS game could be done but also about their support for ML. The decision envisages the two most used free to use game engine nowadays but could also envisage others. Another reason to further examine this two particular engines is the writer's expertise for them.\\
 As described in chapter \ref{chapter::mlPluginsGameEngines}, both Unity and UE4 have available ML plugins for their engine. On the one hand is Unity's ML plugin which is boosted by Unity’s developer themselves whereas on the other hand is UE4’s community member created open source ML plugin. Nevertheless, both are using the same concepts of including ML functionality into the engine. In specific, they are using a Python interface or plugin to make use of the open source ML framework \acf{TF}. With this in mind, the next chapters concentrate on the workflow in each engine to find the most suitable game engine for implementing the PCGML game mechanic.
 
@@ -1250,7 +1250,7 @@ Another benchmark to determine the right amount of training epochs was to observ
 \end{figure}\\
 The reason why it is a different outcome every new training is because the weights and biases are initialized in a random range which is near a normal distribution with zero mean and a standard deviation of one. For this reason, the decision for the training epochs in the weapon generation was set to 70 epochs in the beginning and will increase with every new added weapon to the dataset.
 
-\subsection{Random Input Generation Example}
+\subsection{Random Input Generation Example} \label{vae::randomInputExample}
 Table \ref{vae::randomInputGeneration} shows a comparison of a training weapon and a generated weapon which was generated with random noise input to prove that the VAE can generate useful weapon data. One can see that the VAE has issues with predicting and generating the correct category for a weapon. This is still an unsolved problem but is easily solvable by checking the highest value of all categories. In this case, it is most likely a sniper rifle with semi automatic fire mode. The missing fire mode and type can be compensated with a random factor in the weapon generator. Please note that the listed parameters are the same parameters which are outputted by the VAE.
 \begin{table}[!ht]
 	\centering
@@ -1314,20 +1314,17 @@ The player is able to do everything as in common FPS games and additionally has 
 The bots are implemented as requested and come in 3 different types. The easiest one is a simple ball bot which moves towards the player and explodes after some time after reaching the player. The two other bots are from the same type  which is visible in figure \ref{scenarioScreenshot}, moves towards the player and shoots with different weapons onto the player in a straight forward way. The easy bot does not cause much damage but tries to heal itself if the health is low whereas the heavy bot causes more damage, has more health and does not heal itself.\\
 The end boss bot is even heavier than the heavy bot and has an own weapon which has a higher rate of fire than any other weapon of the bots. Furthermore, the end boss has many health points so that the player needs to use the weapon generator to win against the bot.
 
-\subsection{Weapons and Generator}
+\subsection{Weapons}
 Almost every feature shown in table \ref{table::bf1::usedParams} is implemented in the weapon class. The only parameter which is not implemented is the initial speed or also known as muzzle velocity. For generator reasons, this parameter needs to be saved in the weapon class but has no effect on the weapon. For further simplicity in the prototype, all different weapons are implemented in one class which is able to function as every weapon type. Furthermore, to have a visible representation of the weapon, every weapon type has its own weapon model so that the player can distinguish between the weapons inside the game. \\
 Moreover, each weapon has specific modifier which are applied to either the weapons or the player. For example, machine guns are heavier than pistols and therefore lower the movement speed of a character. Or if a player aims down sight, then the shooting behavior regarding recoil and spread is improved. This improvements can be adjusted for each weapon class and are propagated to generated weapons of the same weapon type.
 
-\section{TODO: Weapon Generation Process}
-show a flowchart or sudo code
-class diagram of the classes and how the player to generator workflow works
-the workflow of the generator class from the input to the TF comp, back to the generator and to the player
-
+\section{Weapon Generator}
+As already mentioned at the beginning of this chapter, the weapon generator was implemented outside UE4 and imported as soon as it worked. The listing \ref{pseudoCode::weaponGeneratorAPI} shows the pseudo code of the weapon generator API class which inherits the functions from the TF plugin API class, described in chapter \ref{whichGameEngine}. 
 \begin{lstlisting}[language=,name={Pseudo code of the TensorFlow plugin weapon generator API class.},label={pseudoCode::weaponGeneratorAPI}]
 class WeaponGeneratorAPI:
 	functions:
 		on setup:
-			inintialize the network
+			initialize the network
 		on begin training:
 			train the model
 		on json input:
@@ -1336,28 +1333,29 @@ class WeaponGeneratorAPI:
 			process input return a new generated weapon
 \end{lstlisting}
 
-
+\subsection{Workflow}
+The beginning of the game scenario directly triggers the initialization of the weapon generator and the setup and training of the VAE model. This training runs on an own background thread so that the player does not notice the training at all. This is the moment in which the HUD displays the status "Starting" as feedback of the generator for the player. Figure \ref{figure::weaponGen::init} show the workflow of the weapon generator initialization.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.5\linewidth]{PICs/WeaponGeneratorWorkflow_Setup_Training}
-	\caption{Weapon generator setup and training workflow.}
-\end{figure}
-
+	\caption{Weapon generator setup and training workflow.} \label{figure::weaponGen::init}
+\end{figure}\\
+As soon as the generator has changed the status to "Waiting for Input", it is ready to use for the player. The player can now dismantle the equipped weapon which sends the weapon to the weapon generator. Subsequently, the weapon generator extracts all parameters of the weapon, applies some modification based on statistics, creates a JSON format and sends it to the Python API. The applied statistics are the kills and used time of the weapon which change the random change range of the parameters. The strength of each parameter and the starting range of the random change rate are adjustable parameters. Figure \ref{figure::weaponGen::gen} show the workflow of the dismantling process to the new generated weapon. Note that the generation process in the API happens in a background thread so that the game do not freeze during that proceeding.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.5\linewidth]{PICs/WeaponGeneratorWorkflow_Generation}
-	\caption{Weapon generator generation workflow.}
-\end{figure}
+	\caption{Weapon generator generation workflow.} \label{figure::weaponGen::gen}
+\end{figure}\\
+The generator changes the status to "Generating" during the processing of the dismantled weapon and the generation of the new weapon. Sometimes, this can take more time because the newly trained model will be loaded which was retrained after a specific amount of dismantled weapons. The generator generates either a weapon based on the statistics of the dismantled weapon or a random weapon if the average reconstruction costs exceed a specific threshold or a not processable numbers.\\
+As soon as the VAE generator API is ready and has send the result back to the weapon generator, the generator creates a new weapon and notifies the player that the generation is ready. Subsequently, the generator changes the status to "Waiting for Input" and is able to receive new dismantled weapons. During the creation process of the new weapon, the generator checks and makes sure, that all of the parameters do not exceed critical values which could cause bugs in the game. 
 
-
-\subsection{Adjustable Paramter}
-random range can be adjusted so that different weapons emerge
-the threshold, etc
+\subsection{Parameter Modification and Adjustable Parameters}
+As already mentioned, the parameters of the dismantled weapon is modified before send to the generator API which includes some adjustable parameter. The parameter of weapons are either increased or decreased depending on whether it would help the player against the boss. For example, the damage is increased whereas reload time is decreased and so forth. Now, the parameters are changed according to a random change rate which can be offset with kills or using time. The starting range and the strength of the kills and time can be adjusted in the weapon generator. \\
+Another parameter is the threshold which decides if a weapon is of a specific type or not. The problem tackled with this proceeding was mentioned in chapter \ref{figure::weaponGen::gen}. The VAE sometimes generates small numbers which are almost similar to each other for every categorical parameter and always omits one category. This problem is solved with a threshold which decides if the weapon is from the available categories or not. If this is not the case then the weapon type or fire mode is chosen randomly with a 50\% change. For example, if no category of the fire modes do not break the given threshold, then it is a random change to be either the highest of the two fire modes or single-fire. The same principle applies for the weapon types. 
 
 \subsection{\acl{TF} Plugin Changes}
-There was a game freeze during the JSON input processing in the TF plugin. so i needed to change the code so that it runs on a background thread
-the default TF version the plugin comes with has tensorflow 1.6.0 enabled -> i switched to 1.8.0
-
+The default TF version of the plugin is set to TF version 1.6.0 but all the development was done in 1.8.0. For this reason, the version of TF in the plugin was changed to 1.8.0 which could be done without any issues since the plugin is not dependent on any TF specific variables.\\
+The other major change in the plugin was a change in the API class which does not use a background thread for the input processing by default. This is causing a game freeze during the weapon generation and is not tolerable. This would also happen if multithreading is disabled in the plugin which is not advisable. Therefore, the API code was changed to run the input processing on a background thread and notify the API on completion so that it can propagate the result to the weapon generator.
 
 \section{TODO: Performance and Profiling}
 Profiling was done in the Unreal Engine 4 Editor in development configuration with following test device specifications:
