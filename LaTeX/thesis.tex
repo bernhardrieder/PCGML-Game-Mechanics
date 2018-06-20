@@ -1062,7 +1062,7 @@ However, decoding from noise input is not the only advantage. Another advantage 
 % ------------------------------- NEW CHAPTER ------------------------------- %
 %
 \clearpage
-\chapter{TODO: Prototype Development}
+\chapter{Prototype Development}
 This chapter addresses every step of the development process of the weapon generator game mechanic whereas UE specific game development topics are not covered. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. The ordering of all following chapters reflect more or less the actual workflow taken in the development. The prototype was implemented with Python version 3.6.4 and TF 1.8.0 in Jupyter Notebook and then integrated in UE4 4.19.2; the source code developed for the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}\todo{show the url? yes or no?}. 
 
 \section{Data Preprocessing} \label{dev::dataPreprocessing}
@@ -1304,14 +1304,14 @@ Furthermore, figure \ref{scenarioScreenshot} shows an in-game screenshot of the 
 	\caption{Prototype scenario in-game screenshot.} \label{scenarioScreenshot}
 \end{figure}
 
-\subsection{HUD}
+\subsection{\acl{HUD}}
 As designed in chapter \ref{chapter::gamePrototype}, the HUD should provide the player with feedback to the mechanic and also the game. For this reason, it shows the most important parameters of the currently equipped weapon on the top left, as visible in figure \ref{scenarioScreenshot}. Furthermore, it shows the current status of the weapon generator which can be one from the range "Starting", "Waiting for Input" or "Generating". The status of the available ammo, current health and armor, and health is also shown in the HUD so that the player knows about his vitals.
 
 \subsection{Player}
 The player is able to do everything as in common FPS games and additionally has the possibility of using the weapon generator to generate a new weapon. If the player decides to dismantle the equipped weapon, then the currently equipped weapon will be removed from the player and the player is able to just use the remaining weapon until the generator is finished. Specific movement types increase or decrease weapon shooting behavior. In addition, the player can gather power ups which are placed randomly in the map and increase or refill movement speed, health, armor and ammo.
 
 \subsection{Bots}
-The bots are implemented as requested and come in 3 different types. The easiest one is a simple ball bot which moves towards the player and explodes after some time after reaching the player. The two other bots are from the same type  which is visible in figure \ref{scenarioScreenshot}, moves towards the player and shoots with different weapons onto the player in a straight forward way. The easy bot does not cause much damage but tries to heal itself if the health is low whereas the heavy bot causes more damage, has more health and does not heal itself.\\
+The bots are implemented as requested and come in three different types. The easiest one is a simple ball bot which moves towards the player and explodes after some time after reaching the player. The two other bots are from the same type  which is visible in figure \ref{scenarioScreenshot}, moves towards the player and shoots with different weapons onto the player in a straight forward way. The easy bot does not cause much damage but tries to heal itself if the health is low whereas the heavy bot causes more damage, has more health and does not heal itself.\\
 The end boss bot is even heavier than the heavy bot and has an own weapon which has a higher rate of fire than any other weapon of the bots. Furthermore, the end boss has many health points so that the player needs to use the weapon generator to win against the bot.
 
 \subsection{Weapons}
@@ -1357,8 +1357,8 @@ Another parameter is the threshold which decides if a weapon is of a specific ty
 The default TF version of the plugin is set to TF version 1.6.0 but all the development was done in 1.8.0. For this reason, the version of TF in the plugin was changed to 1.8.0 which could be done without any issues since the plugin is not dependent on any TF specific variables.\\
 The other major change in the plugin was a change in the API class which does not use a background thread for the input processing by default. This is causing a game freeze during the weapon generation and is not tolerable. This would also happen if multithreading is disabled in the plugin which is not advisable. Therefore, the API code was changed to run the input processing on a background thread and notify the API on completion so that it can propagate the result to the weapon generator.
 
-\section{TODO: Performance and Profiling}
-Profiling was done in the Unreal Engine 4 Editor in development configuration with following test device specifications:
+\section{Performance and Profiling}
+Profiling was done in the UE4 Editor in development configuration with following test device specifications:
 \begin{itemize}
 	\item \textbf{Product}: MSI GS60 2PE Ghost Pro
 	\item \textbf{OS}: Windows 10 64-bit
@@ -1366,33 +1366,35 @@ Profiling was done in the Unreal Engine 4 Editor in development configuration wi
 	\item \textbf{GPU}: NVIDIA GeForce GTX 870M
 	\item \textbf{\ac{RAM}}: 16GB
 \end{itemize}
-
+All of the following profiling charts are obtained with the same testing scenario. The scenario map is loaded, the weapon generator either initializes nor not, depending on its availability, and the game was then actively played for more than 30 seconds. Hence, the weapon generator was constantly used if available in the specific testing environment. \\
+Figure \ref{scenario::profiling_noTF} shows a profiling chart of the scenario map without any weapon generation mechanic enabled. The TF plugin, its dependent Python plugin and the SocketIO plugin were fully deactivated and had no effect on the engine's performance.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/deactivated_plugin}
-	\caption{Profiling chart with the deactivated TensorFlow Plugin.}
+	\caption{Profiling chart with the deactivated TensorFlow Plugin.} \label{scenario::profiling_noTF}
 \end{figure}
-
+Figure \ref{scenario::profiling_TF} shows a profiling chart with an enabled TF plugin but which was not actively used in the game. Therefore, the weapon generator was not available for the player.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/activated_plugin_no_tf_used}
-	\caption{Profiling chart with the activated but not actively used TensorFlow Plugin for CPU.}
+	\caption{Profiling chart with the activated but not actively used TensorFlow Plugin for CPU.} \label{scenario::profiling_TF}
 \end{figure}
-
+Figure \ref{scenario::profiling_CPU} shows a profiling plot with an actively used TF plugin and weapon generator in the game. The TF plugin in this scenario was just using the CPU for computation. 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/tf_cpu}
-	\caption{Profiling chart with the actively used TensorFlow Plugin for CPU.}
+	\caption{Profiling chart with the actively used TensorFlow Plugin for CPU.} \label{scenario::profiling_CPU}
 \end{figure}
-
+Figure \ref{scenario::profiling_GPU} shows a profiling plot with an actively used TF plugin and weapon generator in the game. The TF plugin in this scenario was just using the GPU for computation.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/tf_gpu}
-	\caption{Profiling chart with the actively usedTensorFlow Plugin for GPU.}
+	\caption{Profiling chart with the actively used TensorFlow Plugin for GPU.} \label{scenario::profiling_GPU}
 \end{figure}
 
-
-
+\subsection{Conclusion}
+The profiling charts shows that there is a performance loss of about 4ms in the CPU render thread when using the TF plugin actively in the game. Moreover, it seems that the CPU variant of the plugin works better than the GPU variant in this case. This might be because of the fact that the TF plugin uses CPU multi threading for the setup, training and input processing tasks whereas the GPU variant interrupts the GPU from time to time because it needs to obtain the calculated tensors from TF - but that is just an assumption. Nevertheless, it is to take note that this profiling charts reflect only this specific use case and could have other performances with another use cases. \\
+However, this shows that it is not necessary that someone trains the model in advance and loads a trained model on the first start. This would be only necessary if the training would include a high number of training epochs and would keep the player off from using the mechanic. This is not the case in this mechanic and therefore not necessary.
 
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
