@@ -92,8 +92,8 @@
 %\secondsupervisor[Begutachter]{Titel Vorname Name, Titel}
 %\secondsupervisor[Begutachterinnen]{Titel Vorname Name, Titel}
 \place{Philadelphia}
-\kurzfassung{{\color{blue}Blah blah blah, das ist meine Kurzfassung über die Verwendung von Prozeduraler Inhaltsgenerierung mit Machine Learning als eine Spielmechanik, blah blah blah}}
-\schlagworte{{\color{blue}Prozedurale Inhaltsgenerierung, Machine Learning, Spielemechanik, Künstliche Intelligenz, Spieleentwicklung}}
+%\kurzfassung{{\color{blue}Blah blah blah, das ist meine Kurzfassung über die Verwendung von Prozeduraler Inhaltsgenerierung mit Machine Learning als eine Spielmechanik, blah blah blah}}
+%\schlagworte{Prozedurale Inhaltsgenerierung, Machine Learning, Spielemechanik, Künstliche Intelligenz, Spieleentwicklung, Neuronale Netze}
 \outline{
 	Procedural Content Generation (PCG) is a powerful and essential topic in modern video games which helps developers to create a vast amount of game elements. Brand new and recent research now connected PCG with Machine Learning (ML) to enable new horizons of content generation. Nevertheless, the research showed that there is still much to do and left the problem of using PCG via ML (PCGML) as a game mechanic open for further research.\\
 	For this reason, this thesis dedicated itself to address this open problem with a theoretical and practical approach and furthermore provides developers with a guideline about the procedure of developing PCGML game mechanics. It first addressed fundamental theoretical issues which help to create awareness for PCGML in the first place. It then addressed possible PCGML game mechanics where one of them was implemented in a game prototype scenario. The entire development process for this prototype was documented so that developers can follow them step by step to implement their PCGML game mechanics.\\
@@ -1122,10 +1122,10 @@ The approach used for the dataset is the standardization process since it transf
 \subsection{Training and Test Dataset}
 The total dataset consists of 148 weapon constellations. A typical split of the data would be 80\% training data and 20\% test data. For this reason, the dataset split is a training set of 127 weapons and a test set with 21 weapons which are about 16\%. The selection of the weapons for the test set was done randomly and took into account to include at least as many weapons as different fire modes, and weapon types are available, as well as different weapons with values in low, middle and high range for damage, rate of fire, muzzle velocity, magazine size and reload time.
 
-\subsection{Convenience Class Pseudo Code}
-TF offers many tutorials on how to use and develop with TF. A standard dataset used in the tutorials is the MNIST dataset which encapsulates its data into a convenience class. This class served as a base and inspiration for an own convenience class which encapsulates the weapon data. Following pseudo code presents the most valuable functions and accessible members of this convenience class:
+\subsection{Convenience Class Code Overview}
+TF offers many tutorials on how to use and develop with TF. A standard dataset used in the tutorials is the MNIST dataset which encapsulates its data into a convenience class. This class served as a base and inspiration for an own convenience class which encapsulates the weapon data. Following listing presents the most valuable functions and accessible members of this convenience class:
 
-\begin{lstlisting}[language=,name={Pseudo code of the weapon dataset convenience class.},label={pseudoCode::weponDataSet}]
+\begin{lstlisting}[language=,name={Essential functions and properties of the weapon dataset convenience class.},label={pseudoCode::weponDataSet}]
 global functions:
 	get training and test data
 	
@@ -1146,13 +1146,13 @@ class DataSet:
 \end{lstlisting}
 
 \section{\acl{VAE}}
-The implementation of the VAE was driven and inspired by an explanation of \citep{tutorial::vaeTF}. \citename{tutorial::vaeTF} used a high-level approach in his design which is similar to high-level ML APIs. These high-level APIs are easily modifiable and extensible which was the main reason why to follow the approach of \citename{tutorial::vaeTF}. An easy modification is necessary to test different network hyperparameters without significant changes in the code and thus to find the most suitable network parameters. In particular, chapter \ref{chapter::vae::network} explains the entire proceeding of the hyperparameters selection process. Now, the next chapters show some pseudo code of the VAE class, how the model accuracy was measured to obtain an adequately trained model, addresses the already mentioned the network parameter selection, shows two weapon generation examples and lists development issues.
+The implementation of the VAE was driven and inspired by an explanation of \citep{tutorial::vaeTF}. \citename{tutorial::vaeTF} used a high-level approach in his design which is similar to high-level ML APIs. These high-level APIs are easily modifiable and extensible which was the main reason why to follow the approach of \citename{tutorial::vaeTF}. An easy modification is necessary to test different network hyperparameters without significant changes in the code and thus to find the most suitable network parameters. In particular, chapter \ref{chapter::vae::network} explains the entire proceeding of the hyperparameters selection process. Now, the next chapters show some coder overviews of the VAE class, how the model accuracy was measured to obtain an adequately trained model, addresses the already mentioned the network parameter selection, shows two weapon generation examples and lists development issues.
 
-\subsection{Pseudo Code}
-Listing \ref{pseudoCode::vae} shows the pseudo code with most of the available and necessary functions for the generation task. The actual code contains some more functions which are not essential to explain. As already introduced in the weapon convenience class, this class also has some global convenience functions to obtain different stages of a VAE. \\
+\subsection{Code Overview}
+Listing \ref{pseudoCode::vae} shows a VAE code overview with most of the available and necessary functions for the generation task. The actual code contains some more functions which are not essential to explain. As already introduced in the weapon convenience class, this class also has some global convenience functions to obtain different stages of a VAE. \\
 Two of the essential functions of the VAE class for the weapon generation tasks are the functions "decode from latent space" and "encoding and decoding" since they provide the functionality to generate data similar to the training data. It is to mention that the VAE initializes itself on construction where it calls all the creation functions to maintain a working network. The last most important function to mention is the loss calculation function since it is necessary to secure a working generation during generation time so that the weapon is actually from the distribution of the network and that the network was able to recreate a weapon from that distribution.
 
-\begin{lstlisting}[language=,name={Pseudo code of the variational autoencoder class.},label={pseudoCode::vae}]
+\begin{lstlisting}[language=,name={Essential functions of the variational autoencoder class.},label={pseudoCode::vae}]
 global functions:
 	get an untrained variational autoencoder
 	get a fully trained variational autoencoder
@@ -1313,8 +1313,8 @@ The weapon class contains almost every feature shown in table \ref{table::bf1::u
 Moreover, each weapon has specific modifier which affects either the weapons or the player. For example, machine guns are heavier than pistols and therefore lower the movement speed of a character. Alternatively, if a player aims down sight, then the shooting behavior regarding recoil and spread is improved. These improvements can be adjusted for each weapon class and propagate to generated weapons of the same weapon type.
 
 \section{Weapon Generator}
-As already mentioned at the beginning of this chapter, the weapon generator was implemented outside UE4 and imported as soon as it worked. The listing \ref{pseudoCode::weaponGeneratorAPI} shows the pseudo code of the weapon generator API class which inherits the functions from the TF plugin API class, described in chapter \ref{whichGameEngine}. 
-\begin{lstlisting}[language=,name={Pseudo code of the TensorFlow plugin weapon generator API class.},label={pseudoCode::weaponGeneratorAPI}]
+As already mentioned at the beginning of this chapter, the weapon generator was implemented outside UE4 and imported as soon as it worked. The listing \ref{pseudoCode::weaponGeneratorAPI} shows the essential functions of the weapon generator API class which inherits the functions from the TF plugin API class, described in chapter \ref{whichGameEngine}. 
+\begin{lstlisting}[language=,name={Essential functions of the TensorFlow plugin weapon generator API class.},label={pseudoCode::weaponGeneratorAPI}]
 class WeaponGeneratorAPI:
 	functions:
 		on setup:
