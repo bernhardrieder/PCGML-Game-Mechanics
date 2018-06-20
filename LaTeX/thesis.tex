@@ -1063,34 +1063,34 @@ However, decoding from noise input is not the only advantage. Another advantage 
 %
 \clearpage
 \chapter{Prototype Development}
-This chapter addresses every step of the development process of the weapon generator game mechanic whereas UE specific game development topics are not covered. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. The ordering of all following chapters reflect more or less the actual workflow taken in the development. The prototype was implemented with Python version 3.6.4 and TF 1.8.0 in Jupyter Notebook and then integrated in UE4 4.19.2; the source code developed for the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}\todo{show the url? yes or no?}. 
+This chapter addresses every step of the development process of the weapon generator game mechanic but does not cover UE specific game development topics. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. The ordering of all following chapters reflects more or less the actual workflow taken in the development. The prototype was implemented with Python version 3.6.4 and TF 1.8.0 in Jupyter Notebook and then integrated into UE4 4.19.2; the source code developed for the prototype is available on the GitHub website \url{github.com/bernhardrieder/PCGML-Game-Mechanics}\todo{show the url? yes or no?}. 
 
 \section{Data Preprocessing} \label{dev::dataPreprocessing}
-First step of the development is the gathering and preprocessing of the \ac{BF1} community weapon analytic raw data. All of the weapon data is accessable to everyone via the community website of \citep{symthic::bf1stats}. However, the community of \citename{symthic::bf1stats} kindly provides a database dump on request which was extracted with a script by a community administrator. This database dump contains every parameter of the weapons in a readable and manageable data.
+The first step of the development is the gathering and preprocessing of the \ac{BF1} community weapon analytic raw data. All of the weapon data is accessible to everyone via the community website of \citep{symthic::bf1stats}. However, the community of \citename{symthic::bf1stats} kindly provides a database dump on request which was extracted with a script by a community administrator. This database dump contains every parameter of the weapons in a readable and manageable data.
 
 \subsection{Dump Extraction} \label{chapter::dumpExtraction}
-More specifically, the dump contains 148 weapons which each 90 parameters. Some of the parameters are stacked and contain a list of parameters in them. For example, the damage parameter consists of a collection of different damage values which are listed related to distances. For this reason, the damage and distance parameters were split into the first and last values to simplify the extraction and the weapon implementation. The full list of available parameters and their explanations is listed in the appendix \ref{bf1::dumpParams}.\\
-Now, it would be more than impracticable to manually extract the useful data out of the dump data file. The file has 13764 lines and it would probably cause dozens of errors and wrong extractions. Therefore, the development of a simple Python script to extract all the data into a ".csv" was the simplest way to achieve a consistent data extraction. The script reads a ".txt" file with specified header to extract in it as input and then extracts these specified header names from the dump file. As soon as all the data was gathered, it creates a new .csv file with a timestamp and adds the extracted data in an organized way so that someone can further process it by hand.\\
-The focus of the first iteration of the dump parameter extraction lies on the previously examined parameters, described in chapter \ref{bf1::data}. However, the parameters which are used in the final implementation differ from that examination and changed in some of the next steps.
+More specifically, the dump contains 148 weapons with 90 parameters each. Some of the parameters are stacked and contain a list of parameters in them. For example, the damage parameter consists of a collection of different damage values which are listed related to distances. For this reason, the damage and distance parameters were split into the first and last values to simplify the extraction and the weapon implementation. The full list of available parameters and their explanations is available in Appendix \ref{bf1::dumpParams}.\\
+Now, it would be more than impracticable to manually extract the useful data out of the dump data file. The file has 13764 lines, and it would probably cause dozens of errors and wrong extractions. Therefore, the development of a simple Python script to extract all the data into a ".csv" was the simplest way to achieve a consistent data extraction. The script reads a ".txt" file with the specified headers to extract in it as input and then extracts these specified header names from the dump file. Right after completion of the data gathering process, it creates a new .csv file with a timestamp and adds the extracted data in an organized way so that someone can further process it by hand.\\
+The focus of the first iteration of the dump parameter extraction lies in the previously examined parameters, described in chapter \ref{bf1::data}. However, the used parameters in the final implementation are different from that examination and will change in the next steps.
 
 \subsection{Manual Dimension Reduction, Addenda and Unification}
-One of the biggest issues in the extracted data was the ammo which was listed as it would be a different one for some weapons even if it is the same. For this reason, a manual examination of all ammo types was necessary to unify the range of all ammo types. 
+One of the most significant issues in the extracted data was the ammo which was listed as it would be a different one for some weapons even if it is the same. For this reason, a manual examination of all ammo types was necessary to unify the range of all ammo types. 
 
 \subsubsection{Weapon Type and Fire Modes}
-It turned out that the dump does not include the specific types and fire modes of the weapons. Hence, it was necessary to examine that from the different game communities \citep{symthic::bf1stats}, \citep{bf1::community1}, and \citep{bf1::community2}. This proceeding added the unified weapon types of pistols, rifles, sniper rifles, shotguns, light-machine guns and sub-machine guns as well as the unified fire modes of single-action, semi-automatic and automatic. Some of the weapons in \ac{BF1} have more fire modes available which was further simplified by the highest available fire mode. For instance, if a weapon can shoot with semi-automatic and automatic, then automatic was chosen. Furthermore, the game specifies more fire modes than the ones used. For example, they are using bolt-action, pump-action, single-barrel fire, and lever action which were summarized as single-action weapons since they are using the same mechanic. Also double-action and double barrel fires was found in the weapons which was unified into semi-automatic. Charts about the distribution of this two categories in the dataset are available in the appendix \ref{bf1::data::distributionCharts}. 
+It turned out that the dump does not include the specific types and fire modes of the weapons. Hence, it was necessary to examine that from the different game communities \citep{symthic::bf1stats}, \citep{bf1::community1}, and \citep{bf1::community2}. This proceeding added the unified weapon types of pistols, rifles, sniper rifles, shotguns, light machine guns and sub-machine guns as well as the unified fire modes of single-action, semi-automatic and automatic. Some of the weapons in \ac{BF1} have more fire modes available which were further simplified by the highest available fire mode. For instance, if a weapon can shoot with semi-automatic and automatic, then automatic was chosen. Besides, the game specifies more fire modes than the ones used. For example, they are using bolt-action, pump-action, single-barrel fire, and lever action which were summarized as single-action weapons since they are using the same mechanic.Additionally, the weapons of BF1 have the possibility of double-action and double barrel fires which is a semi-automatic weapon in the dataset. Charts about the distribution of this two categories in the dataset are available in Appendix \ref{bf1::data::distributionCharts}. 
 
 \subsubsection{Reload Times}
-Another problem caused the reload times of the weapons because \ac{BF1} uses some special reload mechanics for some weapons. In particular, the weapons of BF1 are from the WW1 time and weapons of this time do not always have magazine as used in modern weapons nowadays. Some of them do have special strip clip magazines instead of closed magazines which introduced a special reload mechanic. However, the community of \citep{symthic::bf1stats} provides an explanation to this reload mechanic which made a manual calculation and unification of the reload times for an empty magazine possible so that there is no need of a distinction for the prototype implementation.
+Another problem caused the reload times of the weapons because \ac{BF1} uses some distinct reload mechanics for some weapons. In particular, the weapons of BF1 are from the WW1 time and weapons of this time do not always have the same magazines as used in modern weapons nowadays. Some of them do have special strip clip magazines instead of closed magazines which introduced  a particular reload mechanic. However, the community of \citep{symthic::bf1stats} provides an explanation to this reload mechanic which made a manual calculation and unification of the reload times for an empty magazine possible so that there is no need of a distinction for the prototype implementation.
 
 \subsubsection{Omitted Parameters and Final Set}
-Table \ref{battlefield::weaponStats} shows some parameters which are highly overrated for the training of the VAE. This was not considered during that time which makes it necessary to further omit some of this variables. For example, following parameter were omitted for specific reasons:
+Table \ref{battlefield::weaponStats} shows some parameters which are highly overrated for the training of the VAE which makes it necessary to omit some of this variables further. For example, following parameter was omitted for specific reasons:
 \begin{itemize}
 	\item The bullet drop is almost the same for each weapon.
-	\item The ammo types would need encoding which would probably cause the curse of dimension since there are about 30 different used ammo types in the dataset and are therefore omitted.
-	\item The reload time for ammo if some bullets are still left in the magazine is easier to handle if it is directly calculated from the reload time for an empty magazine.
-	\item And the last omitted parameter is the recoil in the left direction which showed that it always the same value as the recoil in the right direction.
+	\item The ammo types would need encoding which would probably cause the curse of dimension since there are about 30 different used ammo types in the dataset.
+	\item The reload time for ammo if some bullets are available in the magazine is more comfortable to handle if it is directly calculated from the reload time for an empty magazine.
+	\item The last omitted parameter is the recoil in the left direction which showed that it always the same value as the recoil in the right direction.
 \end{itemize}
-This led the final set of parameters to the parameters shown in table \ref{table::bf1::usedParams}. Note that the names of the parameters, except type and fire mode, are the same names as in the dump file provided by the \citename{symthic::bf1stats} community. Moreover, the damages and distances are listed as two parameters but are actually four parameters, as described in chapter \ref{chapter::dumpExtraction}.
+This refinement led the final set of parameters to the parameters shown in table \ref{table::bf1::usedParams}. Note that the names of the parameters, except type and fire mode, are the same names as in the dump file provided by the \citename{symthic::bf1stats} community. Moreover, the damages and distances are listed as two parameters but are four parameters, as already mentioned in chapter \ref{chapter::dumpExtraction}.
 \begin{table}[!ht]
 	\centering
 	\begin{tabular}{|l|p{10.8cm}|}
@@ -1116,20 +1116,20 @@ This led the final set of parameters to the parameters shown in table \ref{table
 \end{table}
 
 \subsection{Encoding and Feature Scaling}
-The next part of the data preprocessing is the encoding and feature scaling task so that the VAE can easily process and train the network. 
+The next part of the data preprocessing is the encoding and feature scaling task so that the VAE can efficiently process and train the network. 
 
 \subsubsection{Encoding}
-The first part is to encode the two only categorical parameters in the dataset. The encoding of the fire modes and weapon type is realized in TF. The encoding is the same as demonstrated in chapter \ref{ML::dataPreprocessing} and encodes the two categorical parameters into just seven parameters because TF omits one column of each parameter. This is because TF makes the assumption that if all parameters are predicted with a value of zero than it needs to be the omitted parameter. For example, if the VAE predicts the fire mode for single-action and semi-automatic with a value of zero, then the fire mode is automatic even it is not in the learned dataset. Therefore, the total number of features in the dataset after encoding is 21.
+The first part is to encode the two only categorical parameters in the dataset. On this account, TF offers encoding mechanisms which help to encode the fire modes and weapon type. The encoding is the same as demonstrated in chapter \ref{ML::dataPreprocessing} and encodes the two categorical parameters into just seven parameters because TF omits one column of each parameter. This characteristic is because TF assumes that if the prediction of all parameters has a value of zero, then it needs to be the omitted parameter. For example, if the VAE predicts the fire mode for single-action and semi-automatic with a value of zero, then the fire mode is automatic even it is not in the learned dataset. Therefore, the total number of features in the dataset after encoding is 21.
 
 \subsubsection{Feature Scaling}
-Now the last part is to normalize or standardize all features. In particular, this is a necessary procedure for this dataset because there are many different value ranges. For example, the rate of fire and muzzle velocity are large numbers whereas the values of the spread increase or decrease are very small. If there is no normalization or standardization, then this would cause significant extra expenses.\\
+Now the last part is to normalize or standardize all features. In particular, this is a necessary procedure for this dataset because there are many different value ranges. For example, the rate of fire and muzzle velocity are large numbers whereas the values of the spread increase or decrease are minimal. If there is no normalization or standardization, then this would cause significant extra expenses.\\
 The approach used for the dataset is the standardization process since it transforms the data in a way so that it has the properties of a standard distribution which may be useful during the VAE's training. 
 
 \subsection{Training and Test Dataset}
-The total dataset consists of 148 weapon constellations. A common split of the data would be 80\% training data and 20\% test data. For this reason, the dataset is split into a training set of 127 weapons and a test set with 21 weapons. The selection of the weapons for the test set was done randomly and took into account to include at least as much weapons as different fire modes and weapon types are available, as well as different weapons with values in low, middle and high range for damage, rate of fire, muzzle velocity, magazine size and reload time.
+The total dataset consists of 148 weapon constellations. A typical split of the data would be 80\% training data and 20\% test data. For this reason, the dataset split is a training set of 127 weapons and a test set with 21 weapons which are about 16\%. The selection of the weapons for the test set was done randomly and took into account to include at least as many weapons as different fire modes, and weapon types are available, as well as different weapons with values in low, middle and high range for damage, rate of fire, muzzle velocity, magazine size and reload time.
 
 \subsection{Convenience Class Pseudo Code}
-TF offers a lot of tutorials on how to use and develop with TF. A common dataset used in the tutorials is the MNIST dataset which is encapsulated into a convenience class. This class served as a base and inspiration for an own convenience class which encapsulates the weapon data. Following pseudo code presents the interesting functions and accessible members of this convenience class:
+TF offers many tutorials on how to use and develop with TF. A standard dataset used in the tutorials is the MNIST dataset which encapsulates its data into a convenience class. This class served as a base and inspiration for an own convenience class which encapsulates the weapon data. Following pseudo code presents the most valuable functions and accessible members of this convenience class:
 
 \begin{lstlisting}[language=,name={Pseudo code of the weapon dataset convenience class.},label={pseudoCode::weponDataSet}]
 global functions:
@@ -1140,72 +1140,72 @@ class DataSet:
 		standardized and encoded data
 		number of features in data
 		number of data examples
-		standardized mininmum values
+		standardized minimum values
 		standardized maximum values 
 	functions:
 		get next batch for training either shuffled or not
 		add new weapons to the dataset
-		restandardize the whole data
+		re-standardize the whole data
 		encode and standardize features
 		decode a processed tensor from TensorFlow
 		encode decoded tensor from TensorFlow
 \end{lstlisting}
 
 \section{\acl{VAE}}
-The implementation for the VAE was driven and inspired by an explanation of \citep{tutorial::vaeTF}. \citename{tutorial::vaeTF} used an high-level approach in his design which is similar to high-level ML APIs. These high-level APIs are easily modifiable and extensible which was the main reason why to follow the approach of \citename{tutorial::vaeTF}. An easy modification is necessary to test different network hyperparameters without major changes in the code and thus to find the most suitable network parameters. More to that is described in the chapter \ref{chapter::vae::network} about how the selection of the hyperparameters was done. Now, the next chapters show some pseude code of the VAE class, how the model accuracy was measured to obtain a proper trained model, addresses the already mentioned the network parameter selection, shows two weapon generation examples and lists development issues.
+The implementation of the VAE was driven and inspired by an explanation of \citep{tutorial::vaeTF}. \citename{tutorial::vaeTF} used a high-level approach in his design which is similar to high-level ML APIs. These high-level APIs are easily modifiable and extensible which was the main reason why to follow the approach of \citename{tutorial::vaeTF}. An easy modification is necessary to test different network hyperparameters without significant changes in the code and thus to find the most suitable network parameters. In particular, chapter \ref{chapter::vae::network} explains the entire proceeding of the hyperparameters selection process. Now, the next chapters show some pseudo code of the VAE class, how the model accuracy was measured to obtain an adequately trained model, addresses the already mentioned the network parameter selection, shows two weapon generation examples and lists development issues.
 
 \subsection{Pseudo Code}
-Listing \ref{pseudoCode::vae} shows the pseudo code with most of the available and necessary functions for the generation task. The actual code contains some more function but are not important to explain. As already introduced in the weapon convenience class, this class also has some global convenience functions to obtain different stages of a VAE. \\
-Two of the most important functions of the VAE class for the weapon generation tasks are the functions "decode from latent space" and "encoding and decoding" since they provide the functionality to generate data similar to the training data. It is to mention, that the VAE initializes itself on construction where it calls all the creation functions to maintain a working network. The last most important function to mention is the loss calculation function since it is necessary to secure a working generation during generation time so that the weapon is actually from the distribution of the network and that the network was able to recreate a weapon from that distribution.
+Listing \ref{pseudoCode::vae} shows the pseudo code with most of the available and necessary functions for the generation task. The actual code contains some more functions which are not essential to explain. As already introduced in the weapon convenience class, this class also has some global convenience functions to obtain different stages of a VAE. \\
+Two of the essential functions of the VAE class for the weapon generation tasks are the functions "decode from latent space" and "encoding and decoding" since they provide the functionality to generate data similar to the training data. It is to mention that the VAE initializes itself on construction where it calls all the creation functions to maintain a working network. The last most important function to mention is the loss calculation function since it is necessary to secure a working generation during generation time so that the weapon is actually from the distribution of the network and that the network was able to recreate a weapon from that distribution.
 
 \begin{lstlisting}[language=,name={Pseudo code of the variational autoencoder class.},label={pseudoCode::vae}]
 global functions:
-	get untrained variational autoencoder
-	get trained variational autoencoder
+	get an untrained variational autoencoder
+	get a fully trained variational autoencoder
 	
 class VariationalAutoencoder:
 	public functions:
-		train with batch
+		train the model with a batch
 		decode a batch from latent space
 		encode and decode a batch
-		load trained model from file
-		save trained model to file
-		calculate loss from a batch
+		load the trained model from file
+		save the trained model to file
+		calculate the loss from a batch
 	private functions:
-		create encoder network
-		create z sampling operation
-		create decoder network
-		create hidden layer
-		create weights and biases
-		create loss optimizer
-		calculate reconstruction loss
-		calculate kl divergence
+		create the encoder network
+		create the z sampling operation
+		create the decoder network
+		create a hidden layer
+		create the weights and biases
+		create the loss optimizer
+		calculate the reconstruction loss
+		calculate the KL divergence
 \end{lstlisting}
 
 \subsection{Model Accuracy Measurement}
-One of the most important parts of training the VAE is to secure a high model accuracy. This is secured by using two different measurements:
+One of the most important parts of training the VAE is to secure a high model accuracy. Two different measurements will secure this accuracy:
 \begin{itemize}
-	\item The test set reconstruction loss.
-	\item A random input reconstruction loss.
+	\item The value of the test set reconstruction loss.
+	\item The value of a random input reconstruction loss.
 \end{itemize} 
-Now, as already mentioned in the chapter \ref{dev::dataPreprocessing}, the data was split into 127 weapons of training data and 21 weapons of test data. Both of the inputs were inputted into the encoder side of the network and the test results manually examined afterward. Following steps were taken to ensure a high model accuracy:
+Now, as already mentioned in chapter \ref{dev::dataPreprocessing}, the data was split into 127 weapons of training data and 21 weapons of test data. Both of the inputs are feed into the encoder side of the network which outputs the manually examined test results. Following steps were taken to ensure a high model accuracy:
 \begin{enumerate}
 	\item Measure the model reconstruction accuracy by calculating the average loss caused by the test set.
-	\item Generate a random input in range of the normalized values of the test set and size of the test set and measure the caused average loss.
-	\item Make sure that the reconstruction average loss of the test set is as small as possible and the loss of the random input is as big as possible.
+	\item Generate a random input in the range of the normalized values of the test set and size of the test set and measure the caused average loss.
+	\item Make sure that the average reconstruction loss of the test set is as small as possible and the loss of the random input is as massive as possible.
 \end{enumerate}
-Now, if the random input loss is very high then it means that the model has learned the internal structure and dependencies of the training data because it cannot classify the input data regarding to the training data. In other words, a big loss with random input data means that the model has no idea which data that should be and cannot reconstruct anything useful. On the other hand, if the reconstruction loss of the test set would be very high, then it would not know what to reconstruct either. Therefore it is important to maintain a low loss with the test set and a high loss with the random input.
+Now, if the random input loss is very high, then it means that the model has learned the internal structure and dependencies of the training data because it cannot classify the input data regarding the training data. In other words, a significant loss with random input data means that the model has no idea which data that should be and cannot reconstruct anything useful. On the other hand, if the reconstruction loss of the test set would be very high, then it would not know what to reconstruct either. Therefore, it is crucial to secure a low loss with the test set and a high loss of the random input.
 
 \subsection{Network Hyperparameter Selection} \label{chapter::vae::network}
-Finding the right network hyperparamters for a neural network seems to be one of the trickiest parts in designing a neural network. Different constellations of learning rate, optimizer function, hidden layer size, latent space size, number of training data features, activation functions after the hidden layers, batch size and training epochs can have similar, better or worse performance since the weights and biases in the neural network are randomly initialized, dynamically trained and can emerge in either the right or wrong way. For this reason, the development of a simple hyperparameter test script was the easiest way to tackle that problem and detect the most promising parameters. But before any of the test iterations were in progress, the assumptions for a properly working network were evaluated as follows:
+Finding the right network hyperparameters for a neural network seems to be one of the trickiest parts in designing a neural network. Different constellations of learning rate, optimizer function, hidden layer size, latent space size, number of training data features, activation functions after the hidden layers, batch size and training epochs can have similar, better or worse performance since the weights and biases in the neural network are randomly initialized, dynamically trained and can emerge in either the right or wrong way. For this reason, the development of a simple hyperparameter test script was the easiest way to tackle that problem and detect the most promising parameters. However, before any of the test iterations were in progress, the assumptions for a properly working network were evaluated as follows:
 \begin{itemize}
 	\item \textbf{Learning rate}: Between 0.01 and 0.001 because the variables are standardized and bigger rates would not make sense.
-	\item \textbf{Size of the hidden layers}: Bigger than the latent space but smaller than the input layer size to prevent the straight forward passing on of the variables without any training of the weights.
+	\item \textbf{Size of the hidden layers}: Bigger than the latent space but smaller than the input layer size to prevent the straightforward passing on of the variables without any training of the weights.
 	\item \textbf{Size of the latent space}: Not smaller than two and not bigger than the hidden layer because of the same reason as mentioned in the hidden layer.
 	\item \textbf{Activation function after hidden layers}: The commonly used hyperbolic tangent activation function  "tanh" which outputs values between -1 and 1. 
 	\item \textbf{Optimizer function}: The common optimizer function "Adam" \cite{ml::optimizer::overview}.
-	\item \textbf{Batch size}: Not bigger than ten because of the small amount of training data.
-	\item \textbf{Number of training epochs}: Inestimable but probably not more than 500.
+	\item \textbf{Batch size}: Not larger than ten because of the small amount of training data.
+	\item \textbf{The number of training epochs}: Inestimable but probably not more than 500.
 \end{itemize}
 However, after some test iterations later, it was clear which hyperparameters to use in the network.
 \begin{itemize}
@@ -1215,12 +1215,12 @@ However, after some test iterations later, it was clear which hyperparameters to
 	\item \textbf{Activation function after hidden layers}: The exponential linear unit activation function "elu" which leads to higher classification accuracies \cite{ml::activation::elu}.
 	\item \textbf{Optimizer function}: The optimizer function "RMSProp" \cite{ml::optimizer::overview}.
 	\item \textbf{Batch size}: 4.
-	\item \textbf{Number of training epochs}: A number of 400 shows the lowest costs. 
+	\item \textbf{The number of training epochs}: A number of 400 shows the lowest costs. 
 \end{itemize}
-It was interesting to see that the activation function elu was able to detect the underlying structure of the data much better than tanh. This detection was then further boosted with a collaboration with the RMSProp optimizer. Why these particular activation function and optimizer works so good would be interesting to know but exceed the scope if this thesis which is the reason why it is not further addressed.
+It was interesting to see that the exponential linear unit activation function was able to detect the underlying structure of the data much better than the standard hyperbolic tangent activation function. This detection was then further boosted with a collaboration with the RMSProp optimizer. Why these particular activation function and optimizer works so good would be interesting to know but exceed the scope of this thesis and therefore not addressed.
 
 \subsubsection{Latent Space Visualization}
-Now, a lucky coincidence of these hyperparamters is that the latent space has a size of two which means that it is easy to illustrate the values in the latent space. For this reason, figure \ref{fig::vae::untrainedLatentSpace} shows the parameter $\mu$ of an untrained latent space and figure \ref{fig::vae::trainedLatentSpace} shows the parameter $\mu$ of a trained latent space after 70 epochs.
+Now, a lucky coincidence of these hyperparameters is that the latent space has a size of two which means that it is easy to illustrate the values in the latent space. For this reason, figure \ref{fig::vae::untrainedLatentSpace} shows the parameter $\mu$ of an untrained latent space and figure \ref{fig::vae::trainedLatentSpace} shows the parameter $\mu$ of a trained latent space after 70 epochs.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/untrained_latent_space}
@@ -1231,10 +1231,10 @@ Now, a lucky coincidence of these hyperparamters is that the latent space has a 
 	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/trained_latent_space}
 	\caption{A plot of the trained latent space after 70 training epochs.} \label{fig::vae::trainedLatentSpace}
 \end{figure}\\
-One can easily see that the model was able to learn an underlying structure of the provided weapon data. Furthermore, someone can easily assume and connect the 6 visible clusters in the plot to the available weapon types in the training data.
+One can easily see that the model was able to learn an underlying structure of the provided weapon data. Furthermore, someone can easily assume and connect the six visible clusters in the plot to the available weapon types in the training data.
 
 \subsubsection{Cost per Training Epoch}
-Another interesting chart to determine the right amount of training epochs shows figure \ref{fig::vae::costPerEpoch}. This chart shows that there is a minimum average cost at around 400 training epochs which will slightly rise with more and more epochs. 
+Another chart which helps to determine the right amount of training epochs shows figure \ref{fig::vae::costPerEpoch}. This chart shows that there is a minimum average cost at around 400 training epochs which will slightly rise with more and more epochs. 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/cost_per_epoch}
@@ -1242,16 +1242,16 @@ Another interesting chart to determine the right amount of training epochs shows
 \end{figure}
 
 \subsubsection{Training Epochs Random Input Failure Rate}
-Another benchmark to determine the right amount of training epochs was to observe the failure rate of the model when testing the average cost of random input. Figure \ref{fig::vae::epochsFailureRate} shows a chart with the percent of failure rate in which the model was not able to properly learn the underlying structure or had a loss which was not observable. In other words, it is evaluated as a failure when the random input loss related to the test loss is not ten times bigger or when it is not a number and cannot be taken into account. The observation tested each number of training epochs 100 times in a row. 
+Another benchmark to determine the right amount of training epochs was to observe the failure rate of the model when testing the average cost of random input. Figure \ref{fig::vae::epochsFailureRate} shows a chart with the percent of failure rate in which the model was not able to properly learn the underlying structure or had a loss which was not observable. In other words, it is evaluated as a failure when the random input loss related to the test loss is not ten times bigger or when the system cannot process the value. The observation tested each number of training epochs 100 times in a row. 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/epoch_failure_rate}
 	\caption{A chart of the failure rate per training epoch.} \label{fig::vae::epochsFailureRate}
 \end{figure}\\
-The reason why it is a different outcome every new training is because the weights and biases are initialized in a random range which is near a normal distribution with zero mean and a standard deviation of one. For this reason, the decision for the training epochs in the weapon generation was set to 70 epochs in the beginning and will increase with every new added weapon to the dataset.
+The reason why it is a different outcome every new training is because of initialization proceeding of the weights and biases. The initialization maps them on a random range which is near a normal distribution with zero mean and a standard deviation of one. Hence, the decision for the training epochs in the weapon generation was set to 70 epochs in the beginning and will increase with every newly added weapon to the dataset.
 
 \subsection{Random Input Generation Example} \label{vae::randomInputExample}
-Table \ref{vae::randomInputGeneration} shows a comparison of a training weapon and a generated weapon which was generated with random noise input to prove that the VAE can generate useful weapon data. One can see that the VAE has issues with predicting and generating the correct category for a weapon. This is still an unsolved problem but is easily solvable by checking the highest value of all categories. In this case, it is most likely a sniper rifle with semi automatic fire mode. The missing fire mode and type can be compensated with a random factor in the weapon generator. Please note that the listed parameters are the same parameters which are outputted by the VAE.
+Table \ref{vae::randomInputGeneration} shows a comparison of a training weapon and a generated weapon which was generated with random noise input to prove that the VAE can generate useful weapon data. One can see that the VAE has issues with predicting and generating the correct category for a weapon. This issue is still an unsolved problem but is easily solvable by checking the highest value of all categories. In this case, it is most likely a sniper rifle with semi-automatic fire mode.  Moreover, a random factor in the weapon generator can compensate for the missing fire mode and type. Please note that the listed parameters are the same parameters which are outputted by the VAE.
 \begin{table}[!ht]
 	\centering
 	\begin{tabular}{|l|p{3.5cm}|p{3.5cm}|}
@@ -1284,14 +1284,14 @@ Table \ref{vae::randomInputGeneration} shows a comparison of a training weapon a
 \end{table}
 
 \subsection{Development Issues}
-Two special issues occurred during the development with TF:
+Two particular issues occurred during the development with TF:
 \begin{enumerate}
-	\item TF creates all network nodes in so-called graphs which are not cleaned-up after a so-called TF session is closed. A session is needed to execute all network nodes and will be closed after a network is not used anymore. In case of the necessary retraining for this network, it created a pollution of the graph which slowed the execution bit by bit. This problem was solved with a simple reset of the graph after the session close and before the new trained model was loaded.
-	\item TF works with nodes which have a specific shape. If the node has no specific shape at creation time, then it will get one during training time and this shape will consist in the trained and saved model. Because of this reason, all of the network nodes will have a similar shape as the batch size because it is propagated thorught every node in the network during training. That means, that encoding and decoding and decoding from latent space is just possible with an input which has the same size as the training batch. Of course, this is not a big problem, but narrows the possiblities of using the VAE. This problem was solved with a simple replication of the input if its not the same size as the batch size and calculates the mean of the output since it generates the output batch size times.
+	\item It needs so-called sessions in TF to run TF operations. With the creation of this session is a so-called graph included which contains all network nodes and there will be no graph cleanup at session termination. In case of the necessary retraining for this network, this missing cleanup created massive pollution of the graph which slowed the execution bit by bit. The solution to this problem is a simple reset of the graph after the session termination and right before the new trained model update procedure.
+	\item TF works with nodes which have a specific shape.  If the node has no specific shape at creation time, then it will get one during training time, and this shape will consist of the trained and saved model. Because of this reason, all of the network nodes will have a similar shape as the batch size because it propagates itself through every node in the network during training. That means that encoding and decoding and decoding from latent space is just possible with an input which has the same size as the training batch. Of course, this is not a big problem but narrows the possibilities of using the VAE. This problem was solved with simple replication of the input if it is not the same size as the batch size and calculates the mean of the output since it generates the output batch size times.
 \end{enumerate}
 
 \section{Game Scenario}
-The prototype scenario was implemented in UE4 version 4.19.2 and includes a simple map with all requested elements described in chapter \ref{chapter::gamePrototype}. Figure \ref{scenarioMap} shows the created map of the scenario from top-down view, the possible spawn points of the player and the location of the end boss AI. All 3D models and assets are either reused from UE4 template projects or freely downloaded from the internet and do not violate any copyright rights.
+The prototype scenario was implemented in UE4 version 4.19.2 and includes a simple map with all requested elements described in chapter \ref{chapter::gamePrototype}. Figure \ref{scenarioMap} shows the created map of the scenario from a top-down view, the possible spawn points of the player and the location of the end boss AI. All 3D models and assets are either reused from UE4 template projects or freely downloaded from the internet and do not violate any copyright rights.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.6\linewidth]{PICs/Prototype/map_with_spawnpoints_and_boss}
@@ -1305,18 +1305,18 @@ Furthermore, figure \ref{scenarioScreenshot} shows an in-game screenshot of the 
 \end{figure}
 
 \subsection{\acl{HUD}}
-As designed in chapter \ref{chapter::gamePrototype}, the HUD should provide the player with feedback to the mechanic and also the game. For this reason, it shows the most important parameters of the currently equipped weapon on the top left, as visible in figure \ref{scenarioScreenshot}. Furthermore, it shows the current status of the weapon generator which can be one from the range "Starting", "Waiting for Input" or "Generating". The status of the available ammo, current health and armor, and health is also shown in the HUD so that the player knows about his vitals.
+As designed in chapter \ref{chapter::gamePrototype}, the HUD should provide the player with feedback to the mechanic and also the game. For this reason, it shows the most critical parameters of the currently equipped weapon on the top left, as visible in figure \ref{scenarioScreenshot}. Furthermore, it shows the current status of the weapon generator which can be one from the range "Starting," "Waiting for Input" or "Generating." The status of the available ammo, current health and armor, and health is also shown in the HUD so that the player knows about the vitals.
 
 \subsection{Player}
-The player is able to do everything as in common FPS games and additionally has the possibility of using the weapon generator to generate a new weapon. If the player decides to dismantle the equipped weapon, then the currently equipped weapon will be removed from the player and the player is able to just use the remaining weapon until the generator is finished. Specific movement types increase or decrease weapon shooting behavior. In addition, the player can gather power ups which are placed randomly in the map and increase or refill movement speed, health, armor and ammo.
+The player can do everything as in common FPS games and additionally has the possibility of using the weapon generator to generate a new weapon. If the player decides to dismantle the equipped weapon, then the currently equipped weapon will be removed from the player and the player can only use the remaining weapon until generation completion. Specific movement types increase or decrease weapon shooting behavior. Besides, the player can gather power-ups which are placed randomly on the map and increase or refill movement speed, health, armor, and ammo.
 
 \subsection{Bots}
-The bots are implemented as requested and come in three different types. The easiest one is a simple ball bot which moves towards the player and explodes after some time after reaching the player. The two other bots are from the same type  which is visible in figure \ref{scenarioScreenshot}, moves towards the player and shoots with different weapons onto the player in a straight forward way. The easy bot does not cause much damage but tries to heal itself if the health is low whereas the heavy bot causes more damage, has more health and does not heal itself.\\
-The end boss bot is even heavier than the heavy bot and has an own weapon which has a higher rate of fire than any other weapon of the bots. Furthermore, the end boss has many health points so that the player needs to use the weapon generator to win against the bot.
+The implementation of the bots comes in three different types. The easiest one is a simple ball bot which moves towards the player and explodes after some time after reaching the player. The two other bots are from the same type  which is visible in figure \ref{scenarioScreenshot}, moves towards the player and shoots with different weapons onto the player in a straightforward way. The easy bot does not cause much damage but tries to heal itself if the health is low whereas the hard bot causes more damage, has more health and does not heal itself.\\
+The end boss bot is even harder than the hard bot and has an own weapon which has a higher rate of fire than any other weapon of the bots. Furthermore, the end boss has many health points so that the player needs to use the weapon generator to win against the bot.
 
 \subsection{Weapons}
-Almost every feature shown in table \ref{table::bf1::usedParams} is implemented in the weapon class. The only parameter which is not implemented is the initial speed or also known as muzzle velocity. For generator reasons, this parameter needs to be saved in the weapon class but has no effect on the weapon. For further simplicity in the prototype, all different weapons are implemented in one class which is able to function as every weapon type. Furthermore, to have a visible representation of the weapon, every weapon type has its own weapon model so that the player can distinguish between the weapons inside the game. \\
-Moreover, each weapon has specific modifier which are applied to either the weapons or the player. For example, machine guns are heavier than pistols and therefore lower the movement speed of a character. Or if a player aims down sight, then the shooting behavior regarding recoil and spread is improved. This improvements can be adjusted for each weapon class and are propagated to generated weapons of the same weapon type.
+The weapon class contains almost every feature shown in table \ref{table::bf1::usedParams}. The only omitted parameter is the initial speed or also known as muzzle velocity. For generator reasons, this parameter needs to be saved in the weapon class but does not affect the weapon. For further simplicity in the prototype, one class functions as a superclass for all different weapon types. Furthermore, to have a visible representation of the weapon, every weapon type has its weapon model so that the player can distinguish between the weapons inside the game. \\
+Moreover, each weapon has specific modifier which affects either the weapons or the player. For example, machine guns are heavier than pistols and therefore lower the movement speed of a character. Alternatively, if a player aims down sight, then the shooting behavior regarding recoil and spread is improved. These improvements can be adjusted for each weapon class and propagate to generated weapons of the same weapon type.
 
 \section{Weapon Generator}
 As already mentioned at the beginning of this chapter, the weapon generator was implemented outside UE4 and imported as soon as it worked. The listing \ref{pseudoCode::weaponGeneratorAPI} shows the pseudo code of the weapon generator API class which inherits the functions from the TF plugin API class, described in chapter \ref{whichGameEngine}. 
@@ -1328,34 +1328,34 @@ class WeaponGeneratorAPI:
 		on begin training:
 			train the model
 		on json input:
-			check if new trained model is available
-			add dismantled weapon to dataset and retrain if necessary
-			process input return a new generated weapon
+			check if a new trained model is available
+			add a dismantled weapon to the dataset and retrain the network if necessary
+			process the input and return a new generated weapon
 \end{lstlisting}
 
 \subsection{Workflow}
-The beginning of the game scenario directly triggers the initialization of the weapon generator and the setup and training of the VAE model. This training runs on an own background thread so that the player does not notice the training at all. This is the moment in which the HUD displays the status "Starting" as feedback of the generator for the player. Figure \ref{figure::weaponGen::init} show the workflow of the weapon generator initialization.
+The beginning of the game scenario directly triggers the initialization of the weapon generator and the setup and training of the VAE model. This training runs on an own background thread so that the player does not notice the training at all. That is the moment in which the HUD displays the status "Starting" as feedback of the generator for the player. Figure \ref{figure::weaponGen::init} shows the workflow of the weapon generator initialization.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.5\linewidth]{PICs/WeaponGeneratorWorkflow_Setup_Training}
 	\caption{Weapon generator setup and training workflow.} \label{figure::weaponGen::init}
 \end{figure}\\
-As soon as the generator has changed the status to "Waiting for Input", it is ready to use for the player. The player can now dismantle the equipped weapon which sends the weapon to the weapon generator. Subsequently, the weapon generator extracts all parameters of the weapon, applies some modification based on statistics, creates a JSON format and sends it to the Python API. The applied statistics are the kills and used time of the weapon which change the random change range of the parameters. The strength of each parameter and the starting range of the random change rate are adjustable parameters. Figure \ref{figure::weaponGen::gen} show the workflow of the dismantling process to the new generated weapon. Note that the generation process in the API happens in a background thread so that the game do not freeze during that proceeding.
+As soon as the generator has changed the status to "Waiting for Input," it is ready to use for the player. The player can now dismantle the equipped weapon which sends the weapon to the weapon generator. Subsequently, the weapon generator extracts all parameters of the weapon, applies some modification based on statistics, creates a JSON format and sends it to the Python API. The applied statistics are the kills and used time of the weapon which changes the random change range of the parameters. The strength of each parameter and the starting range of the random change rate are adjustable parameters. Figure \ref{figure::weaponGen::gen} shows the workflow of the dismantling process to the new generated weapon. Note that the generation process in the API happens in a background thread so that the game does not freeze during that proceeding.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.5\linewidth]{PICs/WeaponGeneratorWorkflow_Generation}
 	\caption{Weapon generator generation workflow.} \label{figure::weaponGen::gen}
 \end{figure}\\
-The generator changes the status to "Generating" during the processing of the dismantled weapon and the generation of the new weapon. Sometimes, this can take more time because the newly trained model will be loaded which was retrained after a specific amount of dismantled weapons. The generator generates either a weapon based on the statistics of the dismantled weapon or a random weapon if the average reconstruction costs exceed a specific threshold or a not processable numbers.\\
-As soon as the VAE generator API is ready and has send the result back to the weapon generator, the generator creates a new weapon and notifies the player that the generation is ready. Subsequently, the generator changes the status to "Waiting for Input" and is able to receive new dismantled weapons. During the creation process of the new weapon, the generator checks and makes sure, that all of the parameters do not exceed critical values which could cause bugs in the game. 
+The generator changes the status to "Generating" during the processing of the dismantled weapon and the generation of the new weapon. Sometimes, this can take more time because of the newly trained model update which updates after a specific amount of dismantled weapons. The generator generates either a weapon based on the statistics of the dismantled weapon or a random weapon if the average reconstruction costs exceed a specific threshold or a not processable number.\\
+As soon as the VAE generator API is ready and has sent the result back to the weapon generator, the generator creates a new weapon and notifies the player that the generation is ready. Subsequently, the generator changes the status to "Waiting for Input" and can receive new dismantled weapons. During the creation process of the new weapon, the generator checks and makes sure, that all of the parameters do not exceed critical values which could cause bugs in the game. 
 
 \subsection{Parameter Modification and Adjustable Parameters}
-As already mentioned, the parameters of the dismantled weapon is modified before send to the generator API which includes some adjustable parameter. The parameter of weapons are either increased or decreased depending on whether it would help the player against the boss. For example, the damage is increased whereas reload time is decreased and so forth. Now, the parameters are changed according to a random change rate which can be offset with kills or using time. The starting range and the strength of the kills and time can be adjusted in the weapon generator. \\
-Another parameter is the threshold which decides if a weapon is of a specific type or not. The problem tackled with this proceeding was mentioned in chapter \ref{figure::weaponGen::gen}. The VAE sometimes generates small numbers which are almost similar to each other for every categorical parameter and always omits one category. This problem is solved with a threshold which decides if the weapon is from the available categories or not. If this is not the case then the weapon type or fire mode is chosen randomly with a 50\% change. For example, if no category of the fire modes do not break the given threshold, then it is a random change to be either the highest of the two fire modes or single-fire. The same principle applies for the weapon types. 
+As already mentioned, the parameters of the dismantled weapon are modified before send to the generator API which includes some adjustable parameter. The parameters of weapons are either increased or decreased depending on whether it would help the player against the boss. For example, the damage is increased whereas reload time is decreased and so forth. Now, the change of parameters results according to a random change rate which can be offset with kills or using time. The starting range and the strength of the kills and time are adjustable in the weapon generator. \\
+Another parameter is the threshold which decides if a weapon is of a specific type or not. The problem tackled with this proceeding was mentioned in chapter \ref{figure::weaponGen::gen}. The VAE sometimes generates small numbers which are almost similar to each other for every categorical parameter and always omits one category. The solution to this problem is a threshold which decides if the weapon is from the available categories or not. If this is not the case, then the weapon type or fire mode is chosen randomly with a 50\% change. For example, if no category of the fire modes does not break the given threshold, then it is a random change to be either the highest of the two fire modes or single-fire. The same principle applies to the weapon types. 
 
 \subsection{\acl{TF} Plugin Changes}
-The default TF version of the plugin is set to TF version 1.6.0 but all the development was done in 1.8.0. For this reason, the version of TF in the plugin was changed to 1.8.0 which could be done without any issues since the plugin is not dependent on any TF specific variables.\\
-The other major change in the plugin was a change in the API class which does not use a background thread for the input processing by default. This is causing a game freeze during the weapon generation and is not tolerable. This would also happen if multithreading is disabled in the plugin which is not advisable. Therefore, the API code was changed to run the input processing on a background thread and notify the API on completion so that it can propagate the result to the weapon generator.
+The default TF version of the plugin is TF version 1.6.0. Nonetheless, the prototype development used TF version 1.8.0. For this reason, the version of TF in the plugin changed to 1.8.0 which could be done without any issues since the plugin is not dependent on any TF specific variables.\\
+The other significant change in the plugin was a change in the API class which does not use a background thread for the input processing by default. This missing feature is causing a game freeze during the weapon generation and is not tolerable. This game freeze will also happen if multithreading is disabled in the plugin which is not advisable. Therefore, the API code was changed to run the input processing on a background thread and notify the API on completion so that it can propagate the result to the weapon generator.
 
 \section{Performance and Profiling}
 Profiling was done in the UE4 Editor in development configuration with following test device specifications:
@@ -1367,7 +1367,7 @@ Profiling was done in the UE4 Editor in development configuration with following
 	\item \textbf{\ac{RAM}}: 16GB
 \end{itemize}
 All of the following profiling charts are obtained with the same testing scenario. The scenario map is loaded, the weapon generator either initializes nor not, depending on its availability, and the game was then actively played for more than 30 seconds. Hence, the weapon generator was constantly used if available in the specific testing environment. \\
-Figure \ref{scenario::profiling_noTF} shows a profiling chart of the scenario map without any weapon generation mechanic enabled. The TF plugin, its dependent Python plugin and the SocketIO plugin were fully deactivated and had no effect on the engine's performance.
+Figure \ref{scenario::profiling_noTF} shows a profiling chart of the scenario map without any weapon generation mechanic enabled. The TF plugin, its dependent Python plugin, and the SocketIO plugin were fully deactivated and did not affect the engine’s performance.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/deactivated_plugin}
@@ -1379,13 +1379,13 @@ Figure \ref{scenario::profiling_TF} shows a profiling chart with an enabled TF p
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/activated_plugin_no_tf_used}
 	\caption{Profiling chart with the activated but not actively used TensorFlow Plugin for CPU.} \label{scenario::profiling_TF}
 \end{figure}
-Figure \ref{scenario::profiling_CPU} shows a profiling plot with an actively used TF plugin and weapon generator in the game. The TF plugin in this scenario was just using the CPU for computation. 
+Figure \ref{scenario::profiling_CPU} shows a profiling plot with an actively used TF plugin and weapon generator in the game. The TF plugin in this scenario was using the CPU for computation. 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/tf_cpu}
 	\caption{Profiling chart with the actively used TensorFlow Plugin for CPU.} \label{scenario::profiling_CPU}
 \end{figure}
-Figure \ref{scenario::profiling_GPU} shows a profiling plot with an actively used TF plugin and weapon generator in the game. The TF plugin in this scenario was just using the GPU for computation.
+Figure \ref{scenario::profiling_GPU} shows a profiling plot with an actively used TF plugin and weapon generator in the game. The TF plugin in this scenario was using the GPU for computation.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/Profiling/tf_gpu}
@@ -1393,8 +1393,8 @@ Figure \ref{scenario::profiling_GPU} shows a profiling plot with an actively use
 \end{figure}
 
 \subsection{Conclusion}
-The profiling charts shows that there is a performance loss of about 4ms in the CPU render thread when using the TF plugin actively in the game. Moreover, it seems that the CPU variant of the plugin works better than the GPU variant in this case. This might be because of the fact that the TF plugin uses CPU multi threading for the setup, training and input processing tasks whereas the GPU variant interrupts the GPU from time to time because it needs to obtain the calculated tensors from TF - but that is just an assumption. Nevertheless, it is to take note that this profiling charts reflect only this specific use case and could have other performances with another use cases. \\
-However, this shows that it is not necessary that someone trains the model in advance and loads a trained model on the first start. This would be only necessary if the training would include a high number of training epochs and would keep the player off from using the mechanic. This is not the case in this mechanic and therefore not necessary.
+The profiling charts show that there is a performance loss of about 4ms in the CPU render thread when using the TF plugin actively in the game. Moreover, it seems that the CPU variant of the plugin works better than the GPU variant in this case. This advantage might be because the TF plugin uses CPU multi-threading for the setup, training, and input processing tasks whereas the GPU variant interrupts the GPU from time to time because it needs to obtain the calculated tensors from TF - but that is just an assumption. Nevertheless, it is to take note that this profiling charts reflect only this specific use case and could have other performances with another use cases. \\
+However, this shows that it is not necessary that someone train the model in advance and loads a trained model on the first start. This procedure would be only necessary if the training would include a high number of training epochs and would keep the player off from using the mechanic. That is not the case in this mechanic and therefore not necessary.
 
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
