@@ -6,3 +6,5 @@ Summerville et al. initially introduced the concept of using PCGML for, e.g., le
 There are two main projects in this repository:
 - The master thesis, written in LaTeX
 - A prototype game which uses Procedural Content Generation via Machine Learning (PCGML) as a game mechanic
+
+# TODO: provide getting started tutorial
