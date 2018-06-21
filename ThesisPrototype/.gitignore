@@ -78,6 +78,3 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
-
-#dont delete plugin thirdparty includes!
-!Plugins/*/ThirdParty/*
