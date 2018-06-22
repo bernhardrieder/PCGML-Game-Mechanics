@@ -1,4 +1,9 @@
-
+trained_vae/
+vae/
+tmp/
+logs/
+VAE_parameter_test/
+vae_model/
 weapon_data_model/
 
 # Byte-compiled / optimized / DLL files
