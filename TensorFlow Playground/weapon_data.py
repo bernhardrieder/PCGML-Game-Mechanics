@@ -9,8 +9,8 @@ import csv
 
 from tensorflow.python.framework import random_seed
 
-DEFAULT_TRAINING_DATA = "./training_data.csv"
-DEFAULT_TEST_DATA = "./test_data.csv"
+DEFAULT_TRAINING_DATA = "training_data.csv"
+DEFAULT_TEST_DATA = "test_data.csv"
 #define constants for data processing
 CATEGORICAL_PARAMS  = ['type', 'firemode'] #exclude ammo because I'm not interested in decoding its values
 #this numerical params are ordered by priority to omit less important ones in 'get_data()'
