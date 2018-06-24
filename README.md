@@ -1,11 +1,11 @@
 # Using Procedural Content Generation via Machine Learning as a Game Mechanic
 This repository is all about my master thesis addressing the open problem of "Using Procedural Content Generation via Machine Learning as a Game Mechanic," and is written for the study program "Game Engineering and Simulation Technologies" at the University of Applied Sciences Technikum Wien, Vienna, Austria.
-Summerville et al. initially introduced the concept of using PCGML for, e.g., level generation and also other application. One leading open issue stated in the paper about PCGML is the use of PCGMl as a game mechanic which is addressed by this thesis.
+Summerville et al. initially introduced the concept of using procedural content generation via machine learning for, e.g., level generation and also other application. One leading open issue stated in the paper about procedural content generation via machine learning is the use of it as a game mechanic which is addressed by this thesis.
 
 ## Repository Breakdown
 There are two main projects in this repository:
 - The master thesis, written in LaTeX.
-- A prototype game scenario which uses Procedural Content Generation via Machine Learning (PCGML) as a game mechanic. The prototype folder contains the actual Unreal Engine 4 project and a test environment in which I tested the Python scripts before using them in the engine.
+- A prototype game scenario which uses procedural content generation vie machine learning as a game mechanic. The prototype folder contains the actual Unreal Engine 4 project and a test environment in which I tested the Python scripts before using them in the engine.
 
 ## Playable Prototype
 Unfortunately, it is not possible to package the current version of the prototype due to a packaging error in the Unreal Engine Python plugin fork. Therefore, to test the prototype you need to follow the next chapter.
