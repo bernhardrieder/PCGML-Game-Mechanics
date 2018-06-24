@@ -15,12 +15,12 @@ DEFAULT_TEST_DATA = "test_data.csv"
 
 #define constants for data processing, not listed params are omitted from the input file
 CATEGORICAL_PARAMS  = ['type', 'firemode']
-NUMERICAL_PARAMS = ['damages_first', 'damages_last', 'dmg_distances_last', 'rof', 'magsize', 'reloadempty', 'shotspershell', 'hiprecoilright',
-                    'hiprecoilup', 'dmg_distances_first', 'initialspeed', 'hiprecoildec', 'hipstandbasespreaddec', 'hipstandbasespreadinc' ]
+NUMERICAL_PARAMS = ['damages_first', 'damages_last', 'distances_last', 'rof', 'magsize', 'reloadempty', 'shotspershell', 'hiprecoilright',
+                    'hiprecoilup', 'distances_first', 'initialspeed', 'hiprecoildec', 'hipstandbasespreaddec', 'hipstandbasespreadinc' ]
 
 #additionally define the cagegories for the encoding nad decoding
-WEAPON_TYPES = ['Shotgun', 'Pistol', 'Rifle', 'Submachine Gun', 'Sniper Rifle', 'Light Machine Gun']
-WEAPON_FIREMODES = ['Automatic', 'Semi-Automatic', 'Single-Action']
+WEAPON_TYPES = ['Shotgun', 'Pistol', 'Rifle', 'SMG', 'Sniper', 'MG']
+WEAPON_FIREMODES = ['Automatic', 'Semi', 'Single']
 #create dict so we can iterate them
 CATEGORICAL_PARAMS_DEFINES_DICT = {'type':WEAPON_TYPES, 'firemode':WEAPON_FIREMODES}
 
