@@ -1,4 +1,5 @@
 Content/Scripts/__pycache__/
+Content/Scripts/trained_vae/ 
 
 #visual studio temp
 enc_temp_folder/*
