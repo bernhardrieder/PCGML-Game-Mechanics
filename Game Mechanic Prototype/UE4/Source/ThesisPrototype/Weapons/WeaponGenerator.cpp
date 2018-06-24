@@ -220,36 +220,40 @@ EWeaponType AWeaponGenerator::determineWeaponType(const FWeaponGeneratorAPIJsonD
 	float winnerSecondRound = FMath::Max3(winnerFirstRound, typeSmg, typeShotgun);
 	float winner = FMath::Max(winnerSecondRound, typeMg);
 
-	//just set it to rifle as default
-	EWeaponType winnerType = EWeaponType::Rifle;
 
-	float tolerance = 0.01f;
-	if (FMath::IsNearlyEqual(typePistol, winner, tolerance))
+	TArray<EWeaponType> winnerTypes;
+	if (FMath::IsNearlyEqual(typePistol, winner, weaponTypeSelectionTolerance))
 	{
-		winnerType = EWeaponType::Pistol;
+		winnerTypes.Add(EWeaponType::Pistol);
 	}
-	else if (FMath::IsNearlyEqual(typeSniper, winner, tolerance))
+	if (FMath::IsNearlyEqual(typeSniper, winner, weaponTypeSelectionTolerance))
 	{
-		winnerType = EWeaponType::SniperRifle;
+		winnerTypes.Add(EWeaponType::SniperRifle);
 	}
-	else if(FMath::IsNearlyEqual(typeRifle, winner, tolerance))
+	if(FMath::IsNearlyEqual(typeRifle, winner, weaponTypeSelectionTolerance))
 	{
-		winnerType = EWeaponType::Rifle;
+		winnerTypes.Add(EWeaponType::Rifle);
 	}
-	else if (FMath::IsNearlyEqual(typeSmg, winner, tolerance))
+	if (FMath::IsNearlyEqual(typeSmg, winner, weaponTypeSelectionTolerance))
 	{
-		winnerType = EWeaponType::SubMachineGun;
+		winnerTypes.Add(EWeaponType::SubMachineGun);
 	}
-	else if (FMath::IsNearlyEqual(typeShotgun, winner, tolerance))
+	if (FMath::IsNearlyEqual(typeShotgun, winner, weaponTypeSelectionTolerance))
 	{
-		winnerType = EWeaponType::Shotgun;
+		winnerTypes.Add(EWeaponType::Shotgun);
 	} 
-	else if (FMath::IsNearlyEqual(typeMg, winner, tolerance))
+	if (FMath::IsNearlyEqual(typeMg, winner, weaponTypeSelectionTolerance))
 	{
-		winnerType = EWeaponType::HeavyMachineGun;
+		winnerTypes.Add(EWeaponType::HeavyMachineGun);
 	}
 
-	return winnerType;
+	if(winnerTypes.Num() > 0)
+	{
+		randomNumberGenerator.GenerateNewSeed();
+		return winnerTypes[randomNumberGenerator.RandRange(0, winnerTypes.Num() - 1)];
+	}
+
+	return EWeaponType::Rifle;
 }
 
 EFireMode AWeaponGenerator::determineWeaponFireMode(const FWeaponGeneratorAPIJsonData& JsonData)
@@ -260,23 +264,27 @@ EFireMode AWeaponGenerator::determineWeaponFireMode(const FWeaponGeneratorAPIJso
 
 	float winner = FMath::Max3(fireModeAutomatic, fireModeSemi, fireModeSingle);
 
-	//just set it to automatic as default
-	EFireMode winnerFireMode = EFireMode::Automatic;
-	float tolerance = 0.01f;
-	if (FMath::IsNearlyEqual(fireModeAutomatic, winner, tolerance))
+	TArray<EFireMode> winnerFireModes;
+	if (FMath::IsNearlyEqual(fireModeAutomatic, winner, weaponFireModeSelectionTolerance))
 	{
-		winnerFireMode = EFireMode::Automatic;
+		winnerFireModes.Add(EFireMode::Automatic);
 	}
-	else if (FMath::IsNearlyEqual(fireModeSemi, winner, tolerance))
+	if (FMath::IsNearlyEqual(fireModeSemi, winner, weaponFireModeSelectionTolerance))
 	{
-		winnerFireMode = EFireMode::SemiAutomatic;
+		winnerFireModes.Add(EFireMode::SemiAutomatic);
 	}
-	else if (FMath::IsNearlyEqual(fireModeSingle, winner, tolerance))
+	if (FMath::IsNearlyEqual(fireModeSingle, winner, weaponFireModeSelectionTolerance))
 	{
-		winnerFireMode = EFireMode::SingleFire;
+		winnerFireModes.Add(EFireMode::SingleFire);
 	}
 
-	return winnerFireMode;
+	if (winnerFireModes.Num() > 0)
+	{
+		randomNumberGenerator.GenerateNewSeed();
+		return winnerFireModes[randomNumberGenerator.RandRange(0, winnerFireModes.Num() - 1)];
+	}
+
+	return EFireMode::Automatic;;
 }
 
 void AWeaponGenerator::applySomeModifications(AShooterWeapon* Weapon, FVector2D& MaxDamageWithDistance, FVector2D& MinDamageWithDistance, FVector2D& RecoilIncreasePerShot, float& RecoilDecrease, 

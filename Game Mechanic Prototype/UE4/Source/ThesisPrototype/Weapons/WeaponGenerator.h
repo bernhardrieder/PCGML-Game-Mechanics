@@ -134,6 +134,14 @@ class THESISPROTOTYPE_API AWeaponGenerator : public AActor
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")
 	float offsetPerMinuteUsed;
 
+	//according to the highest found value among the types, how big should be the tolerance to include others and select a random one?
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")
+	float weaponTypeSelectionTolerance = 0.1f;
+
+	//according to the highest found value among the types, how big should be the tolerance to include others and select a random one?
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")
+	float weaponFireModeSelectionTolerance = 0.1f;
+
 public:
 	AWeaponGenerator();
 
