@@ -78,8 +78,7 @@ class DataSet:
 
         self._num_examples, self._num_features = self._data.shape
 
-        if self._show_debug:
-            print("Found %i features with %i values in data source %s! \n" %(self._num_features, self._num_examples, data_source))
+        self.__print_debug("Found %i features with %i values in data source %s! \n" %(self._num_features, self._num_examples, data_source))
 
         self._epochs_completed = 0
         self._index_in_epoch = 0
@@ -116,7 +115,7 @@ class DataSet:
         self._data = self.data[permumation]
 
     def next_batch(self, batch_size, shuffle=True):
-        '''Return the next 'batch_size' examples from this data set. Automactically increases the
+        '''Returns the next 'batch_size' examples from this data set. Automactically increases the
             current position in the dataset so that batches aren't the same at next function call.
 
         Args:
@@ -129,39 +128,37 @@ class DataSet:
 
         start = self._index_in_epoch;
 
-        # Shuffle for the first epoch
+        #shuffle for the first epoch
         if self._epochs_completed == 0 and start == 0 and shuffle:
             self.__shuffle_data()
 
-        # Go to the next epoch
+        #go to the next epoch
         if start + batch_size > self._num_examples:
-            # Finished epoch
+            #finished epoch
             self._epochs_completed += 1
-            if self._show_debug:
-                print("WeaponDataSet completed an epoch! Epoch count = %i" %self._epochs_completed )
+            self.__print_debug("WeaponDataSet completed an epoch! Epoch count = %i" %self._epochs_completed )
 
-            # Get the rest examples in this epoch
+            #get the rest examples in this epoch
             rest_num_examples = self._num_examples - start
             data_rest_part = self._data[start:self._num_examples]
 
-            # Shuffle the data
+            #shuffle the data
             if shuffle:
                 self.__shuffle_data()
 
-            # Start next epoch
+            #start next epoch
             start = 0
             self._index_in_epoch = batch_size - rest_num_examples
-            if self._show_debug:
-                print("Current position in dataset after next_batch = %i" %self._index_in_epoch)
+            self.__print_debug("Current position in dataset after next_batch = %i" %self._index_in_epoch)
             end = self._index_in_epoch
             data_new_part = self._data[start:end]
 
+            #sum the rest of the old epoch data and the new epoch data
             return np.concatenate((data_rest_part, data_new_part), axis = 0)
 
         else:
             self._index_in_epoch += batch_size
-            if self._show_debug:
-                print("Current position in dataset after next_batch = %i" %self._index_in_epoch)
+            self.__print_debug("Current position in dataset after next_batch = %i" %self._index_in_epoch)
             end = self._index_in_epoch
             return self._data[start:end]
 
@@ -218,8 +215,7 @@ class DataSet:
         self._data = self.__standardize_columns(self._data_original)
 
         self._num_examples = self._data.shape[0]
-        if self._show_debug:
-            print("Added new weapon/s! New number of examples in dataset = %i" %self._num_examples)
+        self.__print_debug("Added new weapon/s! New number of examples in dataset = %i" %self._num_examples)
 
     def encode_features_dict(self, features):
         '''Encodes a features dict which represents the training data or any other dataset
@@ -253,13 +249,13 @@ class DataSet:
         inputs = tf.feature_column.input_layer(features, columns, cols_to_vars=cols_to_vars_dict, trainable = False)
 
         if self._show_debug:
-            print("Feature columns to tensor variables dictionary:")
+            self.__print_debug("Feature columns to tensor variables dictionary:")
             debug_printDict(cols_to_vars_dict)
-            print()
+            self.__print_debug("")
 
-            print("Generated input with feature columns:")
-            print(inputs)
-            print()
+            self.__print_debug("Generated input with feature columns:")
+            self.__print_debug(inputs)
+            self.__print_debug("")
 
         var_init = tf.global_variables_initializer()
         table_init = tf.tables_initializer() #needed for the feature columns
@@ -404,3 +400,12 @@ class DataSet:
                     result[h].append(row[h])
 
         return result
+
+    def __print_debug(self, message):
+        '''Prints the message to the console if debugging is activated.
+
+        Args:
+            message (str): The debug message.
+        '''
+        if self._show_debug:
+            print(message)
