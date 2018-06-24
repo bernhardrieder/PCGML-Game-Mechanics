@@ -32,13 +32,17 @@ FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D MaxDamageWith
 
 	firemode_Automatic = zero;
 	firemode_Semi = zero;
+	firemode_Single = zero;
 	switch(FireMode)
 	{
-		case EFireMode::SingleFire:
+		case EFireMode::Automatic:
 			firemode_Automatic = one;
 			break;
 		case EFireMode::SemiAutomatic:
 			firemode_Semi = one;
+			break;
+		case EFireMode::SingleFire:
+			firemode_Single = one;
 			break;
 	}
 
@@ -47,6 +51,7 @@ FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D MaxDamageWith
 	type_Shotgun = zero;
 	type_Sniper = zero;
 	type_SMG = zero;
+	type_MG = zero;
 
 	switch(WeaponType)
 	{
@@ -65,6 +70,9 @@ FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D MaxDamageWith
 		case EWeaponType::SniperRifle:
 			type_Sniper = one;
 			break;
+		case EWeaponType::HeavyMachineGun:
+			type_MG = one;
+			break;
 	}
 	success = "hopefully :P";
 }
@@ -72,7 +80,6 @@ FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D MaxDamageWith
 AWeaponGenerator::AWeaponGenerator()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	minCategoricalDataThreshold = 0.5;
 
 	randomModificationStartRange = FVector2D(0.8f, 1.2f);
 	offsetPerKill = 0.05f;
@@ -188,7 +195,7 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 	
 	int32 magSize = FCString::Atoi(*JsonData.magsize);
 	magSize *= magSize < 0 ? -1 : 1;
-	weapon->SetBulletsPerMagazine(magSize);
+	weapon->SetBulletsPerMagazine(FMath::Max(1, magSize));
 	
 	weapon->SetReloadTimeEmptyMagazine(FMath::Max(0.f, FCString::Atof(*JsonData.reloadempty)));
 	weapon->SetBulletsInOneShot(FMath::Max(1, FCString::Atoi(*JsonData.shotspershell)));
@@ -207,9 +214,11 @@ EWeaponType AWeaponGenerator::determineWeaponType(const FWeaponGeneratorAPIJsonD
 	float typeRifle = FCString::Atof(*JsonData.type_Rifle);
 	float typeSmg = FCString::Atof(*JsonData.type_SMG);
 	float typeShotgun = FCString::Atof(*JsonData.type_Shotgun);
+	float typeMg = FCString::Atof(*JsonData.type_MG);
 
 	float winnerFirstRound = FMath::Max3(typePistol, typeSniper, typeRifle);
-	float winner = FMath::Max3(winnerFirstRound, typeSmg, typeShotgun);
+	float winnerSecondRound = FMath::Max3(winnerFirstRound, typeSmg, typeShotgun);
+	float winner = FMath::Max(winnerSecondRound, typeMg);
 
 	//just set it to rifle as default
 	EWeaponType winnerType = EWeaponType::Rifle;
@@ -234,24 +243,22 @@ EWeaponType AWeaponGenerator::determineWeaponType(const FWeaponGeneratorAPIJsonD
 	else if (FMath::IsNearlyEqual(typeShotgun, winner, tolerance))
 	{
 		winnerType = EWeaponType::Shotgun;
-	}
-
-	EWeaponType type = winnerType;
-	if(winner <= minCategoricalDataThreshold)
+	} 
+	else if (FMath::IsNearlyEqual(typeMg, winner, tolerance))
 	{
-		randomNumberGenerator.GenerateNewSeed();
-		type = randomNumberGenerator.FRandRange(0.0f, 100.0f) >= 50.f ? winnerType : EWeaponType::HeavyMachineGun;
+		winnerType = EWeaponType::HeavyMachineGun;
 	}
 
-	return type;
+	return winnerType;
 }
 
 EFireMode AWeaponGenerator::determineWeaponFireMode(const FWeaponGeneratorAPIJsonData& JsonData)
 {
 	float fireModeAutomatic = FCString::Atof(*JsonData.firemode_Automatic);
 	float fireModeSemi = FCString::Atof(*JsonData.firemode_Semi);
+	float fireModeSingle = FCString::Atof(*JsonData.firemode_Single);
 
-	float winner = FMath::Max(fireModeAutomatic, fireModeSemi);
+	float winner = FMath::Max3(fireModeAutomatic, fireModeSemi, fireModeSingle);
 
 	//just set it to automatic as default
 	EFireMode winnerFireMode = EFireMode::Automatic;
@@ -264,15 +271,12 @@ EFireMode AWeaponGenerator::determineWeaponFireMode(const FWeaponGeneratorAPIJso
 	{
 		winnerFireMode = EFireMode::SemiAutomatic;
 	}
-
-	EFireMode firemode = winnerFireMode;
-	if (winner <= minCategoricalDataThreshold)
+	else if (FMath::IsNearlyEqual(fireModeSingle, winner, tolerance))
 	{
-		randomNumberGenerator.GenerateNewSeed();
-		firemode = randomNumberGenerator.FRandRange(0.0f, 100.0f) >= 50.f ? winnerFireMode : EFireMode::SingleFire;
+		winnerFireMode = EFireMode::SingleFire;
 	}
 
-	return firemode;
+	return winnerFireMode;
 }
 
 void AWeaponGenerator::applySomeModifications(AShooterWeapon* Weapon, FVector2D& MaxDamageWithDistance, FVector2D& MinDamageWithDistance, FVector2D& RecoilIncreasePerShot, float& RecoilDecrease, 

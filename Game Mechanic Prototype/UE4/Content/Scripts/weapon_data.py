@@ -6,66 +6,32 @@ from __future__ import print_function
 import numpy as np
 import tensorflow as tf
 import csv
-import unreal_engine as ue
+import operator
 
 from tensorflow.python.framework import random_seed
 
-DEFAULT_TRAINING_DATA = ue.get_content_dir() + "/Scripts/training_data.csv"
-DEFAULT_TEST_DATA = ue.get_content_dir() + "/Scripts/test_data.csv"
-#define constants for data processing
-CATEGORICAL_PARAMS  = ['type', 'firemode'] #exclude ammo because I'm not interested in decoding its values
-#this numerical params are ordered by priority to omit less important ones in 'get_data()'
+DEFAULT_TRAINING_DATA = "training_data.csv"
+DEFAULT_TEST_DATA = "test_data.csv"
+
+#define constants for data processing, not listed params are omitted from the input file
+CATEGORICAL_PARAMS  = ['type', 'firemode']
 NUMERICAL_PARAMS = ['damages_first', 'damages_last', 'distances_last', 'rof', 'magsize', 'reloadempty', 'shotspershell', 'hiprecoilright',
-                    'hiprecoilup', 'distances_first', 'initialspeed', 'hiprecoildec', 'hipstandbasespreaddec', 'hipstandbasespreadinc']
+                    'hiprecoilup', 'distances_first', 'initialspeed', 'hiprecoildec', 'hipstandbasespreaddec', 'hipstandbasespreadinc' ]
+
+#additionally define the cagegories for the encoding nad decoding
 WEAPON_TYPES = ['Shotgun', 'Pistol', 'Rifle', 'SMG', 'Sniper', 'MG']
 WEAPON_FIREMODES = ['Automatic', 'Semi', 'Single']
-NUM_OF_AMMO_TYPES = 31
-EMBEDDED_AMMO_FEATURE_DIMENSION = 1
+#create dict so we can iterate them
+CATEGORICAL_PARAMS_DEFINES_DICT = {'type':WEAPON_TYPES, 'firemode':WEAPON_FIREMODES}
 
 
 #quick'n'dirty convenience wrapper
-def get_data(num_of_categorical_param, num_of_numerical_param, ammo_feature_column_dimension=EMBEDDED_AMMO_FEATURE_DIMENSION, seed=19071991, debug=False):
-    include_ammo = False
-    if num_of_categorical_param > len(CATEGORICAL_PARAMS):
-        include_ammo = True
-        num_of_categorical_param = len(CATEGORICAL_PARAMS)
-    categorical = CATEGORICAL_PARAMS[0:num_of_categorical_param]
+def get_data(training_data_source=DEFAULT_TRAINING_DATA, test_data_source=DEFAULT_TEST_DATA, seed=19071991, debug=False):
 
-    if num_of_numerical_param > len(NUMERICAL_PARAMS):
-        num_of_numerical_param = len(NUMERICAL_PARAMS)
-    numerical = NUMERICAL_PARAMS[0:num_of_numerical_param]
-
-    if ammo_feature_column_dimension == 0:
-        ammo_feature_column_dimension = 1
-
-    training_data = DataSet(categorical_params=categorical, include_ammo=include_ammo, numerical_params=numerical,
-                            ammo_feature_column_dimension=ammo_feature_column_dimension, seed=seed,
-                            data_source=DEFAULT_TRAINING_DATA, show_debug=debug)
-    test_data = DataSet(categorical_params=categorical, include_ammo=include_ammo, numerical_params=numerical,
-                        ammo_feature_column_dimension=ammo_feature_column_dimension, seed=seed,
-                        data_source=DEFAULT_TEST_DATA, show_debug=debug)
-
-    if debug:
-        print("Using %i categorical data:" %(len(categorical) if not include_ammo else len(categorical)+1 ))
-        [print("\t"+x) for x in categorical]
-        if include_ammo:
-            print("\tammo")
-
-        print("Using %i numerical data:" %len(numerical))
-        [print("\t"+x) for x in numerical]
-
-        param_sum=len(numerical)+len(categorical)
-        if 'type' in categorical:
-            param_sum += len(WEAPON_TYPES)-1
-        if 'firemode' in categorical:
-            param_sum += len(WEAPON_FIREMODES)-1
-        if include_ammo:
-            param_sum += ammo_feature_column_dimension
-        print("That will sum up to %i parameters!" %param_sum)
-
+    training_data = DataSet(data_source=training_data_source, seed=seed, show_debug=debug)
+    test_data = DataSet(data_source=test_data_source, seed=seed, show_debug=debug)
 
     return training_data, test_data
-
 
 def debug_printDict(dictionary):
     for key, value in dictionary.items():
@@ -74,26 +40,25 @@ def debug_printDict(dictionary):
 #based on https://github.com/tensorflow/tensorflow/blob/r1.8/tensorflow/contrib/learn/python/learn/datasets/mnist.py
 class DataSet:
     def __init__(self,
-                 categorical_params,
-                 include_ammo,
-                 numerical_params,
-                 ammo_feature_column_dimension,
                  data_source,
                  seed=None,
                  show_debug=False):
+
         self._show_debug = show_debug
         seed1, seed2 = random_seed.get_seed(seed)
         np.random.seed(seed1 if seed is None else seed2)
 
-        self._categorical_params = categorical_params
-        self._include_ammo = include_ammo
-        self._numerical_params = numerical_params
-        self._ammo_feature_column_dimension = ammo_feature_column_dimension
+        #set the parameters
+        self._categorical_params = CATEGORICAL_PARAMS
+        self._numerical_params = NUMERICAL_PARAMS
 
+        #read the data source and extract all the defined features
         features = self.__getCsvAsDict(data_source)
+
+        #now encode and standardize those features
         self._data, self._feature_cols_to_vars_dict = self.__encodeFeatures(features)
 
-        self._num_examples, self._num_features = self.data.shape
+        self._num_examples, self._num_features = self._data.shape
 
         if self._show_debug:
             print("Found %i features with %i values in data source %s! \n" %(self._num_features, self._num_examples, data_source))
@@ -112,10 +77,6 @@ class DataSet:
     @property
     def num_examples(self):
         return self._num_examples
-
-    @property
-    def epochs_completed(self):
-        return self._epochs_completed
 
     @property
     def standardized_max_values(self):
@@ -186,7 +147,7 @@ class DataSet:
             '''
             if key[0] in self._numerical_params:
                 result[key[0]] = str(unstandardized_tensor[idx])
-
+                idx += 1
                 '''
                 e.g., key = _IndicatorColumn(categorical_column=_VocabularyListCategoricalColumn(
                             key='firemode', vocabulary_list=('Automatic', 'Semi-Automatic',
@@ -198,12 +159,11 @@ class DataSet:
                 and key[0][0][0] = 'Automatic'
                 '''
             elif (len(key[0]) > 0) and key[0][0] in self._categorical_params:
-                for i in range(0, len(key[0][1])-1):
+                for i in range(0, len(key[0][1])):
                     param = key[0][0] + "_" + key[0][1][i]
                     result[param] = str(unstandardized_tensor[idx])
                     idx += 1
 
-            idx += 1
         return result, unstandardized_tensor
 
     def add_new_weapons_and_restandardize_data(self, processed_tensors):
@@ -226,24 +186,11 @@ class DataSet:
         #create list where all feature columns come in
         columns = [tf.feature_column.numeric_column(param) for param in self._numerical_params]
 
-        if 'type' in self._categorical_params:
+        for category in self._categorical_params:
             #one hot encoding of categorical data
-            type_column = tf.feature_column.categorical_column_with_vocabulary_list(key='type', vocabulary_list=WEAPON_TYPES)
-            type_column = tf.feature_column.indicator_column(type_column) #could use embedding column to further reduce dimensions
-            columns.append(type_column)
-
-        if 'firemode' in self._categorical_params:
-            #one hot encoding of categorical data
-            firemode_colum = tf.feature_column.categorical_column_with_vocabulary_list(key='firemode', vocabulary_list=WEAPON_FIREMODES)
-            firemode_colum = tf.feature_column.indicator_column(firemode_colum) #could use embedding column to further reduce dimensions
-            columns.append(firemode_colum)
-
-        if self._include_ammo:
-            #create this bucket just because i don't wnat to define the vocabulary list with every ammo name
-            ammo_column = tf.feature_column.categorical_column_with_hash_bucket(key = "ammo", hash_bucket_size = NUM_OF_AMMO_TYPES)
-            #actual dimension reduction with an embedding column
-            ammo_column = tf.feature_column.embedding_column(ammo_column, dimension=self._ammo_feature_column_dimension)
-            columns.append(ammo_column)
+            cat_column = tf.feature_column.categorical_column_with_vocabulary_list(key=category, vocabulary_list=CATEGORICAL_PARAMS_DEFINES_DICT[category])
+            cat_column = tf.feature_column.indicator_column(cat_column) #could use embedding column to further reduce dimensions
+            columns.append(cat_column)
 
         #make sure you know whats going on inside
         cols_to_vars_dict = {}
@@ -282,28 +229,29 @@ class DataSet:
     def prepare_decoded_tensor_dict_for_encoding(self, decoded_tensor_dict):
         '''Cleans up the encoded features in the dictionary'''
 
-        type_check_count = 0
-        firemode_check_count = 0
         key_type = "type"
         key_firemode = "firemode"
+        #save all the values of the types and firemodes in a dict
+        type_values = {}
+        firemode_values = {}
+
+        #the final dict
         prepared_for_encoding = {}
 
         for key,value in decoded_tensor_dict.items():
             if key_type in key:
-                if float(value) >= 0.8:
-                    prepared_for_encoding[key_type] = [WEAPON_TYPES[type_check_count]]
-                type_check_count += 1
+                type_values[key] = value
             elif key_firemode in key:
-                if float(value) >= 0.8:
-                    prepared_for_encoding[key_firemode] = [WEAPON_FIREMODES[firemode_check_count]]
-                firemode_check_count += 1
+                firemode_values[key] = value
             else:
                 prepared_for_encoding[key] = [value]
 
-        if key_type not in prepared_for_encoding:
-            prepared_for_encoding[key_type] = [WEAPON_TYPES[type_check_count]]
-        if key_firemode not in prepared_for_encoding:
-            prepared_for_encoding[key_firemode] = [WEAPON_FIREMODES[firemode_check_count]]
+        #now check which of them has the highest value and use this as the definite type and firemode
+        type_with_max_value = max(type_values.items(), key=operator.itemgetter(1))[0]
+        prepared_for_encoding[key_type] = [type_with_max_value.replace(key_type, "")]
+
+        firemode_with_max_value = max(firemode_values.items(), key=operator.itemgetter(1))[0]
+        prepared_for_encoding[key_firemode] = [firemode_with_max_value.replace(key_firemode, "")]
 
         return prepared_for_encoding
 

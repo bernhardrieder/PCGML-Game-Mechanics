@@ -40,6 +40,9 @@ struct FWeaponGeneratorAPIJsonData
 	FString firemode_Semi;
 
 	UPROPERTY(BlueprintReadWrite)
+	FString firemode_Single;
+
+	UPROPERTY(BlueprintReadWrite)
 	FString hiprecoildec;
 
 	UPROPERTY(BlueprintReadWrite)
@@ -82,6 +85,9 @@ struct FWeaponGeneratorAPIJsonData
 	FString type_SMG;
 
 	UPROPERTY(BlueprintReadWrite)
+	FString type_MG;
+	
+	UPROPERTY(BlueprintReadWrite)
 	FString initialspeed;
 
 	UPROPERTY(BlueprintReadWrite)
@@ -115,10 +121,6 @@ class THESISPROTOTYPE_API AWeaponGenerator : public AActor
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
 	TSubclassOf<AShooterWeapon>	shotgunClass;
-
-	//this is the threshold which is checked for categorical data. if the value is above the threshold then it determines its firemode or type otherwise its randomized
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator")
-	float minCategoricalDataThreshold;
 
 	//distmantled weapon multiplier applied for generating a new weapon
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Generator|Dismanteld Random Modification")

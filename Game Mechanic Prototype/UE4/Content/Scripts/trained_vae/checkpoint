@@ -1,0 +1,2 @@
+model_checkpoint_path: "D:/_MT/Game Mechanic Prototype/UE4/Content/Scripts/trained_vae/model.ckpt"
+all_model_checkpoint_paths: "D:/_MT/Game Mechanic Prototype/UE4/Content/Scripts/trained_vae/model.ckpt"

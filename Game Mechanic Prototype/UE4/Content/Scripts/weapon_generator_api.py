@@ -1,3 +1,4 @@
+# Copyright 2018 - Bernhard Rieder - All Rights Reserved.
 from __future__ import absolute_import
 from __future__ import division
 
@@ -15,6 +16,9 @@ class WeaponGeneratorAPI(TFPluginAPI):
     def __init__(self):
         self._sess = None
         self._vae = None
+        self.trained_model_save_folder = ue.get_content_dir() + "Scripts/trained_vae/"
+        self.training_data_source = ue.get_content_dir() + "Scripts/training_data.csv"
+        self.test_data_source = ue.get_content_dir() + "Scripts/test_data.csv"
 
     def onSetup(self):
         self._random_seed = 19071991
@@ -22,8 +26,8 @@ class WeaponGeneratorAPI(TFPluginAPI):
         np.random.seed(seed)
 
         self.shouldStop = False
-
-        self._train_data, self._test_data = weapons.get_data(2, 14, 0, seed=self._random_seed)
+        print(self.training_data_source)
+        self._train_data, self._test_data = weapons.get_data(self.training_data_source, self.test_data_source, seed=self._random_seed)
 
         #set training parameter
         self._network_architecture = \
@@ -136,7 +140,7 @@ class WeaponGeneratorAPI(TFPluginAPI):
                 if self.shouldStop:
                     break;
             ue.log("Training Finised!")
-            self._trained_model_path = network.save_trained_model("./vae_model/")
+            self._trained_model_path = network.save_trained_model(self.trained_model_save_folder)
             self._trained_model_available = True
             self._is_training = False
         return {}

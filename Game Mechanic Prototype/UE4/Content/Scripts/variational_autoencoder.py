@@ -5,9 +5,8 @@ from __future__ import print_function
 
 import tensorflow as tf
 import weapon_data
-import unreal_engine as ue
 
-DEFAULT_MODEL_PATH = ue.get_content_dir() + "/Scripts/trained_vae/"
+DEFAULT_MODEL_PATH = "trained_vae/"
 
 def get_untrained(session, network_architecture, optimizer, transfer_fct, batch_size=1):
     '''Convenience wrapper to get an untrained Variational Autoencoder
