@@ -1,5 +1,5 @@
 # Using Procedural Content Generation via Machine Learning as a Game Mechanic
-This repository contains my master thesis which addresses the open problem of "Using Procedural Content Generation via Machine Learning as a Game Mechanic". It was written for the study program "Game Engineering and Simulation Technologies" at the University of Applied Sciences Technikum Wien in Vienna, Austria.
+This repository contains my master thesis which addresses the open problem of "Using Procedural Content Generation via Machine Learning as a Game Mechanic". It was written for the study program "Game Engineering and Simulation Technologies" at the [University of Applied Sciences Technikum Wien](https://www.technikum-wien.at/en/) in Vienna, Austria.
 
 ## Thesis Abstract
 Procedural Content Generation (PCG) is a powerful and essential topic in modern video games which helps developers to create a vast amount of game elements. Brand new and recent research now connected PCG with Machine Learning (ML) to enable new horizons of content generation. Nevertheless, the research showed that there is still much to do and left the problem of using PCG via ML (PCGML) as a game mechanic open for further research.
@@ -12,21 +12,21 @@ To conclude the thesis, a performance report was created which showed that the i
 
 ## Repository Breakdown
 There are two main projects in this repository:
-- The master thesis, written in LaTeX.
-- A prototype game scenario which uses procedural content generation vie machine learning as a game mechanic. The prototype folder contains the actual Unreal Engine 4 project and a test environment in which I tested the Python scripts before using them in the engine.
+- The [master thesis](../blob/master/Master%20Thesis%20LaTeX), written in LaTeX.
+- A [prototype game scenario](../blob/master/Game%20Mechanic%20Prototype/UE4) which uses procedural content generation vie machine learning as a game mechanic. The [prototype folder](../blob/master/Game%20Mechanic%20Prototype/) contains the actual [Unreal Engine 4](https://www.unrealengine.com) project and a test environment in which I tested the Python scripts before using them in the engine.
 
 ## Playable Prototype
-Unfortunately, it is not possible to package the current version of the prototype due to a packaging error in the Unreal Engine Python plugin fork. Therefore, to test the prototype you need to follow the next chapter.
+Unfortunately, it is not possible to package the current version of the prototype due to a packaging error in the [Unreal Engine Python](https://github.com/getnamo/UnrealEnginePython/releases/tag/1.5.0) plugin fork. Therefore, to test the prototype you need to follow the next chapter.
 
 # Getting Started with the Project
 ## Requirements
-- Unreal Engine 4.19.2
+- [Unreal Engine](https://www.unrealengine.com) 4.19.2
 
 ## How to Start and Play?
 - Clone the repository
-- Open the plugins folder of the project and extract the "Plugins-Binaries.7z" file. This file contains the TensorFlow Plugin from https://github.com/getnamo/tensorflow-ue4 with a tiny modification in the TensorFlowComponent enable multithreading during the input processing.
+- Open the plugins folder of the project and extract the "Plugins-Binaries.7z" file. This file contains the [TensorFlow Plugin](https://github.com/getnamo/tensorflow-ue4) with a tiny modification in the TensorFlowComponent enable multithreading during the input processing.
 - Launch the project and make sure you can activate the Python Console in "Window/Developer Tools/Python Console". This indicates that the Python plugin is enabled and works.
-- Check the Python console and wait until all TensorFlow dependencies are installed. For more information, check out https://github.com/getnamo/tensorflow-ue4#installation--setup. Basically, it takes a maximum of 5 minutes and then you should see the following message in your logs: ```Successfully installed absl-py-0.2.2 astor-0.6.2 bleach-1.5.0 gast-0.2.0 grpcio-1.12.1 html5lib-0.9999999 markdown-2.6.11 numpy-1.14.5 protobuf-3.6.0 six-1.11.0 tensorboard-1.8.0 tensorflow-1.8.0 termcolor-1.1.0 werkzeug-0.14.1```
+- Check the Python console and wait until all TensorFlow dependencies are installed. For more information, check out this [GitHub page](https://github.com/getnamo/tensorflow-ue4#installation--setup). Basically, it takes a maximum of 5 minutes and then you should see the following message in your logs: ```Successfully installed absl-py-0.2.2 astor-0.6.2 bleach-1.5.0 gast-0.2.0 grpcio-1.12.1 html5lib-0.9999999 markdown-2.6.11 numpy-1.14.5 protobuf-3.6.0 six-1.11.0 tensorboard-1.8.0 tensorflow-1.8.0 termcolor-1.1.0 werkzeug-0.14.1```
 - You should be able to run the game now. To make sure everything works, open the weapon generator blueprint located in "Content/Blueprints/BP_TensorFlowWeaponGenerator". It should take a while to open, and no error message should appear in the logs. That means you are ready to go! 
 
 ## Known Issues
