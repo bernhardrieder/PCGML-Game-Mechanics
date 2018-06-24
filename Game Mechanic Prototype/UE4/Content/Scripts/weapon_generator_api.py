@@ -8,7 +8,6 @@ import tensorflow as tf
 import variational_autoencoder as vae
 import weapon_data as weapons
 from TFPluginAPI import TFPluginAPI
-import upythread as ut
 
 from tensorflow.python.framework import random_seed
 
@@ -26,7 +25,6 @@ class WeaponGeneratorAPI(TFPluginAPI):
         np.random.seed(seed)
 
         self.shouldStop = False
-        print(self.training_data_source)
         self._train_data, self._test_data = weapons.get_data(self.training_data_source, self.test_data_source, seed=self._random_seed)
 
         #set training parameter
@@ -68,7 +66,7 @@ class WeaponGeneratorAPI(TFPluginAPI):
             ue.log("ERROR: empty input!")
             return { 'success' : 'false'}
 
-        #clear the input data
+        #clear the input data because I'm not processing this key
         del jsonInput['success']
 
         generated_weapon = []
@@ -116,7 +114,7 @@ class WeaponGeneratorAPI(TFPluginAPI):
             num_samples = self._train_data.num_examples
             ue.log("Num of training samples = %i" %num_samples)
 
-            #is basically the same code from the VAE file
+            #is basically the code from the VAE file
             #training cycle
             for epoch in range(self._num_training_epochs):
                 avg_cost = 0.
@@ -152,6 +150,7 @@ class WeaponGeneratorAPI(TFPluginAPI):
     def __load_trained_model(self):
         if self._sess:
             self._sess.close()
+        #to prevent graph pollution
         tf.reset_default_graph()
 
         self._sess = tf.Session(graph=tf.get_default_graph())
