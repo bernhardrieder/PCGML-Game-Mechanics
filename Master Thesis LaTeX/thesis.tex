@@ -1062,7 +1062,7 @@ However, decoding from noise input is not the only advantage. Another advantage 
 %
 \clearpage
 \chapter{Prototype Development}
-This chapter addresses every step of the development process of the weapon generator game mechanic but does not cover UE specific game development topics. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiler plots for performance concerned readers. The ordering of all following chapters reflects more or less the actual workflow taken in the development. The prototype was implemented with Python version 3.6.4 and TF 1.8.0 in Jupyter Notebook and then integrated into UE4 4.19.2; the source code developed for the prototype is available on GitHub\footnote{\url{www.github.com/bernhardrieder/PCGML-Game-Mechanics}}. 
+This chapter addresses every step of the development process of the weapon generator game mechanic but does not cover UE4 specific game development topics. All previously mentioned considerations apply in this development. It shows the development from the beginning to the end and sums it up with additional profiling plots for performance concerned readers. The ordering of all following chapters reflects more or less the actual workflow taken in the development. The prototype was implemented with Python version 3.6.4 and TF 1.8.0 in Jupyter Notebook and then integrated into UE4 4.19.2; the source code developed for the prototype is available on GitHub\footnote{\url{www.github.com/bernhardrieder/PCGML-Game-Mechanics}}. 
 
 \section{Data Preprocessing} \label{dev::dataPreprocessing}
 The first step of the development is the gathering and preprocessing of the \ac{BF1} community weapon analytic raw data. All of the weapon data is accessible to everyone via the community website of \citep{symthic::bf1stats}. However, the community of \citename{symthic::bf1stats} kindly provides a database dump on request which was extracted with a script by a community administrator. This database dump contains every parameter of the weapons in a readable and manageable data.
@@ -1076,7 +1076,7 @@ The focus of the first iteration of the dump parameter extraction lies in the pr
 One of the most significant issues in the extracted data was the ammo which was listed as it would be a different one for some weapons even if it is the same. For this reason, a manual examination of all ammo types was necessary to unify the range of all ammo types. 
 
 \subsubsection{Weapon Type and Fire Modes}
-It turned out that the dump does not include the specific types and fire modes of the weapons. Hence, it was necessary to examine that from the different game communities \citep{symthic::bf1stats}, \citep{bf1::community1}, and \citep{bf1::community2}. This proceeding added the unified weapon types of pistols, rifles, sniper rifles, shotguns, light machine guns and sub-machine guns as well as the unified fire modes of single-action, semi-automatic and automatic. Some of the weapons in \ac{BF1} have more fire modes available which were further simplified by the highest available fire mode. For instance, if a weapon can shoot with semi-automatic and automatic, then automatic was chosen. Besides, the game specifies more fire modes than the ones used. For example, they are using bolt-action, pump-action, single-barrel fire, and lever action which were summarized as single-action weapons since they are using the same mechanic.Additionally, the weapons of BF1 have the possibility of double-action and double barrel fires which is a semi-automatic weapon in the dataset. Charts about the distribution of this two categories in the dataset are available in Appendix \ref{bf1::data::distributionCharts}. 
+It turned out that the dump does not include the specific types and fire modes of the weapons. Hence, it was necessary to examine that from the different game communities \citep{symthic::bf1stats}, \citep{bf1::community1}, and \citep{bf1::community2}. This proceeding added the unified weapon types of pistols, rifles, sniper rifles, shotguns, light machine guns and sub-machine guns as well as the unified fire modes of single-action, semi-automatic and automatic. Some of the weapons in \ac{BF1} have more fire modes available which were further simplified by the highest available fire mode. For instance, if a weapon can shoot with semi-automatic and automatic, then automatic was chosen. Besides, the game specifies more fire modes than the ones used. For example, they are using bolt-action, pump-action, single-barrel fire, and lever action which were summarized as single-action weapons since they are using the same mechanic. Additionally, the weapons of BF1 have the possibility of double-action and double barrel fires which is a semi-automatic weapon in the dataset. Charts about the distribution of this two categories in the dataset are available in Appendix \ref{bf1::data::distributionCharts}. 
 
 \subsubsection{Reload Times}
 Another problem caused the reload times of the weapons because \ac{BF1} uses some distinct reload mechanics for some weapons. In particular, the weapons of BF1 are from the WW1 time and weapons of this time do not always have the same magazines as used in modern weapons nowadays. Some of them do have special strip clip magazines instead of closed magazines which introduced  a particular reload mechanic. However, the community of \citep{symthic::bf1stats} provides an explanation to this reload mechanic which made a manual calculation and unification of the reload times for an empty magazine possible so that there is no need of a distinction for the prototype implementation.
@@ -1118,7 +1118,7 @@ This refinement led the final set of parameters to the parameters shown in table
 The next part of the data preprocessing is the encoding and feature scaling task so that the VAE can efficiently process and train the network. 
 
 \subsubsection{Encoding}
-The first part is to encode the two only categorical parameters in the dataset. On this account, TF offers encoding mechanisms which help to encode the fire modes and weapon type. The encoding is the same as demonstrated in chapter \ref{ML::dataPreprocessing} and encodes the two categorical parameters into just seven parameters because TF omits one column of each parameter. This characteristic is because TF assumes that if the prediction of all parameters has a value of zero, then it needs to be the omitted parameter. For example, if the VAE predicts the fire mode for single-action and semi-automatic with a value of zero, then the fire mode is automatic even it is not in the learned dataset. Therefore, the total number of features in the dataset after encoding is 21.
+The first part is to encode the two only categorical parameters in the dataset. On this account, TF offers encoding mechanisms which help to encode the fire modes and weapon type. The encoding procedure is the same as demonstrated in chapter \ref{ML::dataPreprocessing} and encodes the two categorical parameters into nine parameters. Therefore, the total number of features in the dataset after encoding is 23.
 
 \subsubsection{Feature Scaling}
 Now the last part is to normalize or standardize all features. In particular, this is a necessary procedure for this dataset because there are many different value ranges. For example, the rate of fire and muzzle velocity are large numbers whereas the values of the spread increase or decrease are minimal. If there is no normalization or standardization, then this would cause significant extra expenses.\\
@@ -1151,7 +1151,7 @@ class DataSet:
 \end{lstlisting}
 
 \section{\acl{VAE}}
-The implementation of the VAE was driven and inspired by an explanation of \citep{tutorial::vaeTF}. \citename{tutorial::vaeTF} used a high-level approach in his design which is similar to high-level ML APIs. These high-level APIs are easily modifiable and extensible which was the main reason why to follow the approach of \citename{tutorial::vaeTF}. An easy modification is necessary to test different network hyperparameters without significant changes in the code and thus to find the most suitable network parameters. In particular, chapter \ref{chapter::vae::network} explains the entire proceeding of the hyperparameters selection process. Now, the next chapters show some coder overviews of the VAE class, how the model accuracy was measured to obtain an adequately trained model, addresses the already mentioned the network parameter selection, shows two weapon generation examples and lists development issues.
+The implementation of the VAE was driven and inspired by an explanation of \citep{tutorial::vaeTF}. \citename{tutorial::vaeTF} used a high-level approach in his design which is similar to high-level ML APIs. These high-level APIs are easily modifiable and extensible which was the main reason why to follow the approach of \citename{tutorial::vaeTF}. An easy modification is necessary to test different network hyperparameters without significant changes in the code and thus to find the most suitable network parameters. In particular, chapter \ref{chapter::vae::network} explains the entire proceeding of the hyperparameters selection process. Now, the next chapters show an overview of the VAE class, how the model accuracy was measured to obtain an adequately trained model, addresses the already mentioned the network parameter selection, shows two weapon generation examples and lists development issues.
 
 \subsection{Code Overview}
 Listing \ref{pseudoCode::vae} shows a VAE code overview with most of the available and necessary functions for the generation task. The actual code contains some more functions which are not essential to explain. As already introduced in the weapon convenience class, this class also has some global convenience functions to obtain different stages of a VAE. \\
@@ -1250,33 +1250,35 @@ Another benchmark to determine the right amount of training epochs was to observ
 The reason why it is a different outcome every new training is because of initialization proceeding of the weights and biases. The initialization maps them on a random range which is near a normal distribution with zero mean and a standard deviation of one. Hence, the decision for the training epochs in the weapon generation was set to 70 epochs in the beginning and will increase with every newly added weapon to the dataset.
 
 \subsection{Random Input Generation Example} \label{vae::randomInputExample}
-Table \ref{vae::randomInputGeneration} shows a comparison of a training weapon and a generated weapon which was generated with random noise input to prove that the VAE can generate useful weapon data. One can see that the VAE has issues with predicting and generating the correct category for a weapon. This issue is still an unsolved problem but is easily solvable by checking the highest value of all categories. In this case, it is most likely a sniper rifle with semi-automatic fire mode.  Moreover, a random factor in the weapon generator can compensate for the missing fire mode and type. Please note that the listed parameters are the same parameters which are outputted by the VAE.
+Table \ref{vae::randomInputGeneration} shows a comparison of a training weapon and a generated weapon which was generated with random noise input to prove that the VAE can generate useful weapon data. One can see that the VAE has issues with predicting and generating the correct category for a weapon. This issue is still an unsolved problem but is easily solvable by checking the highest value of all categories. In this case, it is most likely a sniper rifle with semi-automatic fire mode. Please note that the listed parameters are the same parameters which are outputted by the VAE.
 \begin{table}[!ht]
 	\centering
-	\begin{tabular}{|l|p{3.5cm}|p{3.5cm}|}
+	\begin{tabular}{|l|p{3.6cm}|p{3.6cm}|}
 		\hline
 		\textbf{Output Parameter}       & \textbf{Training Weapon} & \textbf{Random Generated Weapon} \\ \hline\hline
-		damages\_first           & 26.5                 & 38.441                    \\ \hline
-		damages\_last            & 6.25                 & 26.098                    \\ \hline
-		dmg\_distances\_first    & 14.0                 & 11.519                    \\ \hline
-		dmg\_distances\_last     & 21.0                 & 52.747                    \\ \hline
-		firemode\_Automatic      & 0.0                  & 0.221                     \\ \hline
-		firemode\_Semi-Automatic & 0.0                  & 0.250                     \\ \hline
-		hiprecoildec             & 6.0                  & 4.699                     \\ \hline
-		hiprecoilright           & 1.2                  & 0.487                     \\ \hline
-		hiprecoilup              & 11.0                 & 1.960                     \\ \hline
-		hipstandbasespreaddec    & 4.5                  & 5.637                     \\ \hline
-		hipstandbasespreadinc    & 0.3                  & 0.256                     \\ \hline
-		initialspeed             & 333                  & 524.230                   \\ \hline
-		magsize                  & 2                    & 14.143                    \\ \hline
-		reloadempty              & 5.333                & 3.489                     \\ \hline
-		rof                      & 299                  & 259.618                   \\ \hline
-		shotspershell            & 12                   & 1.044                     \\ \hline
-		type\_Pistol             & 0.0                  & 0.098                     \\ \hline
-		type\_Rifle              & 0.0                  & 0.117                     \\ \hline
-		type\_Shotgun            & 1.0                  & 0.017                     \\ \hline
-		type\_Sniper Rifle       & 0.0                  & 0.117                     \\ \hline
-		type\_Submachine Gun     & 0.0                  & 0.033                     \\ \hline
+		damages\_first           & 26.5                 & 42.767                    \\ \hline
+		damages\_last            & 6.25                 & 30.294                    \\ \hline
+		distances\_first    & 14.0                 & 13.988                    \\ \hline
+		distances\_last     & 21.0                 & 60.002                    \\ \hline
+		firemode\_Automatic      & 0.0                  & 0.302                     \\ \hline
+		firemode\_Semi & 0.0                  & 0.333                     \\ \hline
+		firemode\_Single & 0.0                  & 0.234                     \\ \hline
+		hiprecoildec             & 6.0                  & 5.183                     \\ \hline
+		hiprecoilright           & 1.2                  & 0.554                     \\ \hline
+		hiprecoilup              & 11.0                 & 2.436                     \\ \hline
+		hipstandbasespreaddec    & 4.5                  & 6.511                     \\ \hline
+		hipstandbasespreadinc    & 0.3                  & 0.323                     \\ \hline
+		initialspeed             & 333                  & 559.643                   \\ \hline
+		magsize                  & 2                    & 20.258                    \\ \hline
+		reloadempty              & 5.333                & 3.702                     \\ \hline
+		rof                      & 299                  & 298.027                   \\ \hline
+		shotspershell            & 12                   & 1.527                     \\ \hline
+		type\_Pistol             & 0.0                  & 0.167                     \\ \hline
+		type\_Rifle              & 0.0                  & 0.189                     \\ \hline
+		type\_Shotgun            & 1.0                  & 0.067                     \\ \hline
+		type\_Sniper       & 0.0                  & 0.189                     \\ \hline
+		type\_SMG     & 0.0                  & 0.088                     \\ \hline
+		type\_MG     & 0.0                  & 0.095                     \\ \hline
 	\end{tabular}
 	\caption{Comparison of a training weapon and a generated weapon with random noise as input.}
 	\label{vae::randomInputGeneration}
@@ -1350,7 +1352,7 @@ As soon as the VAE generator API is ready and has sent the result back to the we
 
 \subsection{Parameter Modification and Adjustable Parameters}
 As already mentioned, the parameters of the dismantled weapon are modified before send to the generator API which includes some adjustable parameter. The parameters of weapons are either increased or decreased depending on whether it would help the player against the boss. For example, the damage is increased whereas reload time is decreased and so forth. Now, the change of parameters results according to a random change rate which can be offset with kills or using time. The starting range and the strength of the kills and time are adjustable in the weapon generator. \\
-Another parameter is the threshold which decides if a weapon is of a specific type or not. The problem tackled with this proceeding was mentioned in chapter \ref{figure::weaponGen::gen}. The VAE sometimes generates small numbers which are almost similar to each other for every categorical parameter and always omits one category. The solution to this problem is a threshold which decides if the weapon is from the available categories or not. If this is not the case, then the weapon type or fire mode is chosen randomly with a 50\% change. For example, if no category of the fire modes does not break the given threshold, then it is a random change to be either the highest of the two fire modes or single-fire. The same principle applies to the weapon types. 
+Other adjustable parameters are tolerance values which can add a random element to the weapon type and fire mode selection. The problem tackled with this proceeding was mentioned in chapter \ref{vae::randomInputExample}. The VAE sometimes generates small numbers which are almost similar to each other for every categorical parameter. The solution to this problem is first to obtain the highest value among the received values and then check which of the values lie in the specified tolerance range, based on the highest found value. Therefore, this tolerance causes a random selection among almost similar weapon types or fire modes.
 
 \subsection{\acl{TF} Plugin Changes}
 The default TF version of the plugin is TF version 1.6.0. Nonetheless, the prototype development used TF version 1.8.0. For this reason, the version of TF in the plugin changed to 1.8.0 which could be done without any issues since the plugin is not dependent on any TF specific variables.\\
