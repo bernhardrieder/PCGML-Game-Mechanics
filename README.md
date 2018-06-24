@@ -13,14 +13,14 @@ To conclude the thesis, a performance report was created which showed that the i
 ## Repository Breakdown
 There are two main projects in this repository:
 - The [master thesis](../master/Master%20Thesis%20LaTeX), written in LaTeX.
-- A [prototype game scenario](../master/Game%20Mechanic%20Prototype/UE4) which uses procedural content generation vie machine learning as a game mechanic. The [prototype folder](../master/Game%20Mechanic%20Prototype/) contains the actual [Unreal Engine 4](https://www.unrealengine.com) project and a test environment in which I tested the Python scripts before using them in the engine.
+- A prototype game scenario which uses procedural content generation vie machine learning as a game mechanic. The [prototype folder](../master/Game%20Mechanic%20Prototype/) contains the actual [Unreal Engine 4 project](../master/Game%20Mechanic%20Prototype/UE4) and a [test environment](../master/Game%20Mechanic%20Prototype/TensorFlow%20Playground) in which I tested the Python scripts before using them in the engine.
 
 ## Playable Prototype
 Unfortunately, it is not possible to package the current version of the prototype due to a packaging error in the [Unreal Engine Python](https://github.com/getnamo/UnrealEnginePython/releases/tag/1.5.0) plugin fork. Therefore, to test the prototype you need to follow the next chapter.
 
 # Getting Started with the Project
 ## Requirements
-- [Unreal Engine](https://www.unrealengine.com) 4.19.2
+- [Unreal Engine 4.19.2](https://www.unrealengine.com)
 
 ## How to Start and Play?
 - Clone the repository
