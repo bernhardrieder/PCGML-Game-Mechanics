@@ -1,6 +1,14 @@
 # Using Procedural Content Generation via Machine Learning as a Game Mechanic
-This repository is all about my master thesis addressing the open problem of "Using Procedural Content Generation via Machine Learning as a Game Mechanic," and is written for the study program "Game Engineering and Simulation Technologies" at the University of Applied Sciences Technikum Wien, Vienna, Austria.
-Summerville et al. initially introduced the concept of using procedural content generation via machine learning for, e.g., level generation and also other application. One leading open issue stated in the paper about procedural content generation via machine learning is the use of it as a game mechanic which is addressed by this thesis.
+This repository contains my master thesis which addresses the open problem of "Using Procedural Content Generation via Machine Learning as a Game Mechanic". It was written for the study program "Game Engineering and Simulation Technologies" at the University of Applied Sciences Technikum Wien in Vienna, Austria.
+
+## Thesis Abstract
+Procedural Content Generation (PCG) is a powerful and essential topic in modern video games which helps developers to create a vast amount of game elements. Brand new and recent research now connected PCG with Machine Learning (ML) to enable new horizons of content generation. Nevertheless, the research showed that there is still much to do and left the problem of using PCG via ML (PCGML) as a game mechanic open for further research.
+
+For this reason, this thesis dedicated itself to address this open problem with a theoretical and practical approach and furthermore provides developers with a guideline about the procedure of developing PCGML game mechanics. It first addressed fundamental theoretical issues which help to create awareness for PCGML in the first place. It then addressed possible PCGML game mechanics where one of them was implemented in a game prototype scenario. The entire development process for this prototype was documented so that developers can follow them step by step to implement their PCGML game mechanics.
+
+Now, the research showed that PCGML game mechanics are suitable for a broad range of games and are not limited to particular genres. 13 different ideas are described in the thesis and one particular idea called "Changing Weapons" was then implemented in a game prototype scenario. The game mechanics primary feature is a weapon generator which can generate new and similar weapons based on the weapons of a favorite first-person shooter game. In specific, the generator uses a with TensorFlow implemented variational autoencoder to learn the underlying and hidden structure of the provided weapon data and can generate useful weapon data. This generator was then integrated into Unreal Engine 4 to test and prove that a PCGML game mechanic can be used in a typical game engine and showed that this application is possible without any issues.
+
+To conclude the thesis, a performance report was created which showed that the implemented game mechanic does not cause significant performance losses. Thus, it is possible to use PCGML-based game mechanics in video games regularly. Therefore, with this proof-of-concept, a new game mechanic area for creating new player experience has opened for future games.
 
 ## Repository Breakdown
 There are two main projects in this repository:
@@ -16,8 +24,8 @@ Unfortunately, it is not possible to package the current version of the prototyp
 
 ## How to Start and Play?
 - Clone the repository
-- Download "tensorflow-ue4.19-v0.8.0-cpu.7z" from https://github.com/getnamo/tensorflow-ue4/releases and copy/replace the binaries and third party folders of the plugins into/with their respective folders. For example, the binaries folder of the UnrealEnginePython plugin in the .7z folder goes into "..\Game Mechanic Prototype\UE4\Plugins\UnrealEnginePython". This embeds python into your project and you don't need to install it separately.
-- Start the project and make sure you can activate the Python Console in "Window/Developer Tools/Python Console". This indicates that the Python plugin is enabled and works.
+- Open the plugins folder of the project and extract the "Plugins-Binaries.7z" file. This file contains the TensorFlow Plugin from https://github.com/getnamo/tensorflow-ue4 with a tiny modification in the TensorFlowComponent enable multithreading during the input processing.
+- Launch the project and make sure you can activate the Python Console in "Window/Developer Tools/Python Console". This indicates that the Python plugin is enabled and works.
 - Check the Python console and wait until all TensorFlow dependencies are installed. For more information, check out https://github.com/getnamo/tensorflow-ue4#installation--setup. Basically, it takes a maximum of 5 minutes and then you should see the following message in your logs: ```Successfully installed absl-py-0.2.2 astor-0.6.2 bleach-1.5.0 gast-0.2.0 grpcio-1.12.1 html5lib-0.9999999 markdown-2.6.11 numpy-1.14.5 protobuf-3.6.0 six-1.11.0 tensorboard-1.8.0 tensorflow-1.8.0 termcolor-1.1.0 werkzeug-0.14.1```
 - You should be able to run the game now. To make sure everything works, open the weapon generator blueprint located in "Content/Blueprints/BP_TensorFlowWeaponGenerator". It should take a while to open, and no error message should appear in the logs. That means you are ready to go! 
 
