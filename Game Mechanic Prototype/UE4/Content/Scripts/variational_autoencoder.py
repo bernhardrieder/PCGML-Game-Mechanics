@@ -330,6 +330,12 @@ class VariationalAutoencoder(object):
 
     #debug helper function to print debug messages
     def __print(self, message, indent=0):
+        '''Prints the message to the console if debugging is activated.
+
+        Args:
+            message (str): The debug message.
+            indent (int): The indent of the debug message. Indent = \t * indent times.
+        '''
         if self._print_debug:
             tabs=""
             for i in range(indent):
@@ -337,6 +343,7 @@ class VariationalAutoencoder(object):
             print(tabs+message)
 
     def __create_network(self):
+        '''Creates the whole VAE network and all its nodes.'''
         self.__print("Start creating VAE network ...", 1)
 
         #init all weights and biases used in the network
@@ -363,6 +370,16 @@ class VariationalAutoencoder(object):
 
 
     def __create_encoder_network(self, weights, biases):
+        '''Creates the whole encoder VAE network and all its nodes.
+
+        Args:
+            weights (dict): The weights of the encoder network.
+            biases (dict): The biases of the encoder network.
+
+        Returns:
+            TensorFlow node: The TF operation for calculating the z mean.
+            TensorFlow node: The TF operation for caluclating the z log sigma squared
+        '''
         self.__print("Start creating encoder network ...", 2)
 
         #create the hidden layer based on the network params
@@ -370,6 +387,8 @@ class VariationalAutoencoder(object):
 
         #parameters to map the gaussian distribution to our data distribution
         z_mean = tf.matmul(hidden_layer, weights['z_mean']) + biases['z_mean']
+        #use the log sigma square to force the network to train it for negative and postive numbers
+        #because if you would use the sigma squared it would always be positive
         z_log_sigma_sq = tf.matmul(hidden_layer, weights['z_ls2']) + biases['z_ls2']
 
         self.__print("Finished creating encoder network!", 2)
@@ -377,6 +396,11 @@ class VariationalAutoencoder(object):
         return (z_mean, z_log_sigma_sq)
 
     def __create_z_sampling_operation(self):
+        '''Creates latent space sampling operation nodes.
+
+        Returns:
+            TensorFlow node: The TF operation for calculating z.
+        '''
         self.__print("Start creating z (latent layer) sampling operation ...", 2)
 
         #get the latent space dimension
@@ -393,6 +417,15 @@ class VariationalAutoencoder(object):
         return z
 
     def __create_decoder_network(self, weights, biases):
+        '''Creates the whole decoder VAE network and all its nodes.
+
+        Args:
+            weights (dict): The weights of the decoder network.
+            biases (dict): The biases of the decoder network.
+
+        Returns:
+            TensorFlow node: The TF operation for calculating the input reconstruction.
+        '''
         self.__print("Start creating decoder/generator network ...", 2)
 
         #create the hidden layer based on the network params
@@ -406,6 +439,16 @@ class VariationalAutoencoder(object):
         return x_reconstructed
 
     def __create_hidden_layer(self, x, weights, biases):
+        '''Creates the hidden layer network and all its nodes.
+
+        Args:
+            x: The TF input node to the hidden layer network.
+            weights (dict): The weights of the hidden layer network.
+            biases (dict): The biases of the hidden layer network.
+
+        Returns:
+            TensorFlow node: The TF nodes of the hidden layer.
+        '''
         self.__print("Start creating hidden layer ...", 3)
 
         # First hidden layer
@@ -421,6 +464,11 @@ class VariationalAutoencoder(object):
         return hidden_layer_2 if self._has_2_hidden_layer else hidden_layer_1
 
     def __init_weights_and_biases(self):
+        '''Creates, initializes all weights and biases used in the network.
+
+        Returns:
+            dict: A dictionary with all the weights and biases.
+        '''
         self.__print("Start initalizing weights and biases ...", 2)
 
         n_input = self._network_architecture['n_input']
@@ -461,14 +509,34 @@ class VariationalAutoencoder(object):
         return weights_and_biases
 
     def __create_weight(self, shape, name=""):
+        '''Creates and returns an xavier initalized weight.
+
+        Args:
+            shape: The shape of the nodes.
+            name: The name of the node which helps to identify the node.
+
+        Returns:
+            TensorFlow Variable: The created variable.
+        '''
         initial = tf.contrib.layers.xavier_initializer()
         return tf.Variable(initial(shape), dtype=tf.float32, name=name)
 
     def __create_bias(self, shape, name=""):
+        '''Creates and returns an xavier initalized bias.
+
+        Args:
+            shape: The shape of the nodes.
+            name: The name of the node which helps to identify the node.
+
+        Returns:
+            TensorFlow Variable: The created variable.
+        '''
         initial = tf.contrib.layers.xavier_initializer()
         return tf.Variable(initial(shape), dtype=tf.float32, name=name)
 
     def __create_loss_optimizer(self):
+        '''Creates the TensorFlow optimizer node which adjust all weights and biases in training.'''
+
         self.__print("Start creating optimizer/backprop operation ...", 1)
 
         reconstr_loss = self.__l2_loss(self.x_reconstructed, self.X)
@@ -481,9 +549,25 @@ class VariationalAutoencoder(object):
 
     #more information about why using L2 loss/MSE -> http://aoliver.org/why-mse
     def __l2_loss(self, obs, actual):
+        '''Calculates and returns the L2 loss or also known as MSE (Mean Squared Error).
+
+        Args:
+            obs: The reconstructed data.
+            actual: The actual inputted data.
+
+        Returns:
+            TensorFlow node: The TF operation for calculating the loss.
+        '''
         return tf.reduce_sum(tf.square(obs - actual), 1)
 
     #from https://github.com/RuiShu/micro-projects/tree/master/tf-vae
     def __kullback_leibler(self, mu, log_sigma):
-        # = -0.5 * (1 + log(sigma**2) - mu**2 - sigma**2)
+        '''Calculates returns the Kullback Leibler divergence
+        Args:
+            mu: The trained mu from the latent space.
+            log_sigma: The trained log sigma from the latent space.
+
+        Returns:
+            TensorFlow node: The TF operation for calculating the Kullback Leibler divergence.
+        '''
         return -0.5 * tf.reduce_sum(1 + 2 * log_sigma - mu**2 - tf.exp(2 * log_sigma), 1)
