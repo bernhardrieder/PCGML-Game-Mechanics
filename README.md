@@ -32,3 +32,6 @@ Unfortunately, it is not possible to package the current version of the prototyp
 
 ## Known Issues
 - TensorFlowComponent not found: This can happen if your path of the project is too long. Quick fix: move your project to another directory.
+
+# Credits
+[getnamo](https://github.com/getnamo) for this awesome [Unreal Engine 4 TensorFlow plugin](https://github.com/getnamo/tensorflow-ue4)
