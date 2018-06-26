@@ -20,7 +20,7 @@ Unfortunately, it is not possible to package the current version of the prototyp
 
 # Getting Started with the Project
 ## Requirements
-- [Unreal Engine 4.19.2](https://www.unrealengine.com)
+- [Unreal Engine 4.19](https://www.unrealengine.com)
 - Windows 7/8/10 64bit 
 
 ## How to Start and Play?
