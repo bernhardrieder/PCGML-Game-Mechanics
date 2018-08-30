@@ -1160,8 +1160,6 @@ More specifically, the dump contains 148 weapons with 90 parameters each. Some o
 
 Now, it would be more than impracticable to manually extract the useful data out of the dump data file. The file has 13764 lines, and it would probably cause dozens of errors and wrong extractions. Therefore, the development of a simple Python script to extract all the data into a ".csv" was the simplest way to achieve a consistent data extraction. The script reads a ".txt" file with the specified headers to extract in it as input and then extracts these specified header names from the dump file. Right after completion of the data gathering process, it creates a new .csv file with a timestamp and adds the extracted data in an organized way so that someone can further process it by hand.
 
-The focus of the first iteration of the dump parameter extraction lies in the previously examined parameters, described in Chapter \ref{bf1::data}. However, the used parameters in the final implementation are different from that examination and will change in the next steps.
-
 \subsection{Manual Dimension Reduction, Addenda and Unification}
 One of the most significant issues in the extracted data was the ammo which was listed as it would be a different one for some weapons even if it is the same. For this reason, a manual examination of all ammo types was necessary to unify the range of all ammo types. 
 
@@ -1172,7 +1170,7 @@ It turned out that the dump does not include the specific types and fire modes o
 Another problem caused the reload times of the weapons because \ac{BF1} uses some distinct reload mechanics for some weapons. In particular, the weapons of BF1 are from the WW1 time and weapons of this time do not always have the same magazines as used in modern weapons nowadays. Some of them do have special strip clip magazines instead of closed magazines which introduced  a particular reload mechanic. However, the community of \citep{symthic::bf1stats} provides an explanation to this reload mechanic which made a manual calculation and unification of the reload times for an empty magazine possible so that there is no need of a distinction for the prototype implementation.
 
 \subsubsection{Omitted Parameters and Final Set}
-Table \ref{battlefield::weaponStats} shows some parameters which are highly overrated for the training of the VAE which makes it necessary to omit some of this variables further. For example, following parameter was omitted for specific reasons:
+Table \ref{battlefield::weaponStats} shows some parameters which are not very useful for the training of the VAE which makes it necessary to omit some of this variables further. For example, following parameters were omitted for specific reasons:
 \begin{itemize}
 	\item The bullet drop is almost the same for each weapon.
 	\item The ammo types would need encoding which would probably cause the curse of dimension since there are about 30 different used ammo types in the dataset.
@@ -1299,7 +1297,7 @@ Finding the right network hyperparameters for a neural network seems to be one o
 	\item \textbf{Batch size}: Not larger than ten because of the small amount of training data.
 	\item \textbf{The number of training epochs}: Inestimable but probably not more than 500.
 \end{itemize}
-However, after some test iterations later, it was clear which hyperparameters to use in the network.
+However, after some test iterations later, the values to all the hyperparameters were set empirically, as those that achieved the best performance in the application domain.
 \begin{itemize}
 	\item \textbf{Learning rate}: 0.01.
 	\item \textbf{Size of the hidden layers}: 26 neurons in the first hidden layer and 12 in the second hidden layer.
@@ -1312,7 +1310,7 @@ However, after some test iterations later, it was clear which hyperparameters to
 It was interesting to see that the exponential linear unit activation function was able to detect the underlying structure of the data much better than the standard hyperbolic tangent activation function. This detection was then further boosted with a collaboration with the RMSProp optimizer. Why these particular activation function and optimizer works so good would be interesting to know but exceed the scope of this thesis and therefore not addressed.
 
 \subsubsection{Latent Space Visualization}
-Now, a lucky coincidence of these hyperparameters is that the latent space has a size of two which means that it is easy to illustrate the values in the latent space. For this reason, Figure \ref{fig::vae::untrainedLatentSpace} shows the parameter $\mu$ of an untrained latent space and Figure \ref{fig::vae::trainedLatentSpace} shows the parameter $\mu$ of a trained latent space after 70 epochs.
+Now, a lucky coincidence of these hyperparameters is that the latent space has a size of two which means that it is easy to illustrate the values in the latent space. For this reason, Figure \ref{fig::vae::untrainedLatentSpace} shows the parameter $\mu$ of an untrained latent space and Figure \ref{fig::vae::trainedLatentSpace} shows the parameter $\mu$ of a trained latent space after 70 epochs. The left side of the figure shows one dot per weapon whereas the right side shows the same as the left side but with a density per dot.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/untrained_latent_space}
