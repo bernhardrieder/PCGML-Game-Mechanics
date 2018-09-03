@@ -55,9 +55,8 @@ def create_csv_file_and_write_header():
     date = datetime.now().strftime("%Y-%m-%d_%H-%M")
     path = "VAE_parameter_test/summary_"+date+".csv"
     csvfile = open(path, 'a', newline='')
-    header = ["avg_cost_rand","avg_cost","avg_un_dist","avg_n_dist","l_r", "n_h_1",
-              "n_h_2", "n_z", "optimiz", "transf", "epochs", "batch",
-             "n_cat", "n_num", "ammo_f", "train_log"]
+    header = ["avg_cost_rand","avg_cost", "l_r", "n_h_1", "n_h_2", "n_z",
+                "optimiz", "transf", "epochs", "batch", "train_log"]
     writer = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_NONE)
     writer.writerow(header)
 
@@ -65,12 +64,11 @@ def create_csv_file_and_write_header():
 
 csv_file = None;
 cached_output = []
-def write_to_csv(avg_cost_rand, avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1, n_h_2, n_z, opt, tran, epochs,
-                 batch, n_cat, n_num, ammo_f, train_log):
+def write_to_csv(avg_cost_rand, avg_cost, l_r, n_h_1, n_h_2, n_z, opt, tran, epochs, batch, train_log):
     global cached_output
 
-    cached_output.append([avg_cost_rand, avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1,
-                     n_h_2, n_z, opt, tran, epochs, batch, n_cat, n_num, ammo_f, train_log])
+    cached_output.append([avg_cost_rand, avg_cost, l_r, n_h_1,
+                     n_h_2, n_z, opt, tran, epochs, batch, train_log])
 
     if len(cached_output) % 10 == 0:
         write_cache()
@@ -123,9 +121,9 @@ def train_model(train_data, test_data, network_architecture, optimizer, transfer
     return log, avg_cost_rand, avg_cost
 
 
-def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2, n_z, batch_size, n_categorical,
-                                          n_numerical, n_ammo_features, n_epochs, transfer_fct, optimizer):
-    train_data, test_data = weapons.get_data(n_categorical, n_numerical, n_ammo_features)
+def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2, n_z, batch_size, n_epochs, transfer_fct, optimizer):
+
+    train_data, test_data = weapons.get_data()
 
     network_architecture = dict()
     network_architecture['n_input'] = train_data.num_features
@@ -136,8 +134,6 @@ def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2
     opti = optimizer(learning_rate)
     train_log, avg_cost_random, avg_cost  = train_model(train_data, test_data, network_architecture, opti, transfer_fct, batch_size, n_epochs, 1)
 
-    avg_un_dist = "N/A"
-    avg_n_dist = "N/A"
     l_r = str(learning_rate)
     n_h_1 = str(n_hidden_1)
     n_h_2 = str(n_hidden_2)
@@ -146,18 +142,15 @@ def start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2
     tran = transfer_fct.__name__
     epochs = str(n_epochs)
     batch = str(batch_size)
-    n_cat = str(n_categorical)
-    n_num = str(n_numerical)
-    ammo_f = str(n_ammo_features)
 
-    write_to_csv(avg_cost_random, avg_cost, avg_un_dist, avg_n_dist, l_r, n_h_1, n_h_2, n_z, opt, tran,
-                 epochs, batch, n_cat, n_num, ammo_f, train_log)
+    write_to_csv(avg_cost_random, avg_cost, l_r, n_h_1, n_h_2, n_z, opt, tran, epochs, batch, train_log)
 
     gc.collect()
     tf.reset_default_graph()
 
 
 def run_constellations_test(hyperparams, dry_run=False):
+    csv_file = None
     iteration_count = 0
 
     if not dry_run:
@@ -166,23 +159,19 @@ def run_constellations_test(hyperparams, dry_run=False):
         print("Calculated %i different constellations" %total_iterations)
         printProgressBar(0, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
 
-    for i in range(0,100):
+    for i in range(0,1):
         for learning_rate in hyperparams['learning_rate']:
             for n_hidden_1 in hyperparams['n_hidden_1']:
                 for n_hidden_2 in hyperparams['n_hidden_2']:
                     for n_z in hyperparams['n_z']:
                         for batch_size in hyperparams['batch_size']:
-                            for n_categorical in hyperparams['n_categorical']:
-                                for n_numerical in hyperparams['n_numerical']:
-                                    for n_ammo_features in hyperparams['n_ammo_features']:
-                                        for n_epochs in hyperparams['n_epochs']:
-                                            for transfer_fct in hyperparams['transfer_fct']:
-                                                for optimizer in hyperparams['optimizer']:
-                                                    iteration_count += 1
-                                                    if not dry_run:
-                                                        start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2, n_z, batch_size, n_categorical,
-                                                                                                n_numerical, n_ammo_features, n_epochs, transfer_fct, optimizer)
-                                                        printProgressBar(iteration_count, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
+                            for n_epochs in hyperparams['n_epochs']:
+                                for transfer_fct in hyperparams['transfer_fct']:
+                                    for optimizer in hyperparams['optimizer']:
+                                        iteration_count += 1
+                                        if not dry_run:
+                                            start_model_training_and_write_results(learning_rate, n_hidden_1, n_hidden_2, n_z, batch_size, n_epochs, transfer_fct, optimizer)
+                                            printProgressBar(iteration_count, total_iterations, prefix = 'Progress:', suffix = 'Complete', length = 50, decimals = 3)
 
     if not dry_run:
         write_cache(close_file=True)
@@ -196,10 +185,7 @@ hyperparams = dict( \
                     n_hidden_2 = [12],
                     n_z = [2],
                     batch_size = [4],
-                    n_categorical = [2],
-                    n_numerical = [14],
-                    n_ammo_features = [0],
-                    n_epochs = [400],
+                    n_epochs = [100],
                     #all possible nonlinear activation functions
                     transfer_fct = [
                                     #tf.tanh, #stick with that one
