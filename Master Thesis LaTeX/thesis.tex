@@ -1333,14 +1333,15 @@ Another chart which helps to determine the right amount of training epochs shows
 	\caption{The average cost per training epoch of 50 observations.} \label{fig::vae::costPerEpoch}
 \end{figure}
 
-\subsubsection{Training Epochs Random Input Failure Rate}
-Another benchmark to determine the right amount of training epochs was to observe the failure rate of the model when testing the average cost of random input. Figure \ref{fig::vae::epochsFailureRate} shows a chart with the percent of failure rate in which the model was not able to properly learn the underlying structure or had a loss which was not observable. In other words, it is evaluated as a failure when the random input loss related to the test loss is not ten times bigger or when the system cannot process the value. The observation tested each number of training epochs 100 times in a row. 
+\subsubsection{Test Data Sample versus Random Sample Input}
+Another benchmark to determine the right amount of training epochs is to compare the test results of the network with the different input of random sample and test data sample input. Figure \ref{fig::vae::epochsFailureRate} shows this comparison in a chart with separate lines for each input. Each observation point in the chart was calculated with the average of 25 observations and includes 20 percent of outliers. Calculated cost values over 1000 or the ones not identified as number were clamped to 1000. Furthermore, please take note, that this samples are inputted into the encoder and that a small average cost indicates a successful recreation of the input. Therefore, Figure \ref{fig::vae::epochsFailureRate} perfectly demonstrates that the network does not know what to do with random sample input.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/epoch_failure_rate}
 	\caption{A chart of the failure rate per training epoch.} \label{fig::vae::epochsFailureRate}
-\end{figure}\\
-The reason why it is a different outcome every new training is because of initialization proceeding of the weights and biases. The initialization maps them on a random range which is near a normal distribution with zero mean and a standard deviation of one. Hence, the decision for the training epochs in the weapon generation was set to 70 epochs in the beginning and will increase with every newly added weapon to the dataset.
+\end{figure}
+
+Now, an examination of the comparison chart shows that the average costs for the test dataset starts to fluctuate with more and more training epochs whereas the the average cost for a random input sample remains high. Hence, the decision for the training epochs in the weapon generation was set to 70 epochs in the beginning and will increase with every newly added weapon to the dataset. 
 
 \subsection{Random Input Generation Example} \label{vae::randomInputExample}
 Table \ref{vae::randomInputGeneration} shows a comparison of a training weapon and a generated weapon which was generated with random noise input to prove that the VAE can generate useful weapon data. One can see that the VAE has issues with predicting and generating the correct category for a weapon. This issue is still an unsolved problem but is easily solvable by checking the highest value of all categories. In this case, it is most likely a sniper rifle with semi-automatic fire mode. Please note that the listed parameters are the same parameters which are outputted by the VAE.
