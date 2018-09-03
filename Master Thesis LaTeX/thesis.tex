@@ -1338,7 +1338,7 @@ Another benchmark to determine the right amount of training epochs is to compare
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/epoch_failure_rate}
-	\caption{A chart of the failure rate per training epoch.} \label{fig::vae::epochsFailureRate}
+	\caption{A comparison of the average costs of random sample versus test data sample input.} \label{fig::vae::epochsFailureRate}
 \end{figure}
 
 Now, an examination of the comparison chart shows that the average costs for the test dataset starts to fluctuate with more and more training epochs whereas the the average cost for a random input sample remains high. Hence, the decision for the training epochs in the weapon generation was set to 70 epochs in the beginning and will increase with every newly added weapon to the dataset. 
