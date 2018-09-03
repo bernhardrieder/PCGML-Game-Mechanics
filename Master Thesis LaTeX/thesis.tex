@@ -1315,21 +1315,22 @@ Now, a lucky coincidence of these hyperparameters is that the latent space has a
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/untrained_latent_space}
-	\caption{A plot of the untrained latent space.} \label{fig::vae::untrainedLatentSpace}
+	\caption{Visualization of the untrained latent space.} \label{fig::vae::untrainedLatentSpace}
 \end{figure}
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/trained_latent_space}
-	\caption{A plot of the trained latent space after 70 training epochs.} \label{fig::vae::trainedLatentSpace}
-\end{figure}\\
+	\caption{The trained latent space after 70 training epochs.} \label{fig::vae::trainedLatentSpace}
+\end{figure}
+
 One can easily see that the model was able to learn an underlying structure of the provided weapon data. Furthermore, someone can easily assume and connect the six visible clusters in the plot to the available weapon types in the training data.
 
 \subsubsection{Cost per Training Epoch}
-Another chart which helps to determine the right amount of training epochs shows Figure \ref{fig::vae::costPerEpoch}. This chart shows that there is a minimum average cost at around 400 training epochs which will slightly rise with more and more epochs. 
+Another chart which helps to determine the right amount of training epochs shows Figure \ref{fig::vae::costPerEpoch}. This chart shows that there is a minimum average cost at around 400 to 1000 training epochs which will slightly rise with more and more epochs. This chart contains the average costs of 50 observations with 20 percent outliers included.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/cost_per_epoch}
-	\caption{A chart of the average cost per training epoch.} \label{fig::vae::costPerEpoch}
+	\caption{The average cost per training epoch of 50 observations.} \label{fig::vae::costPerEpoch}
 \end{figure}
 
 \subsubsection{Training Epochs Random Input Failure Rate}
