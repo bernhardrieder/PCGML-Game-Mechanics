@@ -84,6 +84,22 @@ def restore(untrained_vae, model_path):
     untrained_vae.load_trained_model(model_path)
     return untrained_vae
 
+from datetime import datetime
+import csv
+csv_file = None;
+def write_training_epoch_and_avg_cost_to_csv(epoch_num, avg_cost):
+    global csv_file, cached_output
+    if csv_file == None:
+        date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        path = "VAE_parameter_test/train_epoch_avg_cost_"+date+".csv"
+        csv_file = open(path, 'a', newline='')
+        header = ["train_epoch","avg_cost"]
+        writer = csv.writer(csv_file, delimiter=',', quoting=csv.QUOTE_NONE)
+        writer.writerow(header)
+
+    csv_file.write("" + str(epoch_num) + "," + str(avg_cost) + "\n")
+
+
 def train(vae, weapon_data, batch_size=1, training_epochs=10, epoch_debug_step=5,
               trained_model_save_path=DEFAULT_MODEL_PATH,
               save_model = True, save_model_every_epoch = True,
@@ -105,6 +121,8 @@ def train(vae, weapon_data, batch_size=1, training_epochs=10, epoch_debug_step=5
         VariationalAutoencoder: A trained VAE model.
         str: The debug log as string if get_log_as_string is set to True.
     '''
+    global csv_file
+    csv_file = None;
     num_samples = weapon_data.num_examples
     trained_model_path = ""
     log_str = ""
@@ -127,6 +145,8 @@ def train(vae, weapon_data, batch_size=1, training_epochs=10, epoch_debug_step=5
         if save_model and save_model_every_epoch:
             trained_model_path = vae.save_trained_model(trained_model_save_path)
 
+        write_training_epoch_and_avg_cost_to_csv(epoch+1, avg_cost)
+
         # Display logs per epoch step
         if epoch % epoch_debug_step == 0:
             log = "Epoch:"+ '%04d' % (epoch+1) + " - Cost:" + "{:.9f}".format(avg_cost)
@@ -145,6 +165,7 @@ def train(vae, weapon_data, batch_size=1, training_epochs=10, epoch_debug_step=5
         else:
             print(log)
 
+    csv_file.close()
     return vae, log_str
 
 #based on https://jmetzen.github.io/2015-11-27/vae.html
