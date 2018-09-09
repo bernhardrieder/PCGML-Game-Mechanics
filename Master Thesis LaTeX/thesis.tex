@@ -481,7 +481,7 @@ A statistical process is the basis of this supervised learning technique where p
 Some use cases where concepts of regression algorithms can be applied are, e.g., for imitation and prediction of a player's behavior or player preference learning \cite{ai::book}. Some popularly used algorithm for regression are the linear or polynomial regression, \ac{ANN} or \ac{SVM}. \cite{ai::book}
 
 \subsubsection{Classification}
-Addresses problems where classification transition of independent values into specific values is needed \cite{ai::book}. The famous problem of classifying and distinguish apples and pears from each other falls into this section.
+Addresses problems where classification transition of independent values into specific values is needed \cite{ai::book}. The famous problem of classifying and distinguishing apples and pears from each other falls into this section.
 
 Like regression algorithms, classification algorithms are applicable for imitation and prediction of a player's behavior, such as prediction of completion time \cite{ai::book}. However, in this case, the possible outputs are specific values or classes like slow, average or fast instead of continuous values \cite{ai::book}. Some popularly used algorithm for classification are, e.g., \ac{ANN}, decision tree, random forests, \ac{SVM}, \ac{KNN} or ensemble learning \cite{ai::book}.
 
@@ -508,7 +508,7 @@ Another viewpoint to differ \ac{ML} models is to group them into generative and 
 In particular, the primary distinguishing feature between the models is their approach on how to learn the relationships of the training attributes to either the labels or all the other attributes as a whole. With this said, discriminative models try to learn the conditional relationship between the features and the labels, denoted as $P(Y|X)$, whereas generative models try to learn the joint probability distribution of the whole data and then infer the conditional relationship, denoted as $P(X,Y)$ \cite{ml::book::nnProgrammingTF}.
 
 \section{Development} \label{mlDevelopment}
-Developing an easy to use \ac{AI} needs to be a well-structured and planned process. Especially, when using \ac{ML} as a focus of interaction, it is even more important to be well-prepared. For this reason, this chapter addresses some design considerations about developing user-friendly \ac{AI} systems in games, as well as standard pitfalls to keep in mind, standard procedures for data preprocessing and possibilities of how to use \ac{ML} algorithms in two commonly used game engines.
+Developing an easy to use \ac{AI} needs to be a well-structured and planned process. Especially, when using \ac{ML} as a focus of interaction, it is even more important to be well-prepared. For this reason, this chapter addresses some design considerations about developing user-friendly \ac{AI} systems in games, as well as standard pitfalls to keep in mind, standard procedures for data preprocessing and possibilities of how to use \ac{ML} algorithms in two common used game engines.
 
 \subsection{Design Considerations}
 Someone cannot just develop a new novel \ac{AI} system and expect to create a whole new experience — it needs to have a thoughtful plan how to achieve new experience \cite{ai::gameDesign}. Firstly, it is useful to think about the \ac{MDA} framework, which was described in Chapter \ref{gameMechanicsChapter}, because an \ac{AI}-based game is often tightly integrated into its game mechanics and therefore it is necessary to make no mistakes in the first place to fulfill playability and emerging experience \cite{ai::gameDesign}. 
@@ -557,7 +557,7 @@ A standard procedure in \ac{ML} is the technique of data preprocessing so that d
 \end{table}
 
 \subsubsection{Encoding}
-For example, if the dataset provides categorical data like the values for \textbf{V\textsubscript{2}}, as shown in Table \ref{table::PCGML::devExample::data}, then this data needs to be encoded, so it does not differ from the other data values. This procedure is a standard procedure in the data preprocessing for training an \ac{ML} model and can be done with so-called "One Hot Encoding." Table \ref{table::PCGML::devExample::oneHotEncoder} shows an example of what an one hot encoder does with categorical data as provided by \textbf{V\textsubscript{2}}. 
+For example, if the dataset provides categorical data like the values for \textbf{V\textsubscript{2}}, as shown in Table \ref{table::PCGML::devExample::data}, then this data needs to be encoded, so that it does not differ from the other data values. This procedure is a standard procedure in the data preprocessing for training an \ac{ML} model and can be done with so-called "One Hot Encoding." Table \ref{table::PCGML::devExample::oneHotEncoder} shows an example of what an one hot encoder does with categorical data as provided by \textbf{V\textsubscript{2}}. 
 \begin{table}[!ht]
 	\centering
 	\begin{tabular}{|c|c|c|c|c|}
@@ -607,7 +607,7 @@ Applying normalization to the example dataset of Table \ref{table::PCGML::devExa
 \end{table}
 
 \subsection{Game Engine Plugins} \label{chapter::mlPluginsGameEngines}
-Indeed, all the different \ac{ML} models or the one which applies to the game prototype of this thesis could be self-implemented. However, there are other people out there who have already implemented and improved their implementations which are a good starting point when implementing a \ac{PCGML} game mechanic. As discussed at the beginning of the thesis, it is going to focus on an implementation in commonly used game engines which is the reason why to envisage the two most used free to use game engines nowadays.
+Indeed, all the different \ac{ML} models or the one which applies to the game prototype of this thesis could be self-implemented. However, there are other people out there who have already implemented and improved their implementations which are a good starting point when implementing a \ac{PCGML} game mechanic. As discussed at the beginning of the thesis, it is going to focus on an implementation in common used game engines which is the reason why to envisage the two most used free to use game engines nowadays.
 
 \subsubsection{Unity}
 Unity made an incredible effort in its research and use of \ac{ML} in their engine in the last year \cite{unity::ml}. They recently released a beta version of an open-source \ac{ML} agents plugin that enables games to train an \ac{AI} with \ac{RL}, imitation learning, neuroevolution or other \ac{ML} methods \cite{unity::mlGithub}. The base of the plugin is Google’s open-source \ac{ML} framework \acf{TF} \cite{api::tensorFlow} which is accessible via a simple-to-use Python \ac{API} \cite{unity::mlGithub}. They are also providing essential instructions and documentary for the usage of their plugin which is a promising, definite and significant advantage when implementing the \ac{PCGML} game mechanic.
