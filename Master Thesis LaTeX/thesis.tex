@@ -770,7 +770,7 @@ In this case, working configurations of the game provide the training set of the
 \begin{itemize}
 	\item A proper learned model can be saved to generate the same sessions again.
 	\item Providing more designed content in the training set offers more possibilities for the gameplay.
-	\item It needs a sophisticated game design with balanced dependencies between available elements.
+	\item It needs a sophisticated game design with balanced dependencies between the available elements.
 	\item Possible complications in the training of the \ac{ML} model because elements can consist of many values which create complex dependencies.
 	\item The game design must include a broad range of game elements with harmonization between each other and proper design and balancing.
 \end{itemize}
@@ -790,7 +790,7 @@ For example, a game could be an \ac{FPS} game with generated weapons from a pre-
 \end{itemize}
 
 \subsection{Changing Powers} \label{idea::changingPowers}
-Often, the central mechanic provided in most \acp{RPG} is fighting with a sword and other weapons or by applying magic spells. Moreover, the weapons often possess a magic power as advantage or disadvantage. These powers and the magic spells themselves can be part of a generation process powered by a \ac{PCGML} system. The system could generate new weapons or spells affecting the duration, spell category, continuing effect on the enemy or player, energy cost and other similar and often used properties. Providing useful weapons with advantages or disadvantages or some magic attacks as an example would serve as the training of the system.
+Often, the central mechanic provided in most \acp{RPG} is fighting with a sword and other weapons or by applying magic spells. Moreover, the weapons often possess a magic power as an advantage or disadvantage. These powers and the magic spells themselves can be part of a generation process powered by a \ac{PCGML} system. The system could generate new weapons or spells affecting the duration, spell category, continuing effect on the enemy or player, energy cost and other similar and often used properties. Providing useful weapons with advantages or disadvantages or some magic attacks as an example would serve as the training of the system.
 
 \subsubsection{Pros and Cons}
 \begin{itemize}
@@ -816,14 +816,14 @@ Furthermore, an extension of this idea is able with the trainee and guided patte
 \begin{itemize}
 	\item Training set for each model can be easily created by hand.
 	\item The concept is straightforward and easy to learn.
-	\item Virtual reality offers easy-to-use drawing mechanic and fit perfectly.
+	\item Virtual reality offers an easy-to-use drawing mechanic and fits perfectly.
 	\item It needs two trained \ac{ML} models. One for the object detection and another for the generation of puzzle objects. 
 	\item It needs the design of proper puzzles where the mechanic of generating objects is applicable.
 \end{itemize}
 
 
 \subsection{Defeat of the Enemy} \label{idea::defeatTheEnemy}
-The \ac{PCGML} system tries to defeat the player, and one or more players try to defeat the enemy. The adversary design pattern described in Chapter \ref{AI-basedMechanicsDesignPattern} where the role of the \ac{AI} is to defeat the player forms the base of this idea. In this case, the system is trained on simple player behavior such as movement paths or attack preferences in a specific environment and uses this knowledge to overcome the player. Moreover, it would also be able to find new behavior pattern during the fight. In short, the output of the system consists of new tactics, behaviors or attack sequences. Furthermore, the \ac{PCGML} system could categorize used behavior regarding their success or failure and learn from these outcomes to increase its accuracy. 
+The \ac{PCGML} system tries to defeat the player, and one or more players try to defeat the enemy. The adversary design pattern described in Chapter \ref{AI-basedMechanicsDesignPattern} where the role of the \ac{AI} is to defeat the player forms the base of this idea. In this case, the system is trained on simple player behavior such as movement paths or attack preferences in a specific environment and uses this knowledge to overcome the player. Moreover, it would also be able to find a new behavior pattern during the fight. In short, the output of the system consists of new tactics, behaviors or attack sequences. Furthermore, the \ac{PCGML} system could categorize used behavior regarding their success or failure and learn from these outcomes to increase its accuracy. 
 
 An example scenario would be that an \ac{AI} has the intention of applying a critical hit to the player. In doing so, the \ac{PCGML} system generates, e.g., a possible path to fulfill the desire of hitting the player based on, e.g., both the players and \ac{AI} positions and the pre-trained knowledge.
 
@@ -832,7 +832,7 @@ An example scenario would be that an \ac{AI} has the intention of applying a cri
 	\item The training input for the \ac{ML} model can be real data of fights with a standard \ac{AI} enemy, extended with randomized values.
 	\item Possible improvement of the \ac{ML} model during runtime with system feedback.
 	\item \ac{PCG} generation and especially an interactive modification of terrain can be complicated.
-	\item It needs well-balanced training set for not overwhelming the player with a too difficult enemy.
+	\item It needs a well-balanced training set for not overwhelming the player with a too tricky enemy.
 \end{itemize}
 
 
@@ -858,12 +858,12 @@ For example, if the goal would be to unlock a door with a generated key, then th
 	\item The \ac{ML} model does need pretraining because it is done in the game by the player.
 	\item The creation of puzzles does not need to consider the \ac{PCGML} system because the puzzle forms the base of the system's implementation.
 	\item It takes time to train the model by the player correctly, and it can be frustrating if the model does not learn properly.
-	\item Each puzzle element needs its own design and its own \ac{PCGML} system.
+	\item Each puzzle element needs its design and its \ac{PCGML} system.
 \end{itemize}
 
 
 \subsection{Building with Assistance} \label{idea::buildingWithAssistance}
-The mechanic revolves around a \ac{PCGML} system, trained to generate incomplete game elements for a specific goal. For example, a building game where the \ac{PCGML} system never outputs the correct element which is currently needed. On the other hand, the player has the ability to improve and overhaul the generated elements. To guide the internal model to a desired generation output direction, all changes made by the player are fed into the system. Thus, the guide design pattern with the focus on guidance is the base of this idea. The training of the \ac{PCGML} system would consist of examples of incomplete but usable and modifiable game elements.
+The mechanic revolves around a \ac{PCGML} system, trained to generate incomplete game elements for a specific goal. For example, a building game where the \ac{PCGML} system never outputs the correct element which is currently needed. On the other hand, the player can improve and overhaul the generated elements. All these changes made by the player will change the internal model to guide it to a desired generation output direction.  Thus, the guide design pattern with the focus on guidance is the base of this idea. The training of the \ac{PCGML} system would consist of examples of incomplete but usable and modifiable game elements.
 
 \subsubsection{Pros and Cons}
 \begin{itemize}
@@ -888,7 +888,7 @@ Another idea based on the co-creator pattern could be, e.g., a strategy game whe
 
 
 \subsection{Observe and Learn} \label{idea::observeAndLearn}
-A \ac{PCGML} system which is trained to generate and modify terrains including a particular path to reach a specific goal. The highlight is that the system does not always generate possible ways, demanding the player to change properties of the system influencing the terrain, the level, the map or the world. In doing so, the player is forced to observe the interactive and smooth changes in the system to reach the current goal. The visualization and editable design pattern form the base for this idea.
+A \ac{PCGML} system which is trained to generate and modify terrains including a particular path to reach a specific goal. The highlight is that the system does not always generate possible ways, demanding the player to change the properties of the system influencing the terrain, the level, the map or the world. In doing so, the player is forced to observe the interactive and smooth changes in the system to reach the current goal. The visualization and editable design pattern form the base for this idea.
 
 \subsubsection{Pros and Cons}
 \begin{itemize}
@@ -908,7 +908,7 @@ An application as a game mechanic in a point and click game could be a \ac{PCGML
 \end{itemize}
 
 \subsection{Big Boss Helper} \label{idea::bigBossHelper}
-This mechanic is based on the villain pattern but here the \ac{AI} rather mobs players than tries to defeat them. This kind of design pattern fits almost perfectly in, e.g., an \ac{RPG} big boss fight with more than one \ac{NPC} to defeat. For example, two \ac{NPC}’s must be defeated to win the fight and obtain unique item. One of the \ac{NPC}'s applies mainly damage, and the second one protects the first one. This helper \ac{NPC} is represented by the \ac{PCGML} system which is trained on player behavior such as attack preferences or movement behavior in a specific level or environment to generate or adapt the terrain or level, keeping the player away from the main enemy.
+This mechanic is based on the villain pattern but here the \ac{AI} rather mobs players than tries to defeat them. This kind of design pattern fits almost perfectly in, e.g., an \ac{RPG} big boss fight with more than one \ac{NPC} to defeat. For example, two \ac{NPC}’s must be defeated to win the fight and obtain a unique item. One of the \ac{NPC}'s applies mainly damage, and the second one protects the first one. This helper \ac{NPC} is represented by the \ac{PCGML} system which is trained on player behavior such as attack preferences or movement behavior in a specific level or environment to generate or adapt the terrain or level, keeping the player away from the main enemy.
 
 \subsubsection{Pros and Cons}
 \begin{itemize}
@@ -916,7 +916,7 @@ This mechanic is based on the villain pattern but here the \ac{AI} rather mobs p
 \end{itemize}
 
 \subsection{Figure it Out} \label{idea::figureItOut}
-A possible application in a multiplayer game could be a mechanic in which each player possesses a \ac{PCGML} system for generation purposes. However, the challenge in the game is that each generation of the system changes the other’s systems output, and they need to work together towards a specific goal. For instance, a puzzle game where players need to figure out the connection between their system. The \ac{PCGML} system would be trained with a specific game corpus and enables interaction based on the editable pattern. One player changes parameters which subsequently influences the other player, all while they need to generate an object combined from each individual system's output. Parameter adjustment can either be done directly or indirectly by moving stones around in a room and find their right position. Furthermore, this idea is also applicable in a single player puzzle game without the need of another player.
+A possible application in a multiplayer game could be a mechanic in which each player possesses a \ac{PCGML} system for generation purposes. However, the challenge in the game is that each generation of the system changes the other’s systems output, and they need to work together towards a specific goal. For instance, a puzzle game where players need to figure out the connection between their system. The \ac{PCGML} system would be trained with a specific game corpus and enables interaction based on the editable pattern. One player changes parameters which subsequently influences the other player, all while they need to generate an object combined from each system's output. Parameter adjustment can either be done directly or indirectly by moving stones around in a room and find their right position. Furthermore, this idea is also applicable in a single player puzzle game without the need of another player.
 
 \subsubsection{Pros and Cons}
 \begin{itemize}
@@ -946,7 +946,7 @@ The ideas how someone can make use of \ac{PCGML} as a game mechanic show that th
 Many of the ideas are about generating items used as a game mechanic, but \ac{PCGML} also offers the possibility to generate any item such as quests, missions or challenges. Furthermore, the implementation of any progression mechanics is also applicable via \ac{PCGML}. It just needs the right idea and a training set with an appropriate data representation to properly train the \ac{ML} system.
 
 \subsection{Game Mechanic for the Prototype}
-As already mentioned, all the introduced ideas differ in their development complexity. Most of the ideas require a sophisticated game design where the \ac{PCGML} game mechanic can work and create an adequate experience for the players. For instance, ideas like "\nameref{idea::trainToProgress}" or "\nameref{idea::figureItOut}" offer an interesting approach for creating unique player experience but require a very sophisticated game design and much balancing and polishing. For this reason, the easiest and most applicable ideas for showing the potential of \ac{PCGML} as a game mechanic in this thesis offer "\nameref{idea::changingWeapons}" and "\nameref{idea::changingPowers}." Availability of open source \ac{FPS} projects, real weapon data and communities of big \ac{FPS} titles lead the decision for the prototype game mechanic to the idea of "\nameref{idea::changingWeapons}." Therefore, the rest of this thesis deals with the implementation of a \ac{PCGML} game mechanic prototype which revolves around \ac{PCGML} generated weapons.
+As already mentioned, all the introduced ideas differ in their development complexity. Most of the ideas require a sophisticated game design where the \ac{PCGML} game mechanic can work and create an adequate experience for the players. For instance, ideas like "\nameref{idea::trainToProgress}" or "\nameref{idea::figureItOut}" offer an exciting approach for creating a unique player experience but require a very sophisticated game design and much balancing and polishing. For this reason, the most straightforward and most applicable ideas for showing the potential of \ac{PCGML} as a game mechanic in this thesis offer "\nameref{idea::changingWeapons}" and "\nameref{idea::changingPowers}." Availability of open source \ac{FPS} projects, real weapon data, and communities of big \ac{FPS} titles lead the decision for the prototype game mechanic to the idea of "\nameref{idea::changingWeapons}." Therefore, the rest of this thesis deals with the implementation of a \ac{PCGML} game mechanic prototype which revolves around \ac{PCGML} generated weapons.
 
 %
 % ------------------------------- NEW CHAPTER ------------------------------- %
