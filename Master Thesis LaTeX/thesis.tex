@@ -423,7 +423,7 @@ A possible output of this algorithm can be seen in Figure \ref{cascadesFigure} d
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.5\linewidth]{PICs/cascades_small}
-	\caption{Example of a procedural generated rock \protect\cite{nvidia::cascades}.}\label{cascadesFigure}
+	\caption{Example of a procedurally generated rock \protect\cite{nvidia::cascades}.}\label{cascadesFigure}
 \end{figure}
 
 \section{Game Mechanics}
@@ -1352,7 +1352,7 @@ Another benchmark to determine the right amount of training epochs is to compare
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{PICs/trained_vae/epoch_failure_rate}
-	\caption{A comparison of the average costs of random sample versus test data sample input.} \label{fig::vae::epochsFailureRate}
+	\caption{A comparison of the average costs of the random sample versus test data sample input.} \label{fig::vae::epochsFailureRate}
 \end{figure}
 
 Now, an examination of the comparison chart shows that the average costs or rather losses for the test dataset starts to fluctuate with more and more training epochs whereas the average cost for a random input sample remains high. Hence, the decision for the training epochs in the weapon generation was set to 70 epochs in the beginning and will increase with every newly added weapon to the dataset. 
@@ -1524,9 +1524,9 @@ However, this shows that it is not necessary that someone trains the model in ad
 %
 \clearpage
 \chapter{Conclusion}
-The idea of this master thesis was to explore the possibilities of \ac{PCGML} as a game mechanic with focus on their applications in video games. Its primary goal was to provide a demonstration of the possibilities as well as to address every aspect of developing a \ac{PCGML} game mechanic in common free-to-use game engines. Overall, it shall serve as a concise overview and primer for developing \ac{PCGML} game mechanics with a prototype development example workflow.
+The idea of this master thesis was to explore the possibilities of \ac{PCGML} as a game mechanic with a focus on their applications in video games. Its primary goal was to provide a demonstration of the possibilities as well as to address every aspect of developing a \ac{PCGML} game mechanic in common free-to-use game engines. Overall, it shall serve as a concise overview and primer for developing \ac{PCGML} game mechanics with a prototype development example workflow.
 
-In particular, the thesis fulfills all of the demanded requirements from the listing of unique game mechanic ideas for \ac{PCGML} up to an in-depth development of a prototype in a game engine. The development of the "\nameref{idea::changingWeapons}" mechanic shows the potential for \ac{PCGML} as a game mechanic in future work and helps curious developers to quickly dive into every knowledge necessary to start developing new games with \ac{PCGML} game mechanics. It shows the space for improvement and lists essential development considerations for implementing a \ac{PCGML} game mechanic, so that there are no unexpected mistakes. In summary, this thesis establishes and reflects an introduction and overall guideline for bringing \ac{PCGML} game mechanics into a game.
+In particular, the thesis fulfills all of the demanded requirements from the listing of unique game mechanic ideas for \ac{PCGML} up to an in-depth development of a prototype in a game engine. The development of the "\nameref{idea::changingWeapons}" mechanic shows the potential for \ac{PCGML} as a game mechanic in future work and helps curious developers to quickly dive into every knowledge necessary to start developing new games with \ac{PCGML} game mechanics. It shows the space for improvement and lists essential development considerations for implementing a \ac{PCGML} game mechanic so that there are no unexpected mistakes. In summary, this thesis establishes and reflects an introduction and overall guideline for bringing \ac{PCGML} game mechanics into a game.
 
 \section{Research Result}
 The focus of this thesis was to provide theoretical possibilities for \ac{PCGML} game mechanics, a practical development example and a showcase that \ac{PCGML} game mechanics are suitable for a broad range of games with no limitation to particular genres. Chapter \ref{chapter::possibleGameMechanics} provides these possibilities and furthermore shows some pros and cons of a theoretical development. The game mechanic "\nameref{idea::changingWeapons}" was then implemented and introduced the development workflow of a \ac{PCGML} game mechanic. Overall, the thesis fulfilled all expectations of using \ac{PCGML} as a game mechanic and shows valuable research results.
@@ -1553,9 +1553,9 @@ Now, there is plenty of space for improvement and future work when implementing 
 	\item It would be a valuable improvement if the current classes would be extended to work as generic types of classes and \ac{ML} models for more use cases than the prototype game. This generic implementation would enable designers to change features of a traditional \ac{FPS} game weapon with, e.g., \ac{RPG} like features of causing fire damage and burning on the hit enemy.
 	\item The generation of different and new ammo types would also be a possible improvement since the current prototype only uses ray-tracing weapons instead of projectile weapons. This additional generation would enable a much more diverse game mechanic and experience for the player. For example, the new ammo types could follow a specific movement pattern as used for the weapons in the game "Galactic Arms Race," described in Chapter \ref{pcgMechanicGames}.
 	\item The weapon generator itself offers even more improvement. Currently, the generator does not limit any values which means that because of the retraining functionality of the model, the weapon can get extraordinary high damage and other values. These high values are still okay if its intended but most likely they should be trimmed before sending them to the generator \ac{API} or creating the new weapons for the player.
-	\item The gameplay concept for using the weapon generator also offers space for improvement. In particular, it is so see how the weapon generator can be integrated into the gameplay in a more natural way than pressing a button and get a new weapon. For example, a possible concept would be for the player to call for reinforcements, and they will send you new random weapons. In this scenario, the player would need to hold on to his current weapon until the reinforcement has arrived.
+	\item The gameplay concept for using the weapon generator also offers space for improvement. In particular, it is to see how the weapon generator can be integrated into the gameplay in a more natural way than pressing a button and get a new weapon. For example, a possible concept would be for the player to call for reinforcements, and they will send new random weapons. In this scenario, the player would need to hold on to his current weapon until the reinforcement has arrived.
 \end{itemize}
-As someone can see, there are many possibilities with \ac{PCGML} game mechanics. This thesis only shows an example game mechanic which was rather easy to implement but offers much more sophisticated game mechanics which enable even more novel player experience. It is now a further research question to find out whether the designs of the in Chapter \ref{chapter::possibleGameMechanics} introduced game mechanics will work out as intended or not.
+As someone can see, there are many possibilities with \ac{PCGML} game mechanics. This thesis only shows an example game mechanic which was rather easy to implement but offers much more sophisticated game mechanics which enable even more innovative player experience. It is now a further research question to find out whether the designs of the in Chapter \ref{chapter::possibleGameMechanics} introduced game mechanics will work out as intended or not.
 
 %
 % Hier beginnen die Verzeichnisse.
