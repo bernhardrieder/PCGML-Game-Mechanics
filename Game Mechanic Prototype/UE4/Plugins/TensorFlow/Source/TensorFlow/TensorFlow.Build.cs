@@ -20,6 +20,10 @@ public class TensorFlow : ModuleRules
     {
         get { return Path.GetFullPath(Path.Combine(ThirdPartyPath, "Tensorflow")); }
     }
+	private string ScriptsPath
+	{
+		get { return Path.GetFullPath(Path.Combine(ModuleDirectory, "../../Content/Scripts/")); }
+	}
 
     public bool LoadLib(ReadOnlyTargetRules Target)
     {
@@ -33,17 +37,27 @@ public class TensorFlow : ModuleRules
             string TensorLibPath = Path.Combine(TensorflowThirdParty, "Lib");
 			string TensorflowLibDLL = Path.GetFullPath(Path.Combine(TensorLibPath, PlatformString, "tensorflow.dll"));
 
-			RuntimeDependencies.Add(new RuntimeDependency(TensorflowLibDLL));
+			RuntimeDependencies.Add(TensorflowLibDLL);
         }
 
         return isLibrarySupported;
     }
 
 
+	public void AddScriptsAsDependencies(ReadOnlyTargetRules Target)
+	{
+		if ((Target.Platform == UnrealTargetPlatform.Win64) || (Target.Platform == UnrealTargetPlatform.Win32))
+		{
+			RuntimeDependencies.Add(Path.Combine(ScriptsPath, "..."));
+		}
+	}
+
     public TensorFlow(ReadOnlyTargetRules Target) : base(Target)
     {
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+		PrivatePCHHeaderFile = "Private/TensorFlowPrivatePCH.h";
 
-    PublicIncludePaths.AddRange(
+		PublicIncludePaths.AddRange(
 			new string[] {
 				"TensorFlow/Public"
 				// ... add public include paths required here ...
@@ -94,5 +108,7 @@ public class TensorFlow : ModuleRules
 			);
 
         LoadLib(Target);
-    }
+		AddScriptsAsDependencies(Target);
+
+	}
 }

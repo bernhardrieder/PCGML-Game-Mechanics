@@ -21,7 +21,7 @@ class TensorFlowComponent:
 		#import the module
 		self.tfModule = importlib.import_module(self.uobject.TensorFlowModule)
 		imp.reload(self.tfModule)
-
+		
 		#tfc or the class instance holding the pluginAPI
 		self.tfapi = self.tfModule.getApi()
 		self.tfapi.tf_component = self
@@ -35,12 +35,12 @@ class TensorFlowComponent:
 		#call our tfapi setup, typically on another thread
 		self.setup()
 
-	def end_play(self):
+	def end_play(self, reason):
 		self.ValidGameWorld = False
 		self.stop_training()
 
 	def stop_training(self):
-		self.tfapi._stopTraining()
+		self.tfapi._stopTraining() 
 
 	#multi-threaded call
 	def setup(self, args=None):
@@ -102,15 +102,26 @@ class TensorFlowComponent:
 		if(self.uobject.VerbosePythonLog):
 			ue.log(self.uobject.TensorFlowModule + ' input passed: ' + args)
 
-		self._json_input = args
+		#branch based on threading
 		if(self.uobject.ShouldUseMultithreading):
-			try:
-				ut.run_on_bt(self.json_input_blocking)
-			except:
-				e = sys.exc_info()[0]
-				ue.log('TensorFlowComponent::json input error: ' + str(e))
+			ut.run_on_bt(self.json_input_blocking, args)
 		else:
-			self.json_input_blocking()
+			self.json_input_blocking(args)
+
+	#setup blocking
+	def json_input_blocking(self, args):
+		#pass the raw json to the script to handle
+		resultJson = self.tfapi.onJsonInput(json.loads(args))
+
+		if(self.uobject.ShouldUseMultithreading):
+			#pass prediction json back
+			if(self.ValidGameWorld):
+				ue.run_on_gt(self.json_input_gt_callback, resultJson)
+		else:
+			self.json_input_gt_callback(resultJson)
+
+	def json_input_gt_callback(self, resultJson):
+		self.uobject.OnResultsFunction(json.dumps(resultJson))
 
 	#setup blocking
 	def setup_blocking(self):
@@ -141,11 +152,7 @@ class TensorFlowComponent:
 		self.trained = self.tfapi.onBeginTraining()
 		stop = time.time()
 
-		if self.trained is None:
-			ue.log('Training Note: no summary object returned from training. See your onBeginTraining(): method')
-			return
-
-		if 'summary' in self.trained:
+		if hasattr(self.trained, 'summary'):
 			summary = self.trained['summary']
 		else:
 			summary = {}
@@ -162,20 +169,3 @@ class TensorFlowComponent:
 			ue.log(self.uobject.TensorFlowModule + ' trained in ' + str(round(summary['elapsed'],2)) + ' seconds.')
 
 		self.uobject.OnTrainingCompleteFunction(json.dumps(summary))
-
-	def json_input_blocking(self):
-		if(self.uobject.VerbosePythonLog):
-			ue.log(self.uobject.TensorFlowModule + ' processing json input on bt thread.')
-
-		#pass the raw json to the script to handle
-		resultJson = self.tfapi.onJsonInput(json.loads(self._json_input))
-
-		#run callbacks only if we're still in a valid game world
-		if(self.ValidGameWorld):
-			ue.run_on_gt(self.json_input_complete, resultJson)
-
-	def json_input_complete(self, resultJson):
-		if(self.uobject.VerbosePythonLog):
-			ue.log(self.uobject.TensorFlowModule + ' finished processing json input.')
-		#pass prediction json back
-		self.uobject.OnResultsFunction(json.dumps(resultJson))

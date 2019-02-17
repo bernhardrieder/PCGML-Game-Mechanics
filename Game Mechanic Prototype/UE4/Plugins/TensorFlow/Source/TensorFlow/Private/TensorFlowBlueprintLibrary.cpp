@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "TensorFlowBlueprintLibrary.h"
 #include "TensorFlowPrivatePCH.h"
 #include "RHI.h"
-#include "TensorFlowBlueprintLibrary.h"
+#include "Runtime/Engine/Classes/Engine/TextureRenderTarget2D.h"
 
 
 TArray<float> UTensorFlowBlueprintLibrary::Conv_GreyScaleTexture2DToFloatArray(UTexture2D* InTexture)
@@ -163,7 +164,7 @@ UTexture2D* UTensorFlowBlueprintLibrary::Conv_RenderTargetTextureToTexture2D(UTe
 	//Unlock and Return data
 	Pointer->PlatformData->Mips[0].BulkData.Unlock();
 	Pointer->UpdateResource();
-	PassedTexture->Source.UnlockMip(0);
+	
 	return Pointer;
 }
 
