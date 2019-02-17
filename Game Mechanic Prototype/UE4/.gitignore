@@ -1,5 +1,5 @@
 Plugins/SocketIO/
-# Plugins/TensorFlow/
+Plugins/TensorFlow/
 Plugins/UnrealEnginePython/
 Content/Scripts/__pycache__/
 Content/Scripts/trained_vae/ 
