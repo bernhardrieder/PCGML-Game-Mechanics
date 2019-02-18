@@ -226,7 +226,7 @@ public:
 	FORCEINLINE void SetRecoilDecrease(float Decrease) {  recoilDecrease = Decrease; }
 	void SetBulletsPerMagazine(int32 Bullets);
 	FORCEINLINE void SetBulletsInOneShot(int32 Bullets) {  bulletsInOneShot = Bullets; }
-	FORCEINLINE void SetReloadTimeEmptyMagazine(float Time);
+	void SetReloadTimeEmptyMagazine(float Time);
 
 protected:
 	void BeginPlay() override;
