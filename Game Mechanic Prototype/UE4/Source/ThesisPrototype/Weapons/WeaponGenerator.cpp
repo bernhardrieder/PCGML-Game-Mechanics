@@ -23,7 +23,7 @@ FWeaponGeneratorAPIJsonData::FWeaponGeneratorAPIJsonData(FVector2D MaxDamageWith
 	reloadempty = FString::SanitizeFloat(ReloadTimeEmptyMagazine, 4);
 	rof = FString::FromInt(RateOfFire);
 	shotspershell = FString::FromInt(BulletsInOneShot);
-	initialspeed = FString::FromInt(MuzzleVelocity);
+	initial_speed = FString::FromInt(MuzzleVelocity);
 
 
 	//categorical one hot encoding
@@ -201,7 +201,7 @@ AShooterWeapon* AWeaponGenerator::constructWeaponFromJsonData(const FWeaponGener
 	weapon->SetBulletsInOneShot(FMath::Max(1, FCString::Atoi(*JsonData.shotspershell)));
 
 	weapon->SetRateOfFire(FCString::Atoi(*JsonData.rof));
-	weapon->SetMuzzleVelocity(FCString::Atoi(*JsonData.initialspeed));
+	weapon->SetMuzzleVelocity(FCString::Atoi(*JsonData.initial_speed));
 
 	return weapon;
 }

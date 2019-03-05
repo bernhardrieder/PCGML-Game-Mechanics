@@ -16,7 +16,7 @@ DEFAULT_TEST_DATA = "test_data.csv"
 #define constants for data processing, not listed params are omitted from the input file
 CATEGORICAL_PARAMS  = ['type', 'firemode']
 NUMERICAL_PARAMS = ['damages_first', 'damages_last', 'distances_last', 'rof', 'magsize', 'reloadempty', 'shotspershell', 'hiprecoilright',
-                    'hiprecoilup', 'distances_first', 'initialspeed', 'hiprecoildec', 'hipstandbasespreaddec', 'hipstandbasespreadinc' ]
+                    'hiprecoilup', 'distances_first', 'initial_speed', 'hiprecoildec', 'hipstandbasespreaddec', 'hipstandbasespreadinc' ]
 
 #additionally define the cagegories for the encoding nad decoding
 WEAPON_TYPES = ['Shotgun', 'Pistol', 'Rifle', 'SMG', 'Sniper', 'MG']
