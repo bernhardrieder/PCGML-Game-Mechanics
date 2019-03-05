@@ -2,8 +2,8 @@
 
 #include "ShooterTrackerBot.h"
 #include "Components/StaticMeshComponent.h"
-#include "AI/Navigation/NavigationSystem.h"
-#include "AI/Navigation/NavigationPath.h"
+#include "NavigationSystem.h"
+#include "NavigationPath.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "Components/HealthComponent.h"
@@ -107,7 +107,7 @@ FVector AShooterTrackerBot::getNextPathPoint()
 
 	if(bestTarget)
 	{
-		UNavigationPath* navPath = UNavigationSystem::FindPathToActorSynchronously(this, GetActorLocation(), bestTarget);
+		UNavigationPath* navPath = UNavigationSystemV1::FindPathToActorSynchronously(this, GetActorLocation(), bestTarget);
 
 		GetWorldTimerManager().ClearTimer(timerHandle_refreshPath);
 		GetWorldTimerManager().SetTimer(timerHandle_refreshPath, this, &AShooterTrackerBot::refreshPath, 2.5f, false);

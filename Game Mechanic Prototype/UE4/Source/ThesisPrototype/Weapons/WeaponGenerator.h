@@ -88,7 +88,7 @@ struct FWeaponGeneratorAPIJsonData
 	FString type_MG;
 	
 	UPROPERTY(BlueprintReadWrite)
-	FString initialspeed;
+	FString initial_speed;
 
 	UPROPERTY(BlueprintReadWrite)
 	FString success;
