@@ -16,14 +16,14 @@ There are two main projects in this repository:
 - A prototype game scenario which uses PCGML as a game mechanic. The [prototype folder](../master/Game%20Mechanic%20Prototype/) contains the actual [Unreal Engine 4 project](../master/Game%20Mechanic%20Prototype/UE4) and a [test environment](../master/Game%20Mechanic%20Prototype/TensorFlow%20Playground) in which I tested the Python scripts before using them in the engine.
 
 ## Playable Prototype
-Unfortunately, it is not possible to package the current version of the prototype due to a packaging error in the [Unreal Engine Python](https://github.com/getnamo/UnrealEnginePython/releases/tag/1.5.0) plugin fork. Therefore, to test the prototype you need to follow the next chapter.
+This repository provides a playable prototype which can be found in the [release section](https://github.com/bernhardrieder/PCGML-Game-Mechanics/releases).
 
 # Getting Started with the Project
 ## Requirements
-- [Unreal Engine 4.19](https://www.unrealengine.com)
+- [Unreal Engine 4.21](https://www.unrealengine.com)
 - Windows 7/8/10 64bit 
 
-## How to Start and Play?
+## How to Start and Play? (OUTDATED)
 - Clone the repository
 - Open the plugins folder of the project and extract the "Plugins-Binaries.7z" file. This file contains the [TensorFlow Plugin](https://github.com/getnamo/tensorflow-ue4) with a tiny modification in the TensorFlowComponent enable multithreading during the input processing.
 - Launch the project and make sure you can activate the Python Console in "Window/Developer Tools/Python Console". This indicates that the Python plugin is enabled and works.
