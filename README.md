@@ -20,7 +20,7 @@ This repository provides a playable prototype which can be found in the [release
 
 # Getting Started with the Project
 ## Requirements
-- [Unreal Engine 4.21](https://www.unrealengine.com)
+- [Unreal Engine 4.22](https://www.unrealengine.com)
 - Windows 7/8/10 64bit 
 
 ## How to Start and Play?
@@ -28,7 +28,7 @@ This repository provides a playable prototype which can be found in the [release
 - Open the plugins folder of the project and extract the "plugins-source-code.7z" file. This file contains the [TensorFlow plugin](https://github.com/getnamo/tensorflow-ue4) with a modification in the [UnrealEnginePython plugin](https://github.com/getnamo/UnrealEnginePython/releases/tag/1.8.0) to enable proper packaging support. For more information see [this thread](https://github.com/getnamo/tensorflow-ue4/issues/16#issuecomment-464488840).
 - Download the _"Windows x86-64 embeddable zip file"_ from the [Python website](https://www.python.org/downloads/release/python-364/) and extract it into _"../UE4/Binaries/Win64/"_. **Note:** the required Python version is 3.6.4.
 - Launch the project and make sure you can activate the Python Console in "Window/Developer Tools/Python Console". This indicates that the Python plugin is enabled and works.
-- Check the Python console and wait until all TensorFlow dependencies are installed. For more information, check out this [GitHub page](https://github.com/getnamo/tensorflow-ue4#installation--setup). Basically, it takes a maximum of 5 minutes and then you should see the following message in your logs: ```Successfully installed absl-py-0.2.2 astor-0.6.2 bleach-1.5.0 gast-0.2.0 grpcio-1.12.1 html5lib-0.9999999 markdown-2.6.11 numpy-1.14.5 protobuf-3.6.0 six-1.11.0 tensorboard-1.8.0 tensorflow-1.8.0 termcolor-1.1.0 werkzeug-0.14.1```
+- Check the Python console and wait until all TensorFlow dependencies are installed. For more information, check out this [GitHub page](https://github.com/getnamo/tensorflow-ue4#installation--setup)
 - Restart the project and then you should be able to run the game now. To make sure everything works, open the weapon generator blueprint located in "Content/Blueprints/BP_TensorFlowWeaponGenerator". It should take a while to open, and no error message should appear in the logs. That means you are ready to go! 
 - Press the play button or ALT+P and you should find yourself in the main menu. Don't panic if it freezes after pressing the "Start Scenario" button! It just takes a few moments to load all the dlls.
 
