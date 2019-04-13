@@ -1,8 +1,11 @@
-Plugins/SocketIO/
-Plugins/TensorFlow/
-Plugins/UnrealEnginePython/
+Plugins/socketio-client-ue4-1.0.0/
+Plugins/tensorflow-ue4-0.13.0/
+Plugins/UnrealEnginePython-1.9.0/
 Content/Scripts/__pycache__/
 Content/Scripts/trained_vae/ 
+
+ThesisPrototype.7z
+ThesisPrototype.sln.DotSettings.user
 
 #visual studio temp
 enc_temp_folder/*
